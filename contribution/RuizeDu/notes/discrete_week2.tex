@@ -1,0 +1,408 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[UTF8]{ctex}              % 中文支持，关键
+\usepackage[margin=1.5cm]{geometry}  % 页边距减小到原来约一半
+\usepackage{mdframed}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bussproofs}
+
+\begin{document}
+
+\section*{week2}
+\raggedright{"The Axiom of Choice is obviously true, the Well-Ordering Principle is obviously false, and who can tell about Zorn's Lemma?"} \\
+\raggedleft{-- J.L. Bona}
+
+\raggedright{}
+\section*{1. 一阶逻辑语法 (Syntax)}
+
+\begin{itemize}
+    \item \textbf{替换的安全性 (Safe Substitution)}：\\
+    称 \(t\) 对 \(x\) 在公式 \(\varphi\) 中是安全的 (safe)，若替换 \(\varphi[t/x]\) 不发生变量捕获 (variable capture)。具体归纳定义如下：
+    \begin{itemize}
+        \item 若 \(\varphi = \varphi_1 \square \varphi_2\)，则 \(t\) 对 \(x\) 安全当且仅当 \(t\) 对 \(x\) 在 \(\varphi_1\) 和 \(\varphi_2\) 中均安全。
+        \item 若 \(\varphi = \forall y \, \psi\)，则 \(t\) 对 \(x\) 安全当且仅当 \(y \notin \text{Var}(t)\) 且 \(t\) 对 \(x\) 在 \(\psi\) 中安全。\\
+        （若 \(y \in \text{Var}(t)\)，则不可替换，因为会被量词 \(\forall y\) 捕获）。
+        \item \(\varphi = \forall x \, \psi\) 时，替换不可执行（因为 \(x\) 已被约束）。
+    \end{itemize}
+    \item \textbf{闭公式 (Closed Formula)}：不含自由变元的公式称为闭公式或句子 (Sentence)。
+\end{itemize}
+
+\section*{2. 一阶逻辑语义 (Semantics)}
+
+\begin{mdframed}
+    \textbf{结构 (Structure) 的定义}：\\
+    \(\mathcal{M} = (\Omega, f_i^{k}:\Omega^k \to \Omega, P_i^{k} \subset \Omega^k(\text{代表着取真值的集合}), c_i \in \Omega )\)，其中 \(\Omega\) 为论域 (Universe,非空)。
+    \begin{itemize}
+        \item 项 \(t\) 的解释：\([t]_{\mathcal{M}} = c_i\) (若 \(t=c_i\))；\([t]_{\mathcal{M}} = f_i^{\mathcal{M}}([t_1]_{\mathcal{M}}, \dots, [t_k]_{\mathcal{M}})\) (若 \(t=f_i(t_1, \dots, t_k)\))。
+        \item 公式 \(\varphi\) 的真值：\([\varphi]_{\mathcal{M}} = 1\) 当且仅当 \(([t_1]_{\mathcal{M}}, \dots, [t_k]_{\mathcal{M}}) \in P_i^{k}\)。
+        \item 量词处理：\([\forall x \, \psi]_{\mathcal{M}} = \min_{v \in \Omega} [\psi[x/v]]_{\mathcal{M}}\)。
+        \item ...
+    \end{itemize}
+    \textbf{模型 (Model) 与理论 (Theory)}：\\
+    \(\mathcal{M} \models \varphi\) 当且仅当 \([\varphi]_{\mathcal{M}} = 1\)。\(\mathcal{M} \models \Gamma\) 表示对所有 \(\varphi \in \Gamma\)，\(\mathcal{M} \models \varphi\)。\\
+    \(\Gamma \models \varphi\) 表示对任意模型 \(\mathcal{M}\)，若 \(\mathcal{M} \models \Gamma\) 则 \(\mathcal{M} \models \varphi\)。
+\end{mdframed}
+
+\section*{3. 证明论与自然演绎 (Proof Theory)}
+
+\begin{itemize}
+    \item \textbf{量词规则}：
+    \begin{align*}
+        \frac{\varphi}{\forall x \, \varphi} \forall I \quad & \text{（要求 } x \text{ 不在前提的自由变元中出现）} \\
+        \frac{\forall x \, \varphi(x)}{\varphi(t)} \forall E \quad & \text{（要求 } t \text{ 对 } x \text{ 安全）} \\
+    \end{align*}
+    \item \textbf{存在量词的定义}：\(\exists x \equiv \neg \forall x \neg\)。
+    \item 一个证明的例子: \( \neg \forall x \neg \forall y \varphi(x,y) \vdash \forall y \neg \forall x \neg \varphi(x,y) \)
+        \begin{prooftree}
+            % 左侧分支：假设 1 与 假设 2 矛盾
+            \AxiomC{\([\forall x \neg \varphi(x,y)]^1\)}
+            \RightLabel{\(\forall E\)}
+            \UnaryInfC{\(\neg \varphi(x,y)\)}
+            
+            \AxiomC{\([\forall y \varphi(x,y)]^2\)}
+            \RightLabel{\(\forall E\)}
+            \UnaryInfC{\(\varphi(x,y)\)}
+            
+            \RightLabel{\(\to E\)}
+            \BinaryInfC{\(\bot\)}
+            
+            \RightLabel{\(\to I, 2\)} 
+            \UnaryInfC{\(\neg \forall y \varphi(x,y)\)}
+            
+            \RightLabel{\(\forall I\)} % 引入全称量词 x
+            \UnaryInfC{\(\forall x \neg \forall y \varphi(x,y)\)}
+            
+            % 右侧分支：与初始前提（视作前提，写在树根上方或作为推导起点）
+            \AxiomC{\(\neg \forall x \neg \forall y \varphi(x,y)\)} 
+            
+            \RightLabel{\(\to E\)} % 两个公式冲突，产生矛盾
+            \BinaryInfC{\(\bot\)}
+            
+            \RightLabel{\(\to I, 1\)} % 解除假设 1
+            \UnaryInfC{\(\neg \forall x \neg \varphi(x,y)\)}
+            
+            \RightLabel{\(\forall I\)} % 如果目标是 \forall y ... 最后补上
+            \UnaryInfC{\(\forall y \neg \forall x \neg \varphi(x,y)\)} % 注意：您这里的公式可能有笔误，我按正确逻辑推导
+        \end{prooftree}
+    \item \textbf{等词规则 (Equality Rules)}：
+    \begin{itemize}
+        \item \(RE_1: \overline{t=t}\)
+        \item \(RE_2: \frac{t_1=t_2}{t_2=t_1}\)
+        \item \(RE_3: \frac{t_1=t_2 \quad t_2=t_3}{t_1=t_3}\)
+        \item \(RE_4: \frac{t_1=t'_1 \dots t_k=t'_k}{P(t_1,\dots,t_k) \to P(t'_1,\dots,t'_k)}\) 以及函数对应规则。
+        \item 注意这里的规则可以和相应公理互相替换,利用规则可以证明公理,通过使用公理可以得到规则,即二者等价
+    \end{itemize}
+\end{itemize}
+
+\text{上面说了这么多关于一阶逻辑的内容,都略有抽象,我们引入PA来体现其应用与局限}
+
+\section*{4. 模型论与算术理论 (Model Theory \& Arithmetic)}
+
+\begin{mdframed}
+    \textbf{皮亚诺算术 (Peano Arithmetic, PA)} \\
+    \(\mathcal{M}\) 是 PA 结构，若满足以下公理：
+    \begin{enumerate}
+        \item \(\forall x \, S(x) \neq 0\)
+        \item \(\forall x \forall y \, (S(x) = S(y) \to x=y)\)
+        \item \(\forall x \, x + 0 = x\)
+        \item \(\forall x \forall y \, x + S(y) = S(x+y)\)
+        \item \(\forall x \, x \cdot 0 = 0\)
+        \item \(\forall x \forall y \, x \cdot S(y) = x \cdot y + x\)
+        \item 归纳公理模式：\(\varphi(0) \wedge \forall x(\varphi(x) \to \varphi(S(x))) \to \forall x \, \varphi(x)\)
+    \end{enumerate}
+\end{mdframed}
+
+\subsection*{4.1 完全性定理与 Henkin 构造}
+
+正如命题逻辑的情形那样，我们将证明「可推导性」与「语义后承」是重合的。在到达该定理之前，我们要做相当多的工作。本章的主要工具是下述引理。
+
+\begin{mdframed}
+\textbf{引理 (4.1.1 Model Existence Lemma, 模型存在引理)}：若 \(\Gamma\) 是一致的语句集，则 \(\Gamma\) 有模型。\\
+一个更精细的版本如下：\\
+\textbf{引理 (4.1.2)}：设 \(L\) 的基数为 \(\kappa\)。若 \(\Gamma\) 是一致的语句集，则 \(\Gamma\) 有一个基数 \(\leq \kappa\) 的模型。
+\end{mdframed}
+
+由引理 4.1.1 我们立即推出 Gödel 的完全性定理。
+
+\begin{mdframed}
+\textbf{定理 (4.1.3 Completeness Theorem, 完全性定理)}：\(\Gamma \vdash \phi \iff \Gamma \models \phi\)。
+\end{mdframed}
+
+现在我们来逐步走完完全性定理证明的全部环节。本节中我们考虑语句，除非特别指出是非闭公式。此外，「\(\vdash\)」将代表「带同一性的谓词逻辑中的可推导性」。正如命题逻辑的情形那样，我们必须构造一个模型，而我们手头唯一可用的东西就是那个一致的理论。这种构造是某种闵希豪森男爵（Baron von Münchhausen）式的把戏：我们必须把自己（更确切地说，把一个模型）从语法与证明规则的流沙中拽出来。最自然的想法是用闭项（closed term）来组成论域。
+
+\begin{mdframed}
+\textbf{定义 (4.1.4)}：
+\begin{enumerate}
+    \item[(i)] 一个理论 (theory) \(T\) 是满足 \(T \vdash \phi \Rightarrow \phi \in T\) 的语句集（即理论对可推导性封闭）。
+    \item[(ii)] 满足 \(T = \{\phi \mid \Gamma \vdash \phi\}\) 的集合 \(\Gamma\) 称为理论 \(T\) 的一个公理集 (axiom set)。\(\Gamma\) 的元素称为公理 (axiom)。
+    \item[(iii)] 若对每个形如 \(\exists x \phi(x)\) 的语句都存在常量 \(c\) 使得 \(\exists x \phi(x) \to \phi(c) \in T\)，则称 \(T\) 为一个亨金理论 (Henkin theory)（这样的 \(c\) 称为 \(\exists x \phi(x)\) 的见证 (witness)）。
+\end{enumerate}
+\end{mdframed}
+
+\textbf{注意}：\(T = \{\sigma \mid \Gamma \vdash \sigma\}\) 是一个理论。因为若 \(T \vdash \phi\)，则对某些满足 \(\Gamma \vdash \sigma_i\) 的 \(\sigma_i\) 有 \(\sigma_1, \dots, \sigma_k \vdash \phi\)。由 \(\Gamma \vdash \sigma_1, \dots, \Gamma \vdash \sigma_k\) 的推导 \(\mathcal{D}_1, \dots, \mathcal{D}_k\) 以及 \(\sigma_1, \dots, \sigma_k \vdash \phi\) 的推导 \(\mathcal{D}\)，如下图所示就得到 \(\Gamma \vdash \phi\) 的一个推导：
+\[
+\frac{
+    \frac{\mathcal{D}_1}{\sigma_1} \quad \frac{\mathcal{D}_2}{\sigma_2} \quad \dots \quad \frac{\mathcal{D}_k}{\sigma_k} \quad \mathcal{D}
+}{\phi}
+\]
+\newpage
+\begin{mdframed}
+\textbf{定义 (4.1.5)}：设 \(T\) 与 \(T'\) 分别是语言 \(L\) 与 \(L'\) 中的理论。
+\begin{enumerate}
+    \item[(i)] 若 \(T \subseteq T'\)，则 \(T'\) 是 \(T\) 的一个扩张 (extension)。
+    \item[(ii)] 若 \(T' \cap L = T\)，则 \(T'\) 是 \(T\) 的一个保守扩张 (conservative extension)（即 \(T'\) 中一切属于语言 \(L\) 的定理都已经是 \(T\) 的定理）。
+\end{enumerate}
+\end{mdframed}
+
+我们的第一项任务是构造给定理论 \(T\) 的亨金扩张，也就是说：\(T\) 的那些是亨金理论的扩张。
+
+\begin{mdframed}
+\textbf{定义 (4.1.6)}：设 \(T\) 是语言为 \(L\) 的理论。语言 \(L^*\) 由 \(L\) 增添每个形如 \(\exists x \phi(x)\) 的语句所对应的一个新常量 \(c_\phi\) 而得。\(T^*\) 是以 \(T \cup \{\exists x \phi(x) \to \phi(c_\phi) \mid \exists x \phi(x) \text{ 闭，见证为 } c_\phi\}\) 为公理集的理论。
+\end{mdframed}
+
+\begin{mdframed}
+\textbf{引理 (4.1.7)}：\(T^*\) 关于 \(T\) 保守。
+\end{mdframed}
+
+\textbf{证明}：
+\begin{enumerate}
+    \item[(a)] 设 \(\exists x \phi(x) \to \phi(c)\) 是新公理之一。假设 \(\Gamma, \exists x \phi(x) \to \phi(c) \vdash \psi\)，其中 \(\psi\) 不含 \(c\)，且 \(\Gamma\) 是语句集，其中没有一个含有常量 \(c\)。我们分若干步证明 \(\Gamma \vdash \psi\)。
+    \begin{enumerate}
+        \item \(\Gamma \vdash (\exists x \phi(x) \to \phi(c)) \to \psi\)。
+        \item \(\Gamma \vdash (\exists x \phi(x) \to \phi(y)) \to \psi\)，其中 \(y\) 是不出现在相应推导中的变元。由定理 3.8.3，2 从 1 推出。
+        \item \(\Gamma \vdash \forall y[(\exists x \phi(x) \to \phi(y)) \to \psi]\)。这一 (\(\forall I\)) 的应用是正确的，因为 \(c\) 不出现在 \(\Gamma\) 中。
+        \item \(\Gamma \vdash \exists y(\exists x \phi(x) \to \phi(y)) \to \psi\)（参见 3.9 节的例子）。
+        \item \(\Gamma \vdash (\exists x \phi(x) \to \exists y \phi(y)) \to \psi\)（3.9 节习题 7）。
+        \item \(\vdash \exists x \phi(x) \to \exists y \phi(y)\)。
+        \item \(\Gamma \vdash \psi\)（由 5、6）。
+    \end{enumerate}
+    \item[(b)] 设对某个 \(\psi \in L\) 有 \(T^* \vdash \psi\)。按可推导性的定义，\(T \cup \{\sigma_1, \dots, \sigma_n\} \vdash \psi\)，其中 \(\sigma_i\) 是形如 \(\exists x \phi(x) \to \phi(c)\) 的新公理。我们对 \(n\) 归纳证明 \(T \vdash \psi\)。\(n=0\) 时已证完。设 \(T \cup \{\sigma_1, \dots, \sigma_{n+1}\} \vdash \psi\)。置 \(T' = T \cup \{\sigma_1, \dots, \sigma_n\}\)，则 \(T', \sigma_{n+1} \vdash \psi\)，于是可以应用 (a)。因此 \(T \cup \{\sigma_1, \dots, \sigma_n\} \vdash \psi\)。现在由归纳假设得到 \(T \vdash \psi\)。 \hfill \(\square\)
+\end{enumerate}
+
+虽然我们给 \(T\) 增添了大量的见证，但并没有证据表明 \(T^*\) 是亨金理论，因为丰富语言的同时我们也增添了新的存在语句 \(\exists x \tau(x)\)，它们可能没有见证。为了克服这一困难，我们把上述过程可数多次地迭代下去。
+
+\begin{mdframed}
+\textbf{引理 (4.1.8)}：定义 \(T_0 := T\)；\(T_{n+1} := (T_n)^*\)；\(T_\omega := \bigcup \{T_n \mid n \geq 0\}\)。则 \(T_\omega\) 是一个亨金理论，且关于 \(T\) 保守。
+\end{mdframed}
+
+\textbf{证明}：把 \(T_n\)（相应地 \(T_\omega\)）的语言记作 \(L_n\)（相应地 \(L_\omega\)）。
+\begin{enumerate}
+    \item[(i)] \(T_n\) 关于 \(T\) 保守。对 \(n\) 归纳。
+    \item[(ii)] \(T_\omega\) 是一个理论。设 \(T_\omega \vdash \sigma\)，则对某些 \(\phi_0, \dots, \phi_n \in T_\omega\) 有 \(\phi_0, \dots, \phi_n \vdash \sigma\)。对每个 \(i \leq n\)，\(\phi_i \in T_{m_i}\) 对某个 \(m_i\) 成立。令 \(m = \max\{m_i \mid i \leq n\}\)。由于对一切 \(k\) 有 \(T_k \subseteq T_{k+1}\)，我们得到 \(T_{m_i} \subseteq T_m\) (\(i \leq n\))。因此 \(T_m \vdash \sigma\)。\(T_m\)（按定义）是理论，故 \(\sigma \in T_m \subseteq T_\omega\)。
+    \item[(iii)] \(T_\omega\) 是亨金理论。设 \(\exists x \phi(x) \in L_\omega\)，则 \(\exists x \phi(x) \in L_n\) 对某个 \(n\) 成立。按定义，对某个 \(c\) 有 \(\exists x \phi(x) \to \phi(c) \in T_{n+1}\)。所以 \(\exists x \phi(x) \to \phi(c) \in T_\omega\)。
+    \item[(iv)] \(T_\omega\) 关于 \(T\) 保守。注意：若对某个 \(n\) 有 \(T_n \vdash \sigma\)，则 \(T_\omega \vdash \sigma\)，再用 (i)。 \hfill \(\square\)
+\end{enumerate}
+
+作为推论我们得到：若 \(T\) 一致，则 \(T_\omega\) 一致。因为设 \(T_\omega\) 不一致，则 \(T_\omega \vdash \bot\)。由于 \(T_\omega\) 关于 \(T\) 保守（而 \(\bot \in L\)），故 \(T \vdash \bot\)。矛盾。
+
+下一步是把 \(T_\omega\) 尽可能远地扩张，正如我们在命题逻辑（2.5.7）中所做的那样。我们陈述一条一般原理。
+
+\begin{mdframed}
+\textbf{引理 (4.1.9 Lindebaum, 林登鲍姆引理)}：每个一致的理论都包含在一个极大一致的理论中。
+\end{mdframed}
+
+\textbf{证明}：我们给出 Zorn 引理的一个直接应用。设 \(T\) 一致。考虑 \(T\) 的一切一致扩张 \(T'\) 所成的集合 \(A\)，按包含关系偏序化。断言：\(A\) 有极大元。
+\begin{enumerate}
+    \item \(A\) 中的每条链，即线性有序集，都有上界。设 \(\{T_i \mid i \in I\}\) 是一条链。则 \(T' = \bigcup_i T_i\) 是 \(T\) 的一个一致扩张，且包含所有 \(T_i\)（习题 2）。所以 \(T'\) 是一个上界。
+    \item 因此 \(A\) 有极大元 \(T_m\)（Zorn 引理）。
+    \item \(T_m\) 是 \(T\) 的极大一致扩张。我们只需证明：若 \(T_m \subseteq T'\) 且 \(T' \in A\)，则 \(T_m = T'\)。但这是显然的，因为 \(T_m\) 在 \(\subseteq\) 的意义下极大。
+\end{enumerate}
+\textbf{结论}：\(T\) 包含在极大一致理论 \(T_m\) 中。 \hfill \(\square\)
+
+注意，一般来说 \(T\) 有许多极大一致扩张。上述存在性远非唯一（事实上，其存在性证明本质地使用了选择公理）。但请注意，若语言可数，人们可以模仿引理 2.5.7 的证明而无需 Zorn 引理。
+
+现在我们把亨金扩张的构造与极大一致扩张结合起来。幸运的是，亨金理论这一性质在取极大一致扩张时被保持。
+
+\begin{mdframed}
+\textbf{引理 (4.1.10)}：亨金理论在同一语言中的扩张仍是亨金理论。
+\end{mdframed}
+
+\textbf{证明}：若 \(T'\) 是亨金理论 \(T\) 在同一语言中的扩张，则对任何 \(\phi\) 我们有 \(\exists x \phi(x) \to \phi(c) \in T \Rightarrow \exists x \phi(x) \to \phi(c) \in T'\)。 \hfill \(\square\)
+
+现在我们进入主要结果的证明。
+
+\begin{mdframed}
+\textbf{引理 (4.1.11 Model Existence Lemma, 模型存在引理)}：若 \(\Gamma\) 一致，则 \(\Gamma\) 有模型。
+\end{mdframed}
+
+\textbf{证明}：设 \(T = \{\sigma \mid \Gamma \vdash \sigma\}\) 是由 \(\Gamma\) 给出的理论。\(T\) 的任何模型当然也是 \(\Gamma\) 的模型。\\
+设 \(T_m\) 是 \(T\) 的一个极大一致的亨金扩张（由前面的引理它存在），其语言为 \(L_m\)。我们将用 \(T_m\) 自身来构造 \(T_m\) 的一个模型。在此读者应当意识到，语言毕竟是一个集合，即符号串的集合。于是我们将利用这个集合来搭建一个适当模型的论域。
+\begin{enumerate}
+    \item \(A = \{t \in L_m \mid t \text{ 是闭的} \}\)。
+    \item 对每个函数符号 \(\overline{f}\)，定义函数 \(\hat{f}: A^k \to A\) 为 \(\hat{f}(t_1, \dots, t_k) := f(t_1, \dots, t_k)\)。
+    \item 对每个谓词符号 \(\overline{P}\)，定义关系 \(\hat{P} \subseteq A^p\) 为 \(\langle t_1, \dots, t_p \rangle \in \hat{P} \iff T_m \vdash P(t_1, \dots, t_p)\)。
+    \item 对每个常量符号 \(c\)，定义常量 \(\hat{c} := c\)。
+\end{enumerate}
+
+由 \(\forall E\) 得 \(T_m \vdash t = t\)，即 \(t \sim t\)。对称性与传递性同法可得。\\
+(b) \(t_i \sim s_i\) (\(i \leq p\)) 且 \(\langle t_1, \dots, t_p \rangle \in \hat{P} \Rightarrow \langle s_1, \dots, s_p \rangle \in \hat{P}\)；且 \(t_i \sim s_i\) (\(i \leq k\)) \(\Rightarrow \hat{f}(t_1, \dots, t_k) \sim \hat{f}(s_1, \dots, s_k)\)，对一切符号 \(P\) 与 \(f\) 成立。证明很简单：使用 \(T_m \vdash I_4\)（引理 3.10.1）。
+
+一旦我们有了一个等价关系，而且它关于基本关系与函数还是同余关系，引入商结构就是自然的了。把 \(t\) 在 \(\sim\) 下的等价类记作 \([t]\)。定义 \(\mathfrak{A} := \langle A/{\sim}, \hat{P}_1, \dots, \hat{P}_n, \hat{f}_1, \dots, \hat{f}_m, \hat{c}_i \mid i \in I \rangle\)，其中
+\[
+\hat{P}_i := \{\langle [t_1], \dots, [t_{r_i}] \rangle \mid \langle t_1, \dots, t_{r_i} \rangle \in \hat{P}_i\}
+\]
+\[
+\hat{f}_j([t_1], \dots, [t_{a_j}]) := [\hat{f}_j(t_1, \dots, t_{a_j})], \quad \hat{c}_i := [\hat{c}_i]
+\]
+必须证明 \(A/{\sim}\) 上的关系与函数是良定义的，而这已由上面的 (b) 照管好了。闭项过着一种双重生活。一方面它们是语法对象，另一方面它们又是构成论域元素的材料。两件事由 \(t^{\mathfrak{A}} = [t]\) 联系起来。这通过对 \(t\) 的归纳来证明。
+\begin{enumerate}
+    \item[(i)] \(t = c\)，则 \(t^{\mathfrak{A}} = \hat{c} = [c] = [t]\)。
+    \item[(ii)] \(t = f(t_1, \dots, t_k)\)，则
+    \[
+    t^{\mathfrak{A}} = \hat{f}(t_1^{\mathfrak{A}}, \dots, t_k^{\mathfrak{A}}) \stackrel{\text{ih}}{=} \hat{f}([t_1], \dots, [t_k]) = [\hat{f}(t_1, \dots, t_k)] = [f(t_1, \dots, t_k)] = [t]
+    \]
+\end{enumerate}
+
+进一步，由上述结果以及 3.4 节习题 6，我们有 \(\mathfrak{A} \models \phi(t) \iff \mathfrak{A} \models \phi(\overline{[t]})\)。\\
+断言：对 \(T_m\) 的语言 \(L_m\) 中的一切语句 \(\phi\) 都有 \(\mathfrak{A} \models \phi(t) \iff T_m \vdash \phi(t)\)——顺便说，\(L_m\) 也就是 \(L(\mathfrak{A})\)，因为 \(A/{\sim}\) 的每个元素在 \(L_m\) 中都有名字。我们对 \(\phi\) 归纳证明这一断言。
+\begin{enumerate}
+    \item[(i)] \(\phi\) 是原子式。\(\mathfrak{A} \models P(t_1, \dots, t_p) \iff \langle t_1^{\mathfrak{A}}, \dots, t_p^{\mathfrak{A}} \rangle \in \hat{P} \iff \langle [t_1], \dots, [t_p] \rangle \in \hat{P} \iff \langle t_1, \dots, t_p \rangle \in \hat{P} \iff T_m \vdash P(t_1, \dots, t_p)\)。\(\phi = \bot\) 的情形是平凡的。
+    \item[(ii)] \(\phi = \sigma \wedge \tau\)。平凡。
+    \item[(iii)] \(\phi = \sigma \to \tau\)。我们回忆，由引理 2.5.9，\(T_m \vdash \sigma \to \tau \iff (T_m \vdash \sigma \Rightarrow T_m \vdash \tau)\)。注意我们可以照样援引这一结果，因为它的证明只用到了命题逻辑，因而在谓词逻辑中仍然正确。
+    \[
+    \mathfrak{A} \models \sigma \to \tau \iff (\mathfrak{A} \models \sigma \Rightarrow \mathfrak{A} \models \tau) \stackrel{\text{ih}}{\iff} (T_m \vdash \sigma \Rightarrow T_m \vdash \tau) \iff T_m \vdash \sigma \to \tau
+    \]
+    \item[(iv)] \(\phi = \forall x \psi(x)\)。\(\mathfrak{A} \models \forall x \psi(x) \iff \mathfrak{A} \models \neg \exists x \neg \psi(x) \iff \mathfrak{A} \models \neg \psi(\overline{a})\) 对一切 \(a \in |\mathfrak{A}|\) 成立 \(\iff\) 对一切 \(a \in |\mathfrak{A}|\)，\(\mathfrak{A} \models \psi(\overline{a})\)。设 \(\mathfrak{A} \models \forall x \psi(x)\)，则特别地，对属于 \(\exists x \neg \psi(x)\) 的见证 \(c\) 有 \(\mathfrak{A} \models \psi(c)\)。由归纳假设：\(T_m \vdash \psi(c)\)。又 \(T_m \vdash \exists x \neg \psi(x) \to \neg \psi(c)\)，故 \(T_m \vdash \psi(c) \to \neg \exists x \neg \psi(x)\)。因此 \(T_m \vdash \forall x \psi(x)\)。反之：\(T_m \vdash \forall x \psi(x) \Rightarrow T_m \vdash \psi(t)\)，故对一切闭项 \(t\) 有 \(T_m \vdash \psi(t)\)，于是由归纳假设，对一切闭项 \(t\) 有 \(\mathfrak{A} \models \psi(t)\)。因此 \(\mathfrak{A} \models \forall x \psi(x)\)。
+\end{enumerate}
+
+现在我们看到 \(\mathfrak{A}\) 是 \(\Gamma\) 的模型，因为 \(\Gamma \subseteq T_m\)。 \hfill \(\square\)
+\section*{5. 可计算性与哥德尔不完备性 (Computability \& Incompleteness)}
+
+在完成了 PA 公理系统的语义与证明论基础后，我们进入数理逻辑最激动人心的部分：哥德尔不完备性定理。这个定理的核心在于，我们能否在算术系统内部，谈论算术系统自身的证明？
+
+\subsection*{5.1 哥德尔编码 (Gödel Numbering)}
+
+为了实现“自指”，我们必须把关于 PA 的语法元数学概念（如“公式”、“证明”）映射到 PA 自身的论域（自然数）中，这个过程称为哥德尔编码。
+
+\begin{itemize}
+    \item \textbf{基本思路与具体构造}：
+哥德尔编码的核心是将“语法符号”映射为“自然数”，从而让算术系统能够“谈论”自身。具体构造分为三步：
+    \begin{enumerate}
+        \item \textbf{符号编码 (Symbol Encoding)}：首先为语言中的每个基本符号分配一个唯一的自然数。
+        例如：
+        \[
+        \ulcorner 0 \urcorner = 1, \quad \ulcorner S \urcorner = 2, \quad \ulcorner + \urcorner = 3, \quad \ulcorner \cdot \urcorner = 4, \quad \ulcorner = \urcorner = 5
+        \]
+        \[
+        \ulcorner \neg \urcorner = 6, \quad \ulcorner \to \urcorner = 7, \quad \ulcorner \forall \urcorner = 8, \quad \ulcorner ( \urcorner = 9, \quad \ulcorner ) \urcorner = 10
+        \]
+        对于变元 \(x_i\)，可以统一编码为 \(\ulcorner x_i \urcorner = 11 + i\)（或类似规则）。
+        
+        \item \textbf{序列编码 (Sequence Encoding)}：将符号序列 \(s_1, s_2, \dots, s_k\) 编码为单个自然数。最经典的方法是使用\textbf{素数幂乘积}：
+        \[
+        \ulcorner s_1 s_2 \dots s_k \urcorner = p_1^{\ulcorner s_1 \urcorner} \cdot p_2^{\ulcorner s_2 \urcorner} \cdots p_k^{\ulcorner s_k \urcorner}
+        \]
+        其中 \(p_i\) 是第 \(i\) 个素数（\(p_1=2, p_2=3, p_3=5, \dots\)）。
+        根据算术基本定理（唯一分解定理），这个编码是单射且可逆的。
+        
+        \item \textbf{证明序列的编码 (CRT 方法)}：上述素数幂乘积方法有一个缺陷：当序列很长时，得到的数字会极其巨大，导致算术运算（如加法、乘法）在证明中变得极其复杂。
+        因此，哥德尔在实际构造中采用了基于\textbf{中国剩余定理 (CRT)} 的编码方式。
+        具体来说，我们寻找一个数 \(z\) 和模数 \(m_0, m_1, \dots, m_k\)（它们两两互素），使得：
+        \[
+        z \equiv \ulcorner s_i \urcorner \pmod{m_i} \quad (0 \leq i \leq k)
+        \]
+        这样，一个证明序列就被编码为两个较小的自然数 \((z, m)\)。由于 CRT 保证了同余方程组在模 \(M = \prod m_i\) 下有唯一解，我们便可以通过取模运算，从中“提取”出原来的符号序列。
+    \end{enumerate}
+    我们用 \(\ulcorner \varphi \urcorner\) 表示公式 \(\varphi\) 的哥德尔数，用 \(\ulcorner \mathcal{D} \urcorner\) 表示证明 \(\mathcal{D}\) 的哥德尔数。这一映射使得“公式 \(x\) 是合法的”、“\(d\) 是 \(y\) 的证明”等元数学概念，都变成了 PA 中关于自然数的算术命题。
+    \item \textbf{算术化谓词}：因为符号串变成了自然数，我们可以定义算术公式来判定一个数是否对应合法的语法对象：
+    \begin{itemize}
+        \item \(\text{Term}(x)\)：\(x\) 是项 (Term) 的哥德尔数。
+        \item \(\text{For}(x)\)：\(x\) 是公式 (Formula) 的哥德尔数。
+        \item \(\text{Sent}(x)\)：\(x\) 是句子 (Sentence) 的哥德尔数。
+    \end{itemize}
+    \item \textbf{证明谓词与可证性谓词}：
+    \begin{itemize}
+        \item \(\text{Der}(x, y, d)\)：\(d\) 是公式 \(y\) 从公理集 \(x\) 出发的一个证明的哥德尔数。
+        \item \(\text{Prov}(y)\)：公式 \(y\) 是可证的，定义为 \(\text{Prov}(y) \equiv \exists x \exists d \, (\text{Der}(x, y, d) \wedge \forall i \, \text{PA}(x_i))\)。
+        \item \(\text{Thm}(y)\)：\(y\) 是 PA 中一个可证句子的编码，即 \(\text{Thm}(y) \equiv \text{Prov}(y) \wedge \text{Sent}(y)\)。
+    \end{itemize}
+    \item \textbf{关键性质}：若 \(PA \vdash \varphi\)，则 \(PA \vdash \text{Thm}(\ulcorner \varphi \urcorner)\)；若 \(PA \nvdash \varphi\)，则 \(PA \vdash \neg \text{Thm}(\ulcorner \varphi \urcorner)\)。这被称为 \textbf{可表示性}。
+\end{itemize}
+
+\subsection*{5.2 不动点定理 (Fixpoint Theorem)}
+
+有了编码，我们就能让公式谈论自身。不动点定理（也称对角线引理）是构造自指句子的关键。
+
+\begin{mdframed}
+    \textbf{定理 (不动点定理)}：对任意公式 \(\varphi(x)\)（其中 \(x\) 是自由变元），都存在一个句子 \(\psi\)，使得
+    \[
+    \vdash \varphi(\ulcorner \psi \urcorner) \leftrightarrow \psi
+    \]
+    这个 \(\psi\) 称为 \(\varphi(x)\) 的不动点。
+\end{mdframed}
+
+\textbf{构造思路}：\\
+直观上，我们想要构造一个句子 \(\psi\) 说“我具有性质 \(\varphi\)”。我们可以利用**对角线化**的方法。
+定义替换函数 \(s(x, y)\)，表示“将公式 \(x\) 中的自由变元替换为 \(y\) 的哥德尔数”。令 \(m = \ulcorner \varphi(s(x, x)) \urcorner\)，然后构造 \(\psi = \varphi(s(\overline{m}, \overline{m}))\)。可以证明，这个 \(\psi\) 恰好满足 \(\vdash \psi \leftrightarrow \varphi(\ulcorner \psi \urcorner)\)。
+
+\textbf{构造自指句子}：\\
+现在，我们将不动点定理应用到“不可证”这个性质上。令 \(\varphi(x) \equiv \neg \text{Thm}(x)\)。根据不动点定理，存在句子 \(G\) 使得：
+\[
+PA \vdash G \leftrightarrow \neg \text{Thm}(\ulcorner G \urcorner)
+\]
+这个句子 \(G\) 的含义是：\textbf{“本句子（在 PA 中）是不可证的”}。
+
+\textbf{第一不完备性定理（简述）}：
+\begin{itemize}
+    \item 假设 \(PA \vdash G\)，则由可表示性，\(PA \vdash \text{Thm}(\ulcorner G \urcorner)\)，但由 \(G\) 的定义，\(PA \vdash \neg \text{Thm}(\ulcorner G \urcorner)\)，导致矛盾。因此 \(G\) 不可证。
+    \item 既然 \(G\) 不可证，那么 \(\neg \text{Thm}(\ulcorner G \urcorner)\) 为真，即 \(G\) 为真。所以 \(PA \nvdash G\) 且 \(G\) 是真的。
+    \item 同理，\(\neg G\) 也不可证。因此 PA 是不完备的。
+\end{itemize}
+
+\subsection*{5.3 递归可枚举集 (Recursively Enumerable, RE)}
+
+为了从可计算性角度理解 PA，我们引入递归可枚举集。
+
+\begin{itemize}
+    \item \textbf{定义}：集合 \(L \subseteq \Sigma^*\) 是 RE 的，若存在一个算术公式 \(\varphi(x)\) 使得
+    \[
+    \forall x \, (x \in L \leftrightarrow \varphi(\ulcorner x \urcorner))
+    \]
+    \item \textbf{等价定义 (图灵机)}：存在图灵机 \(TM\)，使得 \(x \in L \iff TM(x) \text{ 停机}\)。
+    \item \textbf{与 PA 的关系}：PA 中可证句子的集合 \(\text{Thm}\) 是 RE 的。因为我们可以编写一个程序，机械地枚举所有合法的证明，每找到一个证明，就输出其结论。
+\end{itemize}
+
+\subsection*{5.4 停机问题 (Halting Problem)}
+
+停机问题是不可判定性的经典案例，它直接揭示了为什么 PA 不能证明自身的一致性。
+
+\begin{mdframed}
+    \textbf{定理}：不存在图灵机 \(H\)，能够判定任意图灵机 \(M\) 在输入 \(x\) 上是否停机。即 \(H(\ulcorner M \urcorner, x)\) 不存在。
+\end{mdframed}
+
+\textbf{证明 (对角线法)}：
+\begin{enumerate}
+    \item 假设存在这样的 \(H\)。构造一个新的图灵机 \(M\)，它接收输入 \(x\)（一个图灵机的编码），执行以下操作：
+    \begin{itemize}
+        \item 调用 \(H(x, x)\)。
+        \item 若 \(H\) 输出“停机”，则 \(M\) 进入死循环（不停机）。
+        \item 若 \(H\) 输出“不停机”，则 \(M\) 立即停机。
+    \end{itemize}
+    \item 现在考虑 \(M\) 在输入 \(\ulcorner M \urcorner\)（自身的编码）上的行为：
+    \begin{itemize}
+        \item 若 \(M(\ulcorner M \urcorner)\) 停机，则 \(H(\ulcorner M \urcorner, \ulcorner M \urcorner)\) 输出“停机”，根据定义，\(M\) 应当死循环，矛盾。
+        \item 若 \(M(\ulcorner M \urcorner)\) 不停机，则 \(H\) 输出“不停机”，根据定义，\(M\) 应当停机，矛盾。
+    \end{itemize}
+    \item 因此，假设不成立，\(H\) 不存在。 \hfill \(\square\)
+\end{enumerate}
+
+\textbf{推论 (与哥德尔定理的联系)}：
+如果 PA 是完备的，那么对于任何命题 \(\varphi\)，我们都能通过枚举证明来判定 \(\varphi\) 或 \(\neg \varphi\) 是否可证，这将使得停机问题可判定。既然停机问题不可判定，PA 必然是不完备的。同时，这也意味着 PA 不能证明自身的一致性（第二不完备性定理），因为如果它能证明一致性，那么就能证明 \(G\) 为真，从而推翻第一不完备性定理。
+\section*{6. ZFC 集合论基础 (ZFC Set Theory)}
+
+\textbf{ZFC 公理列表}：
+\begin{enumerate}
+    \item 外延公理：\(\forall x \forall y (x=y \leftrightarrow \forall z (z \in x \leftrightarrow z \in y))\)
+    \item 分离公理模式：\(y = \{ z \in x \mid \varphi(z) \}\)
+    \item 配对公理：\(\exists z (z = \{ x, y \})\)
+    \item 并集公理：\(y = \bigcup x\)
+    \item 幂集公理：\(y = \mathcal{P}(x)\)
+    \item 无穷公理：\(\exists N (\emptyset \in N \wedge \forall x \in N, x \cup \{x\} \in N)\)
+    \item 替换公理模式：\(B = \{ f(x) \mid x \in A \}\)
+    \item 基础公理：\(\forall x (x \neq \emptyset \to \exists y \in x, x \cap y = \emptyset)\)
+    \item 选择公理 (AC)
+\end{enumerate}
+
+\end{document}

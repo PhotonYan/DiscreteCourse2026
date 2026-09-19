@@ -1,0 +1,270 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[UTF8]{ctex}              % 中文支持，关键
+\usepackage[margin=1.5cm]{geometry}  % 页边距减小到原来约一半
+\usepackage{mdframed}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{离散数学笔记}
+\author{DuRuize}
+\date{}
+\maketitle
+\setlength{\parindent}{0pt}
+
+\newpage
+\section*{2026-9-10}
+\subsection*{0.先来分清两个概念}
+\textbf{最令人疑惑的点是:} $\models$ 和 $\vdash$ 的区别.
+
+\textbf{语法后承：} $\Gamma \vdash \varphi$ 是指 $\dfrac{\psi \qquad \psi\to\varphi}{\varphi}$ 这样的能推理出的过程
+
+\textbf{语义后承：} $\Gamma \models \varphi$ 是指 $\Bigl(\forall \psi \in \Gamma,\ \llbracket \psi \rrbracket_v = 1\Bigr) \Rightarrow \llbracket \varphi \rrbracket_v = 1$
+
+\subsection*{1. 完备性定理:}
+
+\textbf{语义后承：} $\Gamma \models \phi$
+
+\textbf{soundness（若可证明则可语义推出）：} $\Gamma \vdash \phi \Rightarrow \Gamma \models \phi$
+
+\textbf{completeness（若可语义推出则可证明）：} $\Gamma \models \phi \Rightarrow \Gamma \vdash \phi$
+
+\textbf{我们接下来引入若干概念就是为了证明上面两点.}
+
+\subsection*{2. 一致集与扩充成极大一致集}
+\vspace{0.3cm}
+\textbf{一致性(consistent)：}
+\begin{itemize}
+    \item 若 $\Gamma \nvdash \bot$，则称 $\Gamma$ 是一致的
+    \item 若 $\Gamma \vdash \bot$，则称 $\Gamma$ 是不一致的
+\end{itemize}
+
+\textbf{极大一致性（maximally consistent）：}
+\begin{itemize}
+    \item $\Gamma$ 是一致的
+    \item $\forall \, \Gamma' \supset \Gamma, \Gamma'$ 是不一致的
+\end{itemize}
+\textit{性质：} 若 $\Gamma$ 极大一致，则 $\forall \phi, \Gamma \vdash \phi \text{ 或 } \Gamma \vdash \neg \phi$
+
+\vspace{0.3cm}
+\textbf{演绎封闭（close under derviation）：}
+$\forall \phi, \text{ 若 } \Gamma \vdash \phi \text{，则 } \phi \in \Gamma$
+
+
+\textbf{引理：} 对任意一致集 $\Gamma$，存在极大一致集 $\Gamma'$，使得 $\Gamma \subseteq \Gamma'$。
+
+\textbf{证明：}
+\begin{enumerate}
+    \item 由于公式集是可数的(每一位都是有限种组合)，枚举所有公式：$\phi_0, \phi_1, \phi_2, \dots$
+    \item 递归构造集合序列 $\{\Gamma_n\}_{n \in \mathbb{N}}$：
+    \begin{itemize}
+        \item $\Gamma_0 = \Gamma$
+        \item $\Gamma_{n+1} = 
+        \begin{cases} 
+        \Gamma_n \cup \{\phi_n\}, & \text{若 } \Gamma_n \cup \{\phi_n\} \text{ 一致} \\
+        \Gamma_n \cup \{\neg \phi_n\}, & \text{否则}
+        \end{cases}$
+    \end{itemize}
+    \item 定义 $\Gamma' = \bigcup\limits_{n=0}^{\infty} \Gamma_n$ \text{则} $\Gamma'$ 一致且极大。
+\end{enumerate}
+
+\subsection*{3.证明$\Gamma \text{ 一致} \Rightarrow \exists v \ \  s.t. \forall \psi \in \Gamma, \llbracket \psi \rrbracket_v = 1$。}
+
+\textbf{证明：}
+\begin{enumerate}
+    \item 由上述引理，将 $\Gamma$ 扩充为极大一致集 $\Gamma'$。
+    \item 基于 $\Gamma'$ 定义赋值 $v$：
+    \[
+    \llbracket P_i \rrbracket_v = 
+    \begin{cases} 
+    1, & \text{若 } P_i \in \Gamma' \\
+    0, & \text{若 } \neg P_i \in \Gamma'
+    \end{cases}
+    \]
+    \item 对公式 $\psi$ 进行\textbf{结构归纳}，证明：
+    \[
+    \llbracket \psi \rrbracket_v = 1 \iff \psi \in \Gamma'
+    \]
+    \begin{itemize}
+        \item \textit{基础情形：} 原子命题 $P_i$，由 $v$ 的定义成立。
+        \item \textit{归纳步骤：}
+        \begin{itemize}
+            \item 情形 $\psi = \neg \phi$：
+            $\llbracket \neg \phi \rrbracket_v = 1 \iff \llbracket \phi \rrbracket_v = 0 \iff \phi \notin \Gamma' \iff \neg \phi \in \Gamma'$（由极大性）。
+            \item 情形 $\psi = \phi_1 \to \phi_2$：
+            $\llbracket \phi_1 \to \phi_2 \rrbracket_v = 0 \iff \llbracket \phi_1 \rrbracket_v = 1 \text{ 且 } \llbracket \phi_2 \rrbracket_v = 0$。
+            由归纳假设，这意味着 $\phi_1 \in \Gamma'$ 且 $\phi_2 \notin \Gamma'$。
+            由于 $\Gamma'$ 演绎封闭，若 $\phi_1 \to \phi_2 \in \Gamma'$，则 $\phi_2 \in \Gamma'$（矛盾）。
+            因此 $\phi_1 \to \phi_2 \notin \Gamma'$，所以 $\neg(\phi_1 \to \phi_2) \in \Gamma'$。
+            于是 $\llbracket \phi_1 \to \phi_2 \rrbracket_v = 1 \iff \phi_1 \to \phi_2 \in \Gamma'$。
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+
+\subsection*{4. 证明 $\vdash \,=\, \models$}
+
+\textbf{目标：} 证明
+\[
+\Gamma \vdash \varphi \iff \Gamma \models \varphi
+\]
+即语法推出关系与语义推出关系重合。
+
+\vspace{0.3cm}
+\textbf{（1）可靠性：$\Gamma \vdash \varphi \Rightarrow \Gamma \models \varphi$}
+
+对证明长度做归纳：
+\begin{itemize}
+    \item 若 $\varphi \in \Gamma$，则任何满足 $\Gamma$ 的赋值 $v$ 都满足 $\varphi$。
+    \item 若 $\varphi$ 是逻辑公理，则 $\varphi$ 是永真式，任何 $v$ 都满足它。
+    \item 若 $\varphi$ 由推理规则得到，例如 MP：
+    \[
+    \frac{\psi \qquad \psi \to \varphi}{\varphi}
+    \]
+    由归纳假设，$\psi$ 与 $\psi \to \varphi$ 在任意满足 $\Gamma$ 的 $v$ 下都为真；而真值表给出
+    \[
+    \llbracket \psi \rrbracket_v = 1,\quad
+    \llbracket \psi \to \varphi \rrbracket_v = 1
+    \Rightarrow \llbracket \varphi \rrbracket_v = 1.
+    \]
+    因此 $\varphi$ 也被满足。
+\end{itemize}
+所以
+\[
+\Gamma \vdash \varphi \Rightarrow \Gamma \models \varphi.
+\]
+
+\vspace{0.3cm}
+\textbf{（2）完备性：$\Gamma \models \varphi \Rightarrow \Gamma \vdash \varphi$}
+
+用逆否命题。假设 $\Gamma \nvdash \varphi$，则 $\Gamma \cup \{\neg \varphi\}$ 一致。
+
+于是由第 3 节的结果，存在赋值 $v$，使得
+\[
+\forall \psi \in \Gamma \cup \{\neg \varphi\},\quad \llbracket \psi \rrbracket_v = 1.
+\]
+也就是说，对每个 $\psi \in \Gamma$ 都有
+\[
+\llbracket \psi \rrbracket_v = 1,
+\]
+并且
+\[
+\llbracket \neg \varphi \rrbracket_v = 1,
+\]
+即
+\[
+\llbracket \varphi \rrbracket_v = 0.
+\]
+但由假设 $\Gamma \models \varphi$，任何满足 $\Gamma$ 的赋值 $v$ 都必须满足 $\varphi$，即
+\[
+\Bigl(\forall \psi \in \Gamma,\ \llbracket \psi \rrbracket_v = 1\Bigr)
+\Rightarrow
+\llbracket \varphi \rrbracket_v = 1.
+\]
+这与前面得到的 $\llbracket \varphi \rrbracket_v = 0$ 矛盾。
+
+因此假设 $\Gamma \nvdash \varphi$ 不成立，故
+\[
+\Gamma \vdash \varphi.
+\]
+所以
+\[
+\Gamma \models \varphi \Rightarrow \Gamma \vdash \varphi.
+\]
+\textbf{目前为止是前半节课想要证明的(?)}
+\vspace{0.3cm}
+
+\subsection*{5. 经典逻辑与反证法（区分直觉主义与经典逻辑）}
+
+\textbf{反证法(RAA)：} 假设\neg P 推出 \bot
+\textbf{无需反证法即可证明的公式（直觉主义逻辑）：}
+\begin{itemize}
+    \item $P \to \neg\neg P$
+    \item $\neg\neg\neg P \to \neg P$
+    \item $(P \to Q) \to (\neg Q \to \neg P)$
+\end{itemize}
+
+\textbf{需要反证法的公式（经典逻辑）：}
+\begin{itemize}
+    \item $\neg\neg P \to P$
+    \item $(\neg P \to P) \to P$
+    \item $((P \to Q) \to P) \to P$ \quad 
+\end{itemize}
+
+注意:这里说到的反证法是我们的证明系统内部的RAA,而4.中我们用到的反证法是数学意义上的反证法,不是一个范围内的(这或许类似于不同域上的运算限制?)
+
+\subsection*{6. 一阶逻辑的字母表与项}
+\textbf{字母表：}
+\begin{itemize}
+    \item 变元符号：\(x, y, z, \dots\)
+    \item 常元符号：\(c_1, c_2, \dots\)
+    \item 函数符号：\(f_1^1, f_1^2, \dots, f_2^1, f_2^2, \dots\) (上标表示元数)
+    \item 谓词符号：\(P_1^1, P_1^2, \dots\) 及等词 \(=\)
+    \item 联结词：\(\neg, \to, \wedge, \vee, \leftrightarrow\)
+    \item 量词：\(\forall, \exists\)
+    \item 辅助符号：\((, )\)
+\end{itemize}
+
+\textbf{项（Term）：} 归纳定义
+\begin{itemize}
+    \item 任何变元 \(x\) 是项：\(x \in \text{TERM}\)
+    \item 任何常元 \(c\) 是项：\(c \in \text{TERM}\)
+    \item 若 \(t_1, \dots, t_k\) 是项，则 \(f_i^k(t_1, \dots, t_k)\) 是项
+\end{itemize}
+即 \(\text{TERM} \subseteq \text{Alphabet}^*\)。
+
+\subsection*{7. FOR}
+\textbf{FOR(formula)：} 归纳定义
+\begin{itemize}
+    \item 若 \(t_1, \dots, t_k\) 是项，则 \(P_i^k(t_1, \dots, t_k) \in \text{FOR}\)
+    \item 若 \(\varphi, \psi \in \text{FOR}\)，则 \(\neg\varphi, \varphi \wedge \psi, \varphi \vee \psi, \varphi \to \psi,\varphi = \psi \in \text{FOR}\)
+    \item 若 \(\varphi \in \text{FOR}\) 且 \(x\) 是变元，则 \(\forall x \varphi, \exists x \varphi \in \text{FOR}\)
+\end{itemize}
+
+\subsection*{8. 自由变元与约束变元（Free/Bound）}
+\textbf{项 \(t\) 的变元集：} \(\text{Var}(t) = \{x \mid x \text{ 是 } t \text{ 中的变元符号}\}\)
+
+\textbf{公式 \(\varphi\) 的变元集：}
+\begin{itemize}
+    \item \(\varphi = P^k(t_1, \dots, t_k)\)：\(\text{Var}(\varphi) = \text{Free}(\varphi) = \bigcup_{i=1}^k \text{Var}(t_i)\) 注:term不包含量词,所以term的var都是free
+    \item \(\varphi = \psi_1 \square \psi_2\)：\(\text{Var}(\varphi) = \text{Var}(\psi_1) \cup \text{Var}(\psi_2)\)
+    \item \(\varphi = \forall x \psi\) 或 \(\exists x \psi\)：
+    \[
+    \text{Var}(\varphi) = \text{Var}(\psi), \quad \text{Free}(\varphi) = \text{Var}(\psi) \setminus \{x\}
+    \]
+\end{itemize}
+\textit{注意：量词所约束的变元称为约束变元（bound），未被约束的称为自由变元（free）。自由变元可以替换成其他独立的记号}
+
+\subsection*{9. 结构（Structure）与模型（Model）}
+\textit{结构(structure)：} \(\langle \Omega, R_1, \dots, R_n, f_1, \dots, f_n, c_1, \dots \rangle\)
+\begin{itemize}
+    \item \(\Omega\) 是非空集合（论域）
+    \item 对每个 \(f_i^k\)，有 \(f_i^k: \Omega^k \to \Omega\)
+    \item 对每个 \(R_i^k\)，有 \(R_i^k \subseteq \Omega^k\)
+\end{itemize}
+
+
+\subsection*{10. 项和公式的语义解释}
+\textbf{项的解释：}
+\begin{itemize}
+    \item 常元：\([\bar{c_i}]_\mathcal{M} = c_i\)
+    \item 复合项：\([f_i^k(t_1, \dots, t_k)]_\mathcal{M} = f_i^k([t_1]_\mathcal{M}, \dots, [t_k]_\mathcal{M})\)
+\end{itemize}
+
+\textbf{公式的真值：}
+\begin{itemize}
+    \item 原子公式：\([P_i^k(t_1, \dots, t_k)]_\mathcal{M} = 1 \iff ([t_1]_\mathcal{M}, \dots, [t_k]_\mathcal{M}) \in P_i^k\)
+    \item 量词：\([\forall x \varphi]_\mathcal{M} = \min_{x \in \Omega} [\varphi(x)]_\mathcal{M}\)
+    \item \([\exists x \varphi]_\mathcal{M} = \max_{x \in \Omega} [\varphi(x)]_\mathcal{M}\)
+\end{itemize}
+
+\subsection*{11. 等词公理}
+\begin{itemize}
+    \item 自反性：\(\forall x (x = x)\)
+    \item 对称性：\(\forall x \forall y (x = y \to y = x)\)
+    \item 传递性：\(\forall x \forall y \forall z ((x = y \wedge y = z) \to x = z)\)
+\end{itemize}
+
+\end{document}
