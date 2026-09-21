@@ -333,9 +333,52 @@
     这个 \(\psi\) 称为 \(\varphi(x)\) 的不动点。
 \end{mdframed}
 
+\textbf{证明}：\\
+我们需要一个在 PA 中可表示的替换函数。直观上，令
+\[
+s(x,y)=\text{“将公式 }x\text{ 中的自由变元替换为项 }y\text{ 后所得公式的哥德尔数”}.
+\]
+更精确地说，我们要求 \(s\) 是一个算术公式，使得对任意公式 \(\alpha(v)\) 和任意项 \(t\)，都有
+\[
+PA \vdash s(\ulcorner \alpha(v)\urcorner,\ulcorner t\urcorner)=\ulcorner \alpha(t)\urcorner .
+\]
+这样的 \(s\) 可以由哥德尔编码的算术化得到：语法替换是原始递归的，而一切原始递归函数都在 PA 中可表示。
+
+现在固定任意公式 \(\varphi(x)\)。考虑公式
+\[
+\theta(v):=\varphi\bigl(s(v,v)\bigr).
+\]
+这里 \(v\) 是自由变元。令
+\[
+m:=\ulcorner \theta(v)\urcorner=\ulcorner \varphi(s(v,v))\urcorner .
+\]
+再令
+\[
+\psi:=\theta(\overline{m})=\varphi\bigl(s(\overline{m},\overline{m})\bigr),
+\]
+其中 \(\overline{m}\) 是表示自然数 \(m\) 的项,即其编码。
+
+由 \(s\) 的替换性质，
+\[
+PA \vdash s(\overline{m},\overline{m})
+=\ulcorner \theta(\overline{m})\urcorner
+=\ulcorner \psi\urcorner .
+\]
+因此
+\[
+PA \vdash \psi
+\leftrightarrow \varphi\bigl(s(\overline{m},\overline{m})\bigr)
+\leftrightarrow \varphi(\ulcorner \psi\urcorner).
+\]
+于是
+\[
+\vdash \varphi(\ulcorner \psi\urcorner)\leftrightarrow \psi .
+\]
+这就是所要的不动点。 \hfill \(\square\) \\
+这里的对角线指我们用到的自己代入自己的思想
+
 \textbf{构造思路}：\\
-直观上，我们想要构造一个句子 \(\psi\) 说“我具有性质 \(\varphi\)”。我们可以利用**对角线化**的方法。
-定义替换函数 \(s(x, y)\)，表示“将公式 \(x\) 中的自由变元替换为 \(y\) 的哥德尔数”。令 \(m = \ulcorner \varphi(s(x, x)) \urcorner\)，然后构造 \(\psi = \varphi(s(\overline{m}, \overline{m}))\)。可以证明，这个 \(\psi\) 恰好满足 \(\vdash \psi \leftrightarrow \varphi(\ulcorner \psi \urcorner)\)。
+直观上，我们想要构造一个句子 \(\psi\) 说“我具有性质 \(\varphi\)”。上面的证明正是对角线化的形式化：先令 \(\theta(v)\) 表示“把 \(v\) 代入自身后所得公式具有性质 \(\varphi\)”，再令 \(\psi\) 是 \(\theta(v)\) 在 \(v\) 取自身哥德尔数时的实例。于是 \(\psi\) 恰好断言“\(\psi\) 具有性质 \(\varphi\)”。
 
 \textbf{构造自指句子}：\\
 现在，我们将不动点定理应用到“不可证”这个性质上。令 \(\varphi(x) \equiv \neg \text{Thm}(x)\)。根据不动点定理，存在句子 \(G\) 使得：
@@ -390,6 +433,144 @@ PA \vdash G \leftrightarrow \neg \text{Thm}(\ulcorner G \urcorner)
 
 \textbf{推论 (与哥德尔定理的联系)}：
 如果 PA 是完备的，那么对于任何命题 \(\varphi\)，我们都能通过枚举证明来判定 \(\varphi\) 或 \(\neg \varphi\) 是否可证，这将使得停机问题可判定。既然停机问题不可判定，PA 必然是不完备的。同时，这也意味着 PA 不能证明自身的一致性（第二不完备性定理），因为如果它能证明一致性，那么就能证明 \(G\) 为真，从而推翻第一不完备性定理。
+
+\subsection*{5.5 自然数的不可数模型与实数集的可数模型}
+
+一阶逻辑的语义有一个重要特征：一阶公理系统无法在范畴意义上固定论域的基数。这一点最著名的表现，就是自然数的不可数模型与实数集的可数模型。
+
+紧致性定理是构造非标准模型和不可数模型的基本工具。这里给出一个证明，只用到前面已经建立的两个概念：一致性与完全性定理。
+
+\begin{mdframed}
+\textbf{定理 (紧致性定理)}：设 \(\Gamma\) 是一阶语句集。若 \(\Gamma\) 的每个有限子集都有模型，则 \(\Gamma\) 有模型。
+\end{mdframed}
+
+\textbf{证明}：\\
+设 \(\Gamma\) 的每个有限子集都有模型。我们证明 \(\Gamma\) 有模型。
+
+反设 \(\Gamma\) 没有模型。由完全性定理，语义后承与可推导性重合，因此
+\[
+\Gamma \models \bot \iff \Gamma \vdash \bot .
+\]
+这里 \(\bot\) 表示矛盾式。因为 \(\Gamma\) 没有模型，所以 \(\Gamma \models \bot\) 成立。由完全性定理，
+\[
+\Gamma \vdash \bot .
+\]
+也就是说，\(\Gamma\) 是不一致的。
+
+由可推导性的定义，任何证明都只用到有限多条前提。因此存在有限的 \(\Gamma_0 \subseteq \Gamma\)，使得
+\[
+\Gamma_0 \vdash \bot .
+\]
+再由可靠性，\(\Gamma_0\) 没有模型。这与“\(\Gamma\) 的每个有限子集都有模型”矛盾。
+
+所以 \(\Gamma\) 有模型。 \hfill \(\square\)
+
+
+\subsubsection*{(1) 自然数的不可数模型}
+
+PA 的公理刻画了自然数的许多性质，但它并不能保证每个 PA 模型都同构于标准模型 \(\mathbb{N}\)。由紧致性定理，我们可以构造 PA 的非标准模型，而且这些模型的论域可以是不可数的。
+
+具体做法如下。向 PA 的语言中添加一个新的常量符号 \(c\)，并添加公理
+\[
+c\neq 0,\quad c\neq S(0),\quad c\neq S(S(0)),\quad \dots
+\]
+对每个标准自然数 \(n\)，都加入公理
+\[
+c\neq \overline{n}.
+\]
+设这样得到的公理集为 \(T\)。\(T\) 的每个有限子集都有模型：只需在标准自然数 \(\mathbb{N}\) 中把 \(c\) 解释为一个足够大的自然数即可。因此由紧致性定理，\(T\) 有模型
+\[
+\mathcal{M}\models PA.
+\]
+在 \(\mathcal{M}\) 中，元素 \(c^{\mathcal{M}}\) 不等于任何标准自然数 \(\overline{n}^{\mathcal{M}}\)。因此 \(\mathcal{M}\) 不是标准模型，它含有非标准元素。
+
+下面看一个具体的例子。取 \(T\) 的模型 \(\mathcal{M}\)。在 \(\mathcal{M}\) 中，元素 \(c^{\mathcal{M}}\) 比每个标准自然数都大。我们可以考虑 \(c^{\mathcal{M}}\) 的后继
+\[
+S(c^{\mathcal{M}}),\quad S(S(c^{\mathcal{M}})),\quad \dots
+\]
+这些元素也都不是标准自然数。进一步，还可以考虑
+\[
+c^{\mathcal{M}}+c^{\mathcal{M}},\quad c^{\mathcal{M}}\cdot c^{\mathcal{M}},\quad \dots
+\]
+它们同样是非标准元素。所以在 \(\mathcal{M}\) 中，除了标准自然数
+\[
+0^{\mathcal{M}}, S(0)^{\mathcal{M}}, S(S(0))^{\mathcal{M}}, \dots
+\]
+之外，还有大量非标准元素。这些非标准元素排在所有标准自然数之后，形成一个个“无穷大”的块。
+
+如果只要求非标准模型，上面的构造已经足够。若还要求论域不可数，可以继续向语言中添加不可数多个新常量 \(\{c_\alpha \mid \alpha < \kappa\}\)（\(\kappa\) 是不可数基数），并对每个 \(c_\alpha\) 加入公理
+\[
+c_\alpha \neq \overline{n}\quad (n\in\mathbb{N}),
+\]
+同时加入公理
+\[
+c_\alpha \neq c_\beta\quad (\alpha\neq\beta).
+\]
+这些公理的每个有限子集仍然可以在标准自然数 \(\mathbb{N}\) 中找到模型：因为有限多个新常量只需要解释成有限多个足够大的自然数即可。由紧致性定理，整个公理集有模型。这个模型的论域至少含有不可数多个新常量所解释的元素，因此其论域是不可数的。
+
+它的意义是：虽然我们通常把自然数集 \(\mathbb{N}\) 看作可数集，但一阶 PA 的公理并不能排除那些“看起来像自然数、但含有无穷多个非标准元素”的不可数结构。因此，一阶算术不是范畴(即所有模型都同构)的。
+
+\subsubsection*{(2) 实数集的可数模型}
+
+与自然数的不可数模型相对偶的现象，是实数集的可数模型。实数理论通常用 ZFC 中的完备有序域公理来刻画，但一阶公理同样不能保证模型与真正的实数集 \(\mathbb{R}\) 同构。
+
+这里使用的工具是 Löwenheim–Skolem 定理。它的直观意思是：如果一个一阶理论有无限模型，那么它也有可数模型。也就是说，一阶逻辑无法用一组公理强制论域一定是不可数的；只要理论有无限模型，就可以把它“缩小”到可数论域上。
+
+\textbf{Löwenheim–Skolem 定理的证明思路}：\\
+设 \(T\) 是一个一阶理论，并且有一个无限模型 \(\mathcal{M}\)。我们想构造一个可数模型。
+
+从 \(\mathcal{M}\) 的论域中任取一个元素 \(a_0\)。然后反复做两件事：
+
+\begin{enumerate}
+    \item 如果某个元素已经在手头，就把它通过函数符号运算得到的新元素也加进来；
+    \item 如果某个形如 \(\exists x\,\varphi(x)\) 的公式在 \(\mathcal{M}\) 中为真，就选一个满足 \(\varphi(x)\) 的元素加进来。
+\end{enumerate}
+
+第一步保证得到的集合对函数封闭，第二步保证每个存在公式都有见证。因为语言中的符号只有可数多个，公式也只有可数多个，所以每一步只添加可数多个元素。反复可数多次之后，得到的集合 \(A\) 仍然是可数的。
+
+令 \(\mathcal{N}\) 是以 \(A\) 为论域的子结构。可以证明，对任意公式 \(\varphi\)，\(\mathcal{N}\) 和 \(\mathcal{M}\) 的真值一致：原子公式显然一致，逻辑连接词由归纳假设得到，存在量词则正好由第二步的见证保证。因此 \(\mathcal{N}\models T\)。
+
+于是 \(T\) 有一个可数模型。这就是下降 Löwenheim–Skolem 定理。反过来，如果 \(T\) 有无限模型，还可以通过添加新常量并用紧致性定理，得到任意大基数的模型，这就是上升 Löwenheim–Skolem 定理。
+
+具体地说，在 ZFC 中，如果 ZFC 一致，那么 ZFC 有模型。由 Löwenheim–Skolem 定理，ZFC 有一个可数模型
+\[
+\mathcal{M}\models ZFC.
+\]
+在这个可数模型内部，我们可以谈论它所谓的“实数集” \(\mathbb{R}^{\mathcal{M}}\)。由于 \(\mathcal{M}\) 本身是可数的，\(\mathcal{M}\) 中所有集合都是可数的，因此 \(\mathbb{R}^{\mathcal{M}}\) 也是可数的。
+
+但是，在 \(\mathcal{M}\) 内部看来，\(\mathbb{R}^{\mathcal{M}}\) 却是不可数的。因为 \(\mathcal{M}\) 满足 ZFC，而 ZFC 可以证明实数集不可数。于是出现了一个看似矛盾的现象：
+\[
+\mathbb{R}^{\mathcal{M}}\text{ 在元理论中是可数的，但在 }\mathcal{M}\text{ 内部是不可数的。}
+\]
+这就是著名的 Skolem 悖论。
+
+举一个直观的例子。假设在元理论中，我们真的把 \(\mathcal{M}\) 中的元素一个个列出来：
+\[
+a_0, a_1, a_2, \dots
+\]
+其中每一个 \(a_i\) 都是 \(\mathcal{M}\) 中的一个集合。特别地，\(\mathcal{M}\) 中那些被它认为是实数的元素，也都在这个列表里。所以在元理论看来，\(\mathbb{R}^{\mathcal{M}}\) 是可数的。
+
+但是，这个列表本身并不属于 \(\mathcal{M}\)。\(\mathcal{M}\) 内部没有这样一个“把全体实数排成一列”的函数。因此，\(\mathcal{M}\) 内部仍然认为 \(\mathbb{R}^{\mathcal{M}}\) 不可数。
+
+Skolem 悖论并不构成真正的矛盾，因为“可数”这个概念是相对于模型而言的。元理论中能数尽 \(\mathbb{R}^{\mathcal{M}}\) 的双射并不属于 \(\mathcal{M}\)，所以 \(\mathcal{M}\) 内部看不到这个双射。因此，\(\mathcal{M}\) 仍然认为 \(\mathbb{R}^{\mathcal{M}}\) 不可数。
+
+它和自然数的不可数模型一起说明：一阶逻辑无法控制模型的基数。自然数可以有不可数模型，实数集也可以有可数模型。基数的许多性质并不是一阶公理所能唯一决定的，而是相对于模型和元理论而言的。 \\
+
+这实在是令人困惑的 \\
+那 \(\mathbb{R}^{\mathcal{M}}\) 和真正的 \(\mathbb{R}\) 差在哪？
+
+差在：
+\begin{itemize}
+    \item \(\mathbb{R}^{\mathcal{M}}\) 只是 \(\mathcal{M}\) 认为的实数集。它可能缺少一些真正的实数。
+
+    \item 从元理论看，\(\mathbb{R}^{\mathcal{M}}\) 是可数的，所以它不可能是真正的 \(\mathbb{R}\)。
+
+    \item \(\mathcal{M}\) 内部却认为它满足实数的一切性质，包括不可数性。
+
+    \item 所以 \(\mathbb{R}^{\mathcal{M}}\) 是一个“看起来像实数、但实际上是可数”的对象。它和真正的 \(\mathbb{R}\) 不同构。
+
+\end{itemize}
+
 \section*{6. ZFC 集合论基础 (ZFC Set Theory)}
 
 \textbf{ZFC 公理列表}：
