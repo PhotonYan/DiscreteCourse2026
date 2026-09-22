@@ -1,0 +1,52 @@
+# 中国剩余定理
+
+## 陈述：模乘积唯一
+
+设 $m_1,\ldots,m_t\ge2$ 两两互素，$M=m_1\cdots m_t$。对任意整数 $a_1,\ldots,a_t$，方程组
+
+$$
+x\equiv a_i\pmod{m_i}\qquad(1\le i\le t)
+$$
+
+有解，而且模 $M$ 唯一。这不是说只有一个整数解，而是所有整数解组成同一个模 $M$ 的同余类。
+
+## 构造：每个坐标一个开关
+
+令 $M_i=M/m_i$。两两互素保证 $\gcd(M_i,m_i)=1$，所以可由扩展欧几里得算法求整数 $u_i,v_i$，满足
+
+$$
+M_i u_i+m_i v_i=1.
+$$
+
+令 $b_i=M_i u_i$，则 $b_i\equiv1\pmod{m_i}$，而 $b_i\equiv0\pmod{m_j}$（$j\ne i$）。于是
+
+$$
+x=\sum_{i=1}^t a_i b_i
+$$
+
+就是一个解。这里先用 Bézout 求逆，不需要预先知道欧拉函数的公式。
+
+## 唯一性与结构
+
+若 $x,x'$ 都是解，则每个 $m_i$ 都整除 $x-x'$。两两互素推出乘积 $M$ 整除 $x-x'$，故解模 $M$ 唯一。
+
+这也给出环同构
+
+$$
+\mathbb Z_M\longrightarrow\prod_{i=1}^t\mathbb Z_{m_i},\qquad
+\overline x\longmapsto(\overline x,\ldots,\overline x),
+$$
+
+右侧第 $i$ 个坐标在模 $m_i$ 下取类。它是双射且保持加法和乘法，单位恰好对应各坐标都是单位的元。
+
+## 例：三个余数
+
+求 $x\equiv2\pmod3$、$x\equiv3\pmod5$、$x\equiv2\pmod7$。有 $M=105$，可取
+
+$$
+b_1=35\cdot2=70,\qquad b_2=21,\qquad b_3=15.
+$$
+
+于是 $x\equiv2\cdot70+3\cdot21+2\cdot15=233\equiv23\pmod{105}$。
+
+若模数不互素，结论不能照搬。例如 $x\equiv0\pmod2$ 与 $x\equiv1\pmod4$ 无公共解。

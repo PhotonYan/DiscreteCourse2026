@@ -1,0 +1,52 @@
+% Lec 05：数论整理版
+% Compile with XeLaTeX twice.
+% This entry uses the standard TeX Live Chinese class so it builds without
+% the optional Libertinus Loom font package used by some older contributions.
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{离散数学与结构（I）}
+\fancyhead[R]{Lec 05 数论}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+
+\begin{document}
+\title{数论：整除、同余与 CRT}
+\author{zhangjunshuo}
+\date{2026 年 9 月}
+\maketitle
+\begin{quote}
+本讲从整除关系出发，串起 gcd、Bézout 恒等式、扩展欧几里得算法、素数分解、同余类、费马与欧拉定理、中国剩余定理、RSA，以及课堂后半段的 Stern--Brocot 有理搜索。零的边界、可逆元和证明所需的互素条件都在正文中单独标出。
+\end{quote}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-divisibility}
+\input{sections/02-gcd-bezout}
+\input{sections/03-euclidean-algorithm}
+\input{sections/04-prime-factorization}
+\input{sections/05-congruences}
+\input{sections/06-chinese-remainder}
+\input{sections/07-euler-fermat}
+\input{sections/08-rsa}
+\input{sections/09-stern-brocot}
+
+\end{document}

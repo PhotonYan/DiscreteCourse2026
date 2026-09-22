@@ -1,0 +1,51 @@
+\section{同余、剩余类与逆元}
+
+
+\subsection{从等价关系到商环}
+
+
+以下模数 $m\ge2$。定义
+
+\[
+a\equiv b\pmod m\quad\Longleftrightarrow\quad m\mid a-b.
+\]
+
+它满足自反、对称、传递，因而是等价关系。$\overline a$ 表示 $a$ 的同余类；取 $0,1,\ldots,m-1$ 为代表元，得到
+
+\[
+\mathbb Z_m=\mathbb Z/m\mathbb Z=\{\overline0,\overline1,\ldots,\overline{m-1}\}.
+\]
+
+定义 $\overline a+\overline b=\overline{a+b}$、$\overline a\,\overline b=\overline{ab}$。若 $a\equiv a'$、$b\equiv b'$，则 $a+b\equiv a'+b'$、$ab\equiv a'b'$，所以运算不依赖代表元，称为\textbf{良定义}。
+
+\subsection{什么时候可以消去}
+
+
+同余式不能随便约去乘因子。例如 $2\cdot1\equiv2\cdot4\pmod6$，但 $1\not\equiv4\pmod6$。
+
+\textbf{可逆判据。} $\overline c$ 在模 $m$ 下有乘法逆元，当且仅当 $\gcd(c,m)=1$。
+
+若互素，Bézout 给出 $cu+mv=1$，所以 $\overline u$ 是逆元。反过来，若 $cu\equiv1\pmod m$，就有 $cu+mv=1$，故 gcd 为 $1$。
+
+因此，当 $\gcd(c,m)=1$ 时，可以在 $ac\equiv bc\pmod m$ 两边乘逆元得到 $a\equiv b\pmod m$。
+
+这些可逆元素组成单位群
+
+\[
+\mathbb Z_m^\times=\{\overline c:\gcd(c,m)=1\}.
+\]
+
+例如 $3\cdot5-7\cdot2=1$，所以 $3^{-1}\equiv5\pmod7$。
+
+\subsection{一次同余方程}
+
+
+这是由 Bézout 直接得到的解题补充。令 $d=\gcd(a,m)$，则
+
+\[
+ax\equiv b\pmod m
+\]
+
+有解当且仅当 $d\mid b$。必要性由 $ax-my=b$ 得到；充分性由 Bézout 的系数乘以 $b/d$ 得到。若有解，将式子除以 $d$ 后可在模 $m/d$ 下求逆；原方程在模 $m$ 下恰有 $d$ 个不同解。
+
+例如 $6x\equiv9\pmod{15}$ 化为 $2x\equiv3\pmod5$，得 $x\equiv4\pmod5$。模 $15$ 的三个解是 $4,9,14$。

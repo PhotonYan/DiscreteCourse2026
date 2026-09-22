@@ -1,0 +1,40 @@
+\section{整除与偏序}
+
+
+本讲统一约定 $\mathbb N=\{0,1,2,\ldots\}$，$\mathbb N_{>0}=\{1,2,\ldots\}$。讨论整除时，除非另作说明，字母表示整数。
+
+\subsection{定义与零的边界}
+
+
+定义
+
+\[
+a\mid b\quad\Longleftrightarrow\quad \exists c\in\mathbb Z,\ b=ac.
+\]
+
+此时称 $a$ 为 $b$ 的因子，$b$ 为 $a$ 的倍数。按这个定义，每个整数都整除 $0$，而 $0\mid b$ 当且仅当 $b=0$，所以 $0\mid0$ 成立。“除以 $a$ 没有余数”的直觉只适用于 $a\ne0$；整除关系本身由上面的存在式定义。
+
+\subsection{为什么是偏序}
+
+
+\begin{itemize}
+\item 自反性：$a=a\cdot1$，故 $a\mid a$。
+\item 传递性：若 $b=au$、$c=bv$，则 $c=a(uv)$，故 $a\mid c$。
+\item 在 $\mathbb N$ 上，$a\mid b$ 且 $b\mid a$ 推出 $a=b$；在 $\mathbb Z$ 上只能推出 $a=\pm b$。
+\end{itemize}
+
+
+因此整除在 $\mathbb N$ 上是偏序，在 $\mathbb Z$ 上不是偏序，例如 $2\mid-2$ 且 $-2\mid2$。
+
+在整除偏序中，$1$ 是最小元，$0$ 是最大元；如果只考虑正整数，就没有最大元。这里的“最大”指所有元素都整除它，与通常的数值大小不同。素数位于 $1$ 之上，但各个素数彼此不可比，不能把整个结构画成一条链。
+
+\subsection{后面反复使用的性质}
+
+
+若 $d\mid a$ 且 $d\mid b$，则对任意 $u,v\in\mathbb Z$，都有
+
+\[
+d\mid au+bv.
+\]
+
+特别地，$d\mid a,b$ 当且仅当 $d\mid a,b-qa$。这就是辗转相除法保持公因子不变的原因。

@@ -1,0 +1,91 @@
+# 费马小定理、欧拉定理与欧拉函数
+
+## 费马小定理：乘法是置换
+
+设 $p$ 为素数。对任意整数 $a$，有 $a^p\equiv a\pmod p$；若 $p\nmid a$，则
+
+$$
+a^{p-1}\equiv1\pmod p.
+$$
+
+证明：当 $p\nmid a$ 时，乘 $a$ 会置换非零同余类 $1,\ldots,p-1$。因此
+
+$$
+(p-1)!\equiv a^{p-1}(p-1)!\pmod p.
+$$
+
+因 $(p-1)!$ 与 $p$ 互素，可消去它。若 $p\mid a$，$a^p\equiv a\equiv0$，得到包含所有 $a$ 的版本。
+
+## 欧拉函数与欧拉定理
+
+对 $n\ge1$，定义
+
+$$
+\varphi(n)=\#\{k:1\le k\le n,\ \gcd(k,n)=1\}.
+$$
+
+这个定义包含 $\varphi(1)=1$；对 $n\ge2$，它等于 $|\mathbb Z_n^\times|$。欧拉定理说：对 $n\ge2$，若 $\gcd(a,n)=1$，则
+
+$$
+a^{\varphi(n)}\equiv1\pmod n.
+$$
+
+证明与费马小定理相同：乘可逆元 $\overline a$ 置换整个单位群，故
+
+$$
+\prod_{u\in\mathbb Z_n^\times}u
+=\prod_{u\in\mathbb Z_n^\times}(\overline a u)
+=\overline a^{\varphi(n)}\prod_{u\in\mathbb Z_n^\times}u.
+$$
+
+乘积仍是单位，所以可以消去。**消去依赖可逆性**，不能只说“两边有同样的乘积”。
+
+## 计算欧拉函数
+
+模 $p^k$ 下，非单位恰为 $p$ 的倍数，所以
+
+$$
+\varphi(p^k)=p^k-p^{k-1}\qquad(k\ge1).
+$$
+
+由第 6 节 CRT，互素时 $\varphi(mn)=\varphi(m)\varphi(n)$。因此对不同素数 $p_i$ 和正指数 $k_i$，
+
+$$
+\begin{aligned}
+n&=\prod_{i=1}^r p_i^{k_i},\\
+\varphi(n)&=\prod_{i=1}^r(p_i^{k_i}-p_i^{k_i-1})
+=n\prod_{i=1}^r\left(1-\frac1{p_i}\right).
+\end{aligned}
+$$
+
+例如 $\varphi(36)=36(1-1/2)(1-1/3)=12$。这里先证 CRT，再推乘性，证明顺序不会循环。
+
+## 因数求和恒等式
+
+对 $n\ge1$，有
+
+$$
+\sum_{d\mid n}\varphi(d)=n.
+$$
+
+证明：把 $1,\ldots,n$ 按 $\gcd(k,n)=d$ 分组。每一组写成 $k=dj$，就对应
+
+$$
+1\le j\le n/d,\qquad\gcd(j,n/d)=1,
+$$
+
+共 $\varphi(n/d)$ 个。将各组相加，再用 $d\leftrightarrow n/d$ 重排因数。$d=n$ 的组只有 $k=n$，正好对应 $\varphi(1)=1$。
+
+## 循环小数与乘法阶
+
+若 $m>1$ 且 $\gcd(m,10)=1$，定义
+
+$$
+\operatorname{ord}_m(10)=\min\{r\ge1:10^r\equiv1\pmod m\}.
+$$
+
+它是 $1/m$ 的最小循环节长度：长除法中的余数回到 $1$，恰等价于上式。把 $\varphi(m)$ 除以最小的 $r$，用欧拉定理和余数最小性可得 $r\mid\varphi(m)$。
+
+例如 $10,10^2,\ldots,10^6$ 模 $7$ 依次为 $3,2,6,4,5,1$，故 $\operatorname{ord}_7(10)=6$，对应 $1/7=0.\overline{142857}$。只知道 $10^6\equiv1$ 还不足以断言最小循环节就是 $6$。
+
+若分母含因子 $2$ 或 $5$，先将分数约分，再把分母写成 $2^\alpha5^\beta m_0$。当 $m_0=1$ 时小数终止；否则去掉非循环部分后，循环节长度为 $\operatorname{ord}_{m_0}(10)$。

@@ -1,0 +1,38 @@
+# RSA：欧拉定理的应用
+
+## 密钥与变换
+
+取两个不同的素数 $p,q$，令 $N=pq$，则 $\varphi(N)=(p-1)(q-1)$。选正整数 $e$ 满足 $\gcd(e,\varphi(N))=1$，再由扩展欧几里得算法求正整数 $d$，使
+
+$$
+ed\equiv1\pmod{\varphi(N)}.
+$$
+
+公钥为 $(N,e)$，私钥指数为 $d$。对消息代表元 $0\le m<N$，课堂上的变换为
+
+$$
+c\equiv m^e\pmod N,\qquad m'\equiv c^d\pmod N.
+$$
+
+## 为什么可以还原任意消息
+
+写 $ed=1+t(p-1)(q-1)$。若 $\gcd(m,N)=1$，欧拉定理直接给出 $m^{ed}\equiv m\pmod N$。
+
+若 $m$ 不是单位，就分别模 $p,q$ 验证。模 $p$ 时：
+
+- 若 $p\mid m$，则 $m^{ed}\equiv m\equiv0\pmod p$。
+- 若 $p\nmid m$，由费马小定理以及 $p-1\mid ed-1$，得 $m^{ed}\equiv m\pmod p$。
+
+模 $q$ 同理，最后用 CRT 得 $m^{ed}\equiv m\pmod{pq}$。所以正确性覆盖整个 $\mathbb Z_N$，并不局限于单位群。
+
+## 一个可手算的例子
+
+取 $p=5,q=11$，则 $N=55$、$\varphi(N)=40$。可选 $e=3,d=27$，因为 $3\cdot27=81\equiv1\pmod{40}$。
+
+消息 $m=7$ 加密为 $c\equiv7^3\equiv13\pmod{55}$，解密得 $13^{27}\equiv7\pmod{55}$。即使取非单位消息 $m=5$，也有 $5^3\equiv15$、$15^{27}\equiv5\pmod{55}$。
+
+## 正确性与安全性要分开
+
+上面的证明只说明解密能还原明文。已知 $N$ 的素因子分解时可以求出 $\varphi(N)$ 和 $d$，所以分解 $N$ 是破解 RSA 的一条途径；不能据此把“RSA 求逆困难”直接等同于“整数分解困难”。这一问题关系见 *Handbook of Applied Cryptography* §3.3，Fact 3.30。
+
+课堂的裸 RSA 变换是确定性的，实际加密还需要合适的编码与填充，例如 RSA-OAEP。这里保留数论原理，不把这个小例子当作可直接使用的加密方案。
