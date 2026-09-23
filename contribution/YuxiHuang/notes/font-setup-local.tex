@@ -1,0 +1,61 @@
+% Copyright 2018  李文威 (Wen-Wei Li).
+% Permission is granted to copy, distribute and/or modify this
+% document under the terms of the Creative Commons
+% Attribution 4.0 International (CC BY 4.0)
+% http://creativecommons.org/licenses/by/4.0/
+
+% 目的: 字体相关设置, 呼叫相关宏包.
+% 将由 AJbook.cls 引入
+% 必须提供 \kaishu, \songti, \heiti, \thmheiti, \fangsong 几种字型切换命令, 在文档类中使用.
+\ProvidesFile{font-setup-local.tex}[2026/09/20 Project font files]
+
+% 设置 xeCJK 字体及中文数字
+%\setmainfont{TeX Gyre Pagella}	% 设置西文衬线字体
+%\setsansfont{TeX Gyre Heros}[	% 设置西文无衬线字体
+\setsansfont{texgyreheros}[     % 设置西文无衬线字体
+Extension=.otf,
+UprightFont=*-regular,
+BoldFont=*-bold,
+ItalicFont=*-italic,
+BoldItalicFont=*-bolditalic]
+
+% 使用用户提供的项目字体；从 notes/ 编译，源码包保留同级 font/。
+% 宋体正文；黑体用于标题和粗体；楷体用于中文斜体；仿宋用于定理正文。
+\setCJKmainfont[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZKTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZSSK.TTF}
+\setCJKsansfont[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZHTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZHTK.TTF}
+\setCJKmonofont[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZHTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZHTK.TTF}
+
+\setCJKfamilyfont{song}[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZKTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZSSK.TTF}
+\setCJKfamilyfont{kai}[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZKTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZKTK.TTF}
+\setCJKfamilyfont{fangsong}[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZKTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZFSK.TTF}
+\setCJKfamilyfont{hei}[Path=../font/,
+  BoldFont=FZHTK.TTF, ItalicFont=FZHTK.TTF,
+  BoldItalicFont=FZHTK.TTF]{FZHTK.TTF}
+\setCJKfamilyfont{hei2}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
+\setCJKfamilyfont{sectionfont}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
+\setCJKfamilyfont{pffont}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
+\setCJKfamilyfont{emfont}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
+
+\defaultfontfeatures{Ligatures=TeX} 
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+% 以下设置字体相关命令, 用于定理等环境中.
+\newcommand\kaishu{\CJKfamily{kai}} % 楷体
+\newcommand\songti{\CJKfamily{song}} % 宋体
+\newcommand\heiti{\CJKfamily{hei}}	% 黑体
+\newcommand\thmheiti{\CJKfamily{hei2}}	% 用于定理名称的黑体
+\newcommand\fangsong{\CJKfamily{fangsong}} % 仿宋
+\renewcommand{\em}{\bfseries\CJKfamily{emfont}} % 强调
