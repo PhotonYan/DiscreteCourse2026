@@ -1,0 +1,51 @@
+% ===========================================================================
+\section{素数与算术基本定理}\label{sec:fta}
+
+\begin{definition}[素数]
+正整数 $p$ 是\keyword{素数}（prime），当且仅当
+\[
+  p>1\ \wedge\ \bigl(a\mid p \Rightarrow a=1\ \vee\ a=p\bigr),
+\]
+即 $p$ 的正因子只有 $1$ 与 $p$ 自身。
+\end{definition}
+
+\begin{theorem}[算术基本定理]\label{thm:fta}
+任何 $a\in\Ns$，都存在唯一的（非降）素数序列
+$p_1\le p_2\le\cdots\le p_n$，使
+\[
+  a=p_1p_2\cdots p_n.
+\]
+（$a=1$ 时理解为空乘积，定义为 $1$。）
+\end{theorem}
+
+\begin{proof}
+\textbf{存在性}（强归纳）。$a=1$ 是空乘积。设 $a>1$：若 $a$ 本身是素数，
+取单一项序列即可；否则 $a=bc$ 且 $1<b,c<a$，对 $b,c$ 分别用归纳假设，
+把两个素数分解合并重排即得 $a$ 的分解。
+
+\textbf{唯一性}（对 $a$ 作归纳）。设
+\[
+  a=p_1p_2\cdots p_n=q_1q_2\cdots q_m,
+\]
+两个序列均按非降排列。若 $p_1=q_1$，约去这个公共因子得到更小的数，
+由归纳假设两个分解完全相同。
+
+否则，不妨设 $p_1<q_1$。两者是\emph{不同的}素数，故 $\gcd(p_1,q_1)=1$；
+由 Bézout 恒等式，存在 $s,t\in\Z$ 使
+\[
+  p_1s+q_1t=1.
+\]
+两边同乘 $q_2q_3\cdots q_m$（注意 $q_1q_2\cdots q_m=a$）：
+\[
+  s\,p_1q_2\cdots q_m \;+\; ta \;=\; q_2q_3\cdots q_m.
+\]
+左边第一项显然被 $p_1$ 整除；第二项 $ta$ 也被 $p_1$ 整除（因为 $p_1\mid a$）。
+所以 $p_1\mid q_2q_3\cdots q_m$。但 $q_2q_3\cdots q_m<a$，由归纳假设它的素因子
+分解唯一，其素因子只有 $q_2,\ldots,q_m$，全都 $\ge q_1>p_1$——矛盾。
+\end{proof}
+
+\begin{remark}
+唯一性证明中“$p_1\mid q_2\cdots q_m$ 导致矛盾”这一步，本质上就是
+Euclid 引理（素数整除乘积则整除某个因子）的归纳形式；而 Euclid 引理的
+标准证明同样以 Bézout 恒等式为核心。
+\end{remark}

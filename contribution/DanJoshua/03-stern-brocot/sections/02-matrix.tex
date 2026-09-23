@@ -1,0 +1,58 @@
+% ===========================================================================
+\section{矩阵表示与 Stern--Brocot 数系}\label{sec:matrix}
+
+三元组构造（定义 \ref{def:triple}）中，节点 $(a/b,\,p/q,\,c/d)$ 的两个端点可以
+组装成一个 $2\times2$ 整数矩阵。这一表示把``沿树向下走''翻译成矩阵乘法，是后续
+所有不变量证明的载体。
+
+\begin{definition}[节点的矩阵]
+节点 $(a/b,\,p/q,\,c/d)$ 对应的矩阵为
+\[
+  S=\begin{pmatrix}b&d\\ a&c\end{pmatrix},
+\]
+即左端点 $a/b$ 与右端点 $c/d$ 各占一列。节点存储的分数由 $S$ 恢复为
+\[
+  f(S)=\frac{a+c}{b+d}.
+\]
+\end{definition}
+
+根节点的端点是 $0/1$ 与 $1/0$，对应单位矩阵 $I$，且 $f(I)=1/1$。
+
+\begin{proposition}[左右移动对应矩阵乘法]\label{prop:LR}
+设当前节点对应矩阵 $S$。移动到左、右子节点分别对应右乘
+\[
+  L=\begin{pmatrix}1&1\\0&1\end{pmatrix},
+  \qquad
+  R=\begin{pmatrix}1&0\\1&1\end{pmatrix}.
+\]
+即左、右子节点的矩阵分别是 $SL$ 与 $SR$。
+\end{proposition}
+
+\begin{proof}
+直接计算。左子节点的端点为 $a/b$ 与 $(a+c)/(b+d)$，故其矩阵为
+\[
+  \begin{pmatrix}b&b+d\\ a&a+c\end{pmatrix}
+  =\begin{pmatrix}b&d\\ a&c\end{pmatrix}
+   \begin{pmatrix}1&1\\0&1\end{pmatrix}=SL;
+\]
+右子节点同理，$SR=\begin{pmatrix}b+d&d\\ a+c&c\end{pmatrix}$，其端点为
+$(a+c)/(b+d)$ 与 $c/d$，与定义 \ref{def:triple} 一致。
+\end{proof}
+
+\begin{corollary}[Stern--Brocot 数系]\label{cor:sbn}
+每个节点（即每个正有理数）的矩阵都可以唯一地写成若干个 $L$、$R$ 的乘积：
+若从根到该节点的路径由字符串 $w\in\{L,R\}^*$ 记录（$L$ 表示向左、$R$ 表示向右），
+则该节点的矩阵恰为把 $w$ 中的字母换成对应矩阵后的乘积。由此，每个正有理数唯一地
+对应一个 $\{L,R\}$ 字符串，这一表示称为 \keyword{Stern--Brocot 数系}
+（Stern--Brocot number system）。
+\end{corollary}
+
+唯一性依赖于``每个正有理数在树上恰出现一次''，这将在第 \ref{sec:properties} 节
+证明（定理 \ref{thm:complete} 与定理 \ref{thm:unique}）；此处先把对应关系建立起来。
+
+\begin{remark}
+课堂上把端点写成行向量排列 $M=\begin{pmatrix}a&c\\ b&d\end{pmatrix}$，此时
+不变量表现为 $\det M=-1$。本文采用列向量排列 $S=M^{\mathsf T}$，于是不变量取
+更顺手的形式 $\det S=bc-ad=1$（见命题 \ref{prop:invariant}）。两种写法只差一个
+转置，实质相同。
+\end{remark}

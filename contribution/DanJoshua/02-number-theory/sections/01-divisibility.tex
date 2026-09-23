@@ -1,0 +1,47 @@
+% ===========================================================================
+\section{整除与偏序}\label{sec:div}
+
+本节的论域为 $\N$ 或 $\Z$（会逐处注明），只使用四则运算 $+,-,\times,\div$ 的
+语言。记 $\Ns=\N\setminus\{0\}=\{1,2,3,\ldots\}$ 为正整数集。
+
+\begin{definition}[整除]
+对整数 $a,b$，定义
+\[
+  a\mid b \quad\Longleftrightarrow\quad \exists\, c\in\Z,\ b=ac.
+\]
+此时称 $a$ 是 $b$ 的\keyword{因子}，$b$ 是 $a$ 的\keyword{倍数}。
+\end{definition}
+
+\block{整除是一个偏序（论域为 $\N$ 时）}
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item \emph{自反性}：$a\mid a$（取 $c=1$）；
+  \item \emph{传递性}：$a\mid b\ \wedge\ b\mid c \Rightarrow a\mid c$；
+  \item \emph{反对称性}：论域为 $\N$ 时，
+        $a\mid b\ \wedge\ b\mid a \Rightarrow a=b$；
+        论域为 $\Z$ 时只能得到 $a=\pm b$（例如 $2\mid-2$ 且 $-2\mid2$）。
+\end{itemize}
+因此整除关系在 $\N$ 上构成\keyword{偏序关系}。在这个偏序下，$1$ 是“最小”的
+（$1$ 整除一切），$0$ 是“最大”的（一切整除 $0$）——这与通常的大小关系相反，
+注意体会“偏序”与“数值大小”是两回事。我们不去考虑 $0\mid 0$ 是否成立之类的
+corner case。
+
+\begin{definition}[最大公因数与最小公倍数]
+对整数 $a,b$（不全为 $0$），定义
+\[
+  \gcd(a,b)=\max\{c\in\N : c\mid a\ \wedge\ c\mid b\},
+  \qquad
+  \lcm(a,b)=\min\{c\in\Ns : a\mid c\ \wedge\ b\mid c\}.
+\]
+\end{definition}
+
+两式中的集合都非空且有界，故最值存在：公因子集合含 $1$，且以 $\max(|a|,|b|)$
+为上界；正公倍数集合含 $|ab|$。
+
+\block{最大公因数的另一种刻画}
+定义
+\[
+  \gcdp(a,b)=\min\{\,am+bn : m,n\in\Z,\ am+bn>0\,\},
+\]
+即 $a,b$ 的\keyword{最小正整系数线性组合}。下一节将证明
+$\gcdp(a,b)=\gcd(a,b)$——这正是 Bézout 恒等式的内容，而证明的工具是
+扩展欧几里得算法。

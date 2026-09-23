@@ -1,0 +1,47 @@
+% ===========================================================================
+\section{同余与模运算}\label{sec:cong}
+
+以下固定模数 $m$，并在不发生混淆时省略 “$\mathrm{mod}\ m$”。
+
+\begin{definition}[同余]
+\[
+  a\equiv b\pmod m \quad\Longleftrightarrow\quad m\mid a-b.
+\]
+\end{definition}
+
+\block{基本性质}
+同余是等价关系，并且与加法、乘法相容：
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item $a\equiv a$；
+  \item $a\equiv b \Rightarrow b\equiv a$；
+  \item $a\equiv b\ \wedge\ b\equiv c \Rightarrow a\equiv c$；
+  \item $a\equiv b\ \wedge\ c\equiv d \Rightarrow a+c\equiv b+d$，
+        且 $ac\equiv bd$。
+\end{itemize}
+
+\block{与普通四则运算的区别：消去律不一定成立}
+模运算中不能随意约去两边的公因子。例如 $2\cdot1\equiv2\cdot4\pmod 6$，
+但 $1\not\equiv4\pmod 6$。什么时候可以消去？答案是：当这个因子\emph{可逆}时。
+
+\begin{theorem}[逆元的存在性]\label{thm:inverse}
+若 $\gcd(c,m)=1$，则存在 $c^{-1}$ 使
+\[
+  c\cdot c^{-1}\equiv1\pmod m.
+\]
+\end{theorem}
+
+\begin{proof}
+由 Bézout 恒等式（推论 \ref{cor:coprime-crit}），存在 $c^{-1},t\in\Z$ 使
+$cc^{-1}+mt=1$，即 $cc^{-1}\equiv1\pmod m$。
+\end{proof}
+
+\begin{corollary}[消去律]
+若 $\gcd(c,m)=1$，则
+\[
+  ac\equiv bc\pmod m \;\Longrightarrow\; a\equiv b\pmod m.
+\]
+\end{corollary}
+
+\begin{proof}
+两侧同乘 $c^{-1}$ 即可。
+\end{proof}

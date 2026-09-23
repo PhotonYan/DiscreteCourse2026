@@ -1,0 +1,77 @@
+% ===========================================================================
+\section{剩余类、欧拉函数与欧拉定理}\label{sec:euler}
+
+\block{等价类与代表元}
+模 $m$ 的同余关系把 $\Z$ 分成等价类：
+\[
+  \overline{0}=\{\ldots,-m,0,m,\ldots\},\quad
+  \overline{1}=\{\ldots,-m+1,1,m+1,\ldots\},\quad\ldots\quad
+  \overline{i}=\{i+km : k\in\Z\}.
+\]
+取每一类的最小非负代表元，得到\keyword{完全剩余系}
+\[
+  \Z_m=\{\overline{0},\overline{1},\ldots,\overline{m-1}\}.
+\]
+在剩余类上规定运算
+\[
+  \overline{a}+\overline{b}=\overline{a+b},\qquad
+  \overline{a}\cdot\overline{b}=\overline{ab}.
+\]
+由同余与加乘的相容性（第 \ref{sec:cong} 节），运算结果不依赖代表元的选取，
+即运算是良定义的。
+
+\begin{definition}[既约剩余系与欧拉函数]
+\[
+  \Z_m^{*}=\{\,\overline{c}\in\Z_m : \gcd(c,m)=1\,\}
+\]
+称为模 $m$ 的\keyword{既约剩余系}；其中每个元素都可逆，且
+$\overline{a}^{-1}=\overline{a^{-1}}$。其元素个数
+\[
+  \varphi(m)=|\Z_m^{*}|
+\]
+称为\keyword{欧拉函数}。
+\end{definition}
+
+\begin{theorem}[欧拉定理]\label{thm:euler}
+对任意 $n,a$ 满足 $\gcd(n,a)=1$（即 $a\cop n$），有
+\[
+  a^{\varphi(n)}\equiv1\pmod n.
+\]
+\end{theorem}
+
+\begin{proof}
+因为 $a$ 在模 $n$ 下可逆，映射 $\overline{i}\mapsto\overline{i}\cdot\overline{a}$
+是 $\Z_n^{*}$ 上的一个双射（逆映射为乘以 $\overline{a}^{-1}$），即“乘以 $a$”
+只是把既约剩余系中的元素重新排列。于是
+\[
+  \prod_{i\in\Z_n^{*}} i \;\equiv\; \prod_{i\in\Z_n^{*}}(i\cdot a)
+  \;\equiv\; a^{\varphi(n)}\prod_{i\in\Z_n^{*}} i \pmod n.
+\]
+乘积 $\prod i$ 仍属于 $\Z_n^{*}$，故可逆；两侧同乘其逆即得
+\[
+  1\equiv a^{\varphi(n)}\pmod n. \qedhere
+\]
+\end{proof}
+
+\begin{corollary}[费马小定理]\label{cor:fermat}
+对素数 $p$，若 $p\nmid a$，则
+\[
+  a^{p-1}\equiv1\pmod p.
+\]
+\end{corollary}
+
+\begin{proof}
+$p$ 为素数时 $\varphi(p)=p-1$（$1,\ldots,p-1$ 都与 $p$ 互素），
+代入欧拉定理即得。
+\end{proof}
+
+\begin{corollary}\label{cor:fermat-all}
+对素数 $p$ 与任意整数 $a$，
+\[
+  a^{p}\equiv a\pmod p.
+\]
+\end{corollary}
+
+\begin{proof}
+若 $p\nmid a$，在费马小定理两边同乘 $a$；若 $p\mid a$，两边都 $\equiv0$。
+\end{proof}

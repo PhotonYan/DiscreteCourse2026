@@ -1,0 +1,109 @@
+% ===========================================================================
+\section{Stern--Brocot 树的构造}\label{sec:construction}
+
+Stern--Brocot 树由 Moritz Stern（1858）与 Achille Brocot（1861）各自独立提出，
+它是一种把所有正有理数组织成一棵二叉树的结构。本节给出两种等价的构造。
+
+\subsection{中位分数与逐层构造}
+
+\begin{definition}[中位分数]
+设 $a/b$ 与 $c/d$ 为两个分数（允许 $1/0$，它作为表示 $+\infty$ 的哨兵，
+不参与通常的除法运算）。它们的\keyword{中位分数}（mediant）定义为
+\[
+  \frac{a}{b}\oplus\frac{c}{d}\;:=\;\frac{a+c}{b+d}.
+\]
+中位分数是分子、分母\emph{分别}相加，而非两个分数的算术平均；即使相加后
+可以约分，在构造中也只取 $(a+c)/(b+d)$ 本身（第 \ref{sec:properties} 节将证明
+这里根本不会出现约分的情形）。
+\end{definition}
+
+\begin{definition}[Stern--Brocot 序列]
+第 $0$ 阶 \keyword{Stern--Brocot 序列}由两个端点组成：
+\[
+  S_0=\Big(\frac01,\,\frac10\Big).
+\]
+对 $k\ge 0$，在第 $k$ 阶序列每对相邻分数之间插入它们的中位分数，得到第 $k+1$
+阶序列 $S_{k+1}$。前几阶为
+\[
+\begin{aligned}
+  S_1&=\Big(\frac01,\,\frac11,\,\frac10\Big),\\
+  S_2&=\Big(\frac01,\,\frac12,\,\frac11,\,\frac21,\,\frac10\Big),\\
+  S_3&=\Big(\frac01,\,\frac13,\,\frac12,\,\frac23,\,\frac11,\,\frac32,\,
+            \frac21,\,\frac31,\,\frac10\Big).
+\end{aligned}
+\]
+\end{definition}
+
+把每次迭代中\emph{新插入}的分数按父子关系连成二叉树：$S_{k+1}$ 相对 $S_k$
+新增的分数，以它左右两个相邻的已有分数所确定的节点为``父辈区间''。由此得到的
+无限二叉树称为 \keyword{Stern--Brocot 树}（图 \ref{fig:sb-tree}）。其根为 $1/1$，
+第 $k$ 阶序列（删去两端点）恰是深度为 $k-1$ 的树的中序遍历。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\small},
+  level distance=13mm,
+  level 1/.style={sibling distance=64mm},
+  level 2/.style={sibling distance=32mm},
+  level 3/.style={sibling distance=16mm},
+  edge from parent/.style={draw=gray!70}]
+  % 哨兵端点
+  \node[gray] (L0) at (-7.2,0) {$\frac01$};
+  \node[gray] (R0) at ( 7.2,0) {$\frac10$};
+  \node {$\frac11$}
+    child { node {$\frac12$}
+      child { node {$\frac13$}
+        child { node {$\frac14$} }
+        child { node {$\frac25$} } }
+      child { node {$\frac23$}
+        child { node {$\frac35$} }
+        child { node {$\frac34$} } } }
+    child { node {$\frac21$}
+      child { node {$\frac32$}
+        child { node {$\frac43$} }
+        child { node {$\frac53$} } }
+      child { node {$\frac31$}
+        child { node {$\frac52$} }
+        child { node {$\frac41$} } } };
+  \draw[gray,dashed] (L0) -- (-6.4,0) (-6.4,0) -- ++(0.35,-0.25);
+  \draw[gray,dashed] (R0) -- (6.4,0)  (6.4,0)  -- ++(-0.35,-0.25);
+\end{tikzpicture}
+\caption{Stern--Brocot 树的前四层。每个分数是其左、右两侧最近祖先（含哨兵端点
+$0/1$ 与 $1/0$，图中以灰色标出）的中位分数；每一层自左向右严格递增
+（命题 \ref{prop:monotone}），中序遍历即各阶 Stern--Brocot 序列。}
+\label{fig:sb-tree}
+\end{figure}
+
+\subsection{三元组构造}
+
+下面的构造不经过序列，直接递归地生成树。
+
+\begin{definition}[三元组构造]\label{def:triple}
+每个节点记录一个三元组 $(a/b,\,p/q,\,c/d)$，其中节点\emph{实际存储}的分数是
+中间的 $p/q$，两端的 $a/b<c/d$ 是更早出现的分数，称为该节点的\keyword{左右端点}
+（或左右边界）。根节点为
+\[
+  \Big(\frac01,\,\frac11,\,\frac10\Big),
+\]
+节点 $(a/b,\,p/q,\,c/d)$ 的左、右子节点分别为
+\[
+  \Big(\frac ab,\,\frac{a+p}{b+q},\,\frac pq\Big),
+  \qquad
+  \Big(\frac pq,\,\frac{p+c}{q+d},\,\frac cd\Big).
+\]
+\end{definition}
+
+两种构造等价：子节点存储的分数 $(a+p)/(b+q)$ 正是端点 $a/b$ 与 $p/q$ 的中位分数。
+换言之，每个节点存储的分数是它两个端点的中位分数，而它的两个端点又分别是它在
+树上的左、右方向最近的祖先（含哨兵 $0/1$ 与 $1/0$）。
+
+\begin{remark}\label{rem:search-proc}
+三元组构造同时给出一个\keyword{搜索过程}：给定 $x>0$，从端点 $0/1$ 与 $1/0$
+出发，反复取当前端点的中位分数与 $x$ 比较——相等则停止；大于 $x$ 则用它替换右
+端点；小于 $x$ 则替换左端点。这正是在这棵二叉搜索树上查找 $x$ 的过程
+（二叉搜索树性质由第 \ref{sec:properties} 节的单调性保证），也是课堂上讲的
+``中项搜索''。例如 $x=(\sqrt5-1)/2\approx0.618$ 的搜索路径依次与
+$1/1,\,1/2,\,2/3,\,3/5,\,5/8,\,8/13,\,\ldots$ 比较——恰为 Fibonacci 数列相邻
+两项之比，因为 $x$ 是黄金比例 $(1+\sqrt5)/2$ 的倒数。
+\end{remark}

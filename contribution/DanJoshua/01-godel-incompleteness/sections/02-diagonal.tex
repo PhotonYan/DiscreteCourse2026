@@ -1,0 +1,44 @@
+\section{对角线引理：把代入做成自指}\label{sec:diagonal}
+
+\begin{definition}[自代入函数]\label{def:self-substitution}
+按课堂板书，先将代入写成三元函数 \(\Subst(a,\goedel{x},t)\)，再定义
+\[
+S(a,b)=\Subst(a,\goedel{x},\Num(b)),\qquad s(u)=S(u,u).
+\]
+若 \(u=\goedel{\theta(x)}\)，则 \(s(u)=\goedel{\theta(\num u)}\)。函数 \(s\) 原始递归，故 \(\PA\) 可表示并逐个数词计算它。
+\end{definition}
+
+\begin{theorem}[对角线引理]\label{thm:diagonal}
+对每个只含自由变量 \(x\) 的公式 \(\varphi(x)\)，存在句子 \(\psi\) 使
+\[
+\PA\vdash \psi\leftrightarrow \varphi(\num{\goedel{\psi}}).
+\]
+\end{theorem}
+
+\begin{proof}
+令
+\[
+\theta(x)\equiv \varphi(s(x)),\qquad
+m=\goedel{\theta(x)},\qquad
+\psi\equiv\theta(\num m).
+\]
+由 \(s\) 的定义，
+\[
+s(m)=\goedel{\theta(\num m)}=\goedel{\psi}.
+\]
+因 \(s\) 可表示，\(\PA\) 证明 \(s(\num m)=\num{\goedel{\psi}}\)。于是
+\[
+\PA\vdash \psi\leftrightarrow \varphi(\num{\goedel{\psi}}).
+\]
+\end{proof}
+
+\begin{remark}[与课堂板书写法的对应]\label{rem:blackboard-diagonal}
+课堂板书写的是
+\[
+\theta(x)\equiv\varphi(S(x,x)),\quad
+m\equiv\goedel{\theta(x)},\quad
+\psi\equiv\theta(\num m)
+=\varphi(S(\goedel{\theta(x)},\goedel{\theta(x)})).
+\]
+关键不在代数技巧，而在层次区分：\(\goedel{\theta(x)}\) 是元语言中的数，\(\num m\) 是对象语言中的数词，\(\theta(\num m)\) 又是公式。代入函数作用在编码上，而不是作用在直观文本上。
+\end{remark}

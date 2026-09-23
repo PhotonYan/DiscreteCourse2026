@@ -1,0 +1,143 @@
+% ===========================================================================
+\section{Calkin--Wilf 树与 Stern 双原子序列}\label{sec:cw}
+
+Stern--Brocot 树不是唯一把正有理数组织成二叉树的方式。Calkin--Wilf 树的构造
+更简单：不需要端点，每个节点只存一个分数。
+
+\subsection{Calkin--Wilf 树}
+
+\begin{definition}[Calkin--Wilf 树]
+\keyword{Calkin--Wilf 树}（图 \ref{fig:cw-tree}）的根为 $1/1$；存储分数 $p/q$ 的
+节点，其左、右子节点分别存储
+\[
+  \frac{p}{p+q}\quad\text{与}\quad\frac{p+q}{q}.
+\]
+\end{definition}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\small},
+  level distance=13mm,
+  level 1/.style={sibling distance=48mm},
+  level 2/.style={sibling distance=24mm},
+  level 3/.style={sibling distance=12mm},
+  edge from parent/.style={draw=gray!70}]
+  \node {$\frac11$}
+    child { node {$\frac12$}
+      child { node {$\frac13$}
+        child { node {$\frac14$} }
+        child { node {$\frac43$} } }
+      child { node {$\frac32$}
+        child { node {$\frac35$} }
+        child { node {$\frac52$} } } }
+    child { node {$\frac21$}
+      child { node {$\frac23$}
+        child { node {$\frac25$} }
+        child { node {$\frac53$} } }
+      child { node {$\frac31$}
+        child { node {$\frac34$} }
+        child { node {$\frac41$} } } };
+\end{tikzpicture}
+\caption{Calkin--Wilf 树的前四层。与图 \ref{fig:sb-tree} 对照：两棵树每一层所含的
+分数\emph{集合}相同，但位置不同——同一分数在两棵树上的广度优先编号互为二进制
+位逆序（推论 \ref{cor:bit-reversal}）。}
+\label{fig:cw-tree}
+\end{figure}
+
+\begin{proposition}\label{prop:cw-bijection}
+Calkin--Wilf 树中每个分数都是最简分数，且每个正的最简分数在树上恰出现一次。
+\end{proposition}
+
+\begin{proof}
+\emph{最简性}：$\gcd(p,p+q)=\gcd(p,q)$，$\gcd(p+q,q)=\gcd(p,q)$，故最简性从根
+向下保持。
+
+\emph{每个正有理数至多出现一次}：左子节点的值 $<1$，右子节点的值 $>1$，根为 $1$；
+递归地看，左子树所有分数都 $<1$，右子树都 $>1$，两棵子树的值域不相交，故无重复。
+
+\emph{每个正最简分数至少出现一次}：对 $p+q$ 归纳。$p/q\ne1$ 时，若 $p>q$，它
+只能是某节点的右子节点，而其候选父节点 $(p-q)/q$ 是分子分母和更小的正最简分数；
+若 $p<q$，候选父节点为 $p/(q-p)$。归纳即得存在性；``只能''二字同时说明这个
+回溯过程是确定的，与唯一性一致。
+\end{proof}
+
+注意 Calkin--Wilf 树\emph{不是}二叉搜索树（左子节点 $p/(p+q)$ 可以大于右子树中
+的某些分数），故不能用于二分查找；这是它与 Stern--Brocot 树的本质区别。
+
+\subsection{与连分数、与 Stern--Brocot 树的关系}
+
+\begin{proposition}[回溯路径与连分数]\label{prop:cw-cf}
+设 $p/q=[t_0;t_1,\ldots,t_n,1]$。在 Calkin--Wilf 树中，从 $p/q$ 回溯到根
+$1/1$ 的路径为：沿右父方向走 $t_0$ 步，再沿左父方向走 $t_1$ 步，再沿右父方向
+走 $t_2$ 步，依此类推（不计末尾系数 $1$）。
+\end{proposition}
+
+\begin{proof}
+$p>q$ 时父节点为 $(p-q)/q$，且 $p/q$ 是其右子节点；连续沿右父方向回溯
+$\lfloor p/q\rfloor$ 次后到达 $(p\bmod q)/q$，这正对应连分数的
+$sk\mapsto 1/(1/(sk))$ 式变换中的整数部分剥离。$p<q$ 的情形对称。交替进行即得
+全部系数。
+\end{proof}
+
+\begin{corollary}[两棵树的层间关系：位逆序置换]\label{cor:bit-reversal}
+同一分数在 Calkin--Wilf 树上到根的路径编码，与它在 Stern--Brocot 树上从根出发
+的路径编码，由同一个连分数 $[t_0;t_1,\ldots,t_n,1]$ 给出，只是方向相反。
+因此两棵树同一层所存的分数集合相同，但排列不同：对两棵树分别按广度优先编号
+（根为 $1$，节点 $v$ 的左右子节点为 $2v$、$2v+1$），则同一分数在两棵树上的
+编号互为二进制\keyword{位逆序}（bit-reversal）。约定 $1^t$ 表示连续 $t$ 个
+$1$、$0^t$ 表示连续 $t$ 个 $0$：Stern--Brocot 树上编号的二进制表示
+（去掉首位 $1$）为
+\[
+  1^{t_0}\,0^{t_1}\,1^{t_2}\,0^{t_3}\cdots,
+\]
+而 Calkin--Wilf 树上为同一串段的逆序排列
+$\cdots\,0^{t_3}\,1^{t_2}\,0^{t_1}\,1^{t_0}$（视 $n$ 的奇偶决定末段的字符）。
+前者正是后者逐位反转的结果，故第 $k$ 层上两棵树的排列互为
+$\{0,1,\ldots,2^k-1\}$ 的位逆序置换。
+\end{corollary}
+
+\subsection{Stern 双原子序列}
+
+\begin{definition}[Stern 双原子序列]
+把 Calkin--Wilf 树按广度优先顺序读出，第 $n$ 个分数（从 $n=1$ 起）可以写成
+\[
+  \frac{a_n}{a_{n+1}},
+\]
+其中 $(a_n)_{n\ge0}$ 由
+\[
+  a_0=0,\quad a_1=1,\quad a_{2n}=a_n,\quad a_{2n+1}=a_n+a_{n+1}
+\]
+递归定义，称为 \keyword{Stern 双原子序列}（Stern diatomic sequence，
+OEIS A002487）：
+\[
+  0,\,1,\,1,\,2,\,1,\,3,\,2,\,3,\,1,\,4,\,3,\,5,\,2,\,5,\,3,\,4,\,\ldots
+\]
+\end{definition}
+
+\begin{proposition}
+上述定义自洽：Calkin--Wilf 树的广度优先序列中，相邻两个分数前者的分母等于
+后者的分子，且第 $n$ 个分数恰为 $a_n/a_{n+1}$。
+\end{proposition}
+
+\begin{proof}
+对层数归纳，证明每一层自左向右读出的分数都满足``前一项的分母等于后一项的分子''。
+根层只有 $1/1$，无需验证衔接。设第 $k$ 层相邻两项为 $p/q$ 与 $p'/q'$，归纳假设
+给出 $q=p'$。第 $k+1$ 层在这两个节点之下依次读出
+\[
+  \frac{p}{p+q},\ \frac{p+q}{q},\ \frac{p'}{p'+q'},\ \frac{p'+q'}{q'}.
+\]
+每个节点内部：左子节点的分母 $p+q$ 等于右子节点的分子 $p+q$；跨节点衔接处：
+$(p+q)/q$ 的分母 $q$ 等于 $p'/(p'+q')$ 的分子 $p'$，正由归纳假设保证。故第
+$k+1$ 层仍满足该性质，归纳成立。于是全序列（首项之前补上 $0/1$ 的分母）的分子
+依次构成一个序列 $(a_n)$，第 $n$ 个分数为 $a_n/a_{n+1}$。最后验证递归：广度优先
+编号下 $2n$、$2n+1$ 是 $n$ 的左、右子节点，由 Calkin--Wilf 树的构造，左子节点
+分子与父节点相同，即 $a_{2n}=a_n$；右子节点分子为父节点分子分母之和，即
+$a_{2n+1}=a_n+a_{n+1}$。
+\end{proof}
+
+\begin{remark}
+由递归直接计算 $a_n$ 需要 $O(\log^2 n)$ 级别的算术操作；把 $n$ 写成二进制后沿
+Calkin--Wilf 树的路径用连分数递推（命题 \ref{prop:cw-cf}），可以达到辗转相除
+同阶的复杂度。这再次体现``树的路径 $=$ 连分数 $=$ 辗转相除''三位一体的结构。
+\end{remark}

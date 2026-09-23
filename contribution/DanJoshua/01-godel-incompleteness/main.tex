@@ -1,0 +1,46 @@
+% ===========================================================================
+%  离散数学与结构（I） Gödel 不完备定理：课堂板书版
+%  编码与语法算术化 · 对角线引理 · Gödel/Rosser
+%  Compile:  xelatex main   (twice)   or:  latexmk -xelatex main
+% ===========================================================================
+\documentclass[cjk]{loom}
+
+\newcommand{\goedel}[1]{\ulcorner #1\urcorner}      % Gödel 编码（元语言中的数）
+\newcommand{\num}[1]{\overline{#1}}                  % 对象语言中的数词
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Thm}{\mathrm{Thm}}
+\newcommand{\Proof}{\mathrm{Proof}}
+\newcommand{\Der}{\mathrm{Der}}
+\newcommand{\Con}{\mathrm{Con}}
+\newcommand{\Term}{\mathrm{Term}}
+\newcommand{\Fml}{\mathrm{Fml}}
+\newcommand{\Sent}{\mathrm{Sent}}
+\newcommand{\Subst}{\mathrm{Subst}}
+\newcommand{\Num}{\mathrm{Num}}
+
+\runningthread{离散数学与结构 · Gödel 不完备定理}
+
+\begin{document}
+
+\loomcover
+  {Gödel 不完备定理}
+  {课堂板书版证明：编码、对角线与 Gödel/Rosser}
+  {}
+  {2026 年 9 月}
+
+\begin{strand}
+本笔记将课堂板书路线整理为一条可检查的形式链：先将语法算术化，使 \(\Thm(y)\) 成为
+\(\Sigma_1\) 谓词；再用代入函数证明对角线引理；取 \(\varphi(x)\equiv\neg\Thm(x)\)
+得到 Gödel 句，并标明一致性、1-一致性与 Rosser 修改各自承担的作用。
+\end{strand}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-coding}
+\input{sections/02-diagonal}
+\input{sections/03-godel}
+
+\end{document}

@@ -1,0 +1,46 @@
+% ===========================================================================
+%  离散数学与结构（I） 数论初步 课堂笔记
+%  整除与偏序 · gcd 与扩展欧几里得 · 算术基本定理 · 同余与剩余类
+%  欧拉定理 · 中国剩余定理 · 欧拉函数求和恒等式
+%  Compile:  latexmk -xelatex main      (or: xelatex main, twice)
+% ===========================================================================
+\documentclass[cjk]{loom}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Ns}{\mathbb{N}^{*}}            % 正整数
+\DeclareMathOperator{\lcm}{lcm}
+\newcommand{\cop}{\perp}                     % 互素记号 a \cop b
+\newcommand{\gcdp}{\mathop{\mathrm{gcd'}}\nolimits}  % gcd'（撇号不漂浮）
+
+\runningthread{离散数学与结构 · 数论初步}
+
+\begin{document}
+
+\loomcover
+  {数论初步：整除、同余与中国剩余定理}
+  {离散数学与结构（I）· 课堂笔记}
+  {}
+  {2026 年 9 月}
+
+\begin{strand}
+本讲内容为：整除关系及其偏序结构；最大公因数的三种刻画（最大公因子、最小正线性
+组合、扩展欧几里得算法的输出）与 Bézout 恒等式；素数与算术基本定理；同余与
+模运算、剩余类与既约剩余系；欧拉定理与费马小定理；中国剩余定理；欧拉函数
+的求和恒等式 $\sum_{d\mid m}\varphi(d)=m$；以及欧拉定理的应用——RSA 加密算法。
+\end{strand}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-divisibility}
+\input{sections/02-gcd-euclid}
+\input{sections/03-prime-fta}
+\input{sections/04-congruence}
+\input{sections/05-residue-euler}
+\input{sections/06-crt}
+\input{sections/07-phi-sum}
+\input{sections/08-rsa}
+
+\end{document}

@@ -1,0 +1,74 @@
+\section{编码与语法算术化}\label{sec:coding}
+
+\begin{definition}[三层记号]\label{def:three-layers}
+\(\goedel{\sigma}\) 是公式或字符串 \(\sigma\) 的 Gödel 编码，属于元语言中的自然数；
+\(\num{n}\) 是对象语言中的数词 \(S^{n}0\)。公式内部写 \(\Thm(\goedel{\sigma})\) 时，严格意思是
+\(\Thm(\num{\goedel{\sigma}})\)。
+\end{definition}
+
+\begin{definition}[常用算术缩写]\label{def:arith-abbrev}
+正文直接使用以下正确定义：
+\[
+x<y:\equiv \exists z\,(y=x+Sz),\qquad
+x\mid y:\equiv \exists z\,(y=x\cdot z),
+\]
+\[
+z=x\bmod y:\equiv \exists w\,(x=wy+z\wedge z<y),
+\]
+\[
+\mathrm{Prime}(x):\equiv x>1\wedge \forall y<x\,(y>1\to \neg y\mid x).
+\]
+这里的全称量词带有上界；有界量化使相应谓词保持为 \(\Delta_0\)，因而“检查到某一位、某一步、某个候选除数”仍是原始递归可判定的。
+\end{definition}
+
+\begin{remark}[有限序列必须编码；板书的 \(10^{i}\) 不是系统内免费符号]\label{rem:finite-sequence}
+一阶 \(\PA\) 不能直接断称“存在一个有限序列”。该语言只有自然数变量，因此
+“存在有限序列 \(a_0,\dots,a_k\)”必须改写为“存在自然数 \(z\)，它编码一个有限序列”，并且
+“取第 \(i\) 项”必须可判定。课堂板书的十进制取位
+\[
+D(N,i)=\left\lfloor \frac{N}{10^{i}}\right\rfloor \bmod 10
+\]
+在此只能理解为元语言启发：\(\PA\) 的语言没有指数函数符号，直接写 \(10^{i}\) 与直接写 \(2^{i}\) 是同一问题。
+若坚持把它内部化，必须先定义 \(\mathrm{Exp10}(i,n)\leftrightarrow n=10^{i}\)；元语言递归
+\(10^{0}=1\)、\(10^{i+1}=10\cdot10^{i}\) 仍不够，系统内还要用编码后的有限序列证明
+\(\PA\vdash\forall i\,\exists!n\,\mathrm{Exp10}(i,n)\)。因此下文不依赖 \(D(N,i)\)，而抽象假设一个有效序列编码/解码；
+它可用 Gödel \(\beta\) 函数实现，\(\beta(c,d,j)=c\bmod(1+(j+1)d)\) 只用乘、加与取余，避免可变幂。
+\end{remark}
+
+\begin{definition}[语法谓词与证明谓词]\label{def:syntax-predicates}
+假设有效 Gödel 编码已经给定，并且以下函数或谓词原始递归，因而在 Q/\(\PA\) 中可表示：
+\(\Term(n)\)、\(\Fml(n)\)、\(\Sent(n)\)、\(\Subst(a,v,t)\)、\(\Num(n)=\goedel{\num n}\)。
+证明谓词为
+\[
+\Proof_{\PA}(p,y):
+\]
+\(p\) 编码一个有限公式序列，最后一项是 \(y\)，每一项或是逻辑公理/\(\PA\) 公理，或由前面项经推理规则得到。
+课堂板书将推导关系记作 \(\Der(x,y,d)\)：可把 \(x\) 理解为编码所用前提或公理序列，把 \(d\) 理解为编码推导；对 \(\PA\) 也可把前提检查折进 \(d\)。
+\end{definition}
+
+\begin{definition}[定理谓词]\label{def:thm}
+\[
+\Thm(y)\equiv \exists p\,\Proof_{\PA}(p,y).
+\]
+它是 \(\Sigma_1\) 谓词：若 \(y\) 是定理编码，则存在一个有限证明作为可机械检查的见证。
+这并不说明定理集可判定，只说明它可半判定。
+\end{definition}
+
+\begin{lemma}[\(\Sigma_1\) 完备性的一次使用]\label{lem:d1}
+若 \(\sigma\) 有一个标准证明编码 \(p\)，则
+\[
+\PA\vdash \Proof_{\PA}(\num p,\num{\goedel{\sigma}}),
+\qquad
+\PA\vdash \Thm(\num{\goedel{\sigma}}).
+\]
+特别地，
+\[
+\PA\vdash\sigma \implies \PA\vdash \Thm(\num{\goedel{\sigma}}). \tag{D1}
+\]
+\end{lemma}
+
+\begin{proof}
+\(\Proof_{\PA}\) 是原始递归谓词；对固定的标准 \(p\) 与 \(\goedel{\sigma}\)，命题
+\(\Proof_{\PA}(\num p,\num{\goedel{\sigma}})\) 是真 \(\Delta_0\) 句。Q/\(\PA\) 证明所有真
+\(\Delta_0\) 句，于是存在量词引入给出 \(\Thm(\num{\goedel{\sigma}})\)。
+\end{proof}

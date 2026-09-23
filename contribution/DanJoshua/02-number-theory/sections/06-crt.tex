@@ -1,0 +1,61 @@
+% ===========================================================================
+\section{中国剩余定理}\label{sec:crt}
+
+\begin{theorem}[中国剩余定理，CRT]\label{thm:crt}
+设正整数 $m_1,m_2,\ldots,m_t$ 两两互素（$i\ne j\Rightarrow m_i\cop m_j$），
+记 $m=m_1m_2\cdots m_t$。则对任意
+$(a_1,a_2,\ldots,a_t)\in\Z_{m_1}\times\Z_{m_2}\times\cdots\times\Z_{m_t}$，
+存在唯一的 $a\in\Z_m$，使
+\[
+  a\equiv a_i\pmod{m_i}\qquad(i=1,2,\ldots,t).
+\]
+\end{theorem}
+
+\begin{proof}
+记 $M_i=m/m_i$（$i=1,\ldots,t$）。由于 $m_1,\ldots,m_t$ 两两互素，
+$\gcd(M_i,m_i)=1$，故 $M_i$ 在模 $m_i$ 下有逆，记为 $M_i'$，即
+$M_iM_i'\equiv1\pmod{m_i}$（定理 \ref{thm:inverse}）。
+
+\textbf{存在性}（构造）。我们验证
+\[
+  x\equiv\sum_{i=1}^{t}a_iM_iM_i'\pmod m
+\]
+是解。实际上，当 $i\ne j$ 时 $m_j\mid M_i$，于是和式中除第 $j$ 项外全部
+被 $m_j$ 整除：
+\[
+  \sum_{i=1}^{t}a_iM_iM_i'\equiv a_jM_jM_j'\equiv a_j\pmod{m_j}.
+\]
+
+\textbf{唯一性}。假设 $x_1,x_2$ 均为方程组的解，则
+$x_1\equiv x_2\pmod{m_i}$（$1\le i\le t$），即每个 $m_i$ 都整除 $x_1-x_2$。
+因为 $m_1,\ldots,m_t$ 两两互素，由引理 \ref{lem:cop-product} 归纳可得
+乘积 $m$ 整除 $x_1-x_2$，即 $x_1\equiv x_2\pmod m$。
+\end{proof}
+
+\begin{example}[《孙子算经》——物不知数]
+今有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二，问物几何？
+即求解
+\[
+  x\equiv2\pmod3,\qquad x\equiv3\pmod5,\qquad x\equiv2\pmod7.
+\]
+按 CRT 证明的构造：$m=3\cdot5\cdot7=105$，分别找出
+$35$ 的倍数中模 $3$ 余 $1$ 的、$21$ 的倍数中模 $5$ 余 $1$ 的、
+$15$ 的倍数中模 $7$ 余 $1$ 的数，比如 $70,21,15$，则所有解为
+\[
+  x\equiv2\times70+3\times21+2\times15=233\equiv23\pmod{105}.
+\]
+\end{example}
+
+\begin{remark}
+CRT 也可以表述为一个环同构：
+\[
+  \Z_m\;\longrightarrow\;\Z_{m_1}\times\cdots\times\Z_{m_t},\qquad
+  \overline{x}\longmapsto
+  \bigl(\overline{x},\ldots,\overline{x}\bigr),
+\]
+即“模乘积的剩余类”与“各模数剩余类的元组”一一对应，且保持加法与乘法。
+可逆元恰好对应各坐标均可逆的元组，因此
+$\Z_m^{*}\cong\Z_{m_1}^{*}\times\cdots\times\Z_{m_t}^{*}$，
+特别地 $|\Z_m^{*}|=\prod_i|\Z_{m_i}^{*}|$，即欧拉函数是积性的：
+$a\cop b\Rightarrow\varphi(ab)=\varphi(a)\varphi(b)$。
+\end{remark}

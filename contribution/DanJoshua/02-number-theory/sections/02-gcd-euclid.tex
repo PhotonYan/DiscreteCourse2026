@@ -1,0 +1,87 @@
+% ===========================================================================
+\section{最大公因数与扩展欧几里得算法}\label{sec:gcd}
+
+本节证明上节预告的等式 $\gcd(a,b)=\gcdp(a,b)$。证明分三步，分别给出三个量
+之间的不等式，最后夹出相等。记 $\mathrm{GCD}(a,b)$ 为下面算法的输出。
+
+\block{第一步：$\gcd(a,b)\le\gcdp(a,b)$}
+令 $d=\gcd(a,b)$，并设 $\gcdp(a,b)=am'+bn'$。因为 $d\mid a$ 且 $d\mid b$，
+显见 $d\mid am'+bn'$，即 $\gcd(a,b)\mid\gcdp(a,b)$，于是
+\begin{equation}
+  \gcd(a,b)\le\gcdp(a,b). \tag{1}
+\end{equation}
+
+\block{第二步：扩展欧几里得算法}
+\textbf{算法 $\mathrm{GCD}$（扩展欧几里得算法）。}
+输入 $0\le a\le b$；输出 $(d,m,n)$，满足 $d=am+bn$。
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+  \item 若 $a=0$，输出 $(b,\,0,\,1)$（此时 $d=b=0\cdot a+1\cdot b$）；
+  \item 否则做带余除法 $b=aq+r$（$0\le r<a$），递归计算
+        $(d,m,n)=\mathrm{GCD}(r,a)$，输出 $(d,\;n-qm,\;m)$。
+\end{itemize}
+递归的正确性由
+\[
+  d=rm+an=(b-aq)m+an=a(n-qm)+bm
+\]
+保证；第一参数从 $a$ 严格降为 $r$，故算法终止。由于输出 $d$ 是 $a,b$ 的
+正整系数线性组合，由 $\gcdp$ 的最小性得
+\begin{equation}
+  \gcdp(a,b)\le\mathrm{GCD}(a,b). \tag{2}
+\end{equation}
+
+\block{第三步：$\mathrm{GCD}(a,b)\le\gcd(a,b)$}
+对递归深度归纳可证 $\mathrm{GCD}(a,b)\mid a$ 且 $\mathrm{GCD}(a,b)\mid b$：
+基例 $a=0$ 时输出 $b$，显然整除 $0$ 与 $b$；递归步中 $d\mid r$、$d\mid a$，
+而 $b=aq+r$，故 $d\mid b$。于是 $\mathrm{GCD}(a,b)$ 是 $a,b$ 的公因子，
+不超过最大公因子：
+\begin{equation}
+  \mathrm{GCD}(a,b)\le\gcd(a,b). \tag{3}
+\end{equation}
+
+\begin{theorem}[Bézout 恒等式]\label{thm:bezout}
+设 $a,b$ 不全为 $0$，则
+\[
+  \gcd(a,b)=\gcdp(a,b)=\min\{am+bn>0:m,n\in\Z\}.
+\]
+特别地，存在整数 $m,n$ 使 $\gcd(a,b)=am+bn$，且这样的系数可由扩展欧几里得
+算法实际算出。
+\end{theorem}
+
+\begin{proof}
+结合 (1)(2)(3) 得
+$\gcdp(a,b)\le\mathrm{GCD}(a,b)\le\gcd(a,b)\le\gcdp(a,b)$，故三者相等。
+\end{proof}
+
+\begin{corollary}[互素判据]\label{cor:coprime-crit}
+$\gcd(a,b)=1$ 当且仅当存在整数 $m,n$ 使 $am+bn=1$。
+\end{corollary}
+
+\begin{definition}[互素]
+若 $\gcd(a,b)=1$，称 $a$ 与 $b$ \keyword{互素}（coprime），记作 $a\cop b$。
+\end{definition}
+
+\begin{lemma}[互素的乘积封闭性]\label{lem:cop-product}
+若 $\gcd(a,b)=1$ 且 $\gcd(a,c)=1$，则 $\gcd(a,bc)=1$。
+\end{lemma}
+
+\begin{proof}
+由推论 \ref{cor:coprime-crit}，存在 $m,n,m',n'\in\Z$ 使
+\[
+  am+bn=1,\qquad am'+cn'=1.
+\]
+两式相乘（写成 $bn=1-am$、$cn'=1-am'$ 的形式）得
+\[
+  bc\cdot nn'=(1-am)(1-am')=1-a(m+m'-amm'),
+\]
+即
+\[
+  a\,(m+m'-amm')+bc\,(nn')=1.
+\]
+再用一次推论 \ref{cor:coprime-crit}，得 $\gcd(a,bc)=1$。
+\end{proof}
+
+\begin{remark}
+这条引理是中国剩余定理唯一性论证的关键：由它归纳可得，若
+$m_1,\ldots,m_t$ 两两互素且每个 $m_i$ 都整除 $x$，则乘积
+$m_1\cdots m_t$ 也整除 $x$。
+\end{remark}

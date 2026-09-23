@@ -1,0 +1,44 @@
+% ===========================================================================
+\section{欧拉函数的求和恒等式}\label{sec:phisum}
+
+\begin{theorem}[Gauss 恒等式]\label{thm:gauss-sum}
+对任意正整数 $m$，
+\[
+  \sum_{d\mid m}\varphi(d)=m.
+\]
+\end{theorem}
+
+\begin{proof}
+把 $\Z_m$ 中的元素按它与 $m$ 的最大公因数分组（各组两两不交）：
+\[
+  m=|\Z_m|
+  =\sum_{d\mid m}\bigl|\{i\in\Z_m : \gcd(i,m)=d\}\bigr|.
+\]
+对固定的 $d\mid m$，映射 $i\mapsto i/d$ 给出双射
+\[
+  \{i\in\Z_m : \gcd(i,m)=d\}\;\longleftrightarrow\;\Z_{m/d}^{*},
+\]
+因为 $\gcd(i,m)=d$ 当且仅当 $i=dj$ 且 $\gcd(j,m/d)=1$。故这一组恰有
+$\varphi(m/d)$ 个元素，于是
+\[
+  m=\sum_{d\mid m}\bigl|\Z_{m/d}^{*}\bigr|
+   =\sum_{d\mid m}\varphi\Bigl(\frac{m}{d}\Bigr)
+   =\sum_{d\mid m}\varphi(d),
+\]
+最后一步只是对求和指标做代换 $d\leftrightarrow m/d$（$d$ 跑遍 $m$ 的所有
+因子时，$m/d$ 也跑遍所有因子）。
+\end{proof}
+
+\begin{remark}[欧拉函数的计算（补充）]
+对素数幂，模 $p^k$ 下与 $p^k$ 不互素的数恰为 $p$ 的倍数，故
+\[
+  \varphi(p^k)=p^k-p^{k-1}\qquad(k\ge1).
+\]
+结合 CRT 给出的积性（第 \ref{sec:crt} 节末的注记），对
+$n=\prod_{i=1}^{r}p_i^{k_i}$ 有
+\[
+  \varphi(n)=\prod_{i=1}^{r}\bigl(p_i^{k_i}-p_i^{k_i-1}\bigr)
+  =n\prod_{i=1}^{r}\Bigl(1-\frac{1}{p_i}\Bigr).
+\]
+例如 $\varphi(36)=36\bigl(1-\tfrac12\bigr)\bigl(1-\tfrac13\bigr)=12$。
+\end{remark}

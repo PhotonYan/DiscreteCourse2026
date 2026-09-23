@@ -1,0 +1,72 @@
+% ===========================================================================
+\section{RSA：欧拉定理的应用}\label{sec:rsa}
+
+仿射密码、置换密码等经典密码都是\keyword{对称加密}：加密与解密用
+同一把密钥，因此通信前必须设法秘密地交换密钥。RSA（Rivest--Shamir--Adleman，
+1977）是\keyword{非对称加密}：加密用公开的公钥，解密用自己保存的私钥，
+私钥全程不必传送。
+
+\block{密钥生成}
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item 取两个很大的不同素数 $p,q$，计算 $N=pq$；
+  \item $\varphi(N)=(p-1)(q-1)$，选取满足 $\gcd\bigl(e,\varphi(N)\bigr)=1$ 的
+        正整数 $e$（$1\le e<\varphi(N)$），$(e,N)$ 作为\keyword{公钥}公开；
+  \item 由扩展欧几里得算法求 $d$ 使 $de\equiv1\pmod{\varphi(N)}$，
+        $(d,N)$ 作为\keyword{私钥}自己保存。
+\end{itemize}
+
+\block{加密与解密}
+明文与密文都表示为 $0\le x<N$ 的整数：
+\[
+  y\equiv x^{e}\pmod N\quad(\text{加密}),\qquad
+  x\equiv y^{d}\pmod N\quad(\text{解密}).
+\]
+
+\begin{theorem}[RSA 的正确性]
+沿用上面的记号，对任意 $0\le x<N$，都有
+\[
+  x^{ed}\equiv x\pmod N,
+\]
+即解密变换是加密变换的逆变换。
+\end{theorem}
+
+\begin{proof}
+由 $de\equiv1\pmod{\varphi(N)}$，存在正整数 $t$ 使 $de=t\varphi(N)+1$。
+
+若 $\gcd(x,N)=1$，由欧拉定理（定理 \ref{thm:euler}）$x^{\varphi(N)}\equiv1
+\pmod N$，于是
+\[
+  x^{ed}=x^{t\varphi(N)+1}=\bigl(x^{\varphi(N)}\bigr)^{t}\cdot x\equiv x\pmod N.
+\]
+
+若 $\gcd(x,N)>1$（且 $x\ne0$），则 $\gcd(x,N)=p$ 或 $q$，不妨设为 $p$。
+此时 $x$ 与 $q$ 互素，由费马小定理（推论 \ref{cor:fermat}）
+$x^{q-1}\equiv1\pmod q$，从而
+\[
+  x^{ed-1}=\bigl(x^{q-1}\bigr)^{t(p-1)}\equiv1\pmod q,
+  \quad\text{即}\quad x^{ed}\equiv x\pmod q;
+\]
+而 $p\mid x$，两边模 $p$ 都是 $0$，即 $x^{ed}\equiv x\pmod p$。
+由 CRT（或 $p,q$ 为不同素数）得 $x^{ed}\equiv x\pmod{pq}$。
+$x=0$ 时结论显然。
+\end{proof}
+
+\begin{example}[一个可手算的例子]
+取 $p=5,q=11$，则 $N=55$，$\varphi(N)=40$。取 $e=3$，由
+$3\cdot27=81\equiv1\pmod{40}$ 得 $d=27$。
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item 加密 $x=7$：$y\equiv7^{3}=343\equiv13\pmod{55}$；
+        解密 $13^{27}\equiv7\pmod{55}$；
+  \item 非单位明文 $x=5$：$y\equiv5^{3}=125\equiv15\pmod{55}$；
+        解密 $15^{27}\equiv5\pmod{55}$。
+\end{itemize}
+\end{example}
+
+\begin{remark}[安全性与数字签名]
+要解密就需要 $d$，而求 $d$ 通常需要先知道 $\varphi(N)$，也就是要分解
+$N$；目前尚未发现分解大整数的快速算法，这是 RSA 安全性的基础（但
+“破解 RSA”与“整数分解”的等价性并未被证明）。另外，加密与解密可以交换
+次序（$e_K(d_K(x))=x$），把 RSA 倒过来用——用私钥“加密”、大家用公钥
+“解密”验证——就得到\keyword{数字签名}。这里的裸 RSA 只保留数论原理，
+实际使用还需要编码与填充方案。
+\end{remark}

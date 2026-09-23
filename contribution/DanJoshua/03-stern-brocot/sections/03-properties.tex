@@ -1,0 +1,196 @@
+% ===========================================================================
+\section{基本性质：单调性、最简性与完全性}\label{sec:properties}
+
+本节证明 Stern--Brocot 树的三条基本性质。合在一起，它们表明：Stern--Brocot 树是
+一棵包含全体正最简分数、且每个分数恰出现一次的二叉搜索树。
+
+\subsection{单调性}
+
+\begin{lemma}[中位分数严格居中]\label{lem:mediant}
+设 $b,d>0$ 且 $\dfrac ab<\dfrac cd$。则
+\[
+  \frac ab<\frac{a+c}{b+d}<\frac cd.
+\]
+\end{lemma}
+
+\begin{proof}
+$a/b<c/d$ 且 $b,d>0$ 等价于 $ad<bc$。于是
+\[
+  b(a+c)-a(b+d)=bc-ad>0
+  \quad\Longrightarrow\quad
+  \frac ab<\frac{a+c}{b+d},
+\]
+同理 $c(b+d)-d(a+c)=bc-ad>0$ 给出右半不等式。
+\end{proof}
+
+\begin{proposition}[单调性]\label{prop:monotone}
+每一阶 Stern--Brocot 序列中的分数严格递增；等价地，Stern--Brocot 树按分数大小
+构成二叉搜索树：任一节点存储的分数严格大于其左子树中所有分数、严格小于其右子树
+中所有分数。
+\end{proposition}
+
+\begin{proof}
+对阶数 $k$ 归纳。$k=0$ 时 $0/1<1/0$（把 $1/0$ 视为 $+\infty$）。设 $S_k$ 严格
+递增，$S_{k+1}$ 由在 $S_k$ 的每对相邻分数间插入中位分数得到；由引理
+\ref{lem:mediant}，每个中位分数严格落在它的两个邻居之间，故 $S_{k+1}$ 仍严格
+递增。序列是树的中序遍历，中序遍历严格递增正是二叉搜索树的定义。
+\end{proof}
+
+\begin{remark}
+引理 \ref{lem:mediant} 要求 $b,d>0$，而 $S_0$ 的右端点 $1/0$ 分母为 $0$。归纳
+之所以仍能起步，是因为 $1/0$ 只出现在序列最右端：涉及它的中位分数形如
+$(a+1)/(b+0)=(a+1)/b$，而 $a/b<(a+1)/b<+\infty$ 显然成立。一旦某个节点的两个
+端点分母都为正（从第二层起左端点也必为正分母），引理即可无条件施用。
+\end{remark}
+
+\subsection{行列式不变量与最简性}
+
+\begin{proposition}[行列式不变量]\label{prop:invariant}
+对树上每个节点 $(a/b,\,p/q,\,c/d)$，都有
+\[
+  bc-ad=\det\begin{pmatrix}b&d\\ a&c\end{pmatrix}=1.
+\]
+\end{proposition}
+
+\begin{proof}
+对深度归纳。根节点对应单位矩阵，$\det I=1$。由命题 \ref{prop:LR}，向下移动一步
+相当于右乘 $L$ 或 $R$，而 $\det L=\det R=1$；行列式对乘法的乘性给出
+$\det(SL)=\det(SR)=\det S=1$。也可直接验证：
+$b(a+c)-a(b+d)=bc-ad$，$(a+c)d-(b+d)c$ 取相反数后同样等于 $bc-ad$。
+\end{proof}
+
+\begin{corollary}[最简性]\label{cor:reduced}
+树上出现的每个分数都是最简分数，即分子与分母互素。
+\end{corollary}
+
+\begin{proof}
+设节点存储 $p/q=(a+c)/(b+d)$。由命题 \ref{prop:invariant}，
+\[
+  b(a+c)-a(b+d)=bc-ad=1,
+\]
+即 $bp-aq=1$。一方面，B\'ezout 定理据此给出 $\gcd(p,q)=1$；另一方面可直接论证：
+若整数 $g\mid p$ 且 $g\mid q$，则 $g\mid bp-aq=1$，故 $g=\pm1$。
+\end{proof}
+
+\subsection{分母引理}
+
+下面的引理是终止性证明和 Farey 序列理论的关键：夹在两个``相邻''分数之间的分数，
+分母不可能太小。
+
+\begin{lemma}[分母引理]\label{lem:denominator}
+设 $b,d>0$，$\dfrac ab<\dfrac cd$，且 $bc-ad=1$。若整数 $p,q$ 满足 $q>0$ 且
+\[
+  \frac ab<\frac pq<\frac cd,
+\]
+则 $q\ge b+d$。等号成立当且仅当 $p=a+c$、$q=b+d$，即 $p/q$ 恰为两端点的中位分数。
+\end{lemma}
+
+\begin{proof}
+两个严格不等式交叉相乘（分母均为正），得到两个\emph{正整数}
+\[
+  pb-aq\ge 1,\qquad cq-pd\ge 1.
+\]
+分别乘以 $d$ 与 $b$ 后相加：
+\[
+  q\;=\;q(bc-ad)\;=\;d\,(pb-aq)+b\,(cq-pd)\;\ge\; d\cdot 1+b\cdot 1\;=\;b+d.
+\]
+等号成立要求两个正整数都等于 $1$，即
+\[
+  pb-aq=1,\qquad cq-pd=1.
+\]
+这是关于 $(p,q)$ 的线性方程组，系数行列式为 $bc-ad=1\ne0$，解唯一；直接代入
+验证 $p=a+c$、$q=b+d$ 满足两式（例如 $b(a+c)-a(b+d)=bc-ad=1$），故它就是唯一解。
+\end{proof}
+
+\begin{remark}
+证明中$b,d>0$的假设不可少：$d=0$（右端点为哨兵 $1/0$）时，``乘以 $d$''一步会把
+第一个不等式湮灭，论证失效。此时结论本身虽退化地成立——$bc-ad=1$ 与 $d=0$ 迫使
+$b=c=1$，而任何 $p/q>a/1$ 都自动满足 $q\ge1=b+d$——但终止性论证需要的是两个端点
+分母都为正之后的估计。这正是定理 \ref{thm:complete} 的证明一要先化归到正分母情形
+的原因；证明二则因不等式 $cq-pd\ge1$ 在 $d=0$ 时退化为 $cq\ge1$ 依然成立，而无需
+这一化归。
+\end{remark}
+
+\subsection{完全性与唯一性}
+
+\begin{theorem}[完全性]\label{thm:complete}
+每个正的最简分数都在 Stern--Brocot 树上出现。等价地，对任意 $x=p/q\in\Q_{>0}$
+（$\gcd(p,q)=1$），注 \ref{rem:search-proc} 的搜索过程在有限步内命中 $x$。
+\end{theorem}
+
+我们给出两个证明。证明一沿课堂思路，依赖分母引理；证明二直接估计，不需要
+分母引理，也不必单独处理无穷端点。
+
+\begin{proof}[证明一（用分母引理）]
+\emph{第一步：化归到两个端点分母都为正的情形。}
+只要右端点仍是 $1/0$，中位分数就依次为
+\[
+  \frac11,\ \frac21,\ \frac31,\ \ldots
+\]
+因为 $x$ 是有限的正有理数，或者某个 $k/1$ 就等于 $x$（此时已命中），或者有限步
+内首次出现 $k/1>x$，右端点被替换为 $k/1$，此后两个端点分母都为正。以下设搜索
+永不命中，推出矛盾。
+
+\emph{第二步：从``不在树上''到``严格夹在区间里''。}
+$x$ 不在树上，而当前区间的两个端点都是树上已出现的分数，故 $x$ 不等于任何端点；
+又因为树是二叉搜索树（命题 \ref{prop:monotone}），搜索不停止意味着每一步都有
+\[
+  \frac ab<x<\frac cd
+\]
+（严格不等式），其中 $a/b$、$c/d$ 是当前端点。
+
+\emph{第三步：分母和的矛盾。}
+每深入一层，端点分母从 $(b,d)$ 变为 $(b,b+d)$ 或 $(b+d,d)$，故 $b+d$ 至少增加
+$\min(b,d)\ge1$，随步数无界增大。取某一层使 $b+d>q$。但 $x=p/q$ 严格夹在两个
+端点之间，分母引理（引理 \ref{lem:denominator}）要求 $q\ge b+d$，矛盾。
+
+故搜索必在有限步内命中，即 $x$ 在树上。
+\end{proof}
+
+\begin{proof}[证明二（直接估计）]
+设搜索永不命中。与证明一相同，$x$ 不在树上蕴含每一步都严格地
+\[
+  \frac ab<\frac pq<\frac cd.
+\]
+交叉相乘给出正整数不等式
+\[
+  pb-aq\ge1,\qquad cq-pd\ge1
+\]
+（当 $d=0$ 时第二个不等式即 $cq\ge1$，由 $c,q\ge1$ 自动成立，故此处无需排除
+无穷端点）。两式分别乘以 $c+d$ 与 $a+b$（均非负，且不同时为零），相加得
+\[
+  (c+d)(pb-aq)+(a+b)(cq-pd)\ \ge\ a+b+c+d.
+\]
+展开左边，含 $acq$、$bdp$ 的项两两抵消，剩余项用 $bc-ad=1$
+（命题 \ref{prop:invariant}）合并：
+\[
+  (c+d)(pb-aq)+(a+b)(cq-pd)
+  =(bc-ad)(p+q)=p+q.
+\]
+于是搜索的每一步都有
+\[
+  p+q\ \ge\ a+b+c+d.
+\]
+但每深入一层，$a+b+c+d$ 至少增加 $1$（向左时增加 $a+b\ge1$，向右时增加
+$c+d\ge1$），而左边 $p+q$ 是固定常数。有限步之后不等式必然被破坏——等价地说，
+此时 $x$ 已不再落在当前区间之内，与``每一步都严格夹在区间内''矛盾。故搜索必在
+有限步内停止，而停止的唯一方式是命中 $x$。
+\end{proof}
+
+\begin{theorem}[唯一性]\label{thm:unique}
+每个正有理数在 Stern--Brocot 树上至多出现一次。
+\end{theorem}
+
+\begin{proof}
+设分数 $r$ 出现在两个不同节点。树按分数大小是二叉搜索树
+（命题 \ref{prop:monotone}），而二叉搜索树中查找给定关键字的路径由大小比较唯一
+确定：从根出发，每一步``小于则向左、大于则向右、相等则停止''的走向不含任何选择。
+两条终止于同一关键字的路径必然重合，矛盾。
+\end{proof}
+
+\begin{remark}
+定理 \ref{thm:complete} 与 \ref{thm:unique} 合起来说明：$f(S)=(a+c)/(b+d)$
+给出全体行列式为 $1$、可由 $L,R$ 表出的非负整数矩阵到 $\Q_{>0}$ 的双射，
+注 \ref{cor:sbn} 中 Stern--Brocot 数系的良定义性至此完备。另需注意：固定目标
+$x$ 的搜索路径只是树上\emph{一条}路径，它命中 $x$ 不等于遍历了全体有理数。
+\end{remark}

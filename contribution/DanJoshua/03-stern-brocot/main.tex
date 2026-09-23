@@ -1,0 +1,42 @@
+% ===========================================================================
+%  离散数学与结构（I） 数论讲次 · Stern–Brocot 树部分笔记补全
+%  Stern–Brocot 树 · 连分数编码 · Calkin–Wilf 树 · Farey 序列
+%  Compile:  xelatex main   (twice)
+% ===========================================================================
+\documentclass[cjk]{loom}
+\usepackage{tikz}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+\runningthread{离散数学与结构 · Stern--Brocot 树}
+
+\begin{document}
+
+\loomcover
+  {Stern--Brocot 树、Calkin--Wilf 树与 Farey 序列}
+  {离散数学与结构（I）· 数论讲次课堂笔记（Stern--Brocot 树部分补全）}
+  {}
+  {2026 年 9 月}
+
+\begin{strand}
+本讲内容为：Stern--Brocot 树的构造（中位分数、三元组构造、矩阵表示与
+Stern--Brocot 数系）；单调性、最简性与完全性三条基本性质及其证明；
+树上路径与连分数的关系；Calkin--Wilf 树与 Stern 双原子序列；
+Farey 序列的长度、邻项刻画、Ford 圆与递推关系。
+\end{strand}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-construction}
+\input{sections/02-matrix}
+\input{sections/03-properties}
+\input{sections/04-continued-fractions}
+\input{sections/05-calkin-wilf}
+\input{sections/06-farey}
+
+\end{document}

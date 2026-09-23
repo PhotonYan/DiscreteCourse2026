@@ -1,0 +1,44 @@
+\section{Gödel 句与一致性假设}\label{sec:godel}
+
+取
+\[
+\varphi(x)\equiv\neg\Thm(x).
+\]
+由定理~\ref{thm:diagonal} 得句子 \(G\) 使
+\[
+\PA\vdash G\leftrightarrow \neg\Thm(\num{\goedel G}). \tag{FP}
+\]
+读法：\(G\) 断定“我不是 \(\PA\) 的定理”。
+
+\begin{proposition}[一致性足以排除 \(PA\vdash G\)]\label{prop:not-prove-G}
+若 \(\PA\) 一致，则 \(\PA\nvdash G\)。
+\end{proposition}
+
+\begin{proof}
+若 \(\PA\vdash G\)，由 (D1) 得 \(\PA\vdash\Thm(\num{\goedel G})\)。但 (FP) 给出
+\(\PA\vdash\neg\Thm(\num{\goedel G})\)。两者矛盾。
+\end{proof}
+
+\begin{proposition}[排除 \(PA\vdash\neg G\) 需要更强的一致性]\label{prop:not-prove-neg-G}
+若 \(\PA\) 是 \(\omega\)-一致的，则 \(\PA\nvdash\neg G\)。对本步更弱且够用的情况是 1-一致性：\(\PA\) 证明出的 \(\Sigma_1\) 句在 \(\N\) 中为真。
+\end{proposition}
+
+\begin{proof}
+若 \(\PA\vdash\neg G\)，由 (FP) 得
+\[
+\PA\vdash\Thm(\num{\goedel G}),
+\]
+即
+\[
+\PA\vdash\exists p\,\Proof_{\PA}(p,\num{\goedel G}). \tag{$\ast$}
+\]
+一致性本身不能保证 \((\ast)\) 的见证 \(p\) 是标准自然数；它可能只是非标准模型中的见证，在外部并不对应真实有限推导。
+\(\omega\)-一致性，或对本步够用的 1-一致性，排除这种非标准见证：此时 \((\ast)\) 给出标准 \(p\)
+使 \(\Proof_{\PA}(p,\goedel G)\) 为真，即 \(\PA\vdash G\)，与命题~\ref{prop:not-prove-G} 矛盾。
+\end{proof}
+
+\begin{remark}[若课程命题只说“一致性推出不完备”]\label{rem:rosser}
+严格地说，应改用 Rosser 句。其核心是把可证性改成“有一个证明我，且没有不晚于它的证明否定我”。
+这样普通一致性即可同时排除 \(R\) 与 \(\neg R\)。课堂板书采用的 \(G\) 是 Gödel 原版，因此这里显式记录
+\(\omega\)-一致性或 1-一致性这一额外假设。
+\end{remark}
