@@ -1,0 +1,59 @@
+% Lec 06：群、子群、陪集、正规子群与群同态
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 06}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{群、子群、陪集、正规子群与群同态}
+\author{zhangjunshuo}\date{2026 年 9 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲为 Lec 06，结合笔记与教材整理。对照教材是 Dummit--Foote《Abstract Algebra》（简称 [DF]）与《离散数学与结构》（简称 [DS]），完整信息见文末参考文献。记号按 [DF] 对齐：二面体群记 $D_{2n}$（[DS] 记 $D_n$），元素阶记 $|g|$，循环群记 $\mathbb Z_n$，单位元记 $e$（[DF] 写作 1）。
+\end{quote}
+\tableofcontents\clearpage
+
+\section*{记号速查}
+\begin{itemize}
+\item $(G,\cdot)$：群；$e$：单位元；$a^{-1}$：逆元；$|G|$：群的阶；交换（Abel）群：$ab=ba$ 对一切成立。
+\item $H\le G$：子群；判定：$H\ne\varnothing$ 且 $\forall a,b\in H,\ ab^{-1}\in H$。
+\item $gH=\{gh:h\in H\}$：左陪集；$Hg=\{hg:h\in H\}$：右陪集；$G/H=\{gH:g\in G\}$：左陪集的集合。
+\item $|G/H|$：指数（陪集个数）；$G$ 有限时 $|G/H|=|G|/|H|$，即 $|G|=|G/H|\cdot|H|$。
+\item $N\trianglelefteq G$：正规子群（$gN=Ng$ 对一切 $g$）；$G/N$：商群，运算 $(gN)(hN)=(gh)N$。
+\item $\varphi:G\to H$：同态；$\ker\varphi=\{g:\varphi(g)=e_H\}$：核；$\operatorname{im}\varphi=\varphi(G)$：像；$G\cong H$：同构。
+\item 纤维：$\varphi^{-1}(h)=g\ker\varphi$（任取 $\varphi(g)=h$）；第一同构定理：$G/\ker\varphi\cong\operatorname{im}\varphi$。
+\item $D_{2n}$：二面体群（阶 $2n$；课堂记 $D_n$）；$r$：旋转 $2\pi/n$；$s$：反射。
+\item $S_n$、$\operatorname{Sym}(\Omega)$：对称群；$(c_1\ c_2\ \cdots\ c_k)$：循环；置换复合从右往左。
+\item $F(S)$：自由群；$\langle S\mid R\rangle$：生成元与关系（表示）。
+\item $\mathbb Z_n=\mathbb Z/n\mathbb Z$：$n$ 阶循环群；$\mathbb Z_n^\times$：模 $n$ 的可逆剩余类。
+\item $GL_n(F)$：可逆矩阵群；$SL_n(F)=\{A:\det A=1\}$；$GL_n(F)/SL_n(F)\cong F^\times$。
+\item 记号对照：二面体群本讲记 $D_{2n}$（[DS] 记 $D_n$）；单位元记 $e$（[DF] 写作 $1$）；指数记 $|G/H|$（[DF] 记 $|G:H|$，[DS] 记 $[G:H]$）。
+\end{itemize}
+\clearpage
+
+\input{sections/01-group-axioms}
+\input{sections/02-dihedral-free-groups}
+\input{sections/03-permutations}
+\input{sections/04-subgroups-cosets}
+\input{sections/05-normal-subgroups}
+\input{sections/06-quotient-groups}
+\input{sections/07-homomorphisms}
+\input{sections/08-first-isomorphism}
+\input{sections/09-isomorphism-theorems}
+
+\section*{参考文献}
+\begin{itemize}
+\item \textbf{[DF]} D. S. Dummit, R. M. Foote. \emph{Abstract Algebra}, 3rd ed. John Wiley \& Sons, 2004.
+\item \textbf{[DS]} 邓小铁、王畅. 《离散数学与结构》. 未定稿, 2023.
+\end{itemize}
+\end{document}
