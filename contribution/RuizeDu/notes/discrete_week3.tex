@@ -1,0 +1,1332 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mdframed}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows.meta, positioning}
+
+
+\setlength{\parindent}{0pt}
+\usetikzlibrary{shapes, arrows, positioning}
+
+\begin{document}
+
+\section*{week3}
+
+\section*{1. 数论基础}
+
+\begin{itemize}
+    \item \textbf{整除}：\(a|b \iff \exists c, b=ac\)
+    \item \textbf{最大公约数}：\(\gcd(a,b) = \max\{c \in \mathbb{N} \mid c|a \land c|b\}\)
+    \item \textbf{最小公倍数}：\(\text{lcm}(a,b) = \min\{c \in \mathbb{N}^* \mid a|c \land b|c\}\)
+    \item \textbf{裴蜀定理 (Bézout's Theorem)}：设 \(a, b \in \mathbb{Z}\)，则存在整数 \(x, y\) 使得 \(ax + by = \gcd(a,b)\)。
+
+\begin{mdframed}
+\textbf{定理}：设 \(d = \gcd(a,b)\)，则存在 \(x, y \in \mathbb{Z}\) 使得
+\[
+ax + by = d
+\]
+特别地，\(a\) 与 \(b\) 互素当且仅当存在 \(x, y \in \mathbb{Z}\) 使得 \(ax + by = 1\)。
+
+\textbf{证明}（利用带余除法）：
+
+\textbf{(1) 构造集合}：
+考虑所有由 \(a\) 和 \(b\) 整数线性组合得到的正整数集合：
+\[
+S = \{ ax + by \mid x, y \in \mathbb{Z} \text{ 且 } ax + by > 0 \}
+\]
+因为 \(a, b\) 不全为零（若全为零则定理显然），故 \(S\) 非空。
+
+\textbf{(2) 取最小元}：
+\(S\) 中存在最小正整数，记作 \(d = ax_0 + by_0\)（对某对 \(x_0, y_0 \in \mathbb{Z}\)）。
+
+\textbf{(3) 证明 \(d\) 是 \(a\) 和 \(b\) 的公约数}：
+利用带余除法，设 \(a = qd + r\)，其中 \(0 \leq r < d\)。
+将 \(d = ax_0 + by_0\) 代入：
+\[
+r = a - qd = a - q(ax_0 + by_0) = a(1 - qx_0) + b(-qy_0)
+\]
+这说明 \(r\) 也是 \(a\) 和 \(b\) 的一个整数线性组合。
+由于 \(r < d\) 且 \(d\) 是 \(S\) 中的最小正整数，若 \(r > 0\)，则 \(r \in S\)，这与 \(d\) 的最小性矛盾。
+因此必有 \(r = 0\)，即 \(d \mid a\)。
+同理可证 \(d \mid b\)。
+
+\textbf{(4) 证明 \(d\) 是最大公约数}：
+设 \(c\) 是 \(a\) 和 \(b\) 的任意一个公约数，即 \(c \mid a\) 且 \(c \mid b\)。
+则 \(c\) 必整除其线性组合 \(d = ax_0 + by_0\)，即 \(c \mid d\)。
+由于 \(c\) 和 \(d\) 均为正整数，这意味着 \(c \leq d\)。
+因此 \(d\) 是 \(a\) 和 \(b\) 的最大公约数。 \hfill \(\square\)
+
+\textbf{推论}：\(\gcd(a,b) = \min\{ax+by \mid x, y \in \mathbb{Z}, ax+by > 0\}\)。
+\end{mdframed}
+\end{itemize}
+
+\subsection*{素数 (Prime)}
+素数 \(p\) 定义为：\(p > 1 \land (a|p \implies a=1 \lor a=p)\)
+
+\subsection*{唯一分解定理 (Fundamental Theorem of Arithmetic)}
+每个大于 1 的自然数都可以唯一地分解为素数的乘积（不计顺序）。
+
+\begin{mdframed}
+\textbf{定理}：\(\forall n \in \mathbb{N}, n > 1\)，存在素数 \(p_1 \leq p_2 \leq \cdots \leq p_k\)，使得
+\[
+n = p_1 p_2 \cdots p_k
+\]
+且在不计顺序的情况下，这种分解是唯一的。
+
+\textbf{证明}：
+
+\textbf{(1) 存在性}（对 \(n\) 进行归纳）：
+\begin{itemize}
+    \item \textbf{基础步}：\(n=2\) 是素数，显然成立。
+    \item \textbf{归纳步}：假设对所有 \(2 \leq m < n\)，\(m\) 都可以分解为素数的乘积。
+    \begin{itemize}
+        \item 若 \(n\) 是素数，则 \(n\) 本身就是其素数分解，成立。
+        \item 若 \(n\) 是合数，则存在 \(a, b \in \mathbb{N}\) 且 \(1 < a \leq b < n\)，使得 \(n = a \cdot b\)。由归纳假设，\(a\) 和 \(b\) 都可以分解为素数的乘积。因此 \(n = a \cdot b\) 也可以分解为素数的乘积。
+    \end{itemize}
+\end{itemize}
+由强归纳法原理，存在性得证。
+
+\textbf{(2) 唯一性}（利用欧几里得引理）：
+假设 \(n\) 有两种素数分解：
+\[
+n = p_1 p_2 \cdots p_k = q_1 q_2 \cdots q_m
+\]
+其中 \(p_i, q_j\) 均为素数。
+\begin{itemize}
+    \item 由欧几里得引理（若素数 \(p \mid ab\)，则 \(p \mid a\) 或 \(p \mid b\)），可知 \(p_1\) 必须整除右边的某个 \(q_j\)。
+    \item 因为 \(q_j\) 也是素数，且 \(p_1 > 1\)，所以 \(p_1 = q_j\)。
+    \item 将等式两边同时约去这个公共因子，得到：
+    \[
+    p_2 \cdots p_k = q_1 \cdots q_{j-1} q_{j+1} \cdots q_m
+    \]
+    \item 重复上述过程，每次都能消去一个素数。最终必然有 \(k = m\)，且在不计顺序的情况下，两边的素数序列完全相同。
+\end{itemize}
+唯一性得证。 \hfill \(\square\)
+\end{mdframed}
+
+\subsection*{互素 (Coprime)}
+\(a \perp b\) 意味着 \((a,b)=1\)
+
+\section*{2. 模运算 (Modular Arithmetic)}
+
+\begin{itemize}
+    \item 同余关系：\(a \equiv b \pmod m\)，其中 \(\equiv\) 为等价关系。
+    \item 逆元存在性：\(\gcd(c,m)=1 \implies \exists c^{-1}, cc^{-1} \equiv 1 \pmod m\)
+    \item 由裴蜀定理：\((uc+vm=1, u=c^{-1})\)
+\end{itemize}
+
+\subsection*{等价类与剩余类}
+等价类 \(\overline{0}, \overline{1}, \dots, \overline{m-1}\) \\
+\(\mathbb{Z}_m = \{0, 1, \dots, m-1\}\) \\
+\(\mathbb{Z}_m^* = \{\overline{i} \in \mathbb{Z}_m \mid (i,m)=1\}\)
+\begin{align*}
+    a+b &: \overline{a+b} = \overline{a} + \overline{b} \\
+    ab &= \overline{ab} \\
+    a^{-1} &= \overline{a^{-1}}
+\end{align*}
+
+\section*{3. 重要定理}
+
+\subsection*{费马小定理}
+\(\forall a, a^p \equiv a \pmod p\)
+\begin{enumerate}
+    \item 若 \(P|a\)，显然成立 \checkmark{}
+    \item 若 \(P \nmid a\)，考虑 \((P-1)! \equiv a \cdot 2a \cdots (P-1)a \pmod P\) \\
+    即 \(= a^{P-1}(P-1)! \equiv (P-1)! \pmod P \implies a^{P-1} \equiv 1 \pmod P\)
+\end{enumerate}
+
+\subsection*{欧拉定理}
+欧拉函数: \(\varphi(n) = \prod\limits_{i=1}^n (1 - \frac{1}{p_i})n, \quad n = \prod\limits_{i=1}^n p_i^{\alpha_i}\) \\
+\(\prod\limits_{i \in \mathbb{Z}_n^*} i \equiv \prod\limits_{i \in \mathbb{Z}_n^*} a_i \implies a^{\varphi(n)} \equiv 1 \pmod n\)
+
+\textbf{我们有性质 \(\sum\limits_{d|m} \varphi(d) = m\)}
+
+\begin{mdframed}
+\textbf{证明}:
+\begin{align*}
+    \mathbb{Z}_m &= \bigcup\limits_{d|m} \{i \in \mathbb{Z}_m \mid \gcd(i,m)=d\} \\
+    &= \bigcup\limits_{d|m} \{i \cdot d \in \mathbb{Z}_m \mid \gcd(id,m)=d\} (d|i \ ,substitution \ i \leftarrow i \cdot d)\\
+    &= \bigcup\limits_{d|m} \{i \in \mathbb{Z}_{\frac{m}{d}} \mid \gcd(i, \frac{m}{d})=1\} \\
+    &= \bigcup\limits_{d|m} \mathbb{Z}_{\frac{m}{d}}^* \\
+\end{align*}
+因此 \(|\mathbb{Z}_m| = \sum\limits_{d|m} |\mathbb{Z}_{\frac{m}{d}}^*| = \sum\limits_{d|m} \varphi(\frac{m}{d}) = \sum\limits_{d|m} \varphi(d)\)
+\end{mdframed}
+
+\subsection*{中国剩余定理 (CRT)}
+设 \(m_1, \dots, m_t\) 两两互素，即 \(m_i \perp m_j\)。\\
+对任意 \((a_1, \dots, a_t) \in \mathbb{Z}_{m_1} \times \cdots \times \mathbb{Z}_{m_t}\)，\\
+存在唯一的 \(a \in \mathbb{Z}_{m_1 m_2 \dots m_t}\)，使得 \(a \equiv a_i \pmod{m_i}\)。\\
+\textbf{构造}: 取 \(c_i\) 为 \((\prod\limits_{j \neq i} m_j){}^{-1} \pmod{m_i}\)，取 \(k = \sum a_i c_i \prod\limits_{j \neq i} m_j\)。\\
+验证：对 \(k \pmod{m_r}\)：
+\begin{itemize}
+    \item 当 \(i \neq r\) 时，\(m_i | a_i c_i \prod\limits_{j \neq i} m_j\)
+    \item 当 \(i = r\) 时，\(a_i c_i \prod\limits_{j \neq i} m_j \equiv a_i \pmod{m_i}\) \checkmark{}
+\end{itemize}
+
+\section*{4. RSA 加密算法}
+
+\begin{mdframed}
+    \textbf{密钥生成}：
+    \begin{itemize}
+        \item 公钥：\(e, N = P \cdot Q\)（\(P, Q\) 为大素数）
+        \item 私钥：\(d\)，满足 \(d \cdot e \equiv 1 \pmod{\phi(N)}\)
+    \end{itemize}
+    \textbf{加密与解密}：
+    \begin{itemize}
+        \item 发送（加密）：\((\text{message}){}^e \to (\text{ciphertext})\)
+        \item 接收（解密）：\((\text{ciphertext}){}^d = (\text{message}){}^{de} \equiv \text{message} \pmod N\)
+    \end{itemize}
+\end{mdframed}
+
+\section*{5. 有理逼近}
+
+\subsection*{5.1 构造方式：从 \(\frac01,\frac10\) 出发反复取中间分数}
+
+从两个“端点”开始：
+\[
+\frac{0}{1},\qquad \frac{1}{0}.
+\]
+这里 \(\frac10\) 只是一个形式记号，表示“无穷大”，用于生成。
+
+给定相邻的两个分数
+\[
+\frac{a}{b},\qquad \frac{c}{d},
+\]
+规定它们的\textbf{中间分数}为
+\[
+\frac{a+c}{b+d}.
+\]
+然后不断把中间分数插入到相邻两项之间。
+
+第一步：
+\[
+\frac{0}{1},\qquad \frac{0+1}{1+0}=\frac11,\qquad \frac{1}{0}.
+\]
+第二步：
+\[
+\frac{0}{1},\quad
+\frac{0+1}{1+1}=\frac12,\quad
+\frac11,\quad
+\frac{1+1}{0+1}=\frac21,\quad
+\frac10.
+\]
+继续下去，就得到一棵无限二叉树，通常称为 \textbf{Stern\textendash{}Brocot 树}。其前几层如下：
+\[
+\begin{array}{ccccccccc}
+ & & & & \frac11 & & & & \\
+ & & \frac12 & & & & \frac21 & & \\
+ & \frac13 & & \frac23 & & \frac32 & & \frac31 & \\
+\cdots & & & & & & & & \cdots
+\end{array}
+\]
+从 \(\frac11\) 往左走一步得到 \(\frac12\)，往右走一步得到 \(\frac21\)。一般地，每个正有理数恰好出现一次。
+
+\subsection*{5.2 矩阵理解：相邻分数对应行列式为 \(\pm1\) 的矩阵}
+
+把一对相邻分数
+\[
+\frac{a}{b},\qquad \frac{c}{d}
+\]
+排成一个 \(2\times 2\) 矩阵
+\[
+M=\begin{bmatrix}
+a & c\\
+b & d
+\end{bmatrix}.
+\]
+注意这里列向量分别是两个分数的分子分母。
+
+初始时，
+\[
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\]
+表示端点
+\[
+\frac01,\qquad \frac10.
+\]
+它的行列式是
+\[
+\det\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+=0\cdot 0-1\cdot 1=-1.
+\]
+
+如果当前相邻分数对应矩阵
+\[
+\begin{bmatrix}
+a & c\\
+b & d
+\end{bmatrix},
+\]
+那么它们的中间分数是
+\[
+\frac{a+c}{b+d}.
+\]
+插入中间分数后，左右两对相邻分数分别对应
+\[
+\begin{bmatrix}
+a & a+c\\
+b & b+d
+\end{bmatrix},
+\qquad
+\begin{bmatrix}
+a+c & c\\
+b+d & d
+\end{bmatrix}.
+\]
+计算行列式：
+\[
+\det\begin{bmatrix}
+a & a+c\\
+b & b+d
+\end{bmatrix}
+=
+a(b+d)-b(a+c)
+=
+ad-bc,
+\]
+\[
+\det\begin{bmatrix}
+a+c & c\\
+b+d & d
+\end{bmatrix}
+=
+(a+c)d-(b+d)c
+=
+ad-bc.
+\]
+因此，如果原来的相邻矩阵行列式为
+\[
+\det\begin{bmatrix}
+a & c\\
+b & d
+\end{bmatrix}
+=ad-bc,
+\]
+那么插入中间分数后，新的两对相邻矩阵的行列式仍然是同一个值。
+
+初始行列式为 \(-1\)，所以整个构造过程中，任意相邻两个分数
+\[
+\frac{a}{b},\qquad \frac{c}{d}
+\]
+都满足
+\[
+ad-bc=-1.
+\]
+如果调换顺序，则符号相反。因此更准确地说：
+\[
+\boxed{\text{相邻分数 } \frac{a}{b},\frac{c}{d} \text{ 满足 } |ad-bc|=1.}
+\]
+等价地，
+\[
+\boxed{\det\begin{bmatrix}
+a & c\\
+b & d
+\end{bmatrix}=\pm 1.}
+\]
+这就是构造中的\textbf{行列式不变量}。
+
+它带来一个重要推论：若
+\[
+\frac{a}{b}<\frac{c}{d},
+\]
+则
+\[
+\frac{c}{d}-\frac{a}{b}
+=
+\frac{bc-ad}{bd}
+=
+\frac{1}{bd}.
+\]
+所以相邻两项之间的区间长度为
+\[
+\boxed{\frac{1}{bd}}.
+\]
+也就是说，两个相邻分数把实数轴上的一个区间分成一段，其长度恰好是两个分母乘积的倒数。
+
+\subsection*{5.3 为什么所有正有理数都会出现}
+
+我们证明：Stern\textendash{}Brocot 树中包含所有正有理数，并且每个正有理数只出现一次。
+
+设既约分数
+\[
+\frac{p}{q}>0,\qquad \gcd(p,q)=1.
+\]
+从端点
+\[
+\frac{0}{1},\qquad \frac{1}{0}
+\]
+出发。假设某一对相邻分数
+\[
+\frac{a}{b}<\frac{p}{q}<\frac{c}{d}
+\]
+满足
+\[
+ad-bc=-1.
+\]
+考虑中间分数
+\[
+\frac{a+c}{b+d}.
+\]
+如果
+\[
+\frac{p}{q}=\frac{a+c}{b+d},
+\]
+那就已经找到了。
+
+否则，\(\frac{p}{q}\) 要么落在
+\[
+\left(\frac{a}{b},\frac{a+c}{b+d}\right),
+\]
+要么落在
+\[
+\left(\frac{a+c}{b+d},\frac{c}{d}\right).
+\]
+无论哪种情况，新区间仍然夹住 \(\frac{p}{q}\)，并且由 \(5.2\) 可知，新的相邻矩阵行列式仍然为 \(-1\)。
+
+关键是这个过程不会无限进行下去。因为
+\[
+\frac{c}{d}-\frac{a}{b}
+=
+\frac{bc-ad}{bd}
+=
+\frac{1}{bd}.
+\]
+而
+\[
+\frac{a}{b}<\frac{p}{q}<\frac{c}{d},
+\]
+所以
+\[
+0<\frac{p}{q}-\frac{a}{b}<\frac{1}{bd}.
+\]
+但
+\[
+\frac{p}{q}-\frac{a}{b}
+=
+\frac{bp-aq}{bq}.
+\]
+由于 \(\gcd(p,q)=1\)，且 \(\frac{p}{q}\neq \frac{a}{b}\)，所以 \(bp-aq\) 是非零整数。又因为它为正，所以
+\[
+bp-aq\geq 1.
+\]
+因此
+\[
+\frac{1}{bq}
+\leq
+\frac{bp-aq}{bq}
+<
+\frac{1}{bd},
+\]
+所以
+\[
+d<q.
+\]
+同理，由
+\[
+0<\frac{c}{d}-\frac{p}{q}<\frac{1}{bd}
+\]
+可得
+\[
+b<q.
+\]
+也就是说，往下一层走一步，两个分母 \(b,d\) 必定一直小于 \(q\)。
+但是区间端点的分母最大值是递增的（这一点容易说明,因为约分不会发生,相邻分数的分子分母是其 $ua + vb = 1$ 的系数），所以过程在有限步结束。
+所以所有正有理数都出现在 Stern\textendash{}Brocot 树中。
+唯一性也由这个过程得到：每一步 \(\frac{p}{q}\) 落在左半边还是右半边是唯一确定的，所以路径唯一，因此每个正有理数只出现一次。
+综上：
+\[
+\boxed{\text{Stern\textendash{}Brocot 树包含所有正有理数，且每个正有理数恰好出现一次。}}
+\]
+
+\subsection*{5.4 L/R、矩阵与连分数}
+
+从
+\[
+\frac{0}{1},\qquad \frac{1}{0}
+\]
+出发。记
+\[
+L=
+\begin{bmatrix}
+1 & 1\\
+0 & 1
+\end{bmatrix},
+\qquad
+R=
+\begin{bmatrix}
+1 & 0\\
+1 & 1
+\end{bmatrix},
+\qquad
+M_0=
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}.
+\]
+若当前相邻分数为
+\[
+\frac{a}{b},\qquad \frac{c}{d},
+\]
+对应矩阵
+\[
+M=
+\begin{bmatrix}
+a & c\\
+b & d
+\end{bmatrix},
+\]
+则向左走一步对应
+\[
+M\mapsto ML,
+\]
+向右走一步对应
+\[
+M\mapsto MR.
+\]
+
+连分数与矩阵乘积的对应关系为
+\[
+[a_0;a_1,a_2,\dots,a_n]
+=
+a_0+\cfrac{1}{a_1+\cfrac{1}{a_2+\cdots+\cfrac{1}{a_n}}}
+=
+M_0R^{a_0}L^{a_1}R^{a_2}\cdots L^{a_n}
+\quad\text{的右列}.
+\]
+例如
+\[
+[2;3]
+=
+2+\frac{1}{3}
+=
+\frac{7}{3},
+\]
+对应
+\[
+M_0R^2L^3
+=
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0\\
+1 & 1
+\end{bmatrix}^2
+\begin{bmatrix}
+1 & 1\\
+0 & 1
+\end{bmatrix}^3
+=
+\begin{bmatrix}
+2 & 7\\
+1 & 3
+\end{bmatrix},
+\]
+右列为
+\[
+\frac{7}{3}.
+\]
+因此
+\[
+\boxed{
+\text{L/R 序列}
+\longleftrightarrow
+\text{矩阵乘积}
+\longleftrightarrow
+\text{连分数}
+}
+\]
+并且任意相邻分数对应的矩阵满足
+\[
+\boxed{
+\det M=\pm1.
+}
+\]
+
+当然,我们应该也会有对称的形式
+
+\section*{6. 抽象代数 \textendash{} 群论基础}
+
+\subsection*{群的定义 (Group)}
+$(G, *)$
+\begin{itemize}
+    \item $* : G \times G \to G$
+    \item \textbf{结合律 (Associativity)}: \(\forall a,b,c, (a*b)*c = a*(b*c)\)
+    \item \textbf{单位元 (Identity)}: \(\exists e, \forall a, a*e = e*a = a\)
+    \item \textbf{逆元 (Inverse)}: \(\forall a, \exists a^{-1}, a*a^{-1} = a^{-1}*a = e\)
+    \item \textbf{交换律 (Commutativity)}: \(a*b = b*a\)（此时称为阿贝尔群 Abel group）
+\end{itemize}
+
+\subsubsection*{群的基本性质}
+\begin{itemize}
+    \item \textbf{单位元唯一性}：$e_1, e_2 \to e_1 = e_1 e_2 = e_2$
+    \item \textbf{逆元唯一性}：$a$ 有逆元 $b_1, b_2$，则 $b_1 a = e = a b_2 \implies b_1 = b_1 e = b_1 a b_2 = e b_2 = b_2$
+    \item \textbf{消去律}：$ac = bc \implies a=b$；$ca = cb \implies a=b$
+\end{itemize}
+
+\subsection*{群、半群、幺半群}
+E.g.\  \(\mathbb{Z}, \mathbb{R}, \mathbb{C}\)
+
+\subsection*{域 (Field)}
+\((F \setminus \{0\}, \cdot)\) 构成群（乘法）。\\
+可逆 $\det = 1$ \\
+\(M_n(F) \supseteq GL_n(F) \supseteq SL_n(F) \supseteq O_n(F)\) \\
+\((\mathbb{Z}_n, +), (\mathbb{Z}_n^*, \cdot)\)
+
+\subsection*{二面体群 (Dihedral group)}
+$D_4$ 有 8 种对称操作。\\
+$D_4: \langle s, r \mid s^2 = r^4 = e, rsr = s \rangle$ \\
+$D_n: \langle s, r \mid s^2 = r^n = e, rsr = s \rangle$
+
+\subsection*{自由群 (Free Group)}
+\(\langle a, b, c \rangle\) \\
+由 $S \cup \{a^{-1} \mid a \in S\}{}^*$ 中的字符串构成。
+\begin{itemize}
+    \item $S \ a \ a^{-1} \ S' = S \ S'$
+    \item $S \ a^{-1} \ a \ S' = S \ S'$
+\end{itemize}
+若字符串 $x, y$ 在有限步后相等 $\to x \sim y$ \\
+自由群：$\{S \cup \{a^{-1} \mid a \in S\}\} / \sim$
+
+\subsection*{对称群 (Symmetric Group)}
+\(\text{sym}(\Omega)\) 或 \(S_\Omega\) \\
+$\Omega$ 上的置换（双射 $\Omega \to \Omega$）。\\
+$\sigma \in S_{10}$: 轮换表示 \((0\ 1\ 3\ 7\ 6\ 4\ 9)(2\ 5)(8)\) \\
+定义 $\tau = (C_1 \dots C_n)$ \\
+$\tau(x) = \begin{cases} C_{(i+1) \bmod n} & x \in C_i \\ x & x \notin C_i \end{cases}$ \\
+$\sigma^{-1} = (9 \ 4 \ 6 \ 7 \ 3 \ 1 \ 0)(5 \ 2)(8)$
+
+\section*{7. 子群与陪集}
+
+\subsection*{子群 (SubGroup)}
+$H$ 是 $(G, \cdot)$ 的子群，记作 $H \leq G$：
+\begin{enumerate}
+    \item $\emptyset \neq H \subseteq G$
+    \item $(H, \cdot)$ 构成群（封闭性）
+\end{enumerate}
+$e_H = e \cdot e_H = e_H^{-1} e_H \cdot e_H = e_H^{-1} e_H = e$
+
+E.g.\  \(\mathbb{Z} \leq \mathbb{Q} \leq \mathbb{R} \leq \mathbb{C}\)，$n\mathbb{Z} \leq \mathbb{Z}$
+
+\subsection*{陪集 (Coset)}
+设 $H \leq G$，对 $g \in G$：
+\begin{align*}
+    gH &= \{gh \mid h \in H\} \text{左陪集}\\
+    Hg &= \{hg \mid h \in H\} \text{右陪集}
+\end{align*}
+例：$\mathbb{Z}$ 中，陪集 $n\mathbb{Z}$ 包括 $1 + n\mathbb{Z}, \dots, (n-1) + n\mathbb{Z}$。\\
+\textbf{性质}：\(\forall g, g' \in G\)，有
+\[
+gH \cap g'H = \emptyset
+\quad\text{或}\quad
+gH = g'H.
+\]
+
+\textbf{证明}：
+若
+\[
+gH \cap g'H \neq \emptyset,
+\]
+则存在
+\[
+x \in gH \cap g'H.
+\]
+于是存在 \(h_1,h_2 \in H\)，使得
+\[
+x=gh_1=g'h_2.
+\]
+因此
+\[
+g'=g h_1 h_2^{-1}.
+\]
+由于 \(H\) 是子群，\(h_1h_2^{-1}\in H\)，所以
+\[
+g' \in gH.
+\]
+于是
+\[
+g'=gh
+\]
+对某个 \(h\in H\) 成立，即
+\[
+g^{-1}g' \in H.
+\]
+下证 \(g'H \subseteq gH\)。任取 \(g'h'\in g'H\)，则
+\[
+g'h'=g h h' \in gH.
+\]
+所以
+\[
+g'H \subseteq gH.
+\]
+同理可证
+\[
+gH \subseteq g'H.
+\]
+因此
+\[
+gH=g'H.
+\]
+故
+\[
+gH \cap g'H = \emptyset
+\quad\text{或}\quad
+gH = g'H.
+\]
+\hfill \(\square\)
+
+\subsection*{正规子群 (Normal Subgroup)}
+$N \trianglelefteq G$ 当且仅当 $\forall g \in G, \ gN = Ng$。\\
+好处：$S \cdot T = \{s \cdot t \mid s \in S, t \in T\}$ \\
+$gN \cdot hN = g(Nh)N = gh(NN) = ghN$ 也是陪集。
+
+\subsubsection*{商群 (Quotient Group)}
+定义陪集运算 $(G/N, \cdot)$，$gN \cdot hN = ghN$。\\
+$gN \cdot N = N \cdot gN = N$ \\
+$gN \cdot g^{-1}N = N$ \\
+$\mathbb{Z} / n\mathbb{Z} = \mathbb{Z}_n$
+
+$|G / H| = \frac{|G|}{|H|}$
+
+这里很类似于商空间
+
+\subsubsection*{性质}
+\begin{itemize}
+    \item $K \leq H, H \leq G \implies K \leq G$
+    \item $K \trianglelefteq H, H \trianglelefteq G \nRightarrow K \trianglelefteq G $
+    \item \textbf{正规子群判别法}：
+        \[
+        N\trianglelefteq G
+        \iff
+        \forall g\in G,\ \forall n\in N,\quad gng^{-1}\in N.
+        \]
+        \textbf{证明}：
+
+        先证 \(\Rightarrow\)。
+
+        设 \(N\trianglelefteq G\)。则对任意 \(g\in G\)，有
+        \[
+        gN=Ng.
+        \]
+        任取 \(n\in N\)，则
+        \[
+        gn\in gN=Ng.
+        \]
+        所以存在 \(n'\in N\)，使得
+        \[
+        gn=n'g.
+        \]
+        两边右乘 \(g^{-1}\)，得
+        \[
+        gng^{-1}=n'\in N.
+        \]
+        因此
+        \[
+        \forall g\in G,\ \forall n\in N,\quad gng^{-1}\in N.
+        \]
+
+        再证 \(\Leftarrow\)。
+
+        设
+        \[
+        \forall g\in G,\ \forall n\in N,\quad gng^{-1}\in N.
+        \]
+        先证 \(gN\subseteq Ng\)。
+
+        任取 \(gn\in gN\)，其中 \(n\in N\)。由假设
+        \[
+        gng^{-1}\in N.
+        \]
+        于是
+        \[
+        gn=(gng^{-1})g\in Ng.
+        \]
+        因此
+        \[
+        gN\subseteq Ng.
+        \]
+
+        对称地,我们有
+        \[
+        Ng\subseteq gN.
+        \]
+
+        所以
+        \[
+        gN=Ng.
+        \]
+        由于 \(g\in G\) 任意，故
+        \[
+        N\trianglelefteq G.
+        \]
+        \hfill \(\square\)
+\end{itemize}
+
+$ GL_n(F) / SL_n(F) \approx F^* $ (你可以看到等价类是行列式取值为F中某个非0值的矩阵) \\
+由这个注意我们引入下面内容（因为目前没有 $\cong$ 我们先用 $\approx$ 表示）
+
+\section*{8. 群同态与同构}
+
+\subsection*{同态与同构}
+Homomorphism 同态 \\
+Isomorphism 同构
+
+\subsubsection*{同态 (Homomorphism)}
+设 $(G,*)$ 和 $(H,\circ)$ 是群。映射
+\[
+\pi: (G,*) \to (H,\circ)
+\]
+称为群同态，如果对任意 $g_1,g_2\in G$，都有
+\[
+\pi(g_1 * g_2)=\pi(g_1)\circ \pi(g_2).
+\]
+不要求 $\pi$ 是双射。
+
+由定义可推出：
+\[
+\pi(e_G)=e_H,\qquad \pi(g^{-1})=\pi(g){}^{-1}.
+\]
+
+\textbf{证明：}
+
+先证 $\pi(e_G)=e_H$。因为
+\[
+e_G * e_G=e_G,
+\]
+所以
+\[
+\pi(e_G)=\pi(e_G * e_G)=\pi(e_G)\circ \pi(e_G).
+\]
+在群 $H$ 中，两边同时左乘 $\pi(e_G){}^{-1}$，得
+\[
+e_H=\pi(e_G).
+\]
+因此
+\[
+\pi(e_G)=e_H.
+\]
+
+再证 $\pi(g^{-1})=\pi(g){}^{-1}$。对任意 $g\in G$，有
+\[
+g*g^{-1}=e_G.
+\]
+于是
+\[
+\pi(g*g^{-1})=\pi(e_G).
+\]
+由同态定义，
+\[
+\pi(g)\circ \pi(g^{-1})=\pi(e_G).
+\]
+又因为已经证明 $\pi(e_G)=e_H$，所以
+\[
+\pi(g)\circ \pi(g^{-1})=e_H.
+\]
+同理，由
+\[
+g^{-1}*g=e_G
+\]
+可得
+\[
+\pi(g^{-1})\circ \pi(g)=e_H.
+\]
+因此 $\pi(g^{-1})$ 是 $\pi(g)$ 在 $H$ 中的逆元，即
+\[
+\pi(g^{-1})=\pi(g){}^{-1}.
+\]
+
+\subsubsection*{同构 (Isomorphism)}
+设 $(G,*)$ 和 $(H,\circ)$ 是群。映射
+\[
+\pi: (G,*) \to (H,\circ)
+\]
+称为群同构，如果：
+\begin{enumerate}
+    \item $\pi$ 是双射；
+    \item $\pi$ 是群同态，即对任意 $g_1,g_2\in G$，
+    \[
+    \pi(g_1 * g_2)=\pi(g_1)\circ \pi(g_2).
+    \]
+\end{enumerate}
+
+由同态定义可推出：
+\[
+\pi(e_G)=e_H,\qquad \pi(g^{-1})=\pi(g){}^{-1}.
+\]
+
+\textbf{证明：}
+
+因为同构首先是同态，所以上面关于同态的证明已经给出：
+\[
+\pi(e_G)=e_H,\qquad \pi(g^{-1})=\pi(g){}^{-1}.
+\]
+因此同构也保持单位元和逆元。
+
+\subsubsection*{核与像 (Kernel and Image)}
+\begin{align*}
+    \ker \pi &= \pi^{-1}(e_H) = \{g \mid \pi(g) = e_H\} \\
+    \ker \pi &\leq G \\
+    \text{Im } \pi &\leq H
+\end{align*}
+$g, g' \in \ker \pi \implies \pi(g \cdot g') = \pi(g) \cdot \pi(g') = e_H \cdot e_H = e_H$
+
+$\forall g \in G, n \in \ker \pi$:
+
+$\pi(gng^{-1}) = \pi(g) \circ \pi(n) \circ \pi(g^{-1}) = \pi(g) \cdot e_H \cdot \pi(g){}^{-1} = e_H$
+
+$gng^{-1} \in \ker \pi$
+
+\subsection*{\(G / \ker \pi \cong \text{Im } \pi\)}
+
+\begin{mdframed}
+\textbf{定理}：设 \(\pi: G \to H\) 是群同态，则有群同构
+\[
+G / \ker \pi \cong \text{Im } \pi
+\]
+
+\textbf{证明}：
+
+定义映射 \(\varphi: G / \ker \pi \to \text{Im } \pi\) 为
+\[
+\varphi(g \ker \pi) = \pi(g)
+\]
+
+\textbf{(1) 良定义性}：
+设 \(g_1 \ker \pi = g_2 \ker \pi\)，则 \(g_1^{-1}g_2 \in \ker \pi\)。
+因此 \(\pi(g_1^{-1}g_2) = e_H\)，即 \(\pi(g_1){}^{-1}\pi(g_2) = e_H\)，从而 \(\pi(g_1) = \pi(g_2)\)。
+故 \(\varphi(g_1 \ker \pi) = \varphi(g_2 \ker \pi)\)，映射定义合理。
+
+\textbf{(2) 同态性}：
+对任意 \(g_1 \ker \pi, g_2 \ker \pi \in G / \ker \pi\)，有
+\[
+\varphi\big((g_1 \ker \pi)(g_2 \ker \pi)\big) = \varphi(g_1 g_2 \ker \pi) = \pi(g_1 g_2) = \pi(g_1)\pi(g_2) = \varphi(g_1 \ker \pi) \varphi(g_2 \ker \pi)
+\]
+故 \(\varphi\) 是同态。
+
+\textbf{(3) 单射性}：
+计算 \(\varphi\) 的核：
+\[
+\ker \varphi = \{g \ker \pi \mid \varphi(g \ker \pi) = e_H\} = \{g \ker \pi \mid \pi(g) = e_H\} = \{g \ker \pi \mid g \in \ker \pi\} = \ker \pi
+\]
+即 \(\ker \varphi\) 是 \(G/\ker\pi\) 中的单位元（平凡子群）。同态核为平凡子群，故 \(\varphi\) 是单射。
+
+\textbf{(4) 满射性}：
+对任意 \(h \in \text{Im } \pi\)，由像的定义，存在 \(g \in G\) 使得 \(\pi(g) = h\)。
+则 \(\varphi(g \ker \pi) = \pi(g) = h\)。
+故 \(\varphi\) 是满射。
+
+综上，\(\varphi\) 是双射且为同态，因此 \(G / \ker \pi \cong \text{Im } \pi\)。 \hfill \(\square\)
+\end{mdframed}
+
+\subsection*{子群对应定理 (Correspondence Theorem)}
+
+\begin{mdframed}
+\textbf{定理}：设 \(\pi: G \to H\) 是群同态，则存在 \(G\) 中包含 \(\ker \pi\) 的子群与 \(\text{Im } \pi\) 的子群之间的一一对应：
+\[
+K \longleftrightarrow \pi(K)
+\]
+且该对应保持包含关系与正规性。
+\end{mdframed}
+
+\begin{center}
+\begin{tikzpicture}[
+  scale=1.8,
+  every node/.style={font=\small},
+  >=stealth
+]
+  % ===== 第一行：G 的子群链 (从左到右：ker π, K, G) =====
+  \node (ker) at (0, 0) {\(\ker\pi\)};
+  \node (K)   at (2, 0) {\(K\)};
+  \node (G)   at (4, 0) {\(G\)};
+
+  % 第一行的包含关系 (水平方向：从左向右递增)
+  \draw (ker) -- (K) node[midway, above] {\(\subseteq\)};
+  \draw (K) -- (G) node[midway, above] {\(\leq\ (\trianglelefteq)\)};
+
+  % ===== 第二行：H 的子群链 (从左到右：e_H, π(K), Im π) =====
+  \node (eH)  at (0, -2) {\(\{e_H\}\)};
+  \node (piK) at (2, -2) {\(\pi(K)\)};
+  \node (Im)  at (4, -2) {\(\operatorname{Im}\pi\)};
+
+  % 第二行的包含关系
+  \draw (eH) -- (piK) node[midway, above] {\(\subseteq\)};
+  \draw (piK) -- (Im) node[midway, above] {\(\leq\ (\trianglelefteq)\)};
+ 
+  % 若需强调 Im π ≤ H，单独标在 Im π 旁边
+  \node[right] at (Im.east) {\(\leq H\)};
+
+  % ===== 竖直对应箭头（前三个一一对应） =====
+  \draw[->, dashed] (ker) -- (eH);
+  \draw[->, dashed] (K) -- (piK);
+  \draw[->, dashed] (G) -- (Im);
+
+
+\end{tikzpicture}
+\end{center}
+
+
+\subsection*{循环群 (Cyclic Group)}
+$S \subseteq G$, $\langle S \rangle$ 包含 $S$ 的最小子群，为 $S$ 生成的子群。\\
+若 $\langle S \rangle = G \implies G$ 为循环群。\\
+$\langle g \rangle$ 由元素生成。\\
+$\varphi: \mathbb{Z} \to \langle g \rangle, \quad i \mapsto g^i$ \\
+$\langle g \rangle \cong \mathbb{Z} / \ker \varphi$
+
+\subsubsection*{元素的阶 (Order of element)}
+$\text{order}(g) = \text{最小的正整数 } n \text{ 使得 } g^n = e$ \\
+若 $\text{order}(g) = n \in \mathbb{Z}^+$ \\
+$\ker \varphi = n\mathbb{Z}$ \\
+$\langle g \rangle \cong \mathbb{Z} / n\mathbb{Z}$ \\
+否则 $\ker \varphi = 0, \ \langle g \rangle \cong \mathbb{Z}$
+
+\section*{9. 阿贝尔群与直积}
+
+\subsection*{有限生成阿贝尔群的结构}
+Decomposition of a finitely-generated Abelian group:
+\[
+\mathbb{Z} \times \mathbb{Z} \times \mathbb{Z}_{n_1} \times \mathbb{Z}_{n_2} \times \dots
+\]
+
+\subsubsection*{直积 (Direct product)}
+定义 $\times$: $(G_1, *) \times (G_2, *)$ \\
+$(a,b) \cdot (c,d) = (a*c, b*d)$（外直积）
+
+\subsubsection*{内直积}
+$N_1, N_2 \leq G$ 且 $G$ 为阿贝尔群。\\
+$N_1 \cap N_2 = \{e\}$ \\
+则 $N_1 \times N_2 = \{g_1 g_2 \mid g_1 \in N_1, g_2 \in N_2\}$
+
+\subsubsection*{有限生成阿贝尔群结构定理证明}
+$G$: 有限生成阿贝尔群 \\
+$G = \langle a_1, \dots, a_t \rangle$ \\
+设 $\langle S \rangle = G$ 且 $|S| \geq t$ \\
+归纳假设: 任意 $|S| < t$, $\langle S \rangle \cong \mathbb{Z}_{n_1} \times \dots$ \\
+定义 $\varphi: \mathbb{Z}^t \to G$ \\
+$(c_1, \dots, c_t) \to (c_1 a_1 + c_2 a_2 + \cdots + c_t a_t)$ \\
+Case 1: $\ker \varphi = \{0\} \implies \varphi$ 同构 \checkmark{} \\
+Case 2: $\ker \varphi \neq \{0\}$ \\
+pick ``smallest'' $c \in \ker \varphi \setminus \{0\}$ \\
+如：$L_1$ 范数 \\
+在 $a_1, \dots, a_t$ s.t. $G = \langle a_1, \dots, a_t \rangle$ \\
+$(c_1, \dots, c_t) \in \ker \varphi \setminus \{0\}$ \\
+若 $\exists c_i, c_j \neq 0, i \neq j$, 不妨设 $0 < c_1 \leq c_2$ \\
+则 $c_1(a_1 + a_2) + (c_2 - c_1)a_2 + c_3 a_3 + \dots \to e$ \quad (*) \\
+$c_1, c_2 - c_1, \dots$ 更小 \\
+故仅一个非零 \\
+设 $c_1 \neq 0$ \\
+要证: $G \cong \langle a_1 \rangle \times \langle a_2, \dots, a_t \rangle$ \\
+$G = \langle a_1 \rangle \times \langle a_2, \dots, a_t \rangle$ \\
+设 $e \neq g \in \langle a_1 \rangle \cap \langle a_2, \dots, a_t \rangle$ \\
+$g = d_1 a_1 = d_2 a_2 + \cdots + d_t a_t$ \\
+（同~$(*)$：可找 $a_1', \dots, a_n'$，
+$\gcd(c_1, \dots, c_n) a_i' + 0 + \cdots + 0 = c_1 a_1 + \cdots + c_n a_n$） \\
+$\exists a_1', \dots, a_t'$ generate $G$ \\
+$(\gcd(d_1, \dots, d_t), 0, \dots, 0) \in \ker$ \\
+上述过程+表示群乘法,乘以常数表示幂
+
+\section*{10. 群的结构与同态基本定理}
+
+\subsection*{中心 (Center)}
+群 \(G\) 的中心定义为
+\[
+Z(G)=\{g\in G\mid \forall h\in G,\ gh=hg\}.
+\]
+有时也记作 \(C(G)\)。
+
+\subsection*{中心化子 (Centralizer)}
+设 \(A\subseteq G\)，则 \(A\) 在 \(G\) 中的中心化子为
+\[
+C_G(A)=\{g\in G\mid \forall h\in A,\ gh=hg\}.
+\]
+特别地，\(C_G(G)=Z(G)\)。
+
+\subsection*{同态基本定理 (Fundamental Homomorphism Theorem)}
+设 \(\varphi:G\to H\) 是群同态，则有群同构
+\[
+G/\ker\varphi \cong \operatorname{Im}\varphi.
+\]
+具体映射为
+\[
+\overline{\varphi}:G/\ker\varphi \to \operatorname{Im}\varphi,\qquad
+g\ker\varphi \mapsto \varphi(g).
+\]
+若 \(\eta:G\to G/\ker\varphi\) 是自然同态，\(j:\operatorname{Im}\varphi\hookrightarrow H\) 是包含映射，则
+\[
+\varphi=j\circ \overline{\varphi}\circ \eta.
+\]
+即下图交换：
+\[
+\begin{tikzcd}
+G \arrow[r,"\varphi"] \arrow[d,"\eta"'] & H \\ % chktex 18
+G/\ker\varphi \arrow[r,"\overline{\varphi}"'] & \operatorname{Im}\varphi \arrow[u,"j"'] % chktex 18
+\end{tikzcd}
+\]
+
+\subsection*{子群与正规子群的性质}
+设 \(N\trianglelefteq G\)，\(H\le G\)。则
+\[
+N\cap H\le H,\qquad N\cap H\trianglelefteq H.
+\]
+并且
+\[
+h(N\cap H)=hN\cap hH=hN\cap H,
+\]
+\[
+(N\cap H)h=Nh\cap H.
+\]
+若 \(N\trianglelefteq G\)，则乘积
+\[
+NH=\{nh\mid n\in N,\ h\in H\}
+\]
+是 \(G\) 的子群。
+验证封闭性时，用到
+\[
+n_1h_1\cdot n_2h_2
+=
+(n_1n_2')(h_1h_2)
+\]
+其中 \(n_2'\in N\)，这是因为 \(N\) 正规，所以 \(h_1n_2h_1^{-1}\in N\)。
+
+\subsection*{第一同构定理}
+设 \(\varphi:G\to H\) 是群同态，则
+\[
+G/\ker\varphi \cong \operatorname{Im}\varphi.
+\]
+这是同态基本定理，也常称为第一同构定理。
+
+\subsection*{第二同构定理}
+设 \(N\trianglelefteq G\)，\(H\le G\)。则
+\[
+N\cap H\trianglelefteq H,\qquad NH\le G,
+\]
+并且
+\[
+H/(N\cap H)\cong NH/N.
+\]
+映射为
+\[
+\varphi:H\to NH/N,\qquad h\mapsto hN,
+\]
+其核为
+\[
+\ker\varphi=N\cap H,
+\]
+像为
+\[
+\operatorname{Im}\varphi=NH/N.
+\]
+因此由第一同构定理得
+\[
+H/(N\cap H)\cong NH/N.
+\]
+
+\subsection*{第三同构定理}
+设 \(N\trianglelefteq G\)，\(H\trianglelefteq G\)，且 \(H\trianglelefteq N\)。则
+\[
+N/H\trianglelefteq G/H,
+\]
+并且
+\[
+(G/H)\big/(N/H)\cong G/N.
+\]
+映射为
+\[
+\varphi:G\to (G/H)\big/(N/H),\qquad
+g\mapsto gH\mapsto (gH)(N/H).
+\]
+其核为
+\[
+\ker\varphi=N.
+\]
+因此由第一同构定理得
+\[
+(G/H)\big/(N/H)\cong G/N.
+\]
+
+\subsection*{子群对应定理 (Correspondence Theorem)}
+设 \(\varphi:G\to H\) 是群同态。则 \(G\) 中包含 \(\ker\varphi\) 的子群与 \(\operatorname{Im}\varphi\) 的子群之间存在一一对应：
+\[
+K\longleftrightarrow \varphi(K),
+\]
+逆对应为
+\[
+L\longmapsto \varphi^{-1}(L).
+\]
+该对应保持包含关系：
+\[
+K_1\subseteq K_2
+\iff
+\varphi(K_1)\subseteq \varphi(K_2).
+\]
+并且保持正规性：
+\[
+K\trianglelefteq G
+\iff
+\varphi(K)\trianglelefteq \operatorname{Im}\varphi.
+\]
+更一般地，若
+\[
+\ker\varphi\subseteq G'\le G,
+\]
+则
+\[
+G'\longleftrightarrow \varphi(G')=H',
+\]
+其中 \(H'\le \operatorname{Im}\varphi\)。并且
+\[
+G''\le G'
+\iff
+H''\le H',
+\]
+\[
+G''\trianglelefteq G'
+\iff
+H''\trianglelefteq H'.
+\]
+
+\subsection*{常见同构定理名称对照}
+\begin{itemize}
+  \item \textbf{第一同构定理}：
+  \[
+  G/\ker\varphi\cong \operatorname{Im}\varphi.
+  \]
+  \item \textbf{第二同构定理}：
+  \[
+  H/(N\cap H)\cong NH/N.
+  \]
+  \item \textbf{第三同构定理}：
+  \[
+  (G/H)\big/(N/H)\cong G/N.
+  \]
+  \item \textbf{子群对应定理}：
+  \[
+  \ker\varphi\subseteq K\le G
+  \quad\longleftrightarrow\quad
+  \varphi(K)\le \operatorname{Im}\varphi.
+  \]
+\end{itemize}
+
+\section*{11. 自同构与群作用}
+
+\subsection*{同态与自同构}
+$\text{Hom}(G, H)$: $G$ 到 $H$ 同态 \\
+$\text{End}(H) = \text{Hom}(H, H)$ \\
+$\text{Aut}(G) = \text{Isomorphism}(G, G)$ 群（自同构群） \\
+$\text{Aut}(\mathbb{Z}_m) \cong \mathbb{Z}_m^*$ \\
+$\varphi \mapsto \varphi(1)$ \\
+$\mathbb{Z}_m = \langle 1 \rangle \quad \varphi(1) = \pm k \implies \varphi(n) = nk$ \\
+$k$ 可逆 (考虑order不变)\\
+$\text{Aut}(\mathbb{Z}) \cong (\{-1, 1\}, \times)$ \\
+$\text{Inn}(G) = \{\varphi_a \mid \varphi_a(x) = axa^{-1}\}$ \\
+$\text{Inn:Inner automorphism}$（内自同构）
+
+\subsection*{群作用 (Group Action)}
+$\cdot : G \times A \to A$ \\
+$h \cdot (g \cdot a) = hg \cdot a$ \quad 每个 $g \in G \iff (\text{bijection } A \to A)$ \\
+$e \cdot a = a$ \\
+可视作 $\varphi:\operatorname{Hom}(G, \operatorname{Sym} A)$ \\
+$F^* \times M_n(F)$ \\
+$(a, M) \mapsto aM$ \\
+$ a \cdot M = \varphi(a)(M) $
+
+\subsection*{轨道与稳定子}
+
+\textbf{定义（作用）}：设群 \(G\) 作用在集合 \(A\) 上，则
+\[
+G \times A \to A
+\]
+\[
+(g, a) \mapsto g \cdot a
+\]
+也可写成
+\[
+(g, a) \mapsto a \cdot g^{-1}
+\]
+以及共轭作用
+\[
+(g, a) \mapsto gag^{-1} (a \in G)
+\]
+
+\textbf{定义（轨道）}：\(a\) 的轨道为
+\[
+Ga = \{g \cdot a \mid g \in G\}.
+\]
+
+\textbf{定义（稳定子）}：\(a\) 的稳定子为
+\[
+\operatorname{stab} a \le G,
+\]
+即
+\[
+\operatorname{stab} a = \{g \mid g \cdot a = a\}.
+\]
+
+\textbf{轨道—稳定子定理}：
+\[
+|Ga| = \frac{|G|}{|\operatorname{stab} a|}
+\]
+
+不能写成商群,不一定是正规子群
+
+\subsection*{轨道性质}
+
+\textbf{性质}：轨道要么不交，要么相同。
+
+即
+\[
+\forall a, b, \quad Ga = Gb \quad \text{或} \quad Ga \cap Gb = \emptyset.
+\]
+
+证明：假设
+\[
+Ga \cap Gb \neq \emptyset \implies \exists g \cdot a = h \cdot b,
+\]
+则
+\[
+g^{-1} h \cdot b = a, \qquad h^{-1} g \cdot a = b.
+\]
+则 orbit：\(a = b\)（先作用 \(g^{-1}h\)，则 \(a \to b\)；先作用 \(h^{-1}g\)，则 \(b \to a\)）。
+
+设群 \(G\) 作用在集合 \(A\) 上。对 \(a\in A\)，记其轨道为
+\[
+G\cdot a=\operatorname{Orb}_G(a)=\{g\cdot a\mid g\in G\}.
+\]
+所有轨道构成集合
+\[
+A/G:=\{G\cdot a\mid a\in A\},
+\]
+称为轨道空间或商集。这里 \(A/G\) 只是轨道组成的集合，不是群商。
+
+这些轨道给出 \(A\) 的一个不交并分解：
+\[
+A=\bigsqcup_{G\cdot a\in A/G} G\cdot a.
+\]
+因此
+\[
+|A|=\sum_{G\cdot a\in A/G}|G\cdot a|.
+\]
+若 \(G\) 有限，由轨道—稳定子定理
+\[
+|G\cdot a|=\frac{|G|}{|\operatorname{Stab}_G(a)|},
+\]
+所以
+\[
+|A|
+=
+\sum_{G\cdot a\in A/G}
+\frac{|G|}{|\operatorname{Stab}_G(a)|}.
+\]
+\end{document}
