@@ -1,0 +1,538 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% 定义定理环境（全部无编号）
+\newtheorem*{theorem}{定理}
+\newtheorem*{lemma}{引理}
+\newtheorem*{corollary}{推论}
+\newtheorem*{definition}{定义}
+\newtheorem*{example}{例}
+\newtheorem*{proposition}{命题}
+\theoremstyle{remark}
+\newtheorem*{remark}{注}
+
+% 强制章节标题左对齐（无编号）
+\ctexset{
+    section = {
+        format = \raggedright\Large\bfseries,
+        beforeskip = 1.5ex plus 0.5ex minus 0.2ex,
+        afterskip = 1.0ex plus 0.2ex minus 0.1ex,
+    },
+    subsection = {
+        format = \raggedright\large\bfseries,
+        beforeskip = 1.2ex plus 0.3ex minus 0.1ex,
+        afterskip = 0.8ex plus 0.2ex minus 0.1ex,
+    }
+}
+
+% 重定义 \maketitle 使标题、作者、日期完全左对齐
+\makeatletter
+\renewcommand{\maketitle}{%
+    \par
+    \begingroup
+    \raggedright
+    \vspace{1em}
+    {\LARGE\bfseries \@title \par}%
+    \vspace{0.5em}
+    {\large \@author \par}%
+    \vspace{0.5em}
+    {\large \@date \par}%
+    \vspace{1em}
+    \endgroup
+    \par
+}
+\makeatother
+
+\title{抽象代数笔记整理：群作用与 Sylow 定理}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{正规子群列与单群 (Normal Series and Simple Groups)}
+
+\begin{definition}[次正规列]
+设 \(G\) 是一个群。\(G\) 的一个\textbf{次正规列}（subnormal series）是指一个子群序列：
+\[
+G = G_0 \trianglerighteq G_1 \trianglerighteq G_2 \trianglerighteq \cdots \trianglerighteq G_n = \{e\}
+\]
+其中每个 \(G_{i+1}\) 都是 \(G_i\) 的正规子群，即 \(G_{i+1} \trianglelefteq G_i\)。
+若进一步要求每个 \(G_i\) 都是 \(G\) 的正规子群，则称为\textbf{正规列}（normal series）。
+\end{definition}
+
+\begin{definition}[单群 (Simple Group)]
+一个非平凡群 \(G\) 称为\textbf{单群}，如果它没有非平凡的正规子群。即对于任意 \(H \trianglelefteq G\)，必有 \(H = G\) 或 \(H = \{e\}\)。
+\end{definition}
+
+\begin{theorem}[合成列的存在性]
+对于任意有限群 \(G\)，都存在一个次正规列：
+\[
+G = G_0 \trianglerighteq G_1 \trianglerighteq \cdots \trianglerighteq G_n = \{e\}
+\]
+使得每个商群 \(G_i / G_{i+1}\) 都是单群。这样的序列称为 \(G\) 的\textbf{合成列}（composition series），商群 \(G_i / G_{i+1}\) 称为\textbf{合成因子}（composition factor）。
+\end{theorem}
+
+\begin{proof}[证明]
+若 \(G=\{e\}\)，则已经终止。否则，若 \(G\) 不是单群，则存在非平凡正规子群 \(H\trianglelefteq G\)，且 \(\{e\}<H<G\)。取这样的 \(H\)，并在 \(H\) 上重复同样过程。由于 \(G\) 有限，子群的阶严格递减，因此该过程在有限步后停止。停止时得到的每个商群 \(G_i/G_{i+1}\) 都没有非平凡正规子群，否则可以继续细化，故它们都是单群。
+\end{proof}
+
+\begin{remark}[合成列的进一步性质]
+若 \(G_i / G_{i+1}\) 是单群，且该商群是阿贝尔群，则它必为素数阶循环群 \(\mathbb{Z}_p\)。在合成列中，我们要求该商群是单群，即不存在中间的正规子群。
+\end{remark}
+
+\section*{群作用 (Group Action) 与基本概念}
+
+\begin{definition}[群作用]
+设 \(G\) 是一个群，\(S\) 是一个集合。群 \(G\) 在 \(S\) 上的作用是一个映射 \(*: G \times S \to S\)，满足：
+\begin{enumerate}
+    \item \(e * s = s, \forall s \in S\)；
+    \item \((gh) * s = g * (h * s), \forall g,h \in G, s \in S\)。
+\end{enumerate}
+\end{definition}
+
+\begin{example}[常见例子]
+\begin{itemize}
+    \item \textbf{共轭作用 (Conjugacy)}：\(G \times G \to G\)，定义为 \(g * x = gxg^{-1}\)。
+    \item \textbf{子群格上的作用}：\(G \times \mathrm{Lattice}(G) \to \mathrm{Lattice}(G)\)，其中 \(\mathrm{Lattice}(G) = \{H \mid H \le G\}\)，定义为 \(g * H = gHg^{-1}\)。
+\end{itemize}
+\end{example}
+
+\begin{definition}[轨道与稳定子]
+\begin{itemize}
+    \item \textbf{轨道}：\(\mathrm{Orb}(x) = Gx = \{g * x \mid g \in G\}\)。
+    \item \textbf{稳定子}：\(\mathrm{Stab}(x) = \{g \in G \mid g * x = x\}\)。
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[轨道-稳定子定理]
+\[
+|\mathrm{Orb}(x)| = \frac{|G|}{|\mathrm{Stab}(x)|}.
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+记 \(H=\mathrm{Stab}(x)\)。定义映射
+\[
+\varphi:\mathrm{Orb}(x)\to G/H,\qquad \varphi(gx)=gH.
+\]
+若 \(g_1x=g_2x\)，则 \(g_2^{-1}g_1x=x\)，故 \(g_2^{-1}g_1\in H\)，从而 \(g_1H=g_2H\)，说明 \(\varphi\) 良定义。反之，若 \(g_1H=g_2H\)，则 \(g_2^{-1}g_1\in H\)，故 \(g_1x=g_2x\)，说明 \(\varphi\) 是单射。显然 \(\varphi\) 是满射。因此
+\[
+|\mathrm{Orb}(x)|=|G/H|=[G:H]=\frac{|G|}{|H|}
+=\frac{|G|}{|\mathrm{Stab}(x)|}.
+\]
+\end{proof}
+
+\begin{proposition}[集合的轨道分解]
+若 \(S\) 在 \(G\) 作用下分解为若干个不相交的轨道，取每个轨道的一个代表元 \(x\)，则：
+\[
+|S| = \sum_{x \in \text{代表元}} \frac{|G|}{|\mathrm{Stab}(x)|}.
+\]
+\end{proposition}
+
+\begin{proof}[证明]
+轨道构成 \(S\) 的一个划分，即
+\[
+S=\bigsqcup_{x\in R} \mathrm{Orb}(x),
+\]
+其中 \(R\) 是轨道代表元集合。因此
+\[
+|S|=\sum_{x\in R}|\mathrm{Orb}(x)|.
+\]
+由轨道-稳定子定理，
+\[
+|\mathrm{Orb}(x)|=\frac{|G|}{|\mathrm{Stab}(x)|}.
+\]
+代入即得
+\[
+|S| = \sum_{x \in R} \frac{|G|}{|\mathrm{Stab}(x)|}.
+\]
+\end{proof}
+
+\section*{类方程 (Class Equation)}
+
+将群作用视为 \(G\) 在自身上的\textbf{共轭作用} \(g * x = gxg^{-1}\)。
+\begin{itemize}
+    \item 此时，轨道即为\textbf{共轭类 (Conjugacy Class)}。
+    \item 稳定子 \(\mathrm{Stab}(x) = \{g \in G \mid gxg^{-1} = x\} = \{g \in G \mid gx = xg\} = C_G(x)\)，即 \(x\) 的\textbf{中心化子}。
+\end{itemize}
+
+\begin{definition}[中心 (Center)]
+若轨道大小为 \(1\)，即 \(gxg^{-1} = x, \forall g \in G\)，等价于 \(xg = gx, \forall g \in G\)。这些元素构成群的中心 \(Z(G)\)。
+\end{definition}
+
+\begin{theorem}[类方程]
+将集合 \(G\) 按共轭类大小分类，大小为 1 的共轭类即为 \(Z(G)\)，其余共轭类大小 \(\ge 2\)：
+\[
+|G| = |Z(G)| + \sum_{i} [G : C_G(x_i)],
+\]
+其中 \(x_i\) 是大小 \(\ge 2\) 的共轭类的代表元。
+\end{theorem}
+
+\begin{proof}[证明]
+群 \(G\) 在自身上的共轭作用将 \(G\) 划分为若干共轭类。共轭类大小为 1 的元素恰好满足
+\[
+gxg^{-1}=x,\quad \forall g\in G,
+\]
+即 \(x\in Z(G)\)。因此大小为 1 的共轭类共有 \(|Z(G)|\) 个元素。
+
+对其余共轭类，取代表元 \(x_i\)。由轨道-稳定子定理，该共轭类的大小为
+\[
+|\mathrm{Orb}(x_i)|=[G:\mathrm{Stab}(x_i)]=[G:C_G(x_i)].
+\]
+将所有共轭类的大小相加，即得
+\[
+|G| = |Z(G)| + \sum_{i} [G : C_G(x_i)].
+\]
+\end{proof}
+
+\begin{corollary}\textbf{\(p\)-群的中心非平凡}
+
+设 \(G\) 是 \(p\)-群，即 \(|G| = p^k\) (\(k \ge 1\))。由类方程：
+\[
+|G| = |Z(G)| + \sum_{i} [G : C_G(x_i)].
+\]
+对于每个非中心共轭类，\([G:C_G(x_i)]>1\) 且整除 \(|G|=p^k\)，故为 \(p\) 的正幂。于是右边求和项被 \(p\) 整除，从而
+\[
+|Z(G)| \equiv |G| \equiv 0 \pmod p.
+\]
+因此 \(p\mid |Z(G)|\)，特别地 \(|Z(G)|>1\)，即中心非平凡。
+\end{corollary}
+
+\begin{proof}[证明]
+由类方程，
+\[
+|G|=|Z(G)|+\sum_i [G:C_G(x_i)].
+\]
+对每个非中心共轭类代表元 \(x_i\)，有 \(x_i\notin Z(G)\)，故 \(C_G(x_i)\neq G\)，从而
+\[
+[G:C_G(x_i)]>1.
+\]
+又 \([G:C_G(x_i)]\) 整除 \(|G|=p^k\)，所以它是 \(p\) 的正幂，特别地被 \(p\) 整除。因此
+\[
+\sum_i [G:C_G(x_i)]\equiv 0\pmod p.
+\]
+而 \(|G|=p^k\equiv 0\pmod p\)，由类方程得
+\[
+|Z(G)|\equiv 0\pmod p.
+\]
+所以 \(p\mid |Z(G)|\)，特别地 \(|Z(G)|>1\)。
+\end{proof}
+
+\begin{corollary}\textbf{阶为 \(p^2\) 的群是阿贝尔群}
+
+\begin{proof}[证明]
+由 \(p\)-群中心非平凡，\(|Z(G)|>1\)。又 \(Z(G)\le G\)，由拉格朗日定理，
+\[
+|Z(G)|\mid |G|=p^2,
+\]
+所以
+\[
+|Z(G)|=p \quad \text{或} \quad |Z(G)|=p^2.
+\]
+
+若 \(|Z(G)|=p\)，取非中心元素 \(x\in G\setminus Z(G)\)。考虑 \(x\) 的中心化子
+\[
+C_G(x)=\{g\in G\mid gx=xg\}.
+\]
+则 \(C_G(x)\le G\)，且
+\[
+Z(G)\le C_G(x).
+\]
+因为 \(x\notin Z(G)\)，所以 \(x\) 不与所有元素交换，因此
+\[
+C_G(x)\neq G.
+\]
+又
+\[
+|C_G(x)|\mid |G|=p^2,
+\]
+并且
+\[
+|Z(G)|=p\mid |C_G(x)|.
+\]
+所以
+\[
+|C_G(x)|=p \quad \text{或} \quad p^2.
+\]
+但 \(C_G(x)\neq G\)，故
+\[
+|C_G(x)|\neq p^2,
+\]
+于是
+\[
+|C_G(x)|=p.
+\]
+又因为 \(Z(G)\le C_G(x)\) 且 \(|Z(G)|=|C_G(x)|=p\)，所以
+\[
+C_G(x)=Z(G).
+\]
+
+另一方面，由 \(x\in C_G(x)\) 可知
+\[
+x\in C_G(x)=Z(G),
+\]
+这与 \(x\notin Z(G)\) 矛盾。
+
+因此 \(|Z(G)|=p\) 不可能，只能有
+\[
+|Z(G)|=p^2.
+\]
+于是
+\[
+Z(G)=G,
+\]
+故 \(G\) 是阿贝尔群。
+\end{proof}
+\end{corollary}
+
+\section*{Burnside 引理 (Burnside's Lemma)}
+
+\begin{theorem}[Burnside 引理]
+群 \(G\) 作用在有限集合 \(S\) 上，轨道个数为：
+\[
+\#\mathrm{Orbit} = \frac{1}{|G|} \sum_{g \in G} |S_g|,
+\]
+其中 \(S_g = \{x \in S \mid gx = x\}\) 是 \(g\) 的不动点集合。
+\end{theorem}
+
+\begin{proof}[证明 (Double Counting)]
+考虑集合
+\[
+X = \{(g, x) \in G \times S \mid gx = x\}.
+\]
+\begin{itemize}
+    \item \textbf{按 \(g\) 计数}：
+    \[
+    |X| = \sum_{g \in G} |S_g|.
+    \]
+    \item \textbf{按轨道计数}：设 \(O\) 是一个轨道。对任意 \(x\in O\)，由轨道-稳定子定理，\(|O|=|G|/|\mathrm{Stab}(x)|\)，故 \(|\mathrm{Stab}(x)|=|G|/|O|\)。于是
+    \[
+    \sum_{x \in O} |\mathrm{Stab}(x)|
+    = \sum_{x \in O} \frac{|G|}{|O|}
+    = |G|.
+    \]
+    因此，每个轨道贡献 \(|G|\) 个满足 \(gx=x\) 的对 \((g,x)\)。若轨道个数为 \(r\)，则
+    \[
+    |X| = r|G|.
+    \]
+\end{itemize}
+联立两式得
+\[
+r|G| = \sum_{g \in G} |S_g|,
+\]
+即
+\[
+r = \frac{1}{|G|} \sum_{g \in G} |S_g|.
+\]
+\end{proof}
+
+\begin{example}[\(S_n\) 的共轭类]
+在对称群 \(S_n\) 中，共轭作用下的轨道即为\textbf{置换的轮换结构}。
+\begin{itemize}
+    \item 两个置换共轭 \(\iff\) 它们的轮换结构相同（即轮换的长度分布相同）。
+    \item 例如在 \(S_4\) 中：
+    \begin{itemize}
+        \item 恒等变换 \((1)\)：1 个；
+        \item 对换 \((1,2)\)：\(\binom{4}{2}=6\) 个；
+        \item 3-轮换 \((1,2,3)\)：\(4 \times 2 = 8\) 个；
+        \item 4-轮换 \((1,2,3,4)\)：\(3! = 6\) 个；
+        \item 双对换 \((1,2)(3,4)\)：3 个。
+    \end{itemize}
+    \item 总数：\(1+6+8+6+3 = 24 = 4!\)，验证了类方程的完备性。
+\end{itemize}
+\end{example}
+
+\section*{Sylow 定理 (Sylow Theorems)}
+
+\begin{definition}[基本定义]
+设 \(G\) 是有限群，\(|G| = p^k \cdot m\)，其中 \(p \nmid m\)。
+\begin{itemize}
+    \item \textbf{\(p\)-子群}：阶为 \(p\) 的幂的子群。
+    \item \textbf{Sylow \(p\)-子群}：阶恰好为 \(p^k\) 的子群（即最大的 \(p\)-子群）。
+\end{itemize}
+\end{definition}
+
+\subsection*{第一 Sylow 定理 (存在性)}
+\begin{theorem}
+任意有限群 \(G\)，存在 Sylow \(p\)-子群。
+\end{theorem}
+\begin{proof}[证明 (数学归纳法)]
+对 \(|G|\) 进行归纳。由类方程
+\[
+|G| = |Z(G)| + \sum_{i} [G : C_G(x_i)].
+\]
+\begin{enumerate}
+    \item \textbf{情形一}：若 \(p \mid |Z(G)|\)。由于 \(Z(G)\) 是阿贝尔群，由 Cauchy 定理，\(Z(G)\) 中存在一个阶为 \(p\) 的元素 \(c\)。考虑商群 \(G/\langle c \rangle\)，其阶为 \(p^{k-1}m\)。由归纳假设，\(G/\langle c\rangle\) 存在 Sylow \(p\)-子群 \(\overline{P}\)。设 \(P\) 是 \(\overline{P}\) 在自然同态 \(G\to G/\langle c\rangle\) 下的原像，则
+    \[
+    |P| = |\overline{P}|\cdot |\langle c\rangle| = p^{k-1}\cdot p = p^k,
+    \]
+    故 \(P\) 是 \(G\) 的 Sylow \(p\)-子群。
+    
+    \item \textbf{情形二}：若 \(p \nmid |Z(G)|\)。由类方程，右边求和项中至少有一项不被 \(p\) 整除，即存在某个 \(x_i\) 使得
+    \[
+    p \nmid [G : C_G(x_i)].
+    \]
+    因为 \(|G|=p^k m\)，所以 \(p^k \mid |C_G(x_i)|\)。又 \(x_i\notin Z(G)\)，故 \(C_G(x_i)\neq G\)，从而 \(|C_G(x_i)|<|G|\)。由归纳假设，\(C_G(x_i)\) 有 Sylow \(p\)-子群，它自然也是 \(G\) 的 Sylow \(p\)-子群。
+\end{enumerate}
+\end{proof}
+
+\subsection*{第二 Sylow 定理 (共轭性)}
+\begin{theorem}
+设 \(P\) 是 \(G\) 的一个 Sylow \(p\)-子群，\(Q\) 是 \(G\) 的任意 \(p\)-子群，则存在 \(g \in G\)，使得 \(Q \subseteq gPg^{-1}\)。
+\end{theorem}
+\begin{corollary}\textbf{第二 Sylow 定理的推论}
+\begin{enumerate}
+    \item 任意两个 Sylow \(p\)-子群共轭。
+    \item 任意 \(p\)-子群都包含在某个 Sylow \(p\)-子群中。
+    \item Sylow \(p\)-子群唯一当且仅当它是正规的。
+    \item Sylow \(p\)-子群 \(P\) 是正规化子 \(N_G(P)\) 中唯一的 Sylow \(p\)-子群。
+\end{enumerate}
+\end{corollary}
+\begin{proof}[证明思路 (群作用在陪集上)]
+考虑 \(Q\) 作用在 \(G/P\) 的左陪集空间上，作用定义为
+\[
+q * (gP) = qgP.
+\]
+先验证良定义：若 \(gP=g'P\)，则 \(g'=gp\) 对某个 \(p\in P\) 成立，于是
+\[
+q g'P = q g p P = q g P,
+\]
+故作用良定义。
+
+其次，
+\[
+|G/P| = [G:P] = m,
+\]
+且 \(p\nmid m\)。由于 \(Q\) 的阶是 \(p\) 的幂，\(Q\) 作用在 \(G/P\) 上时，每个轨道大小整除 \(|Q|\)，从而是 \(p\) 的幂。若所有轨道大小都大于 1，则每个轨道大小都被 \(p\) 整除，从而总数 \(m\) 被 \(p\) 整除，矛盾。因此至少有一个轨道大小为 1，即存在不动点 \(gP\)。
+
+设 \(gP\) 是不动点，则对任意 \(q\in Q\)，
+\[
+qgP = gP.
+\]
+于是 \(g^{-1}qg\in P\)，即 \(q\in gPg^{-1}\)。因此
+\[
+Q \subseteq gPg^{-1}.
+\]
+\end{proof}
+
+\begin{proof}[推论的证明]
+\begin{enumerate}
+    \item 若 \(P_1,P_2\) 都是 Sylow \(p\)-子群，取 \(Q=P_2\)，由第二 Sylow 定理存在 \(g\in G\) 使得
+    \[
+    P_2\subseteq gP_1g^{-1}.
+    \]
+    但 \(|P_2|=|P_1|=|gP_1g^{-1}|\)，故
+    \[
+    P_2=gP_1g^{-1}.
+    \]
+    因此任意两个 Sylow \(p\)-子群共轭。
+    
+    \item 设 \(Q\) 是任意 \(p\)-子群，取一个 Sylow \(p\)-子群 \(P\)。由第二 Sylow 定理，存在 \(g\in G\) 使得
+    \[
+    Q\subseteq gPg^{-1}.
+    \]
+    而 \(gPg^{-1}\) 仍是 Sylow \(p\)-子群，故 \(Q\) 包含在某个 Sylow \(p\)-子群中。
+    
+    \item 若 Sylow \(p\)-子群 \(P\) 唯一，则对任意 \(g\in G\)，\(gPg^{-1}\) 也是 Sylow \(p\)-子群，由唯一性 \(gPg^{-1}=P\)，故 \(P\trianglelefteq G\)。
+    反之，若 \(P\trianglelefteq G\)，设 \(P'\) 是任意 Sylow \(p\)-子群。由推论 1，存在 \(g\in G\) 使得 \(P'=gPg^{-1}\)。又 \(P\trianglelefteq G\)，故 \(gPg^{-1}=P\)，所以 \(P'=P\)，即 \(P\) 唯一。
+    
+    \item 显然 \(P\subseteq N_G(P)\)，且 \(P\) 是 \(N_G(P)\) 的 Sylow \(p\)-子群。设 \(P'\) 是 \(N_G(P)\) 的任意 Sylow \(p\)-子群，则 \(P'\) 也是 \(G\) 的 \(p\)-子群。由推论 2，存在 \(g\in G\) 使得 \(P'\subseteq gPg^{-1}\)。但 \(P\trianglelefteq N_G(P)\)，故 \(P\) 在 \(N_G(P)\) 中正规，由推论 3 知 \(P\) 是 \(N_G(P)\) 中唯一的 Sylow \(p\)-子群，因此 \(P'=P\)。
+\end{enumerate}
+\end{proof}
+
+\subsection*{第三 Sylow 定理 (计数)}
+\begin{theorem}
+设 \(n_p\) 为 \(G\) 中 Sylow \(p\)-子群的个数，则：
+\begin{enumerate}
+    \item \(n_p \mid m\)；
+    \item \(n_p \equiv 1 \pmod p\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+    \item \textbf{证明 \(n_p \mid m\)}：\\
+    \(G\) 共轭作用在所有 Sylow \(p\)-子群集合上。由第二定理，这是一个传递作用。取一个 Sylow \(p\)-子群 \(P\)，则稳定子为
+    \[
+    N_G(P)=\{g\in G\mid gPg^{-1}=P\}.
+    \]
+    因此
+    \[
+    n_p = [G : N_G(P)].
+    \]
+    由于 \(P \le N_G(P)\)，有
+    \[
+    [G:P] = [G:N_G(P)][N_G(P):P].
+    \]
+    而 \([G:P]=m\)，故
+    \[
+    m = n_p \cdot [N_G(P):P],
+    \]
+    所以 \(n_p \mid m\)。
+    
+    \item \textbf{证明 \(n_p \equiv 1 \pmod p\)}：\\
+    考虑 \(P\) 共轭作用在所有 Sylow \(p\)-子群集合 \(Syl_p(G)\) 上。轨道大小整除 \(|P|\)，故为 \(p\) 的幂。
+    \begin{itemize}
+        \item 若某个轨道大小为 1，设其代表元为 \(P_i\)，则对任意 \(x\in P\)，有 \(xP_ix^{-1}=P_i\)，即 \(P\subseteq N_G(P_i)\)。于是 \(P\) 和 \(P_i\) 都是 \(N_G(P_i)\) 的 Sylow \(p\)-子群。由推论 4，\(P_i\) 是 \(N_G(P_i)\) 中唯一的 Sylow \(p\)-子群，故 \(P=P_i\)。因此轨道大小为 1 的轨道只有一个，即 \(\{P\}\) 自身。
+        \item 其他轨道大小都是 \(p\) 的正幂，从而是 \(p\) 的倍数。
+    \end{itemize}
+    因此
+    \[
+    n_p = 1 + \sum (\text{大小为 } p \text{ 的倍数的轨道}) \equiv 1 \pmod p.
+    \]
+\end{enumerate}
+\end{proof}
+
+\section*{Sylow 定理的应用示例}
+
+\begin{example}[\(|G| = 35 = 5 \times 7\) 的群是阿贝尔群]
+\begin{align*}
+    n_5 \mid 7, \quad n_5 &\equiv 1 \pmod 5 \Rightarrow n_5 = 1 \Rightarrow P_5 \trianglelefteq G, \\
+    n_7 \mid 5, \quad n_7 &\equiv 1 \pmod 7 \Rightarrow n_7 = 1 \Rightarrow P_7 \trianglelefteq G.
+\end{align*}
+因为 \(P_5\cap P_7=\{e\}\)，所以
+\[
+|P_5P_7|=\frac{|P_5||P_7|}{|P_5\cap P_7|}=5\cdot 7=35=|G|,
+\]
+故 \(G=P_5P_7\)。又 \(P_5,P_7\) 都是正规子群且交集为 \(\{e\}\)，所以
+\[
+G \cong P_5 \times P_7 \cong \mathbb{Z}_5 \times \mathbb{Z}_7 \cong \mathbb{Z}_{35},
+\]
+是阿贝尔群。
+\end{example}
+
+\begin{example}[\(|G| = pq\) (\(q > p\) 为素数) 的群]
+\begin{align*}
+    n_q \mid p, \quad n_q &\equiv 1 \pmod q.
+\end{align*}
+由于 \(n_q\mid p\)，故 \(n_q=1\) 或 \(n_q=p\)。但 \(p<q\)，而 \(n_q\equiv1\pmod q\)，所以 \(n_q=1\)。因此
+\[
+\langle g\rangle \trianglelefteq G
+\]
+其中 \(\langle g\rangle\) 是 \(q\) 阶 Sylow 子群。
+
+又
+\[
+n_p \mid q, \quad n_p \equiv 1 \pmod p,
+\]
+故 \(n_p=1\) 或 \(n_p=q\)。
+\begin{itemize}
+    \item 若 \(q \not\equiv 1 \pmod p\)，则 \(n_p\neq q\)，故 \(n_p=1\)。此时 \(p\) 阶 Sylow 子群也正规，且与 \(q\) 阶 Sylow 子群交集为 \(\{e\}\)，于是
+    \[
+    G \cong \mathbb{Z}_p \times \mathbb{Z}_q \cong \mathbb{Z}_{pq},
+    \]
+    为阿贝尔群。
+    \item 若 \(q \equiv 1 \pmod p\)，则 \(n_p\) 可能为 \(q\)。此时 \(q\) 阶 Sylow 子群正规，记 \(Q\trianglelefteq G\)，而 \(p\) 阶子群 \(P\) 作用在 \(Q\) 上。由于 \(\operatorname{Aut}(Q)\cong \mathbb{Z}_{q-1}\) 中有 \(p\) 阶元素，故可形成非平凡半直积
+    \[
+    G \cong \mathbb{Z}_q \rtimes \mathbb{Z}_p.
+    \]
+    此时 \(G\) 可以是非阿贝尔群。
+\end{itemize}
+\end{example}
+
+\end{document}
