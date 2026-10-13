@@ -1,0 +1,83 @@
+% ===========================================================================
+\section{类方程及其应用}\label{sec:class-equation}
+
+\subsection{类方程（Class Equation）}
+
+\begin{definition}[中心（Centre）]
+群 $G$ 的\keyword{中心}为
+\[
+  C_G = \{\,x\in G \mid \forall g\in G,\ gx = xg\,\}.
+\]
+\end{definition}
+
+把一般的轨道分解等式
+\[
+  |X| = \sum_{\text{每个轨道取代表 } x_i} \frac{|G|}{|\Stab(x_i)|}
+\]
+应用到\keyword{共轭作用}（此时 $X = G$）。共轭作用下 $x$ 的轨道
+\[
+  \Conj(x) = \{\,gxg^{-1} \mid g\in G\,\}
+\]
+称为 $x$ 的\keyword{共轭类}（Conjugacy Class）。把轨道按大小分两类：
+
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item \keyword{大小为 1 的轨道：}$|\Orb(x)| = 1$ 意味着对任何 $g\in G$
+        都有 $gxg^{-1} = x$，即 $x$ 与所有元素交换——这些元素恰好组成中心
+        $C_G$，共贡献 $|C_G|$；
+  \item \keyword{大小大于 1 的轨道：}共轭作用下
+        \[
+          \Stab(x) = \{\,g\in G \mid gxg^{-1} = x\,\} = C_G(x),
+        \]
+        即 $x$ 的\keyword{中心化子}（Centralizer，所有与 $x$ 交换的元素
+        组成的子群）。
+\end{itemize}
+
+\begin{theorem}[类方程]
+\[
+  |G| = |C_G| + \sum_{i}\, [\,G : C_G(x_i)\,],
+\]
+其中求和跑遍每个大小大于 1 的共轭类的一个代表元 $x_i$。
+\end{theorem}
+
+\subsection{类方程的应用}
+
+\begin{definition}[$p$-群]
+群 $G$ 称为 \keyword{$p$-群}，如果 $|G|$ 是素数 $p$ 的幂。
+\end{definition}
+
+\subsubsection{$p$-群的中心非平凡}
+
+\begin{theorem}[$p$-群的中心非平凡]
+任何非平凡 $p$-群 $G$ 的中心都满足 $|C_G| > 1$。
+\end{theorem}
+
+\begin{proof}
+看类方程 $|G| = |C_G| + \sum_i [G:C_G(x_i)]$：
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item 左边 $|G|$ 是 $p$ 的幂，故被 $p$ 整除；
+  \item 每一项 $[G:C_G(x_i)]$ 是 $|G|$ 的因数且大于 1，而 $|G|$ 是 $p$
+        的幂，所以每一项都被 $p$ 整除；
+  \item 因此 $|C_G|$ 也被 $p$ 整除，即中心里至少有 $p$ 个元素。
+\end{itemize}
+\end{proof}
+
+\subsubsection{$p^2$ 阶群是阿贝尔群}
+
+\begin{theorem}[$p^2$ 阶群是阿贝尔群]
+若 $|G| = p^2$（$p$ 为素数），则 $G$ 是阿贝尔群。
+\end{theorem}
+
+\begin{proof}
+由上一定理，$p\mid |C_G|$；又 $C_G\le G$，由 Lagrange 定理
+$|C_G|\in\{p,\,p^2\}$。若 $|C_G|=p^2$ 则 $G=C_G$，证完。只需排除
+$|C_G|=p$：
+
+假设 $|C_G| = p$，取 $x\notin C_G$，考虑中心化子 $C_G(x)$：
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item $C_G\subseteq C_G(x)$（中心元素与一切元素交换，当然与 $x$ 交换）；
+  \item $x\in C_G(x)$ 而 $x\notin C_G$，故 $|C_G(x)| \ge p+1$。
+\end{itemize}
+但 $C_G(x)\le G$ 的大小只能是 $1, p, p^2$；既含 $p+1$ 个元素，只能
+$|C_G(x)| = p^2$，即 $x$ 与所有元素交换，$x\in C_G$——矛盾。故
+$|C_G|=p^2$，$G$ 阿贝尔。
+\end{proof}

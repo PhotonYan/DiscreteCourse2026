@@ -1,0 +1,90 @@
+% ===========================================================================
+\section{Burnside 引理与共轭类}\label{sec:burnside}
+
+\subsection{Burnside 引理（轨道计数）}
+
+\block{问题}
+数集合 $X$ 在群 $G$ 作用下有多少条轨道。
+
+\block{记号}
+对 $g\in G$，记 $g$ 的\keyword{不动点集}为
+\[
+  S_g = \{\,x\in X \mid g\cdot x = x\,\}.
+\]
+
+\begin{theorem}[Burnside 引理]
+\[
+  \text{轨道个数} = \frac{1}{|G|}\sum_{g\in G} |S_g|.
+\]
+\end{theorem}
+
+\begin{proof}
+（双重计数）考虑集合 $T = \{\,(g,x)\in G\times X \mid g\cdot x = x\,\}$。
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item \keyword{按 $g$ 拆：}固定 $g$，这样的 $x$ 恰有 $|S_g|$ 个，故
+        \[
+          |T| = \sum_{g\in G}|S_g|;
+        \]
+  \item \keyword{按 $x$ 拆：}固定 $x$，这样的 $g$ 恰有 $|\Stab(x)|$ 个，故
+        \[
+          |T| = \sum_{x\in X}|\Stab(x)|.
+        \]
+        同一条轨道上的元素有共轭的稳定子：若 $y = g\cdot x$，则
+        $\Stab(y) = g\,\Stab(x)\,g^{-1}$，大小相同。于是每条轨道
+        $\mathcal{O}$ 贡献
+        \[
+          \sum_{x\in\mathcal{O}}|\Stab(x)|
+          = |\mathcal{O}|\cdot|\Stab(x)|
+          = |G|,
+        \]
+        其中最末一步用轨道与稳定子定理。把各条轨道的贡献相加，得
+        $|T| = (\text{轨道个数})\cdot|G|$。
+\end{itemize}
+合起来：
+\[
+  \sum_{g\in G}|S_g| \;=\; |T| \;=\; (\text{轨道个数})\cdot|G|,
+\]
+两边同除以 $|G|$ 即得 Burnside 引理。
+\end{proof}
+
+\begin{remark}[用法]
+想数轨道个数，就对每个群元素数它的不动点，加起来再除以 $|G|$。
+\end{remark}
+
+\subsection{例子：对称群 $S_n$ 的共轭类}
+
+考虑 $S_n$ 对自身的共轭作用；共轭作用的轨道称为\keyword{共轭类}
+（conjugacy class），即 $\Conj(x) = \{\,gxg^{-1} \mid g\in S_n\,\}$。
+
+\block{共轭在置换上的效果}
+以 3-轮换为例，
+\[
+  g\,(1\,2\,3)\,g^{-1} = \big(g(1)\ g(2)\ g(3)\big).
+\]
+推导：$g(1)$ 先被 $g^{-1}$ 映到 $1$，再被 $(1\,2\,3)$ 映到 $2$，再被 $g$
+映到 $g(2)$；其余同理。
+
+\block{结论}
+$S_n$ 中两个置换共轭，\keyword{当且仅当}它们拆成不相交轮换后轮换的长度
+对应相等（\keyword{轮换型}相同）。例如一个 3-轮换无论如何共轭也不会变成
+2-轮换。
+
+\block{枚举 $S_4$ 的共轭类（按轮换型）}
+\begin{center}
+\begin{tabularx}{0.62\linewidth}{Lr}
+  \toprule
+  轮换型 & 个数 \\
+  \midrule
+  恒等 $e$                          & $1$ \\
+  对换 $(\cdot\,\cdot)$             & $\binom{4}{2} = 6$ \\
+  3-轮换                            & $\binom{4}{3}\times 2 = 8$ \\
+  双对换 $(\cdot\,\cdot)(\cdot\,\cdot)$ & $3$ \\
+  4-轮换                            & $6$ \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+合计 $1+6+8+3+6 = 24 = |S_4|$。
+
+\block{$S_4$ 的类方程}
+$24 = 1 + 6 + 8 + 3 + 6$。其中“中心部分”只有恒等元自己：
+$C_{S_4} = \{e\}$。

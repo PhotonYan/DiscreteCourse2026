@@ -1,0 +1,231 @@
+% ===========================================================================
+\section{Sylow 定理}\label{sec:sylow}
+
+\subsection{Sylow 理论：定义}
+
+设 $G$ 为有限群，$|G| = p^k m$，$p$ 为素数且 $p\nmid m$（$p^k$ 是 $|G|$
+中 $p$ 的最高幂次）。
+
+\begin{definition}[$p$-子群]
+$H\le G$ 称为 \keyword{$p$-子群}，如果它是子群且 $|H|$ 是 $p$ 的幂。
+\end{definition}
+
+\begin{definition}[Sylow $p$-子群]
+$H\le G$ 称为 \keyword{Sylow $p$-子群}，如果它是 $p$-子群且
+$|H| = p^k$——$p$ 的幂次取到最大。
+\end{definition}
+
+\begin{example}[$G = S_4$]
+$|S_4| = 24 = 2^3\cdot 3$。
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item $p=3$：Sylow $3$-子群大小为 $3$，例如 $\langle(1\,2\,3)\rangle$；
+  \item $p=2$：Sylow $2$-子群大小应为 $8$；其存在性由下面的 Sylow 第一
+        定理保证，具体构造见本节末尾的例子。
+\end{itemize}
+\end{example}
+
+\subsection{Sylow 第一定理（存在性）}
+
+\begin{theorem}[Sylow 第一定理]
+对任何有限群 $G$ 与素数 $p$，Sylow $p$-子群存在。
+\end{theorem}
+
+\begin{proof}
+（对 $|G|$ 归纳）设 $|G| = p^k m$，$p\nmid m$，$k\ge 1$。归纳假设：
+命题对所有更小的群成立。考虑类方程
+\[
+  |G| = |C_G| + \sum_i [G : C_G(x_i)],
+\]
+分两种情形。
+
+\keyword{情形 1：$p\nmid |C_G|$。}左边被 $p$ 整除而 $|C_G|$ 不被 $p$
+整除，故右端至少有一项不被 $p$ 整除：存在 $x_i$ 使 $p\nmid [G:C_G(x_i)]$，
+从而 $p^k \mid |C_G(x_i)|$。又 $C_G(x_i)$ 比 $G$ 小（因为
+$[G:C_G(x_i)]>1$），由归纳假设其中有 $p^k$ 阶子群，即 $G$ 的 Sylow
+$p$-子群。
+
+\keyword{情形 2：$p\mid |C_G|$。}中心是阿贝尔群，由（阿贝尔群的）
+Cauchy 定理，中心里有 $p$ 阶元素 $c$。考虑 $\langle c\rangle$：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item $\langle c\rangle\le C_G$，其中元素与 $G$ 的一切元素交换，
+        故 $\langle c\rangle\normal G$；
+  \item 商群 $G/\langle c\rangle$ 的阶为 $p^{k-1}m$，由归纳假设其中有
+        $p^{k-1}$ 阶子群 $\bar H$；
+  \item 取 $\bar H$ 在自然同态 $\pi: G\to G/\langle c\rangle$ 下的原像
+        $H=\pi^{-1}(\bar H)$，则 $H\le G$ 且
+        $|H| = |\bar H|\cdot|\langle c\rangle| = p^{k-1}\cdot p = p^k$，
+        即为 Sylow $p$-子群。
+\end{itemize}
+\end{proof}
+
+\begin{remark}[回到 $S_4$]
+先看 $\{e,\ (1\,2),\ (3\,4),\ (1\,2)(3\,4)\}$——一个 4 阶 $2$-子群
+（还不是 Sylow）；再把 $(1\,3)(2\,4)$ 加进来，膨胀成一个 8 阶子群——
+这就是 $S_4$ 的 Sylow $2$-子群（同构于二面体群 $D_4$，阶为 $8$）。
+\end{remark}
+
+\subsection{Sylow 第二定理}
+
+\begin{theorem}[Sylow 第二定理]
+设 $P$ 是 $G$ 的任一 Sylow $p$-子群，$Q$ 是 $G$ 的任一 $p$-子群，
+则存在 $g\in G$ 使得
+\[
+  Q \le gPg^{-1},
+\]
+即任何 $p$-子群都含于该 Sylow $p$-子群的某个共轭之中。
+\end{theorem}
+
+\begin{corollary}
+\leavevmode
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item \keyword{任意两个 Sylow $p$-子群互相共轭。}取 $Q$ 也是 Sylow
+        $p$-子群，则 $Q\le gPg^{-1}$，而两边大小相同，故 $Q = gPg^{-1}$。
+  \item \keyword{任何 $p$-子群都含于某个 Sylow $p$-子群。}
+  \item \keyword{Sylow $p$-子群唯一 $\iff$ 它是正规子群。}
+        \begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+          \item $(\Leftarrow)$ 若 $P\normal G$：对任何 $g$，
+                $gPg^{-1} = P$；而所有 Sylow $p$-子群都是 $P$ 的共轭，
+                故只有自己一个。
+          \item $(\Rightarrow)$ 若 $P$ 唯一：对任何 $g$，$gPg^{-1}$ 仍是
+                Sylow $p$-子群（共轭不改变大小），由唯一性 $gPg^{-1}=P$，
+                故 $P$ 正规。
+        \end{itemize}
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}[Sylow 第二定理的证明]
+设 $P$ 为 Sylow $p$-子群，$Q$ 为任意 $p$-子群，让 $Q$ \keyword{左乘作用}
+在 $P$ 的全体左陪集组成的集合 $G/P$ 上：
+\[
+  q\cdot(gP) := (qg)P.
+\]
+注意这里的 $G/P$ \keyword{不是商群}，只是左陪集的集合（没有假设 $P$
+正规）。不难验证这确实是一个群作用。
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 陪集个数 $[G:P] = m$ 不被 $p$ 整除（$P$ 已把 $|G|$ 中 $p$ 的
+        幂次全用掉了）。而 $[G:P]$ 等于各轨道大小之和，所以
+        \keyword{必存在一条轨道，其大小不被 $p$ 整除}；
+  \item 另一方面，由轨道与稳定子定理，每条轨道大小整除 $|Q|$（$p$ 的幂）；
+        不被 $p$ 整除的 $p$ 的幂只有 $1$——故存在\keyword{不动点} $gP$：
+        对任意 $q\in Q$ 有 $qgP = gP$。
+\end{itemize}
+两边左乘 $g^{-1}$ 得 $g^{-1}qg\in P$，即
+\[
+  Q \subseteq gPg^{-1}.
+\]
+\end{proof}
+
+\subsection{正规化子（Normalizer）}
+
+\begin{definition}[正规化子（Normalizer）]
+设 $P\le G$，$P$ 在 $G$ 中的\keyword{正规化子}为
+\[
+  N_G(P) = \{\,g\in G \mid gPg^{-1} = P\,\},
+\]
+即共轭作用下使 $P$ 不变的元素全体（也就是子群集合上共轭作用中 $P$ 的
+稳定子）。
+\end{definition}
+
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item 易验证 $N_G(P)\le G$，且显然 $P\subseteq N_G(P)$；
+  \item 顾名思义，$P\normal N_G(P)$——我们只挑选了使 $P$ 在共轭下不变
+        的元素。
+\end{itemize}
+
+\begin{lemma}
+设 $P$ 是 $G$ 的 Sylow $p$-子群，则 $P$ 是 $N_G(P)$ 的\keyword{唯一}
+Sylow $p$-子群。
+\end{lemma}
+
+\begin{proof}
+由 $P\le N_G(P)\le G$ 知 $|N_G(P)|$ 中 $p$ 的最高幂次仍为 $|P|$，故
+$P$ 是 $N_G(P)$ 的 Sylow $p$-子群；又 $P\normal N_G(P)$，把上面推论
+第 3 条（唯一 $\iff$ 正规）应用于群 $N_G(P)$，即得 $P$ 是 $N_G(P)$ 的
+唯一 Sylow $p$-子群。
+\end{proof}
+
+\subsection{例子：对称群的 Sylow 子群的构造}
+
+\begin{example}[$S_4$ 的 Sylow $2$-子群（阶 8）]
+由如下置换生成：
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item $\{1,2\}$ 与 $\{3,4\}$ 两块\keyword{整体交换}：$(1\,3)(2\,4)$；
+  \item $\{1,2\}$ 内部交换：$(1\,2)$；
+  \item $\{3,4\}$ 内部交换：$(3\,4)$。
+\end{itemize}
+\end{example}
+
+\begin{example}[$S_{p^2}$ 的 Sylow $p$-子群]
+类似想法可构造一般的 $S_n$ 的 Sylow $p$-子群。以 $S_{p^2}$ 为例：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 把 $1,\dots,p^2$ 分成 $p$ 组：$\{1,\dots,p\}$、
+        $\{p+1,\dots,2p\}$、…、$\{(p-1)p+1,\dots,p^2\}$；
+  \item $p$ 个组之间可以\keyword{整体轮换}（1 号组→2 号组→…）；
+  \item 每组内部各有一个 $p$-轮换。
+\end{itemize}
+这样得到一个 $p^{p+1}$ 阶子群，正是 $S_{p^2}$ 的 Sylow $p$-子群。
+$n$ 更大时构造类似。
+\end{example}
+
+\begin{remark}
+由 Sylow 第二定理，Sylow $p$-子群彼此共轭，所以其它方式构造出的
+Sylow $p$-子群都与上述构造共轭。
+\end{remark}
+
+\subsection{Sylow 第三定理}
+
+\begin{theorem}[Sylow 第三定理]
+设 $|G| = p^n m$，$p\nmid m$，记
+\[
+  n_p = \#\{\,\text{$G$ 的 Sylow $p$-子群}\,\}.
+\]
+则
+\[
+  n_p \mid m,\qquad n_p \equiv 1 \pmod p.
+\]
+\end{theorem}
+
+\begin{proof}[$n_p\mid m$ 的证明]
+考虑 $G$ 在全体 Sylow $p$-子群组成的集合 $\Syl_p(G)$ 上的
+\keyword{共轭作用}：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 由 Sylow 第二定理，任意两个 Sylow $p$-子群共轭，故该作用
+        \keyword{只有一个轨道}——这种作用称为\keyword{传递作用}
+        （Transitive Action，亦称可迁）；
+  \item 由轨道与稳定子定理，轨道大小 $n_p = [G : \Stab(P)]$，而这里的
+        稳定子正是正规化子：
+        \[
+          \Stab(P) = \{\,g \mid gPg^{-1} = P\,\} = N_G(P);
+        \]
+  \item 故 $n_p = [G : N_G(P)]$。由于 $P\le N_G(P)$，
+        $n_p = [G:N_G(P)]$ 整除 $[G:P] = m$。
+\end{itemize}
+\end{proof}
+
+\begin{proof}[$n_p\equiv 1\pmod p$ 的证明]
+取定一个 Sylow $p$-子群 $P$，让 $P$ \keyword{共轭作用}在 $\Syl_p(G)$
+上：
+\[
+  g\cdot P_i := gP_i g^{-1}\qquad (g\in P).
+\]
+把 $n_p$ 按轨道分解，每个轨道取代表 $P_i$：
+\[
+  n_p = \sum |\Orb(P_i)| = \sum [\,P : \Stab(P_i)\,],
+\]
+其中 $\Stab(P_i) = \{\,g\in P \mid gP_ig^{-1} = P_i\,\} \le P$。
+分两种情形：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item \keyword{$\Stab(P_i) \ne P$：}此时 $[P:\Stab(P_i)]$ 是大于 1
+        的 $p$ 的幂，故 $p \mid |\Orb(P_i)|$；
+  \item \keyword{$\Stab(P_i) = P$：}即 $P$ 中每个元素都使 $P_i$ 在共轭
+        下不变，故 $P\le N_G(P_i)$。由上一小节的引理，$P_i$ 是
+        $N_G(P_i)$ 的\keyword{唯一} Sylow $p$-子群；而
+        $P\le N_G(P_i)$ 且 $|P| = |P_i|$，$P$ 也是 $N_G(P_i)$ 的
+        Sylow $p$-子群，所以 $P = P_i$。这条轨道就是 $\{P\}$，
+        大小为 $1$。
+\end{itemize}
+于是只有一条大小为 1 的轨道（$P$ 自己），其余轨道大小都被 $p$ 整除，故
+\[
+  n_p \equiv 1 \pmod p.
+\]
+\end{proof}

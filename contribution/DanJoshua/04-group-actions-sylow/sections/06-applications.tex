@@ -1,0 +1,85 @@
+% ===========================================================================
+\section{Sylow 定理的应用}\label{sec:applications}
+
+\subsection{应用举例}
+
+\begin{example}[35 阶群]
+设 $|G| = 35 = 5\cdot 7$。数 Sylow 子群的个数：$n_5\mid 7$ 且
+$n_5\equiv 1\pmod 5 \Rightarrow n_5 = 1$；$n_7\mid 5$ 且
+$n_7\equiv 1\pmod 7 \Rightarrow n_7 = 1$。唯一即正规：$G$ 有 5 阶正规
+子群 $H_5$ 与 7 阶正规子群 $H_7$，于是 $G$ 是它们的\keyword{内直积}
+（Internal Direct Product；数一下大小即知等于 $G$）：
+\[
+  G \cong H_5\times H_7 \cong C_5\times C_7 \cong \Z_{35}.
+\]
+即 35 阶群（在同构意义下只有循环群）。
+\end{example}
+
+\begin{example}[$11^2\cdot 13^2$ 阶群]
+设 $|G| = 11^2\cdot 13^2$。与上例几乎一样：$n_{11}\mid 13^2$ 且
+$n_{11}\equiv 1\pmod{11} \Rightarrow n_{11} = 1$，Sylow $11$-子群唯一
+（故正规）；同理 Sylow $13$-子群唯一（故正规）。又由前面的定理，$p^2$
+阶群必为阿贝尔群，故两个 Sylow 子群都阿贝尔。于是
+\[
+  G \cong P_{11}\times P_{13},
+\]
+两个阿贝尔群的直积仍阿贝尔，故 $G$ 阿贝尔。
+\end{example}
+
+类似方法适用于 $7\times 11$、$11\times 13$ 等阶数。
+
+\subsection{$pq$ 阶群的分类}
+
+\block{问题}
+设 $|G| = pq$，$p<q$ 为素数。$G$ 有哪些可能？
+
+\block{第一步：$n_q = 1$}
+$n_q\mid p$ 且 $n_q\equiv 1\pmod q$；由 $q>p$ 知只能 $n_q = 1$。故 $G$
+有唯一（因而正规）的 $q$ 阶子群，它是循环群，记
+$Q = \langle g\rangle\normal G$；再取一个 Sylow $p$-子群
+$H = \langle h\rangle$。
+
+\block{第二步：$n_p\in\{1,\,q\}$}
+$n_p\mid q$ 且 $n_p\equiv 1\pmod p$，故 $n_p = 1$ 或 $q$。分两种情形：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item \keyword{情形一：$q\not\equiv 1\pmod p$。}则 $n_p\ne q$，只能
+        $n_p = 1$，回到上面数例的情形：$G\cong C_{pq}$ 循环。
+  \item \keyword{情形二：$q\equiv 1\pmod p$。}此时 Sylow $p$-子群不一定
+        唯一；$G$ 要么阿贝尔，要么同构于一个非阿贝尔群。
+\end{itemize}
+
+\block{分析（共轭给出的限制）}
+因为 $Q = \langle g\rangle$ 正规，$hgh^{-1}\in\langle g\rangle$，故存在
+$s$ 使
+\[
+  hgh^{-1} = g^{s}.
+\]
+对 $s$ 的限制：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item $s\ne 0$（显然）；
+  \item \keyword{若 $s = 1$：}$h$ 与 $g$ 交换。群中每个元素都可写成
+        $h^x g^y$；二者交换则整个群交换，$G$ 阿贝尔
+        （$\cong C_p\times C_q$）。
+\end{itemize}
+把 $s$ 看作乘法群 $(\Z/q\Z)^\times$ 中的元素（该群阶为 $q-1$），则
+$\mathrm{ord}(s)\mid q-1$；另一方面由 $h^p = e$ 得
+\[
+  g = h^p g h^{-p} = g^{s^p}\ \Longrightarrow\ s^p\equiv 1\pmod q,
+\]
+故 $\mathrm{ord}(s)\mid p$。于是
+\[
+  \mathrm{ord}(s)\mid \gcd(p,\,q-1).
+\]
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 若 $p\nmid q-1$：立刻推出 $s = 1$，回到阿贝尔情形；
+  \item 若 $p\mid q-1$：$s$ 可以取 $(\Z/q\Z)^\times$ 中阶为 $p$ 的元素。
+\end{itemize}
+
+\block{结论}
+$s$ 的不同取值并不给出不同的群：通过适当更换生成元，这些取值彼此等价，
+给出的群互相同构。因此：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 若 $q\not\equiv 1\pmod p$，$pq$ 阶群只有循环群 $C_{pq}$；
+  \item 若 $q\equiv 1\pmod p$，$pq$ 阶群除循环群外，（在同构意义下）
+        恰有一个非阿贝尔群。
+\end{itemize}

@@ -1,0 +1,64 @@
+% ===========================================================================
+\section{群作用与轨道}\label{sec:actions}
+
+\subsection{群作用}
+
+\begin{definition}[群作用（Group Action）]
+群 $G$ \keyword{作用}在集合 $X$ 上，即映射 $(g,x)\mapsto g\cdot x$，满足：
+\begin{enumerate}[leftmargin=1.6em,itemsep=1pt]
+  \item 单位元作用平凡：$e\cdot x = x$；
+  \item 结合律：$g_1\cdot(g_2\cdot x) = (g_1 g_2)\cdot x$。
+\end{enumerate}
+\end{definition}
+
+\begin{example}[共轭作用]
+\leavevmode
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item \keyword{共轭作用}（conjugation）：群作用在自己身上，
+        \[
+          g\cdot x := gxg^{-1}.
+        \]
+  \item \keyword{在全体子群组成的集合上的共轭作用：}设
+        $\mathcal{L}(G) = \{\,H \mid H\le G\,\}$（$G$ 的所有子群组成的集合），定义
+        \[
+          g\cdot H := gHg^{-1} = \{\,ghg^{-1} \mid h\in H\,\}.
+        \]
+        不难验证 $gHg^{-1}$ 仍是子群，且满足群作用的两条公理，故这确实是
+        一个群作用。
+\end{enumerate}
+\end{example}
+
+\subsection{轨道与稳定子}
+
+\begin{definition}[轨道（Orbit）]
+元素 $x$ 的\keyword{轨道}是所有通过群作用能到达的地方：
+\[
+  \Orb(x) = \{\,g\cdot x \mid g\in G\,\}.
+\]
+\end{definition}
+
+\begin{definition}[稳定子（Stabilizer）]
+\[
+  \Stab(x) = \{\,g\in G \mid g\cdot x = x\,\},
+\]
+即所有使 $x$ 不动的群元素；不难验证 $\Stab(x)\le G$。
+\end{definition}
+
+\block{两条基本性质}
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 任何两个轨道要么相同、要么不交——轨道给出 $X$ 的一个划分，
+        故 $|X|$ 等于各轨道大小之和；
+  \item 下面的定理把轨道大小与稳定子大小联系起来。
+\end{itemize}
+
+\begin{theorem}[轨道与稳定子定理]
+\[
+  |\Orb(x)| = \frac{|G|}{|\Stab(x)|}.
+\]
+\end{theorem}
+
+\begin{strand}
+直观解释：想象 $x$ 所在的轨道是一堆点；$\Stab(x)$ 是让 $x$ 不动的群元素。
+轨道中每个点的“到达方式”恰好都有 $|\Stab(x)|$ 种（到达同一点的群元素
+相差一个稳定子中的元素），所以 $|\Orb(x)|\times|\Stab(x)| = |G|$。
+\end{strand}

@@ -1,0 +1,47 @@
+% ===========================================================================
+%  离散数学与结构（I） 2026-10-08（第 3--4 节）课堂笔记
+%  群作用、类方程与 Sylow 定理
+%  Compile:  latexmk -xelatex main      (or: xelatex main, twice)
+% ===========================================================================
+\documentclass[cjk]{loom}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Stab}{\mathrm{Stab}}          % 稳定子
+\newcommand{\Orb}{\mathrm{Orb}}            % 轨道
+\newcommand{\Conj}{\mathrm{Conj}}          % 共轭类
+\newcommand{\Syl}{\mathrm{Syl}}            % Sylow p-子群集合
+\newcommand{\normal}{\trianglelefteq}      % 正规子群
+
+\runningthread{离散数学与结构 · 2026-10-08}
+
+\begin{document}
+
+\loomcover
+  {群作用、类方程与 Sylow 定理}
+  {离散数学与结构（I）· 2026-10-08（第 3--4 节）课堂笔记}
+  {}
+  {2026 年 10 月}
+
+\begin{strand}
+本讲脉络：从群的分解纲领出发——阿贝尔群的结构已经清楚，非阿贝尔群则引出
+单群与合成列；随后引入群作用、轨道与稳定子这一对基本工具；把轨道分解
+运用到共轭作用上得到类方程，并立刻收获两个推论（$p$-群中心非平凡、
+$p^2$ 阶群阿贝尔）；再由双重计数得到 Burnside 引理（轨道计数）；
+接着讨论 $S_n$ 的共轭类与 $S_4$ 的类方程；最后证明 Sylow 三大定理，
+并应用于 $pq$ 阶群的分类（及若干数例）。
+\end{strand}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-structure}
+\input{sections/02-actions}
+\input{sections/03-class-equation}
+\input{sections/04-burnside-conjugacy}
+\input{sections/05-sylow}
+\input{sections/06-applications}
+
+\end{document}
