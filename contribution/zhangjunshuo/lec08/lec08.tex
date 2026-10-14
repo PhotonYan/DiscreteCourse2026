@@ -1,0 +1,48 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 08}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{共轭、类方程与 Sylow 定理}
+\author{zhangjunshuo}
+\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 8 日的两份课堂转写、手写原稿和教材整理。转写中的口语识别错误已按手写稿与 Dummit--Foote《Abstract Algebra》（[DF]）和《离散数学与结构》（[DS]）校正；为使证明可读，个别课堂只给出结论的地方补写了中间步骤，并明确标注整理补全。
+\end{quote}
+\tableofcontents
+\clearpage
+
+\section*{记号速查}
+\begin{itemize}
+\item $G,H,K$：群或子群；$e$：单位元；$|G|$：群的阶；$H\le G$：子群；$H\trianglelefteq G$：$H$ 正规于 $G$。
+\item $\langle x\rangle$：由 $x$ 生成的循环子群；$C_n$：阶 $n$ 的循环群；$S_n$：$n$ 个字母的对称群。
+\item $Z(G)$：中心；$C_G(x)$：元素的中心化子；$N_G(H)$：子群的正规化子。
+\item $G\curvearrowright X$：$G$ 作用在 $X$ 上；$G\cdot x$：轨道；$G_x$：稳定子；$X^g$：固定点集。
+\item $|G|=p^a m$ 且 $p\nmid m$ 时，Sylow $p$-子群的阶为 $p^a$，全体记为 $\operatorname{Syl}_p(G)$，个数记为 $n_p$。
+\item $[G:H]=|G|/|H|$：指数；$[x,y]=xyx^{-1}y^{-1}$：交换子。
+\end{itemize}
+\clearpage
+
+\input{sections/01-composition-series}
+\input{sections/02-burnside-symmetric-groups}
+\input{sections/03-conjugacy-class-equation}
+\input{sections/04-sylow-existence}
+\input{sections/05-sylow-conjugacy}
+\input{sections/06-sylow-counting}
+\input{sections/07-applications-and-pq-groups}
+
+\section*{参考文献}
+\begin{itemize}
+\item \textbf{[DF]} D. S. Dummit, R. M. Foote. \emph{Abstract Algebra}, 3rd ed. §§3.4, 4.1--4.5, 5.1, 5.5. John Wiley \& Sons, 2004.
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》。§§9.1--9.6, 14.1--14.2.
+\end{itemize}
+\end{document}

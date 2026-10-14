@@ -1,0 +1,109 @@
+\section{组合列、单群与有限群分解}
+
+
+本节先回答一个结构问题：阿贝尔群能拆成循环群直积；一般有限群通常不能直接拆成直积，但可以沿着正规子群链逐层拆成\textbf{单群商}。这是一种“逐层观察”的分解，不应误读为把原群直接写成所有商群的直积。
+
+\subsection{正规链与单群}
+
+
+设 $G$ 是群。一条正规链（normal chain）是
+
+\[
+\{e\}=G_0\trianglelefteq G_1\trianglelefteq\cdots\trianglelefteq G_r=G,
+\]
+
+其中每个 $G_i$ 只要求正规于它紧邻的上一级 $G_{i+1}$。一般不能推出 $G_i\trianglelefteq G$；这正是读组合列时最容易混淆的地方。每一层产生一个商群 $G_{i+1}/G_i$。
+
+一个非平凡群 $S$ 称为\textbf{单群}（simple group），如果它没有非平凡真正规子群：
+
+\[
+N\trianglelefteq S\quad\Longrightarrow\quad N=\{e\}\ \text{或}\ N=S.
+\]
+
+这里“非平凡”很重要；平凡群通常不作为单群因子。单群是正规分解中已经不能再沿正规子群继续切开的“最小砖块”。
+
+如果一条正规链的每个因子 $G_{i+1}/G_i$ 都是单群，就称它为 \textbf{composition series（组合列）}，这些单群商称为组合因子。
+
+\subsection{为什么有限群总能得到组合列}
+
+
+\textbf{命题（存在性）。} 每个有限群都有组合列。
+
+可以按 $|G|$ 归纳。若 $G$ 本身单，则
+
+\[
+\{e\}\trianglelefteq G
+\]
+
+已经是一条组合列。若 $G$ 非单，取一个非平凡真正规子群 $N\trianglelefteq G$。归纳假设给出 $N$ 的组合列；同时 $|G/N|<|G|$，所以 $G/N$ 也有组合列：
+
+\[
+\{eN\}=\overline G_0\trianglelefteq\overline G_1\trianglelefteq\cdots\trianglelefteq\overline G_s=G/N.
+\]
+
+把商群中的链取原像，就得到 $G$ 中从 $N$ 到 $G$ 的一段链。具体地，令商映射 $\pi:G\to G/N$，则
+
+\[
+H_j=\pi^{-1}(\overline G_j)
+\]
+
+满足 $N=H_0\trianglelefteq H_1\trianglelefteq\cdots\trianglelefteq H_s=G$，并且由对应定理
+
+\[
+H_{j+1}/H_j\cong \overline G_{j+1}/\overline G_j
+\]
+
+都是单群。把 $N$ 内的链和这段链接起来即可。有限性保证每次选择真子群都会严格减小群的阶，归纳必然终止。
+
+另一种课堂上常用的说法是：若某一层商群还不是单群，就在该商群中取一个非平凡真正规子群，再把它取原像插回原链；有限群不可能无限插入。
+
+\subsection{例：$S_3$ 的组合列}
+
+
+在 $S_3$ 中，三循环和恒等元组成的子群
+
+\[
+A_3=\{e,(123),(132)\}
+\]
+
+是指数 $2$ 的正规子群。因此
+
+\[
+\{e\}\trianglelefteq A_3\trianglelefteq S_3
+\]
+
+是一条组合列，因为
+
+\[
+A_3/\{e\}\cong C_3,
+\qquad S_3/A_3\cong C_2
+\]
+
+都是素数阶循环群，因而是单群。
+
+这条链表达的是“先看到一个 $C_3$ 层，再看到一个 $C_2$ 层”。它\textbf{不}表示 $S_3\cong C_3\times C_2$：后者是阿贝尔群，而 $S_3$ 非阿贝尔。组合列的商群只是逐层记录正规结构，不能自动恢复为直积。
+
+\subsection{组合因子的唯一性与课堂范围}
+
+
+Jordan--Hölder 定理说，有限群的任意两条组合列得到的组合因子，在忽略排列顺序和同构后相同。它类似整数分解的“素因子多重集合唯一”，但这里的因子是单群，不一定是阿贝尔群。
+
+有限单群分类定理进一步描述所有有限单群的类型；证明由大量结果组成，并不是本节或本课程需要掌握的证明。当前最常用的单群例子是素数阶循环群 $C_p$，以及后续可能遇到的非阿贝尔单群。
+
+\subsection{读题时的三个检查}
+
+
+\begin{itemize}
+\item 看到 $G_i\trianglelefteq G_{i+1}$，先确认正规性只针对相邻两项；除非另有说明，不要写成 $G_i\trianglelefteq G$。
+\item 看到 $G_{i+1}/G_i$，先检查 $G_i$ 是否正规于 $G_{i+1}$，否则商群没有定义。
+\item “因子是单群”描述的是商群的内部结构；“$G$ 是若干群的直积”是另一种更强的结论，需要额外的正规性、交平凡和乘积条件。
+\end{itemize}
+
+
+\subsection{参考对照}
+
+
+\begin{itemize}
+\item [DF] 关于正规列、组合列和 Jordan--Hölder 定理的章节。
+\item [DS] 关于正规子群、商群和对应定理的章节；本节的原像构造直接使用对应定理。
+\end{itemize}
