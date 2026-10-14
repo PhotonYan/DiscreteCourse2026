@@ -1,0 +1,61 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 09}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{环、理想与商环}\author{zhangjunshuo}\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 13 日课堂转写、手写原稿和课程教材整理。不同教材对环是否含乘法单位元有不同约定，正文明确采用含幺环作为默认语境；需要不含幺版本时会特别说明。
+
+课堂的讲法是“走马观花过概念”，不少标准结论只给一句话或留作习题。本整理版按教材补全了这些地方，并在每节末尾标出出处：有限整环是域（第 1 节）、第二/第三同构定理与 $M_n(F)$ 无平凡理想（第 2 节）、中国剩余定理的满射证明与正交幂等元（第 3 节）、$R[x]$ 单位的完整分层与素子环（第 4 节）。
+\end{quote}
+\tableofcontents\clearpage
+
+\section*{记号速查}
+\begin{itemize}
+\item $R,S$：环；$1_R$：单位元；$R^\times$：单位群；$R[x]$：多项式环。
+\item $I,J$：理想；$(a)$：主理想；$R/I$：商环；$\operatorname{Frac}(R)$：交换整环的分式域。
+\item $\operatorname{char}(R)$：特征；$\mathbb F_p=\mathbb Z/p\mathbb Z$：$p$ 元素的有限域。
+\end{itemize}
+
+\section*{勘误提醒}
+课堂转写与教材核对后，有六处结论需要补上前提或改正表述，正文都已写清：
+\begin{enumerate}
+\item \textbf{“$F[x]$ 中常数项非零就可逆”只在 $F$ 是域时成立。} 完整分层是：域上 $F[x]^\times=F\setminus\{0\}$；整环上 $R[x]^\times=R^\times$；一般交换含幺环上要求 $a_0$ 可逆且 $a_1,\dots,a_n$ 全为幂零元。反例：在 $(\mathbb Z/4\mathbb Z)[x]$ 中 $(1+2x)^2=1$，所以 $1+2x$ 可逆。
+\item \textbf{“特征必为素数”只对整环成立。} $\mathbb Z/4\mathbb Z$ 的特征是 $4$。
+\item \textbf{$I\cap J=IJ$ 需要 $I+J=R$，并且用到单位元。} 在 $R=2\mathbb Z$、$I=J=2\mathbb Z$ 时 $I\cap J=2\mathbb Z$ 而 $IJ=4\mathbb Z$。
+\item \textbf{“每个极大理想都是素理想”需要 $R$ 交换。} 非交换反例：$M_n(F)$（$n\ge2$）没有非平凡理想，故 $(0)$ 极大；但 $E_{11}E_{22}=0$，所以 $(0)$ 不素。
+\item \textbf{整环的定义不能省“含幺且 $1\ne0$”。} 否则零环 $\{0\}$ 也会成为整环。
+\item \textbf{$(a)(b)=(ab)$ 不是 $\mathbb Z$ 独有}，任何交换环的主理想都满足；不要与一般的 $IJ\subseteq I\cap J$ 混为一谈。
+\end{enumerate}
+另外两处约定问题：本讲默认环含单位元、同态保持单位元，因此子环判定要求 $1\in S$（故含幺环中理想 $I$ 是子环当且仅当 $I=R$）；改用不含幺约定（[DF] \S7.1）时 $2\mathbb Z$ 又成了 $\mathbb Z$ 的子环，两种约定都自洽，混用才会错。
+\clearpage
+\input{sections/01-rings-and-examples}
+\input{sections/02-ideals-and-quotient-rings}
+\input{sections/03-maximal-prime-crt}
+\input{sections/04-units-fractions-characteristic}
+\section*{一页式总览}
+\begin{itemize}
+\item 环：$(R,+)$ 阿贝尔群 $+$ 乘法结合 $+$ 分配律；本讲默认含幺，交换的除环即域。
+\item 理想：对加法封闭且对整个环的左右乘法封闭的加法子群；同态的核必是理想，反之每个理想都是某个商映射的核。
+\item 第一同构定理：$R/\ker f\cong\operatorname{im}f$；第二：$A/(A\cap I)\cong(A+I)/I$；第三：$(R/I)/(J/I)\cong R/J$。
+\item 极大理想 $\iff R/M$ 是域；素理想 $\iff R/P$ 是整环；极大必素，反之不然。
+\item 中国剩余定理：$I+J=R$ 时 $R/(I\cap J)\cong R/I\times R/J$，满射性正来自 $I+J=R$。
+\item 单位群 $R^\times$；整环上 $R[x]^\times=R^\times$，域上 $F[x]^\times=F\setminus\{0\}$。
+\item 分式域 $\operatorname{Frac}(R)$：整环嵌入其中的最小域，$\operatorname{Frac}(\mathbb Z)=\mathbb Q$。
+\item 特征：整环的非零特征必为素数；一般含幺环可以是合数。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item \textbf{[DF]} D. S. Dummit, R. M. Foote. \emph{Abstract Algebra}, 3rd ed. §§7.1--7.5（环、多项式环、商环、特征与素子环）、§9.3（分式域的一般构造）。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》§§10.1--10.3（环和域、同态与理想、有限域）；第二、第三同构定理在 §10.2 留作习题。
+\item 原始材料：\texttt{DiscreteCourse2026/课堂手记和录音转写/Lec09/}。
+\end{itemize}
+\end{document}

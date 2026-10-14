@@ -1,0 +1,105 @@
+# 单位、分式域与环的特征
+
+## 单位与整环
+
+含幺环 $R$ 的单位群为
+$$R^\times=\{u\in R:\exists v\in R,\ uv=vu=1\}.$$
+它在乘法下构成群。若 $u\in R^\times$ 且 $r=us$，就说 $r$ 与 $s$ 相伴，记作 $r\approx s$。域满足 $R^\times=R\setminus\{0\}$；一般环中还可能有非零不可逆元。
+
+注意本节有两个相似的关系，符号特意分开：**相伴** $r\approx s$（用一个单位相乘联系起来）与后面分式域里**分数相等** $(a,b)\sim(c,d)$（交叉相乘相等）。相伴还有另一种写法：在整环中
+
+$$
+r\approx s\iff r\mid s\ \text{且}\ s\mid r\iff (r)=(s),
+$$
+
+即“互相整除”与“生成同一个主理想”是同一件事。这几种说法在整环中等价，在一般交换环中要小心，本讲只用整环情形。
+
+还有一条常用常识：**零因子一定不是单位**。因为若 $ab=0$ 且 $a$ 可逆，则 $b=a^{-1}(ab)=0$。所以在 $\mathbb Z/n\mathbb Z$ 中每个元素要么是单位、要么是零因子，这就是 $\mathbb Z/n\mathbb Z$ 是域当且仅当 $n$ 为素数的另一个解释。
+
+整环是交换含幺环、$1\ne0$，且没有非零零因子（与第 1 节的定义一致）。若 $ab=0$ 且 $a\ne0$，则 $b=0$；因此整环中约分成立。$\mathbb Z$ 与域上的多项式环 $F[x]$ 都是整环。
+
+### $F[x]$ 的单位：一个必须写清前提的结论
+
+课堂上说“$F[x]$ 中的一个多项式可逆当且仅当它的常数项非零”。这句话在 **$F$ 是域** 时正确，但把它原样推广到任意系数环会出错。正确的分层是：
+
+- **$F$ 是域**：$F[x]^\times=F\setminus\{0\}$，即单位恰为非零常数。所以 $1+x$ 不是单位——它的常数项虽然非零，但非常数。
+- **$R$ 是整环**：$R[x]^\times=R^\times$（[DF] §7.2 Proposition 4）。例如 $\mathbb Z[x]^\times=\{\pm1\}$，而 $2$ 在 $\mathbb Z[x]$ 中不是单位。
+- **$R$ 是一般交换含幺环**：$f=\sum a_ix^i$ 是 $R[x]$ 的单位，当且仅当 **$a_0$ 是 $R$ 的单位，且 $a_1,\dots,a_n$ 全是幂零元**。这正是“常数项要可逆、其余部分要被幂零性吸收”的意思。
+
+整环情形可以直接从次数证明：设 $f,g\ne0$ 且 $fg=1$。整环上首项系数之积非零，故
+
+$$
+\deg(fg)=\deg f+\deg g.
+$$
+
+左边次数为 $0$，所以 $\deg f=\deg g=0$：$f,g$ 都是 $R$ 中的元素，且互为逆元，于是 $f\in R^\times$。
+
+一般环里的幂零条件在 $\mathbb Z/4\mathbb Z$ 上就能看到：$(1+2x)^2=1+4x+4x^2=1$，所以 $1+2x$ 是可逆的，尽管它不是常数。这里 $2$ 是 $\mathbb Z/4\mathbb Z$ 中的幂零元。做多项式环的题时，先确认系数环是哪一类，再决定用哪条结论。
+
+## 分式域
+
+设 $R$ 是整环。考虑 $R\times(R\setminus\{0\})$ 中的有序对 $(a,b)$，将
+$$ (a,b)\sim(c,d)\iff ad=bc $$
+视为等价关系，记等价类为 $a/b$。定义
+$$\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad \frac ab\frac cd=\frac{ac}{bd}.$$
+得到一个域 $\operatorname{Frac}(R)$，其中 $a/b=0$ 当且仅当 $a=0$，且非零元 $a/b$ 的逆为 $b/a$。自然嵌入 $R\hookrightarrow\operatorname{Frac}(R)$ 为 $a\mapsto a/1$。
+
+典型例子是 $\operatorname{Frac}(\mathbb Z)=\mathbb Q$，以及 $\operatorname{Frac}(F[x])=F(x)$，即有理函数域。
+
+**泛性质（最小性）。** 上面的构造不只是“造出一个域”，它造出的是**包含 $R$ 的最小域**。精确地说：若 $K$ 是域、$\varphi:R\to K$ 是单同态（即把 $R$ 嵌入 $K$ 的一个同构副本），则存在唯一的域同态 $\widetilde{\varphi}:\operatorname{Frac}(R)\to K$ 使它在 $R$ 上与 $\varphi$ 一致：
+
+$$
+\widetilde{\varphi}(a/1)=\varphi(a)\quad(\forall a\in R).
+$$
+
+为什么唯一？因为 $\widetilde{\varphi}$ 是域同态，必须满足
+
+$$
+\widetilde{\varphi}(a/b)=\widetilde{\varphi}(a/1)\,\widetilde{\varphi}(1/b)=\varphi(a)\,\varphi(b)^{-1},
+$$
+
+右边完全由 $\varphi$ 决定，所以至多一种取法。存在性要把这个式子当作定义，再验证它与分数代表元的选取无关——这一步用的正是等价关系 $ad=bc$：若 $a/b=c/d$，即 $ad=bc$，两边施加 $\widetilde{\varphi}$ 即得 $\widetilde{\varphi}(a/b)=\widetilde{\varphi}(c/d)$。
+
+**这是“最小域”的确切含义：** 任何包含 $R$ 的域 $K$ 都必须含有所有 $\varphi(a)\varphi(b)^{-1}$，也就是必须含有 $\operatorname{Frac}(R)$ 的一个同构副本；所以 $\operatorname{Frac}(R)$ 是包含 $R$ 的域中最小的一个。这也解释了 $\operatorname{Frac}(\mathbb Z)=\mathbb Q$ 的含义：$\mathbb Q$ 是包含 $\mathbb Z$ 的最小域，任何包含 $\mathbb Z$ 的域都含有 $\mathbb Q$。
+
+## 特征
+
+含幺环的特征定义为
+$$\operatorname{char}(R)=\min\{n\ge1:n\cdot1_R=0\},$$
+若不存在这样的正整数，则特征为 $0$。若 $R$ 是整环且特征非零，它必为素数：若 $n=ab$ 为合数，则 $(a1_R)(b1_R)=n1_R=0$；无零因子迫使 $a1_R=0$ 或 $b1_R=0$，与最小性矛盾。对一般含幺环，特征可以是合数，例如 $\mathbb Z/4\mathbb Z$ 的特征为 $4$。
+
+特征为素数 $p$ 时有一个非常好用的推论：**若 $R$ 是特征 $p$ 的交换环，则对任意 $a,b\in R$**
+
+$$
+(a+b)^p=a^p+b^p .
+$$
+
+这是因为二项式展开 $(a+b)^p=\sum_{k=0}^p\binom pk a^kb^{p-k}$ 中，中间系数 $\binom pk$（$0<k<p$）都被 $p$ 整除，而它们在 $R$ 中作用为乘以 $p\cdot1_R=0$，于是中间项全部消失。有限域理论里的 Frobenius 映射 $x\mapsto x^p$ 就是这个等式。
+
+对每个素数 $p$，$\mathbb F_p=\mathbb Z/p\mathbb Z$ 是含 $p$ 个元素的域，特征为 $p$。若 $R$ 是整环，则存在唯一的单位保持单同态
+
+$$
+\mathbb Z/\operatorname{char}(R)\mathbb Z\;\longrightarrow\;R,
+$$
+
+它在 $\operatorname{char}(R)=p$ 时给出 $\mathbb F_p\hookrightarrow R$，在 $\operatorname{char}(R)=0$ 时给出 $\mathbb Z\hookrightarrow R$。所以每个整环都含有一个“最小”的子环，称为**素子环**：特征为 $p$ 时是 $\mathbb F_p$，特征为 $0$ 时是 $\mathbb Z$。注意这里强调整环：一般含幺环上这个映射未必单射（例如 $\mathbb Z/4\mathbb Z$ 上的 $\mathbb Z\to\mathbb Z/4\mathbb Z$ 核为 $4\mathbb Z$）。
+
+因此可以在 $\mathbb F_p[x]$ 上取多项式环，得到特征为 $p$ 的无限整环；再由分式域构造得到特征为 $p$ 的无限域 $\mathbb F_p(x)$。
+
+## 本讲检查清单
+
+1. **先确认约定**：本讲的环默认含幺且交换性随语境说明；谈“理想”时默认双边，谈“同态”时默认保幺。
+2. **想证明某物是理想**，要验证非空、对减法封闭、并对**整个环**的左乘右乘封闭，而不是只对自身元素封闭。
+3. **看到 $R/I$ 先确认 $I$ 是理想**，否则乘法根本不良定义。
+4. **要证 $R/M$ 是域**，用理想对应定理把“$M$ 极大”翻译成“$R/M$ 没有非平凡理想”。
+5. **要证 $R/P$ 是整环**，把“$ab\in P\Rightarrow a\in P$ 或 $b\in P$”翻译成“$R/P$ 无零因子”。
+6. **中国剩余定理**的关键是 $I+J=R$ 给出满射；核总是 $I\cap J$，不需要互素。
+7. **多项式环的单位**先看系数环是哪一类：域 → 非零常数；整环 → $R^\times$；一般环 → 常数项可逆 + 其余系数幂零。
+8. **特征是否必为素数**只对整环成立；一般含幺环可以是合数。
+
+## 参考对照
+
+- [DF] §7.1--7.2（环、整环、单位与 $R[x]^\times=R^\times$）、§7.5（环的特征与素子环）、§9.3（分式域的一般构造）。
+- [DS] §10.1（整环与有限整环是域）、§10.3（特征与有限域）。
+- 原始材料：`../../../课堂手记和录音转写/Lec09/`。
+

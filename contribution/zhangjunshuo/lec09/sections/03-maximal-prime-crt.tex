@@ -1,0 +1,115 @@
+\section{极大理想、素理想与中国剩余定理}
+
+
+\subsection{极大理想与域}
+
+
+真理想 $M\subsetneq R$ 称为极大理想，若不存在严格夹在 $M$ 与 $R$ 之间的理想。若 $R$ 是交换含幺环，则
+\[M\text{ 极大}\iff R/M\text{ 是域}.\]
+
+证明用理想对应定理：$R/M$ 的理想恰对应包含 $M$ 的理想；商环只有零理想和自身，当且仅当 $M$ 极大。再用一条等价刻画：\textbf{交换含幺环没有非平凡理想，当且仅当它是域}（“含幺”不能省——在 $\mathbb Z/2\mathbb Z$ 的加法群上取零乘法，得到的环没有非平凡理想，却没有单位元，不是域）。域的非零元都可逆，反过来若非零元 $a$ 生成的理想只能是整个环，则 $1=ra$，所以 $a$ 可逆。
+
+\subsection{素理想与整环}
+
+
+真理想 $P$ 称为素理想，若
+\[ab\in P\Longrightarrow a\in P\text{ 或 }b\in P.\]
+在交换环中
+\[P\text{ 素}\iff R/P\text{ 是整环}.\]
+商环中 $(a+P)(b+P)=P$ 恰等价于 $ab\in P$，这就是上面等价性的计算。
+
+\textbf{极大必素，但需要交换性。} 设 $R$ 是\textbf{交换}环、$M$ 极大，则 $R/M$ 是域，域是整环，所以 $M$ 素。非交换时结论不成立：$M_n(F)$（$n\ge2$，$F$ 是域）没有非平凡理想（见第 2 节），所以 $(0)$ 是极大理想；但 $E_{11}E_{22}=0$ 而 $E_{11},E_{22}\ne0$，说明 $M_n(F)$ 有零因子、$(0)$ 不素。
+
+顺带说明：非交换环里“素理想”的标准定义不是 $ab\in P\Rightarrow a\in P$ 或 $b\in P$，而是对任意理想 $A,B$：
+
+\[
+AB\subseteq P\ \Longrightarrow\ A\subseteq P\ \text{或}\ B\subseteq P .
+\]
+
+两个定义在交换环中一致，所以本讲其余部分只用交换版本。
+
+例：在 $\mathbb Z$ 中，$(p)$ 在 $p$ 为素数时既是极大理想又是素理想；$(0)$ 是素理想，因为 $\mathbb Z$ 是整环，但不是极大理想（它被任何 $(p)$ 严格包含）。
+
+三条需要记住的相互关系：
+
+\begin{itemize}
+\item \textbf{极大必素}：若 $M$ 极大，则 $R/M$ 是域，域是整环，所以 $M$ 素。反之不然，$(0)\subsetneq\mathbb Z$ 就是反例。
+\item \textbf{素不必极大}：在 $\mathbb Z$ 中只有 $(0)$ 素而不极大；在 $\mathbb Z[x]$ 中 $(x)$ 是素理想（$\mathbb Z[x]/(x)\cong\mathbb Z$ 是整环）但不极大（$\mathbb Z[x]/(x)\cong\mathbb Z$ 不是域）。可见“素”比“极大”严格更弱。
+\item \textbf{商环刻画可以互推}：由理想对应定理，$R/M$ 没有非平凡理想当且仅当 $M$ 与 $R$ 之间没有别的理想；这正是极大的定义。
+\end{itemize}
+
+
+\subsection{互素理想与中国剩余定理}
+
+
+交换环中理想 $I,J$ 互素（或互补）是指
+\[I+J=R.\]
+此时存在 $i\in I,j\in J$ 使 $i+j=1$，并且
+\[I\cap J=IJ.\]
+包含关系显然给出 $IJ\subseteq I\cap J$；反向包含由 $a=a(i+j)=ai+aj$ 得到，其中 $ai\in IJ$、$aj\in IJ$。
+
+若 $I,J$ 互素，则中国剩余同构为
+
+\[
+R/(I\cap J)\;\longrightarrow\;R/I\times R/J,\qquad r+(I\cap J)\longmapsto(r+I,\ r+J),
+\]
+
+右端是环同态（按坐标运算），而\textbf{同态本身并不需要互素就能定义}；互素的作用是让它成为同构。这一点值得拆开看，因为“为什么需要 $I+J=R$”是本节最容易含糊的地方。
+
+\textbf{核即为 $I\cap J$。} $r$ 映到 $(0,0)$ 当且仅当 $r\in I$ 且 $r\in J$。这一步不需要互素。
+
+\textbf{互素恰好给出满射。} 若 $I+J=R$，取 $i\in I$、$j\in J$ 使 $i+j=1$。令
+
+\[
+e_1:=j=1-i\in J,\qquad e_2:=i=1-j\in I .
+\]
+
+逐个核对同余：$e_1=1-i$ 满足 $e_1\equiv1\pmod I$（因为 $i\in I$），又 $e_1=j\in J$ 给出 $e_1\equiv0\pmod J$；$e_2$ 对称地满足 $e_2\equiv0\pmod I$、$e_2\equiv1\pmod J$。给定任意 $(a+I,b+J)$，元素
+
+\[
+r=a\,e_1+b\,e_2
+\]
+
+就映到 $(a+I,\,b+J)$：因为 $a\,e_1\equiv a\pmod I$ 而 $b\,e_2\equiv0\pmod I$，在模 $J$ 一侧同理。所以映射满。反过来若映射满，则存在 $e_1\in R$ 映到 $(1+I,0+J)$，于是 $e_1\in J$ 且 $1-e_1\in I$，得 $1\in I+J$，即 $I+J=R$。
+
+顺带得到一个有用的副产品：$e_1,e_2$ 是\textbf{正交幂等元}，满足
+
+\[
+e_1+e_2=1,\qquad e_1e_2=0,\qquad e_1^2=e_1,\quad e_2^2=e_2 .
+\]
+
+在 $R/I\times R/J$ 中它们正是 $(1,0)$ 与 $(0,1)$ 的原像。
+
+\textbf{于是得到同构。} 核是 $I\cap J$、像满，由第一同构定理
+
+\[
+R/(I\cap J)\;\cong\;R/I\times R/J.
+\]
+
+有限个两两互素理想同样成立：
+
+\[
+R/\bigcap_{k=1}^n I_k\;\cong\;\prod_{k=1}^n R/I_k.
+\]
+
+\textbf{一个具体例子。} 取 $R=\mathbb Z$、$I=(3)$、$J=(4)$。取 $i=-3\in I$、$j=4\in J$，则 $i+j=1$，两者互素，于是
+
+\[
+\mathbb Z/12\mathbb Z\;\cong\;\mathbb Z/3\mathbb Z\times\mathbb Z/4\mathbb Z .
+\]
+
+对应的幂等元是 $e_1=j=4$、$e_2=i=-3$。检验：$4\equiv1\pmod3$、$4\equiv0\pmod4$；$-3\equiv0\pmod3$、$-3\equiv1\pmod4$。给定余数对 $(a,b)$，原像就是
+
+\[
+r=4a-3b \pmod{12}.
+\]
+
+例如 $(a,b)=(1,1)$ 给出 $r=1$，$(a,b)=(0,1)$ 给出 $r=9$，$(a,b)=(1,0)$ 给出 $r=4$。这也解释了为什么同时给定“模 $3$ 的余数”和“模 $4$ 的余数”能唯一确定“模 $12$ 的余数”。在 $\mathbb Z$ 中 $m\mathbb Z+n\mathbb Z=\mathbb Z$ 当且仅当 $\gcd(m,n)=1$，所以整数版中国剩余定理正是这里的特例。
+
+\textbf{不含幺时 $I\cap J=IJ$ 会失效。} 前面用 $a=a(i+j)=ai+aj$ 推 $I\cap J\subseteq IJ$ 时用到了 $1\in R$。去掉单位元后结论不必成立。取 $R=2\mathbb Z$（不含 $1$ 的环）、$I=J=2\mathbb Z$，则
+
+\[
+I\cap J=2\mathbb Z,\qquad IJ=(2\mathbb Z)(2\mathbb Z)=4\mathbb Z,
+\]
+
+两者不相等。做这种题时先确认所讨论的环是否含幺元。
