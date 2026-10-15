@@ -1,0 +1,75 @@
+\section{自然演绎与逆否式}
+
+
+\begin{quote}
+来源说明：本人选课较晚，本节主要依据作业与参考教材整理，非课堂记录。
+\end{quote}
+
+
+\subsection{记号与两种“反证”动作}
+
+
+采用课程约定：$\neg\varphi$ 是 $\varphi\to\bot$ 的缩写。
+
+\begin{itemize}
+\item \textbf{$\to I$}：在临时假设 $[\varphi]^i$ 下推出 $\psi$，解除该假设得到 $\varphi\to\psi$。若推出的是 $\bot$，得到 $\neg\varphi$。
+\item \textbf{经典 RAA}：在临时假设 $[\neg\varphi]^i$ 下推出 $\bot$，解除它得到 $\varphi$。
+\item \textbf{$\to E$}：由 $\varphi\to\psi$ 和 $\varphi$ 得 $\psi$。
+\end{itemize}
+
+
+所以“假设 $\varphi$ 导出矛盾”得到的是 $\neg\varphi$，而“假设 $\neg\varphi$ 导出矛盾”才使用 RAA 得到 $\varphi$。
+
+\subsection{逆否式}
+
+
+证明
+
+\[
+(\neg Q\to\neg P)\leftrightarrow(P\to Q).
+\]
+
+正向推导：
+
+\begin{verbatim}
+1.  ¬Q→¬P        AS
+2.    P           AS
+3.      ¬Q        AS
+4.      ¬P        →E 1,3
+5.      ⊥         →E 2,4
+6.    Q           RAA 3
+7.  P→Q           →I 2-6
+8.  (¬Q→¬P)→(P→Q) →I 1-7
+\end{verbatim}
+
+
+反向推导：
+
+\begin{verbatim}
+1.  P→Q           AS
+2.    P           AS
+3.    Q           →E 1,2
+4.      ¬Q        AS
+5.      ⊥         →E 3,4
+6.    ¬P          →I 2-5
+7.  ¬Q→¬P         →I 4-6
+8.  (P→Q)→(¬Q→¬P) →I 1-7
+\end{verbatim}
+
+
+编号只表示要解除的假设。第一段的 RAA 解除第 3 行的 $[\neg Q]$；第二段的第 6 行是由 $[P]$ 导出矛盾，所以必须写 $\to I$。
+
+\subsection{Fitch 列表与 Reiteration}
+
+
+典型证明：
+
+\begin{verbatim}
+1 | ¬¬P        PR
+2 |   ¬P       AS
+3 |   ⊥        →E 2,1
+4 | P          RAA 2
+\end{verbatim}
+
+
+缩进表示临时假设的作用域。已经写过且仍在作用域中的公式可以用 \texttt{R, 行号} 重复引用；已关闭子证明中的行不能再引用。

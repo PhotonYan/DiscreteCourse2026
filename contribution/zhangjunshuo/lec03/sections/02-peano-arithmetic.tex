@@ -1,0 +1,50 @@
+\section{Peano 算术}
+
+
+\subsection{结构与理论要分开}
+
+
+标准自然数结构写作
+
+\[
+\mathcal N=(\mathbb N;0,S,+,\cdot).
+\]
+
+说 $\mathcal N\models\mathrm{PA}$ 是说这个结构满足 PA 的所有公理；说 PA 是理论，则是说由一阶公理和推理规则得到的句子集合。结构不是理论，$\mathrm{PA}$ 也不等于 $\operatorname{Th}(\mathcal N)$。
+
+\subsection{一组常用公理}
+
+
+在语言 $(0,S,+,\cdot)$ 中，PA 包含：
+
+\[
+\begin{aligned}
+&\forall x\,S(x)\ne0,\\
+&\forall x\forall y\,(S(x)=S(y)\to x=y),\\
+&\forall x\,(x+0=x),\qquad
+\forall x\forall y\,(x+S(y)=S(x+y)),\\
+&\forall x\,(x\cdot0=0),\qquad
+\forall x\forall y\,(x\cdot S(y)=x\cdot y+x).
+\end{aligned}
+\]
+
+最关键的是\textbf{一阶归纳公理模式}：对每个公式 $\varphi(x,\vec z)$，都有
+
+\[
+\bigl(\varphi(0,\vec z)\land\forall x(\varphi(x,\vec z)\to\varphi(S(x),\vec z))\bigr)
+\to\forall x\varphi(x,\vec z).
+\]
+
+这里每个公式产生一个公理，不是一个能量化“所有公式”的单一一阶句子。
+
+\subsection{做题时的区分}
+
+
+\begin{itemize}
+\item 集合论中的自然数归纳说某个集合是归纳集；
+\item PA 的归纳模式说某个一阶公式在理论中可归纳；
+\item 标准模型中的数学归纳法是语义事实。
+\end{itemize}
+
+
+三者结论相近，但层次不同，不能把其中一个直接当作另外两个的公理。

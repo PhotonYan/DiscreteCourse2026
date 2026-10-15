@@ -1,0 +1,49 @@
+# Henkin 完备性
+
+## 见证扩张
+
+设 $T$ 是一致的一阶理论。对每个存在句子 $\exists x\varphi(x)$ 加入新常元 $c_\varphi$ 和 Henkin 公理
+
+$$
+\exists x\varphi(x)\to\varphi(c_\varphi).
+$$
+
+逐层加入见证常元，确保前一层出现的每个存在句子都有见证；每层取演绎闭包。扩张保持一致，因为若新理论不一致，只会使用有限多个新常元和有限多个 Henkin 公理，可在原理论中用存在消去还原矛盾。
+
+再用 Lindenbaum 引理把一致理论扩成极大一致集 $T^*$。经典极大一致性给出：对每个句子 $\theta$，恰有一个 of $\theta,\neg\theta$ 属于 $T^*$，并且联结词在 $T^*$ 中满足相应的真值条件。
+
+## 闭项模型
+
+论域取扩充语言的**所有闭项**按理论等价的商集：
+
+$$
+\Omega=\{t:t\text{ 是闭项}\}/\sim,
+\qquad
+t\sim u\Longleftrightarrow T^*\vdash t=u.
+$$
+
+定义 $[f(t_1,\ldots,t_n)]$ 为函数解释，定义关系
+
+$$
+R([t_1],\ldots,[t_n])\quad\Longleftrightarrow\quad R(t_1,\ldots,t_n)\in T^*.
+$$
+
+等号替换规则保证这些定义与代表元无关，因而是良定义的。
+
+## 真值引理与完备性
+
+按公式复杂度归纳证明真值引理：对任意把自由变量替换为闭项的实例，
+
+$$
+\mathcal M\models\varphi(t_1,\ldots,t_n)
+\quad\Longleftrightarrow\quad
+\varphi(t_1,\ldots,t_n)\in T^*.
+$$
+
+存在量词方向使用 Henkin 常元：若 $\exists x\varphi(x)\in T^*$，则 $\varphi(c_\varphi)\in T^*$，模型中有一个具体闭项见证。于是每个一致理论有模型；将它应用于 $\Gamma\cup\{\neg\varphi\}$，得到
+
+$$
+\Gamma\models\varphi\quad\Longrightarrow\quad\Gamma\vdash\varphi.
+$$
+
+这就是一阶逻辑的完备性方向；可靠性是另一方向 $\Gamma\vdash\varphi\Rightarrow\Gamma\models\varphi$。

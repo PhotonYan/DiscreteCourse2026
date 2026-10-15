@@ -18,4 +18,4 @@
 
 整除提供偏序与线性组合的语言；Bézout 恒等式给出扩展欧几里得算法和模逆元；素数分解支撑 Euclid 引理与算术基本定理；同余类形成 $\mathbb Z_m$，费马/欧拉定理描述单位群中的幂；CRT 把互素模数拼成一个模乘积；RSA 将这些事实用于公钥变换；Stern--Brocot 树则把中项搜索、行列式不变量和辗转相除联系起来。
 
-详细阅读请从 `sections/01-divisibility.md` 开始；排版总入口为 `main.tex`。
+详细阅读请从 `sections/01-divisibility.md` 开始；排版总入口为 `lec05.tex`。

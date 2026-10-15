@@ -1,5 +1,7 @@
 # Lec 05：数论
 
+阅读入口：[Markdown](lec05.md) · [LaTeX](lec05.tex) · [PDF](lec05.pdf)
+
 这是 `zhangjunshuo` 对课程 Lec 05 的整理版。内容按主题拆成九个章节，保留课堂手记中的主线，并把录音中出现但手记略写的证明补齐。
 
 ## 章节
@@ -14,7 +16,7 @@
 8. [RSA：欧拉定理的应用](sections/08-rsa.md)
 9. [有理逼近与 Stern--Brocot 树](sections/09-stern-brocot.md)
 
-`main.tex` 是总入口，`sections/*.tex` 是由同名 Markdown 生成的排版片段。PDF 中使用 Loom 模板；如果只想继续修改内容，编辑 Markdown 后重新生成对应 TeX 即可。
+`lec05.tex` 是总入口，`sections/*.tex` 是由同名 Markdown 生成的排版片段。PDF 中使用 Loom 模板；如果只想继续修改内容，编辑 Markdown 后重新生成对应 TeX 即可。
 
 ## 本次整理的约定
 
@@ -28,6 +30,6 @@
 在本目录运行：
 
 ```bash
-xelatex -interaction=nonstopmode -halt-on-error main.tex
-xelatex -interaction=nonstopmode -halt-on-error main.tex
+xelatex -interaction=nonstopmode -halt-on-error lec05.tex
+xelatex -interaction=nonstopmode -halt-on-error lec05.tex
 ```

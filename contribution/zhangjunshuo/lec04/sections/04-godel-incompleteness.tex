@@ -1,0 +1,44 @@
+\section{Gödel 不完备定理}
+
+
+\subsection{第一不完备定理的形式}
+
+
+设 $T$ 是：
+
+\begin{itemize}
+\item 一致的；
+\item 有效公理化的；
+\item 足够强，能够表达并验证基本算术的编码事实。
+\end{itemize}
+
+
+由不动点引理得到 Gödel 句 $G_T$，满足
+
+\[
+T\vdash G_T\leftrightarrow\neg\operatorname{Prov}_T(\ulcorner G_T\urcorner).
+\]
+
+在适当的可靠性条件下，$G_T$ 在标准自然数中为真但 $T$ 不能证明它。要排除 $\neg G_T$ 的可证性，可以假设 $\omega$-一致性，或改用 Rosser 句在较弱的一致性假设下得到独立性。
+
+因此，结论不是“任何含算术的理论都不完备”，而是带有一致性、有效公理化和算术表达能力等条件的定理。
+
+\subsection{第二不完备定理（概要）}
+
+
+若 $T$ 还足够强，能在自身内部形式化“存在一个合法证明”的谓词和 Hilbert–Bernays 导出条件，则它不能在自身内部证明自己的形式一致性句子 $\mathrm{Con}(T)$，即
+
+\[
+T\nvdash\mathrm{Con}(T)
+\]
+
+（假设 $T$ 一致）。这里的 $\mathrm{Con}(T)$ 是依赖编码方案写出的算术句子，不是元语言中一句未经形式化的“我没有矛盾”。
+
+\subsection{不要混淆三层陈述}
+
+
+1. 元理论中说“某个有限字符串是合法证明”；
+2. 算术理论中用 $\operatorname{Proof}$ 和 $\operatorname{Prov}$ 表示这件事；
+3. 模型中讨论这些算术句子的真值。
+
+Gödel 论证正是把三层通过编码连接起来；省略其中的有效性或一致性条件，就会把定理误说成无条件的句法悖论。

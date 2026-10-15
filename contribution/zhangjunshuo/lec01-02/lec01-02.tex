@@ -1,0 +1,28 @@
+% Lec 01–02：命题逻辑与一阶逻辑入门
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+% ctexart does not provide semantic double brackets by default.
+\newcommand{\llbracket}{\left[\!\left[}
+\newcommand{\rrbracket}{\right]\!\right]}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 01–02}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{命题逻辑与一阶逻辑入门}
+\author{zhangjunshuo}\date{2026 年 9 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本人选课较晚，Lec 01–02 主要依据作业与参考资料整理，非课堂记录。本稿整理自然演绎、Fitch 列表、子证明作用域、经典相继式和一阶逻辑基础。
+\end{quote}
+\tableofcontents\clearpage
+\input{sections/01-natural-deduction}\clearpage
+\input{sections/02-scope-sequent}\clearpage
+\input{sections/03-first-order-basics}
+\end{document}
