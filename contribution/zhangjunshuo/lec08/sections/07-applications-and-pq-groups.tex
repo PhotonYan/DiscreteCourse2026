@@ -39,7 +39,7 @@ n_p\mid m,\qquad n_p\equiv 1\pmod p
 \[
  n_{13}\mid11^2,\quad n_{13}\equiv1\pmod{13},
 \]
-而 $n_{13}\in\{1,11,121\}$ 中只有 $1$ 满足条件。因此两个 Sylow 子群 $P_{11},P_{13}$ 都正规。
+而 $n_{13}\in\{1,11,121\}$ 中只有 $1$ 满足条件。因此两个 Sylow 子群都正规；下面记 $P_p$ 为那个唯一的 Sylow $p$-子群（即 $P_{11}$ 是 Sylow $11$-子群、$P_{13}$ 是 Sylow $13$-子群，下标就是素数 $p$）。
 
 阶为 $p^2$ 的群是阿贝尔群（见本讲类方程部分），所以 $P_{11}$ 与 $P_{13}$ 都阿贝尔。与阶 $35$ 的论证相同，两个正规、互素阶子群逐点交换，并且乘积等于 $G$。故 $G$ 阿贝尔。
 
@@ -52,12 +52,18 @@ n_p\mid m,\qquad n_p\equiv 1\pmod p
 \[
  n_q\mid p,\qquad n_q\equiv1\pmod q.
 \]
-因为 $p<q$，只有 $n_q=1$，所以 Sylow $q$-子群 $Q=\langle a\rangle$ 正规，且 $|a|=q$。令 $P=\langle b\rangle$ 为 Sylow $p$-子群，$|b|=p$。由于 $|P||Q|=|G|$ 且交只有单位元，$G=QP$，每个元素都可写成 $a^i b^j$。
+因为 $p<q$，只有 $n_q=1$，所以 Sylow $q$-子群 $Q=\langle a\rangle$ 正规，且 $|a|=q$（$\langle a\rangle$ 表示由 $a$ 生成的循环子群）。令 $P=\langle b\rangle$ 为 Sylow $p$-子群，$|b|=p$。由于 $|P||Q|=|G|$ 且交只有单位元，$G=QP$，每个元素都可写成 $a^i b^j$（$i=0,\dots,q-1$，$j=0,\dots,p-1$）。
 
 \subsubsection{共轭作用给出分类分岔}
 
 
-正规性保证 $bab^{-1}\in Q$。$Q$ 是阶 $q$ 的循环群，因此存在 $s\in(\mathbb Z/q\mathbb Z)^\times$ 使
+正规性保证 $bab^{-1}\in Q$。$Q$ 是阶 $q$ 的循环群，因此存在整数 $s$ 使 $bab^{-1}=a^s$。这里 $s$ 只能取自模 $q$ 的\textbf{单位群}
+
+\[
+(\mathbb Z/q\mathbb Z)^\times=\{s\bmod q:\gcd(s,q)=1\},
+\]
+
+它由所有与 $q$ 互素的剩余类组成，在乘法下构成群，阶为 $q-1$（$q$ 为素数时每个非零剩余类都可逆）。取这样的 $s$（而不是任意的 $s$）是因为 $a\mapsto a^s$ 必须是 $Q$ 的自同构。于是
 \[
 bab^{-1}=a^s.
 \]
@@ -69,18 +75,20 @@ a=b^pab^{-p}=a^{s^p},
 
 \begin{itemize}
 \item $s=1$。此时 $a$ 与 $b$ 交换，$G\cong C_q\times C_p\cong C_{pq}$；
-\item $s\ne1$。此时 $s$ 在模 $q$ 的单位群中有阶 $p$，因此必须有 $p\mid(q-1)$。这给出非阿贝尔的半直积关系
+\item $s\ne1$。此时 $s$ 在单位群 $(\mathbb Z/q\mathbb Z)^\times$ 中的阶为 $p$（因为 $s^p\equiv1$ 而 $s\ne1$）。单位群的阶是 $q-1$，由拉格朗日定理 $p$ 整除 $q-1$，所以必须有 $p\mid(q-1)$。这给出非阿贝尔的\textbf{半直积}关系
 \end{itemize}
 
 \[
   \langle a,b\mid a^q=b^p=e,\;bab^{-1}=a^s\rangle.
 \]
 
+  （\textbf{半直积}的记号写在下面 [DF] 的写法里：$C_q\rtimes_\varphi C_p$。粗说就是“$C_q$ 正规、$C_p$ 通过自同构 $\varphi$ 作用于它”，当 $\varphi$ 不是恒等映射时结果不是直积。它的一般定义这里不展开，本讲只需要上面这一组生成元与关系。）
+
 课堂上最后一个“唯一性”步骤只写到改变 $b$ 的生成元。这里用两种方式补齐，先给一个只用到多项式根的初等写法，再给教材的写法。
 
 \textbf{初等写法。} 若 $s$ 与 $t$ 都是阶 $p$ 的非平凡元，则 $s$ 的 $p$ 个幂已经是方程 $X^p=1$ 在模 $q$ 下的全部根（一个次数为 $p$ 的多项式至多有 $p$ 个根）。所以 $t=s^r$，其中 $1\le r<p$。把生成元 $b$ 换成 $b^r$，共轭指数就变成 $s^r=t$。因此在固定的 $p,q$ 下，非阿贝尔情形至多有一个同构类型；它存在当且仅当 $p\mid(q-1)$。
 
-\textbf{[DF] 的写法：换成自同构群。} 正规性把共轭作用变成一个同态
+\textbf{[DF] 的写法：换成自同构群。} 这里的 $\operatorname{Aut}(C_q)$ 表示 $C_q$ 的\textbf{自同构群}（$C_q$ 到自身的全体同构在复合下构成的群），同样有 $\operatorname{Aut}(C_q)\cong(\mathbb Z/q\mathbb Z)^\times$。正规性把共轭作用变成一个同态
 
 \[
 \varphi:C_p\longrightarrow\operatorname{Aut}(C_q),\qquad \varphi(b)=\bigl(a\mapsto bab^{-1}\bigr).
@@ -102,7 +110,7 @@ a=b^pab^{-p}=a^{s^p},
 \[
 (i,j)(k,\ell)=(i+s^j k,\,j+\ell),
 \]
-其中第一坐标模 $q$、第二坐标模 $p$，并取 $s^p\equiv1\pmod q$。这正是 $C_q\rtimes C_p$ 的乘法；它有 $pq$ 个元素，且 $(1,0)$、$(0,1)$ 满足上面的关系。
+其中第一坐标模 $q$、第二坐标模 $p$，并取 $s^p\equiv1\pmod q$。$\rtimes$ 读作“半直积”，$C_q\rtimes_\varphi C_p$ 中下标 $\varphi$ 指明 $C_p$ 通过哪个自同构作用在 $C_q$ 上。这正是 $C_q\rtimes C_p$ 的乘法；它有 $pq$ 个元素，且 $(1,0)$、$(0,1)$ 满足上面的关系。
 
 \subsubsection{两个小例子}
 

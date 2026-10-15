@@ -23,7 +23,7 @@ n_p\equiv1\pmod p.
 \subsection{先证明 $n_p\mid m$}
 
 
-固定一个 Sylow 子群 $P$。由第二定理，$G$ 共轭作用在 $\operatorname{Syl}_p(G)$ 上是传递的，且 $P$ 的稳定子是
+固定一个 Sylow 子群 $P$。由第二定理，$G$ 通过共轭作用在 $\operatorname{Syl}_p(G)$ 上只有一条轨道，这时称作用是\textbf{传递的}（transitive）；$P$ 的稳定子是
 
 \[
 \operatorname{Stab}_G(P)=\{g:gPg^{-1}=P\}=N_G(P).
@@ -115,7 +115,7 @@ n_p=|\mathcal S|
 |S_3|=6=2\cdot3.
 \]
 
-对 $p=3$，有 $n_3\mid2$ 且 $n_3\equiv1\pmod3$，只能是 $n_3=1$。因此唯一的 Sylow $3$-子群
+这里 $S_3$ 是 $\{1,2,3\}$ 上的对称群，$A_3$ 是其中的偶置换子群。对 $p=3$，有 $n_3\mid2$ 且 $n_3\equiv1\pmod3$，只能是 $n_3=1$。因此唯一的 Sylow $3$-子群
 
 \[
 \langle(1\,2\,3)\rangle=A_3
@@ -128,11 +128,15 @@ n_p=|\mathcal S|
 \subsection{例：阶为 $35$ 的群}
 
 
-设 $|G|=35=5\cdot7$。对 $p=7$，$n_7\mid5$ 且 $n_7\equiv1\pmod7$，故 $n_7=1$。对 $p=5$，$n_5\mid7$ 且 $n_5\equiv1\pmod5$，也只能有 $n_5=1$。因此两个 Sylow 子群都正规；它们阶互素，交集为 $\{e\}$，并且正规子群彼此交换，于是
+设 $|G|=35=5\cdot7$。对 $p=7$，$n_7\mid5$ 且 $n_7\equiv1\pmod7$，故 $n_7=1$。对 $p=5$，$n_5\mid7$ 且 $n_5\equiv1\pmod5$，也只能有 $n_5=1$。
+
+记 $P_5$ 为那个唯一的 Sylow $5$-子群、$P_7$ 为唯一的 Sylow $7$-子群（下标就是对应的素数 $p$，与第 7 节 $P_{11},P_{13}$ 的写法一致）。两者都正规；它们阶\textbf{互素}（即 $\gcd(5,7)=1$），所以交集只能是 $\{e\}$；又因为两个正规子群的元素彼此交换，乘积是直积，于是
 
 \[
 G\cong P_5\times P_7\cong C_5\times C_7\cong C_{35}.
 \]
+
+最后一步用了 $C_m\times C_n\cong C_{mn}$（当 $\gcd(m,n)=1$）。
 
 这里“先由数目得到正规，再用正规子群的乘积”是 Sylow 定理最典型的应用。更大的例子（例如 $11^2\cdot13^2$）还要结合“阶为 $p^2$ 的群必阿贝尔”等结果，不能只凭 $n_p$ 的两个条件直接断言循环。
 
