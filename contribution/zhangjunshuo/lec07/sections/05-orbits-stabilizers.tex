@@ -1,0 +1,134 @@
+\section{轨道、稳定子与轨道--稳定子定理}
+
+
+\textbf{本节用到的记号，先一次交代清楚}：
+
+\begin{itemize}
+\item $G\curvearrowright X$：群作用；$g\cdot x$：$g$ 作用在 $x$ 上的结果。
+\item $G\cdot x=\{g\cdot x:g\in G\}\subseteq X$：$x$ 的轨道；不同轨道要么相等要么不交，全体轨道构成 $X$ 的划分。
+\item $G_x=\{g\in G:g\cdot x=x\}\le G$：$x$ 的稳定子。
+\item $G/G_x$：稳定子的左陪集\textbf{集合}（$G_x$ 未必正规，所以这里一般不是商群）。
+\item 轨道--稳定子定理：$G/G_x\to G\cdot x,\ gG_x\mapsto g\cdot x$ 是双射；$G$ 有限时 $|G\cdot x|=[G:G_x]=|G|/|G_x|$。
+\item $[G:G_x]$：指数；$|X|=\sum_i|G\cdot x_i|$：按轨道求和。
+\item $\operatorname{Sym}(X)$：$X$ 的对称群；$\cong$：同构。
+\item $D_8$：正方形的对称群，本节用它演示轨道与稳定子。
+\end{itemize}
+
+
+\subsection{轨道与稳定子}
+
+
+设 $G$ 作用在集合 $X$ 上，取 $x\in X$。$x$ 的轨道定义为
+
+\[
+G\cdot x=\{g\cdot x:g\in G\}\subseteq X.
+\]
+
+它表示从 $x$ 出发，在群作用下能够到达的全部位置。
+
+$x$ 的稳定子（或固定子群）定义为
+
+\[
+G_x=\operatorname{Stab}_G(x)=\{g\in G:g\cdot x=x\}.
+\]
+
+这是 $G$ 的子群：单位元固定 $x$；若 $g,h$ 都固定 $x$，则 $gh$ 固定 $x$；若 $g$ 固定 $x$，则 $g^{-1}$ 也固定 $x$。
+
+\subsection{轨道是等价类}
+
+
+定义关系
+
+\[
+ x\sim y\quad\Longleftrightarrow\quad y=g\cdot x\text{ 对某个 }g\in G.
+\]
+
+这是等价关系：单位元给出自反性，取逆元给出对称性，作用的结合律给出传递性。因此不同轨道要么相等，要么不交，所有轨道构成 $X$ 的一个划分。
+
+若只有一个轨道，即对任意 $x,y\in X$ 都存在 $g\in G$ 使 $g\cdot x=y$，则称作用是传递的。
+
+\subsection{轨道与陪集}
+
+
+考虑轨道映射
+
+\[
+\alpha_x:G\longrightarrow G\cdot x,
+\qquad g\longmapsto g\cdot x.
+\]
+
+若 $g,h\in G$，则
+
+\[
+\alpha_x(g)=\alpha_x(h)
+\Longleftrightarrow
+g\cdot x=h\cdot x
+\Longleftrightarrow
+h^{-1}g\in G_x
+\Longleftrightarrow
+g\in hG_x.
+\]
+
+所以 $\alpha_x$ 的纤维正是稳定子 $G_x$ 的左陪集。于是它在陪集空间上诱导双射
+
+\[
+G/G_x\xrightarrow{\ \cong\ }G\cdot x,
+\qquad gG_x\longmapsto g\cdot x.
+\]
+
+这里的 $G/G_x$ 只是左陪集集合；$G_x$ 一般不正规，所以不能把这个记号默认理解成商群。
+
+\subsection{轨道--稳定子定理}
+
+
+\textbf{定理。} 若 $G$ 有限，则
+
+\[
+|G\cdot x|=[G:G_x]=\frac{|G|}{|G_x|}.
+\]
+
+证明就是上面的陪集双射加拉格朗日定理。更一般地，即使 $G$ 无限，也有集合意义上的双射 $G/G_x\cong G\cdot x$；只有在有限情形下才能写成阶的商。
+
+若作用传递且 $G,X$ 有限，则对任意 $x\in X$ 有
+
+\[
+|X|=|G\cdot x|=\frac{|G|}{|G_x|}.
+\]
+
+更一般地，若 $X$ 有限并取每条轨道的代表元 $x_1,\ldots,x_r$，则
+
+\[
+|X|=\sum_{i=1}^r|G\cdot x_i|
+=\sum_{i=1}^r[G:G_{x_i}].
+\]
+
+\subsection{例：正方形的对称群}
+
+
+令 $D_8$ 表示正方形的二面体群（按本笔记约定，阶为 $8$），它作用在四个顶点集合 $X$ 上。该作用是传递的。固定一个顶点 $x$，能保持 $x$ 不动的元素只有恒等变换和关于经过该顶点与中心的对角线反射，因此
+
+\[
+|G_x|=2,
+\qquad |G\cdot x|=\frac{8}{2}=4=|X|.
+\]
+
+这个例子把“稳定子记录一个点还剩多少对称性”和“轨道记录这个点能移动到多少位置”同时展示出来。
+
+\subsection{记忆点}
+
+
+\begin{itemize}
+\item 轨道是点在作用下的可达集合；稳定子是固定该点的群元素集合。
+\item 轨道是等价类，所以轨道给出集合划分。
+\item 轨道--稳定子定理的真正内容是 $G/G_x\cong G\cdot x$；有限公式只是其阶数版本。
+\item 计算轨道大小时，先找稳定子，再用指数或拉格朗日定理。
+\end{itemize}
+
+
+\subsection{参考对照}
+
+
+\begin{itemize}
+\item [DF] §1.7、§2.2：orbits、stabilizers 与 coset bijection。
+\item [DS] §14.1.5–14.1.9：轨道、稳定子和轨道--稳定子定理。
+\end{itemize}

@@ -1,0 +1,50 @@
+% Lec 07：有限生成阿贝尔群、同构定理续与群作用
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 07}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{有限生成阿贝尔群、同构定理续与群作用}
+\author{zhangjunshuo}\date{2026 年 9 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 9 月 29 日的两份课堂转写、手写原稿和教材整理。转写中的口语识别错误已按手写稿与 Dummit--Foote《Abstract Algebra》（[DF]）和《离散数学与结构》（[DS]）校正。有限生成阿贝尔群部分保留课堂证明提纲，不把提纲写成完整的 Smith 标准形证明。
+\end{quote}
+\tableofcontents\clearpage
+
+\section*{记号速查}
+\begin{itemize}
+\item $G,H,K$：群；$e$：单位元；$|G|$：群的阶；$H\le G$：子群；$N\trianglelefteq G$：正规子群。
+\item $\langle S\rangle$：由 $S$ 生成的最小子群；$\langle g\rangle$：循环子群。
+\item $G\times H$：外部直积；$G=H\times K$（内部直积）表示 $(h,k)\mapsto hk$ 是同构。
+\item $\mathbb Z_n=\mathbb Z/n\mathbb Z$；$\mathbb Z_n^\times$：模 $n$ 的单位群；$\mathbb Z^r$：自由阿贝尔部分。
+\item $Z(G)$：中心；$C_G(A)$：集合 $A$ 的中心化子；$c_g(x)=gxg^{-1}$：共轭映射。
+\item $\operatorname{Hom}(G,H)$、$\operatorname{End}(G)$、$\operatorname{Aut}(G)$、$\operatorname{Inn}(G)$：同态、自同态、自同构、内自同构集合或群。
+\item $G\curvearrowright X$：$G$ 作用在 $X$ 上；$G\cdot x$：轨道；$G_x$：稳定子；$[G:G_x]$：指数。
+\item 二面体群按 [DF] 记 $D_{2n}$，阶为 $2n$；正方形的对称群写作 $D_8$。
+\end{itemize}
+\clearpage
+
+\input{sections/01-fg-abelian-direct-products}
+\input{sections/02-quotient-refinements}
+\input{sections/03-hom-end-aut-inn}
+\input{sections/04-group-actions}
+\input{sections/05-orbits-stabilizers}
+
+\section*{参考文献}
+\begin{itemize}
+\item \textbf{[DF]} D. S. Dummit, R. M. Foote. \emph{Abstract Algebra}, 3rd ed. §§1.7, 2.2, 4.4, 5.1--5.2. John Wiley \& Sons, 2004.
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》。未定稿，2023。§§9.5--9.6, 14.1。
+\end{itemize}
+\end{document}

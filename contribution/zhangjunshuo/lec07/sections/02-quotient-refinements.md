@@ -1,0 +1,129 @@
+# 商群的三个同构定理与中心化子
+
+**本节用到的记号，先一次交代清楚**：
+
+- $G$：群；$N\trianglelefteq G$、$H\trianglelefteq G$：正规子群；$A\le G$、$K\le G$：子群。
+- $G/N$：商群，元素是陪集 $gN$；$\cong$：同构；$[G:H]$：指数。
+- $HN=\{hn:h\in H,n\in N\}$：两个子群的乘积（$N$ 正规时它仍是子群）。
+- $H\cap N$：交集；$H/(H\cap N)\cong HN/N$（第二同构定理）。
+- $(G/N)/(H/N)\cong G/H$（第三同构定理，要求 $N\le H$）。
+- $C_G(A)=\{g\in G:ga=ag\ \text{对一切}\ a\in A\}$：$A$ 在 $G$ 中的中心化子；$C_G(x)$ 是 $A=\{x\}$ 的情形。
+- $Z(G)=C_G(G)$：群的中心。
+- $HK=G$ 且 $H\cap K=\{e\}$：内部直积的判据；此时 $G\cong H\times K$。
+
+## 中心与中心化子
+
+群 $G$ 的中心定义为
+
+$$
+Z(G)=\{z\in G:zg=gz\text{ 对所有 }g\in G\}.
+$$
+
+中心是 $G$ 的正规子群：若 $z\in Z(G)$，则对任意 $g\in G$ 有 $gzg^{-1}=z$。当 $G$ 阿贝尔时，$Z(G)=G$。
+
+给定子集 $A\subseteq G$，其中心化子定义为
+
+$$
+C_G(A)=\{g\in G:ga=ag\text{ 对所有 }a\in A\}.
+$$
+
+特别地，$C_G(\{a\})$ 常简写为 $C_G(a)$。中心化子是子群；当 $A=G$ 时，$C_G(G)=Z(G)$。要注意：任意中心化子通常只是子群，不一定正规。
+
+## 第二同构定理
+
+设 $N\trianglelefteq G$，$H\le G$。则 $HN$ 是 $G$ 的子群，且
+
+$$
+H\cap N\trianglelefteq H,
+\qquad HN/N\le G/N.
+$$
+
+第二同构定理给出
+
+$$
+H/(H\cap N)\cong HN/N.
+$$
+
+证明的自然映射是
+
+$$
+\theta:H\longrightarrow HN/N,
+\qquad h\longmapsto hN.
+$$
+
+它是满同态，且
+
+$$
+\ker\theta=H\cap N.
+$$
+
+由第一同构定理即得结论。这个证明说明：第二同构定理本质上是把商映射 $G\to G/N$ 限制到 $H$ 上。
+
+## 第三同构定理
+
+设 $N\trianglelefteq G$、$H\trianglelefteq G$ 且 $N\le H$。则 $H/N\trianglelefteq G/N$，并且
+
+$$
+(G/N)/(H/N)\cong G/H.
+$$
+
+自然映射为
+
+$$
+\psi:G/N\longrightarrow G/H,
+\qquad gN\longmapsto gH.
+$$
+
+它良定义，因为若 $gN=g'N$，则 $g^{-1}g'\in N\le H$，从而 $gH=g'H$。其核是 $H/N$，因此由第一同构定理得到上述同构。
+
+记号容易混淆：如果把较小的正规子群记作 $N$，把较大的记作 $H$，公式就是 $(G/N)/(H/N)\cong G/H$；教材也可能交换字母，但包含关系必须保持。
+
+## 对应定理（第四同构定理）
+
+设 $N\trianglelefteq G$，令 $\pi:G\to G/N$ 为自然商映射。则
+
+$$
+\{K\le G:N\le K\}
+\longleftrightarrow
+\{\overline K\le G/N\}
+$$
+
+之间存在一一对应，具体为
+
+$$
+K\longmapsto K/N=\pi(K),
+\qquad
+\overline K\longmapsto \pi^{-1}(\overline K).
+$$
+
+这两个操作互为逆。对应保留以下结构：
+
+- $K\trianglelefteq G$ 当且仅当 $K/N\trianglelefteq G/N$；
+- 若 $K\le L$，则 $[L:K]=[L/N:K/N]$；
+- 若另外有 $K\trianglelefteq G$，则中间商满足 $(G/N)/(K/N)\cong G/K$。
+
+因此，商群把核 $N$ 压成单位元后，中间子群的格结构仍然完整保留下来。
+
+## 一张总图
+
+$$
+\begin{array}{ccc}
+K & \hookrightarrow & G\\[4pt]
+\downarrow & & \downarrow\\[4pt]
+K/N & \hookrightarrow & G/N
+\end{array}
+$$
+
+这里 $N\le K\le G$；横向箭头表示包含，竖向箭头表示取商。反向操作是从 $G/N$ 的子群取原像，因而得到对应定理的一一对应。
+
+## 记忆点
+
+- 第二同构定理：$H$ 与 $N$ 的交控制 $H$ 在商群中的像。
+- 第三同构定理：连续商可以合并，先除 $N$ 再除 $H/N$ 等于直接除 $H$。
+- 对应定理：$G/N$ 的子群正好来自 $G$ 中包含 $N$ 的子群。
+- 中心 $Z(G)$ 是与整个群交换的元素；中心化子 $C_G(A)$ 是与指定集合 $A$ 交换的元素。
+
+## 参考对照
+
+- [DF] §3.3：第二、第三与第四（格）同构定理；中心化子见 §2.2。
+- [DS] §§9.5.15–9.5.16 对照第二、第三同构定理；中心化子按群论定义对照。

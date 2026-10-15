@@ -1,0 +1,135 @@
+\section{群作用}
+
+
+\textbf{本节用到的记号，先一次交代清楚}：
+
+\begin{itemize}
+\item $G$：群；$X$（或 $\Omega$）：被作用的集合，不要求是群。
+\item $G\curvearrowright X$ 或 $\rho:G\times X\to X,\ (g,x)\mapsto g\cdot x$：$G$ 在 $X$ 上的作用，满足 $e\cdot x=x$ 与 $(gh)\cdot x=g\cdot(h\cdot x)$。
+\item $\rho_g:X\to X,\ \rho_g(x)=g\cdot x$：由 $g$ 给出的置换；$\rho:G\to\operatorname{Sym}(X)$ 是群同态。
+\item $\operatorname{Sym}(X)$：$X$ 上全体双射构成的对称群。
+\item $\ker\rho=\{g\in G:g\cdot x=x\ \text{对所有}\ x\}$：作用的核；核为 $\{e\}$ 时称作用\textbf{忠实}。
+\item $G\cdot x=\{g\cdot x:g\in G\}$：$x$ 的轨道；$G_x=\{g:g\cdot x=x\}$：$x$ 的稳定子（下一节展开）。
+\item $Z(G)$：中心；$\cong$：同构；$\le$：子群；$\times$：直积。
+\item $GL_n(F)$ 与 $A\cdot v=Av$：矩阵群作用在列向量上的标准例子。
+\end{itemize}
+
+
+\subsection{定义}
+
+
+设 $G$ 是群，$X$ 是集合。一个左群作用是一个映射
+
+\[
+\rho:G\times X\longrightarrow X,
+\qquad (g,x)\longmapsto g\cdot x,
+\]
+
+满足
+
+\[
+ e\cdot x=x,
+\qquad
+(gh)\cdot x=g\cdot(h\cdot x)
+\]
+
+对所有 $g,h\in G$、$x\in X$ 成立。第二条说明群乘法与“先后作用”一致。
+
+对每个 $g\in G$，定义置换
+
+\[
+\rho_g:X\to X,
+\qquad \rho_g(x)=g\cdot x.
+\]
+
+由于 $g^{-1}$ 给出逆映射，$\rho_g\in\operatorname{Sym}(X)$。于是每个作用等价于一个群同态
+
+\[
+\rho:G\longrightarrow\operatorname{Sym}(X),
+\qquad g\longmapsto\rho_g.
+\]
+
+作用的核是
+
+\[
+\ker\rho=\{g\in G:g\cdot x=x\text{ 对所有 }x\in X\}.
+\]
+
+若核为平凡群，则称作用是\textbf{忠实的}。因此“群作用”可以理解为把抽象群表示成一群具体的置换。
+
+\subsection{基本例子}
+
+
+\subsubsection{对称群的自然作用}
+
+
+$\operatorname{Sym}(X)$ 作用在 $X$ 上：对 $\sigma\in\operatorname{Sym}(X)$ 和 $x\in X$，令 $\sigma\cdot x=\sigma(x)$。
+
+\subsubsection{左正则作用}
+
+
+群 $G$ 通过左乘作用在自身上：
+
+\[
+ g\cdot x=gx.
+\]
+
+该作用是忠实的，因为若 $g$ 固定所有 $x$，特别固定单位元 $e$，就有 $g=ge=e$。因此得到 Cayley 嵌入
+
+\[
+G\hookrightarrow\operatorname{Sym}(G).
+\]
+
+这说明每个群都同构于某个对称群的子群。
+
+\subsubsection{共轭作用}
+
+
+$G$ 作用在自身上，定义为
+
+\[
+ g\cdot x=gxg^{-1}.
+\]
+
+这个作用对应的同态就是 $g\mapsto c_g$，其核为 $Z(G)$。
+
+\subsubsection{线性作用}
+
+
+若 $G\le GL_n(F)$，则 $G$ 作用在向量空间 $F^n$ 上：
+
+\[
+ A\cdot v=Av.
+\]
+
+这是“群作用”把代数结构与几何对象连接起来的典型例子。
+
+\subsection{作用的图像}
+
+
+对固定 $x\in X$，作用给出一个轨道映射
+
+\[
+\alpha_x:G\longrightarrow X,
+\qquad g\longmapsto g\cdot x.
+\]
+
+它的像是 $x$ 能够到达的所有位置；它的纤维将由稳定子陪集描述。这个观察是轨道--稳定子定理的核心。
+
+\subsection{记忆点}
+
+
+\begin{itemize}
+\item 群作用的两条公理分别对应单位元和乘法相容。
+\item 作用就是一个到对称群的同态；忠实性就是核平凡。
+\item 左正则作用给出 Cayley 定理；共轭作用给出 $G/Z(G)\cong\operatorname{Inn}(G)$。
+\end{itemize}
+
+
+\subsection{参考对照}
+
+
+\begin{itemize}
+\item [DF] §1.7、§2.2：Group Actions、Stabilizers and Kernels。
+\item [DS] §14.1.1–14.1.4：群作用、作用同态与 Cayley 定理。
+\end{itemize}
