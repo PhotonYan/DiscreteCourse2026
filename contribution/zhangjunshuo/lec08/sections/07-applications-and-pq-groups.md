@@ -1,5 +1,16 @@
 # Sylow 定理的应用：小阶群与 $pq$ 群
 
+**本节用到的记号，先一次交代清楚**：
+
+- $G$：有限群；$|G|$：阶；$H,K\le G$：子群；$P,Q$：Sylow 子群（分别对应两个不同的素数）。
+- $n_p$：Sylow $p$-子群的个数；判据 $n_p\mid m$ 且 $n_p\equiv1\pmod p$；$n_p=1\iff$ 该 Sylow 子群正规。
+- $P_p$：当 $n_p=1$ 时记那个唯一的 Sylow $p$-子群（如 $P_5,P_7,P_{11},P_{13}$）。
+- $HK=\{hk\}$：子群乘积；$H\cap K$：交；$[x,y]=xyx^{-1}y^{-1}$：交换子，$[x,y]=e\iff xy=yx$。
+- 内部直积：$HK=G$、$H\cap K=\{e\}$（且两者都正规）时 $G\cong H\times K$。
+- $C_n$：$n$ 阶循环群；$C_q\rtimes_\varphi C_p$：半直积（$\varphi$ 平凡时退化为直积 $\times$）。
+- $\varphi:C_p\to\operatorname{Aut}(C_q)$：把共轭作用写成自同构；$s\in(\mathbb Z/q\mathbb Z)^\times$ 满足 $s^p\equiv1\pmod q$。
+- $\operatorname{Aut}(C_q)\cong(\mathbb Z/q\mathbb Z)^\times$：阶为 $q-1$ 的群；$\cong$：同构；$\trianglelefteq$：正规子群。
+
 这一节把 Sylow III 的两个条件
 $$
 n_p\mid m,\qquad n_p\equiv 1\pmod p

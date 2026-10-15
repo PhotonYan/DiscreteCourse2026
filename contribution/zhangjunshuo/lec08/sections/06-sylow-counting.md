@@ -1,5 +1,16 @@
 # Sylow 子群的个数
 
+**本节用到的记号，先一次交代清楚**：
+
+- $G$：有限群；$|G|=p^am$，$p$ 素数、$p\nmid m$；$P\in\operatorname{Syl}_p(G)$。
+- $n_p=|\operatorname{Syl}_p(G)|$：Sylow $p$-子群的个数，本节要证明 $n_p\mid m$ 且 $n_p\equiv1\pmod p$。
+- $N_G(P)$：$P$ 的正规化子；$n_p=[G:N_G(P)]$。
+- $C_G(x)$：中心化子；$Z(G)$：中心；$\operatorname{Cl}_G(x)$：共轭类。
+- $\equiv\pmod p$：同余，$a\equiv b\pmod p\iff p\mid(a-b)$。
+- $\mid$：整除；$\nmid$：不整除。
+- $C_n$：$n$ 阶循环群；$\cong$：同构；$\times$：直积；$\trianglelefteq$：正规子群；$\le$：子群。
+- $(c_1\ c_2\ \cdots\ c_k)$：轮换记号。
+
 ## 第三定理
 
 继续设
@@ -135,4 +146,4 @@ $$
 ## 参考对照
 
 - [DF] §4.5，Theorem 18(3) 及其证明。
-- [DS] Sylow 定理与小阶群应用相关小节。
+- [DS] 该书正文与习题都没有 Sylow 定理（第 9 章只到同态与直积，第 14 章是 Pólya 方法），本节以 [DF] §4.5 与本讲第 4--5 节的结论为准。

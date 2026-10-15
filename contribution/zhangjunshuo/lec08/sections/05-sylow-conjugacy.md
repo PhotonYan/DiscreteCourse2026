@@ -1,5 +1,15 @@
 # Sylow 子群的共轭性
 
+**本节用到的记号，先一次交代清楚**：
+
+- $G$：有限群；$P\in\operatorname{Syl}_p(G)$：一个 Sylow $p$-子群；$Q\le G$：任意 $p$-子群。
+- $\operatorname{Syl}_p(G)$：全体 Sylow $p$-子群；$G$ 通过共轭作用在它上面，$g\cdot P=gPg^{-1}$。
+- $N_G(P)=\{g\in G:gPg^{-1}=P\}$：$P$ 的正规化子，它正是上述作用中 $P$ 的稳定子。
+- $C_G(P)$：$P$ 的中心化子。注意：共轭作用的稳定子是 $N_G(P)$ 而**不是** $C_G(P)$；只有 $P$ 是 Abel 群时二者才相同。
+- $|G|=p^am,\ p\nmid m$：阶的分解；$[G:N_G(P)]$：指数。
+- $n_p=|\operatorname{Syl}_p(G)|$：Sylow $p$-子群的个数。
+- $(c_1\ c_2\ \cdots\ c_k)$：轮换记号；$S_n$：对称群；$\trianglelefteq$：正规子群；$\le$：子群。
+
 ## 第二定理的内容
 
 设 $|G|=p^a m$，其中 $p\nmid m$，并令 $P\in\operatorname{Syl}_p(G)$。Sylow 第二定理包含两句话：
@@ -142,4 +152,4 @@ $$
 ## 参考对照
 
 - [DF] §4.5，Theorem 18(2) 及其陪集/轨道证明。
-- [DS] 群作用与正规化子相关小节。
+- [DS] 该书没有正规化子的讨论；正规化子的定义与 "$P\trianglelefteq N_G(P)$" 来自 [DF] §4.4 及本节给出的定义。
