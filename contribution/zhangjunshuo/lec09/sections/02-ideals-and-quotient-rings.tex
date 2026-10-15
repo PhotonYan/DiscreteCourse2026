@@ -1,6 +1,18 @@
 \section{理想与商环}
 
 
+\textbf{本节用到的记号，先一次交代清楚：}
+
+\begin{itemize}
+\item $I\trianglelefteq R$：$I$ 是环 $R$ 的理想（符号借用群论的正规子群，含义由下文定义给出）。$I\le R$ 表示 $I$ 是子环。
+\item $n\mathbb Z=\{nk:k\in\mathbb Z\}$：$n$ 的全体倍数，是 $\mathbb Z$ 的理想。
+\item $(X)$：由子集 $X$ 生成的理想；$(a)$ 是单元素生成的主理想。
+\item $\gcd(a,b)$、$\operatorname{lcm}(a,b)$：最大公因数与最小公倍数，只对整数（或更一般的唯一分解整环）使用。
+\item $\operatorname{diag}(d_1,\dots,d_n)$：以 $d_1,\dots,d_n$ 为对角元、其余位置为 $0$ 的 $n\times n$ 对角矩阵。
+\item $R[x]$：系数在 $R$ 中的多项式环；$\deg f$ 是多项式 $f$ 的次数；\textbf{首一}指最高次项系数为 $1$。
+\end{itemize}
+
+
 \subsection{理想}
 
 
@@ -18,19 +30,31 @@
 I+J=\{a+b:a\in I,\ b\in J\},\qquad I\cap J=\{x:x\in I\text{ 且 }x\in J\},
 \]
 
-两者都是理想：$I+J$ 还是包含 $I\cup J$ 的最小理想（即 $I\cup J$ 生成的理想），$I\cap J$ 是同时包含于两者的最大理想。三者之间有包含链
+两者都是理想：$I+J$ 还是包含 $I\cup J$ 的最小理想（即 $I\cup J$ 生成的理想），$I\cap J$ 是同时包含于两者的最大理想。
+
+\textbf{理想的乘积}是第三个运算，定义为
+
+\[
+IJ=\left\{\sum_{k=1}^n a_kb_k:a_k\in I,\ b_k\in J,\ n\ge1\right\},
+\]
+
+即“$I$ 的元素乘 $J$ 的元素，再取有限和”所成的集合。它是包含所有乘积 $ab$（$a\in I,b\in J$）的最小理想；不能把它误写成只含单个乘积的集合。
+
+三个运算之间有包含链
 
 \[
 IJ\;\subseteq\;I\cap J\;\subseteq\;I+J\;\subseteq\;R,
 \]
 
-其中 $IJ\subseteq I\cap J\subseteq I+J$ 由定义直接看出。此外成立分配律
+其中 $IJ\subseteq I\cap J$ 是因为每个乘积 $ab$ 既在 $I$ 又在 $J$；$I\cap J\subseteq I+J$ 是因为 $x=x+0$。此外成立分配律
 
 \[
 I(J+K)=IJ+IK,\qquad (I+J)K=IK+JK,
 \]
 
-并可以定义幂 $I^n=\underbrace{I\cdots I}_{n}$。注意一般的 $I\cup J$ \textbf{不是}理想（例如 $\mathbb Z$ 中 $(2)\cup(3)$ 对加法不封闭），这正是需要引入 $I+J$ 的原因。
+并可以定义幂 $I^n=\underbrace{I\cdots I}_{n\text{ 个}}$。
+
+注意一般的 $I\cup J$ \textbf{不是}理想：例如在 $\mathbb Z$ 中 $2\in(2)$、$3\in(3)$，但 $2+3=5\notin(2)\cup(3)$，对加法不封闭。这正是需要引入 $I+J$ 的原因。
 
 理想的交仍是理想（任意多个理想的交仍是理想）。由子集 $X\subseteq R$ 生成的理想记为 $(X)$，是包含 $X$ 的最小理想。对单元素 $a$，$(a)$ 称主理想；在交换含幺环中
 \[ (a)=\{ra:r\in R\}.\]
@@ -39,15 +63,12 @@ I(J+K)=IJ+IK,\qquad (I+J)K=IK+JK,
 组成；交换环中可写成 $\sum_i r_i x_i$。这里 $r_i,s_i$ 遍历整个 $R$，$x_i$ 遍历 $X$，项数有限。之所以必须写成这种“两侧都乘”的形式：非交换时 $ra$ 与 $as$ 未必相同，而理想要求对左右乘法都封闭。验证也不难——两个这样的有限和相加仍是有限和，再左乘或右乘一个 $r\in R$ 只是把每项变成 $r(r_ix_is_i)= (rr_i)x_is_i$，形式不变，所以这个集合确实是对左右乘法封闭的加法子群，因而是理想；又因为每一项都必须落在任何包含 $X$ 的理想里，它是最小的。
 
 在 $\mathbb Z$ 中每个理想都是主理想：$I=(d)=d\mathbb Z$，其中 $d$ 是 $I$ 中非零元素的最大公因数。于是
-\[ (a)\cap(b)=(\operatorname{lcm}(a,b)),\qquad (a)+(b)=(\gcd(a,b)). \]
 
-理想的乘积定义为
-\[
-IJ=\left\{\sum_{k=1}^n a_kb_k:a_k\in I,\ b_k\in J,\ n\ge1\right\}.
-\]
-它是包含所有 $ab$（$a\in I,b\in J$）的最小理想；不能把它误写成只含单个乘积的集合。
+\[ (a)\cap(b)=(\operatorname{lcm}(a,b)),\qquad (a)+(b)=(\gcd(a,b)), \]
 
-对\textbf{主理想}，乘积直接由生成元给出：在交换环中
+这里 $\gcd(a,b)$ 是 $a,b$ 的最大公因数、$\operatorname{lcm}(a,b)$ 是最小公倍数。第一条是因为“同时是 $a$ 和 $b$ 的倍数”就是“$\operatorname{lcm}(a,b)$ 的倍数”，第二条是因为 $\mathbb Z$ 中能同时由 $a,b$ 线性表出的数恰是 $\gcd(a,b)$ 的倍数。
+
+回到乘积 $IJ$：对\textbf{主理想}，它直接由生成元给出。在交换环中
 
 \[
 (a)(b)=(ab),\qquad (a_1)(a_2)\cdots(a_k)=(a_1a_2\cdots a_k).
@@ -127,7 +148,7 @@ E_{ki}\,A\,E_{jl}=a_{ij}E_{kl}.
 \ker\operatorname{ev}_c=(x-c).
 \]
 
-包含关系 $(x-c)\subseteq\ker\operatorname{ev}_c$ 是显然的。反向包含用带余除法：在 $R[x]$ 中除以首一多项式 $x-c$，得
+包含关系 $(x-c)\subseteq\ker\operatorname{ev}_c$ 是显然的。反向包含用\textbf{带余除法}（多项式除法：用 $g$ 除 $f$ 得到商 $q$ 与余式 $r$，且 $\deg r<\deg g$；当 $g$ 的首项系数是 $1$、即 $g$ 为\textbf{首一}多项式时，$q,r$ 一定存在且唯一）。在 $R[x]$ 中除以首一多项式 $x-c$，得
 
 \[
 f(x)=q(x)(x-c)+r,\qquad r\in R,
