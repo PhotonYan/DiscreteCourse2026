@@ -1,0 +1,45 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 10}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{唯一分解整环、主理想整环与欧几里得整环}\author{zhangjunshuo}\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 15 日的三段课堂转写、手写原稿和课程教材整理。课堂的主线是把整数"唯一分解"推广到一般整环：先厘清单位、整除与相伴，再定义素元与不可约元，然后说明唯一分解整环等价于"因子链条件 $+$ 素性条件"，并沿欧几里得整环 $\to$ 主理想整环 $\to$ 唯一分解整环这条链下来说明常见环都满足这些性质；最后转向用理想构造域，并引出分裂域。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义，不依赖读者记得前面讲次的写法。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-units-divisibility-associates}
+\input{sections/02-prime-irreducible-ufd}
+\input{sections/03-ufd-conditions-pid-ed}
+\input{sections/04-field-construction-extensions-splitting}
+
+\section*{一页式总览}
+\begin{itemize}
+\item 单位群 $R^\times$；$a\mid b$ 是"存在 $c$ 使 $b=ac$"；$a\approx b$ 是"存在单位 $u$ 使 $a=ub$"。
+\item 整环中 $a\mid b$ 且 $b\mid a$ $\iff$ $a\approx b$ $\iff$ $(a)=(b)$。所以唯一分解只能要求"在相伴与次序意义下唯一"。
+\item 素元：$p\mid ab\Rightarrow p\mid a$ 或 $p\mid b$。不可约元：$p=ab\Rightarrow a$ 或 $b$ 是单位。素元必不可约，反之不然。
+\item UFD $\iff$ 因子链条件（无无穷真因子链）$+$ 素性条件（不可约必素）。
+\item 域 $\subsetneq$ ED $\subsetneq$ PID $\subsetneq$ UFD $\subsetneq$ 整环；$\mathbb Z$ 与 $F[x]$ 都是 ED，$\mathbb Z[x]$ 是 UFD 但不是 PID。
+\item ED：存在范数 $N$ 使带余除法成立；ED $\Rightarrow$ PID 的证明取理想中范数最小的元素。
+\item $R$ 交换含幺、$M$ 极大 $\Rightarrow$ $R/M$ 是域；$F[x]/(f)$ 是域 $\iff$ $f$ 不可约。
+\item $E/F$ 是扩域 $\Rightarrow$ $E$ 是 $F$-线性空间，$[E:F]$ 是其次数；$|F|=p^n$（有限域）。
+\item 分裂域：任何正次数多项式都有分裂域，且在保持 $F$ 不动的同构意义下唯一。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item \textbf{[DF]} D. S. Dummit, R. M. Foote. \emph{Abstract Algebra}, 3rd ed. §8.1（欧几里得整环）、§8.2（主理想整环）、§8.3（唯一分解整环）、§9.3（分式域）、§13.1--13.2（域扩张与分裂域）、§13.4（有限域）。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》§10.1（整环）、§10.2（理想与主理想；极大/素理想只在习题 10.2\#7）、§10.3（特征、素域、$F[x]/(f)$ 是域 $\iff f$ 不可约、有限域的存在唯一性）。该书没有 ED/PID/UFD 这条线，也没有域扩张与分裂域。
+\item \textbf{[讲义]} 课程讲义 \texttt{25-26-lecture\_notes.pdf} 第 7 章（环）与第 8 章（域）：§7.3 的定理 7.5 与 7.6 给出 UFD 的两个等价条件（这条在 [DF] 中没有以定理形式出现），§8.1--8.3 给出域扩张、分裂域与有限域。该讲义为 2025--2026 秋季版本。
+\item 原始材料：\texttt{DiscreteCourse2026/课堂手记和录音转写/Lec10/}（三段转写与手写原稿）。
+\end{itemize}
+\end{document}
