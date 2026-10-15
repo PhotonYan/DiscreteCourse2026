@@ -2,6 +2,15 @@
 
 参考：[DF] Dummit–Foote《Abstract Algebra》§3.1（Proposition 7）、§2.2（中心 $Z(G)$）；[DS]《离散数学与结构》§9.5。
 
+**本节用到的记号，先一次交代清楚**：
+
+- $G$：群；$e$：单位元；$H\le G$：子群；$gH,Hg$：左、右陪集；$[G:H]$：指数。
+- $N\trianglelefteq G$：$N$ 是 $G$ 的正规子群，即对一切 $g\in G$ 有 $gN=Ng$（等价地 $gNg^{-1}=N$）。这是本节新引入的记号。
+- $gNg^{-1}=\{gng^{-1}:n\in N\}$：$N$ 在共轭下的像。
+- $Z(G)=\{g\in G:gx=xg\ \text{对一切}\ x\in G\}$：群 $G$ 的中心。
+- $G/N$：$N\trianglelefteq G$ 时的商群，元素是陪集 $gN$，本节只提前用到它的元素个数 $|G/N|=[G:N]$。
+- $D_8$：正方形的对称群，$8$ 个元素，本节用它给「子群不必正规」举反例；记号约定见 [Lec 06 §1.2 二面体群](02-dihedral-free-groups.md)。
+
 ## 定义与等价形式
 
 设 $N\le G$。若对每个 $g\in G$ 都有

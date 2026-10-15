@@ -1,7 +1,21 @@
 \section{群同态：定义、核与像}
 
 
-参考：[DF] Dummit–Foote《Abstract Algebra》§1.6（定义）、§3.1（Proposition 1）、§3.3（Corollary 17）；[DS]《离散数学与结构》§9.5。
+参考：[DF] Dummit–Foote《Abstract Algebra》§1.6（定义）、§3.1（Proposition 1 与 Corollary 17）；[DS]《离散数学与结构》§9.5。
+
+\textbf{本节用到的记号，先一次交代清楚}：
+
+\begin{itemize}
+\item $G,H$：两个群；$e_G,e_H$：各自的单位元。
+\item $\varphi:G\to H$：从 $G$ 到 $H$ 的同态，即满足 $\varphi(ab)=\varphi(a)\varphi(b)$ 的映射。
+\item $\ker\varphi=\{g\in G:\varphi(g)=e_H\}$：$\varphi$ 的核。
+\item $\operatorname{im}\varphi=\{\varphi(g):g\in G\}$：$\varphi$ 的像。
+\item $N\trianglelefteq G$：正规子群；$G/N$：商群；$\cong$：同构；$|G|$：群的阶。
+\item $\varphi^{-1}(h)=\{x\in G:\varphi(x)=h\}$：$h$ 的原像（纤维）；注意这里的 $\varphi^{-1}$ \textbf{不是}逆映射。
+\item $\mathbb Z\to\mathbb Z/n\mathbb Z,\ k\mapsto k\bmod n$：本节反复使用的标准同态例子。
+\item $GL_n(F),SL_n(F),F^\times$：一般线性群、特殊线性群与 $F$ 的乘法群；$\det$ 是行列式。
+\end{itemize}
+
 
 \subsection{定义}
 
@@ -83,18 +97,18 @@
   \node[above] at (-2.8,1.6) {$G$};
   \node[above] at (5.3,1.6) {$H$};
   \draw[thick] plot[smooth cycle, tension=0.9] coordinates {(-2.3,-0.9) (-2.6,-0.1) (-1.8,0.4) (-1.1,-0.2) (-1.4,-1.0)};
-  \node[below left] at (-2.0,-1.0) {$\ker\varphi$};
-  \draw[thick,dashed] plot[smooth cycle, tension=0.9] coordinates {(-1.2,0.5) (-1.5,1.05) (-0.85,1.25) (-0.45,0.75) (-0.7,0.45)};
-  \node[left] at (-1.5,0.9) {$g\ker\varphi$};
+  \node[below left] at (-2.0,-1.0) {$\ker\pi$};
+  \draw[thick,dashed] plot[smooth cycle, tension=0.9] coordinates {(-1.4,0.5) (-1.7,1.3) (-0.9,1.8) (-0.2,1.2) (-0.5,0.6)};
+  \node[above] at (-1.0,1.8) {$g\ker\pi$};
   \draw (-2.0,-0.5) .. controls (0.4,-0.2) and (1.8,-0.5) .. (3.5,-0.5);
   \fill (3.55,-0.5) circle (1.6pt);
   \node[right] at (3.6,-0.5) {$e_H$};
-  \draw (-1.0,0.75) .. controls (0.8,0.9) and (2.0,0.5) .. (3.5,0.5);
+  \draw (-0.9,1.3) .. controls (0.8,1.2) and (2.0,0.6) .. (3.5,0.5);
   \fill (3.55,0.5) circle (1.6pt);
-  \node[right] at (3.6,0.5) {$\varphi(g)$};
+  \node[right] at (3.6,0.5) {$\pi(g)$};
   \draw[thick] plot[smooth cycle, tension=0.9] coordinates {(3.1,-0.9) (3.0,0.1) (3.7,0.9) (4.7,0.8) (4.7,-0.2) (4.3,-0.9)};
-  \node[below right] at (4.4,-0.8) {$\operatorname{im}\varphi$};
+  \node[below right] at (4.4,-0.8) {$\operatorname{Im}\pi$};
 \end{tikzpicture}
 \\[4pt]
-{\small 图：同态把每个陪集（纤维）压成一点：$\ker\varphi$ 压到 $e_H$，陪集 $g\ker\varphi$ 压到 $\varphi(g)$。}
+{\small 图：同态把每个陪集（纤维）压成一点：$\ker\pi$ 压到 $e_H$，陪集 $g\ker\pi$ 压到 $\pi(g)$。}
 \end{center}

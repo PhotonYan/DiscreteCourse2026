@@ -2,6 +2,17 @@
 
 参考：[DF] Dummit–Foote《Abstract Algebra》§3.3（Theorem 16、Corollary 17）；[DS]《离散数学与结构》§9.5。
 
+**本节用到的记号，先一次交代清楚**：
+
+- $\varphi:G\to H$：群同态；$\ker\varphi$：核；$\operatorname{im}\varphi$：像。
+- $N\trianglelefteq G$：正规子群；$gN$：陪集；$G/N$：商群。
+- $\overline{\varphi}:G/\ker\varphi\to\operatorname{im}\varphi$：由 $\varphi$ 诱导的映射，$\overline{\varphi}(g\ker\varphi)=\varphi(g)$。
+- $\cong$：同构，$G\cong H$ 表示两个群的乘法结构完全相同。
+- $[G:N]=\,|G/N|$：指数；$G$ 有限时等于 $|G|/|N|$。
+- $\pi:G\to G/N,\ \pi(g)=gN$：自然投影（商映射），$\ker\pi=N$。
+- $GL_n(F),SL_n(F),F^\times$：本节用 $\det$ 的核给出第一同构定理的具体例子。
+- $\langle g\rangle$：由 $g$ 生成的循环子群。
+
 ## 定理
 
 设 $\varphi:G\to H$ 是群同态，则 $\ker\varphi\trianglelefteq G$，且

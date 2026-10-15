@@ -5,6 +5,19 @@
 
 记号说明：采用 [DF] 的 $D_{2n}$（下标是群的阶）；[DS] 把同一个群记作 $D_n$。
 
+\textbf{本节用到的记号，先一次交代清楚}：
+
+\begin{itemize}
+\item $D_{2n}$：正 $n$ 边形（$n\ge3$）的全体对称在复合下构成的 $2n$ 阶二面体群；本节用的是 [DF] 的约定，\textbf{下标是群的阶}（[DS] 把同一个群记作 $D_n$）。
+\item $r$：旋转 $2\pi/n$；$s$：一条对称轴的反射。$D_{2n}=\{e,r,r^2,\dots,r^{n-1},s,rs,\dots,r^{n-1}s\}$。
+\item $\langle S\rangle$：由集合 $S$ 生成的子群，即包含 $S$ 的所有子群的交；$G=\langle S\rangle$ 表示 $S$ 生成 $G$。
+\item $\langle r,s\mid r^n=s^2=e,\ rs=sr^{-1}\rangle$：生成元与关系的写法，竖线左边列生成元、右边列它们满足的关系。
+\item $w=s_1^{\varepsilon_1}\cdots s_k^{\varepsilon_k}$：字母表 $S$ 上的一个词，$\varepsilon_i=\pm1$；$w^{-1}=s_k^{-\varepsilon_k}\cdots s_1^{-\varepsilon_1}$。
+\item $F(S)$：字母表 $S$ 上的自由群，元素是词的等价类。
+\item $F_2$：两个生成元上的自由群；$F_2$ 中 $xy\ne yx$，所以它非交换。
+\end{itemize}
+
+
 \subsection{二面体群}
 
 
@@ -48,7 +61,7 @@
   }
 \end{tikzpicture}
 \\[4pt]
-{\small 图：正方形（$D_8$）的八个对称。上行为旋转 $e,r,r^2,r^3$；下行为反射 $s,sr,sr^2,sr^3$（分别关于四条对称轴，其中 $s$ 关于竖直轴）；$r$ 是逆时针转 $90^\circ$。}
+{\small 图：正方形（$D_8$）的八个对称。上行为旋转 $e,r,r^2,r^3$，下行为关于竖直轴的反射 $s,sr,sr^2,sr^3$；$r$ 是逆时针转 $90^\circ$，$s$ 是左右翻转。}
 \end{minipage}
 \end{center}
 

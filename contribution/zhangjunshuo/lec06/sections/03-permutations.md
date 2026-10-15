@@ -2,6 +2,16 @@
 
 参考：[DF] Dummit–Foote《Abstract Algebra》§1.3；[DS]《离散数学与结构》§9.2。
 
+**本节用到的记号，先一次交代清楚**：
+
+- $S_n$：$\{1,\dots,n\}$ 到自身的全体双射在复合下构成的对称群，$|S_n|=n!$。
+- $\operatorname{Sym}(\Omega)$：非空集合 $\Omega$ 上全体双射构成的对称群；$\Omega=\{1,\dots,n\}$ 时就是 $S_n$。
+- $\circ$：映射复合，$(f\circ g)(x)=f(g(x))$，**从右往左读**；置换相乘也用这个约定。
+- $(c_1\ c_2\ \cdots\ c_k)$：循环（轮换），表示 $c_1\mapsto c_2\mapsto\cdots\mapsto c_k\mapsto c_1$，其余元素不动；长度 $1$ 的循环是恒等映射，通常省略。
+- 循环类型 $1^{m_1}2^{m_2}\cdots$：不交循环分解中各长度的重数，其中 $1^{m_1}$ 记录固定点个数，**不能省**。
+- $A_n$：$S_n$ 中由偶置换（能写成偶数个换位之积者）组成的子群，称为交错群，$|A_n|=n!/2$（$n\ge2$）。
+- $\operatorname{sgn}(\sigma)$：置换的符号，偶置换取 $+1$、奇置换取 $-1$。
+
 非空集合 $\Omega$ 上全体双射（置换，permutation）在复合下构成对称群（symmetric group）$\operatorname{Sym}(\Omega)$。当 $\Omega$ 取前 $n$ 个整数时记作 $S_n$；用 $\{1,\ldots,n\}$ 或 $\{0,\ldots,n-1\}$ 编号只是习惯不同。
 
 ## 循环记号

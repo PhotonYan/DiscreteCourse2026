@@ -2,6 +2,17 @@
 
 参考：[DF] Dummit–Foote《Abstract Algebra》§1.6（定义）、§3.1（Proposition 1 与 Corollary 17）；[DS]《离散数学与结构》§9.5。
 
+**本节用到的记号，先一次交代清楚**：
+
+- $G,H$：两个群；$e_G,e_H$：各自的单位元。
+- $\varphi:G\to H$：从 $G$ 到 $H$ 的同态，即满足 $\varphi(ab)=\varphi(a)\varphi(b)$ 的映射。
+- $\ker\varphi=\{g\in G:\varphi(g)=e_H\}$：$\varphi$ 的核。
+- $\operatorname{im}\varphi=\{\varphi(g):g\in G\}$：$\varphi$ 的像。
+- $N\trianglelefteq G$：正规子群；$G/N$：商群；$\cong$：同构；$|G|$：群的阶。
+- $\varphi^{-1}(h)=\{x\in G:\varphi(x)=h\}$：$h$ 的原像（纤维）；注意这里的 $\varphi^{-1}$ **不是**逆映射。
+- $\mathbb Z\to\mathbb Z/n\mathbb Z,\ k\mapsto k\bmod n$：本节反复使用的标准同态例子。
+- $GL_n(F),SL_n(F),F^\times$：一般线性群、特殊线性群与 $F$ 的乘法群；$\det$ 是行列式。
+
 ## 定义
 
 设 $G,H$ 是群。映射 $\varphi:G\to H$ 若对任意 $a,b\in G$ 满足
