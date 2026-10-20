@@ -1,0 +1,1322 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tikz-cd}
+
+% 定义定理环境（全部无编号）
+\newtheorem*{theorem}{定理}
+\newtheorem*{lemma}{引理}
+\newtheorem*{corollary}{推论}
+\newtheorem*{definition}{定义}
+\newtheorem*{example}{例}
+\newtheorem*{proposition}{命题}
+\theoremstyle{remark}
+\newtheorem*{remark}{注}
+
+% 常用记号
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\chr}{char}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\Fq}{\mathbb{F}_q}
+
+% 强制章节标题左对齐（无编号）
+\ctexset{
+    section = {
+        format = \raggedright\Large\bfseries,
+        beforeskip = 1.5ex plus 0.5ex minus 0.2ex,
+        afterskip = 1.0ex plus 0.2ex minus 0.1ex,
+    },
+    subsection = {
+        format = \raggedright\large\bfseries,
+        beforeskip = 1.2ex plus 0.3ex minus 0.1ex,
+        afterskip = 0.8ex plus 0.2ex minus 0.1ex,
+    }
+}
+
+% 重定义 \maketitle 使标题、作者、日期完全左对齐
+\makeatletter
+\renewcommand{\maketitle}{%
+    \par
+    \begingroup
+    \raggedright
+    \vspace{1em}
+    {\LARGE\bfseries \@title \par}%
+    \vspace{0.5em}
+    {\large \@author \par}%
+    \vspace{0.5em}
+    {\large \@date \par}%
+    \vspace{1em}
+    \endgroup
+    \par
+}
+\makeatother
+
+\title{抽象代数笔记整理：环、理想与域扩张}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{环的定义与基本例子 (Rings)}
+
+\begin{definition}[环]
+设 $R$ 是一个集合，配备两个二元运算 $+$ 与 $\cdot$。称 $(R,+,\cdot)$ 是一个\textbf{环}（ring），若
+\begin{enumerate}
+    \item $(R,+)$ 是交换群（Abel 群），其单位元记作 $0$；
+    \item $(R,\cdot)$ 是半群，即乘法满足结合律；
+    \item 乘法对加法满足分配律：
+    \[
+    a(b+c)=ab+ac,\qquad (a+b)c=ac+bc,\qquad \forall a,b,c\in R.
+    \]
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Ring、Ring with 1 与 Rng]
+英文文献里“环”是否带幺元并不统一，本笔记按词面含义使用：
+\begin{itemize}
+    \item \textbf{Ring}（环）：只要求 $(R,+)$ 是交换群、$(R,\cdot)$ 是半群、满足分配律，\textbf{不要求}幺元。
+    \item \textbf{Ring with 1}（含幺环）：在 Ring 上再要求存在 $1\in R$ 使
+    \[
+    1\neq 0,\qquad 1\cdot a=a\cdot 1=a,\quad \forall a\in R .
+    \]
+    零环 $\{0\}$ 中 $1=0$，故零环不是含幺环。
+    \item \textbf{Rng}：不含幺的环（ring without identity）的另一种写法，如 $2\mathbb{Z}$、$x\mathbb{Z}[x]$、同态的核 $\ker f$。
+\end{itemize}
+凡结论用到幺元，都会明确写“含幺环”。
+\end{remark}
+
+\begin{definition}[交换环、除环、域]
+设 $R$ 为环。
+\begin{enumerate}
+    \item 若乘法交换，即 $ab=ba$（$\forall a,b\in R$），称 $R$ 为\textbf{交换环}（commutative ring）。
+    \item 若 $R$ 含幺、$1\neq 0$，且
+    \[
+    \forall a\in R\setminus\{0\},\ \exists a^{-1}\in R \text{ 使 } aa^{-1}=a^{-1}a=1,
+    \]
+    称 $R$ 为\textbf{除环}（division ring，亦称 skew field）。
+    \item 交换的除环称为\textbf{域}（field）。
+\end{enumerate}
+即：$\text{域}=$ 交换的除环（等价地：含幺交换环，且每个非零元可逆）。
+\end{definition}
+
+\begin{proposition}
+除环没有非平凡零因子。
+\end{proposition}
+
+\begin{proof}[证明]
+设 $ab=0$ 且 $a\neq 0$。由 $a$ 可逆，
+\[
+b=1\cdot b=(a^{-1}a)b=a^{-1}(ab)=a^{-1}\cdot 0=0,
+\]
+故 $b=0$。
+\end{proof}
+
+\begin{definition}[零因子、integral ring、integral domain]
+若存在 $a,b\in R\setminus\{0\}$ 使 $ab=0$，称 $a$（从而 $b$）为\textbf{零因子}（zero divisor）。
+\begin{itemize}
+    \item 不含零因子的环称为\textbf{无零因子环}（integral ring）。
+    \item 无零因子、含幺、交换的环称为\textbf{整环}（integral domain）。
+\end{itemize}
+\end{definition}
+
+\begin{center}
+\begin{tikzcd}[row sep=2.4em, column sep=2.6em]
+\text{环 (ring)} \arrow[r] \arrow[d] & \text{含幺环 (ring with 1)} \arrow[r] & \text{交换环 (commutative)} \arrow[d] \\
+\text{无零因子环 (integral ring)} \arrow[rr] \arrow[dr] & & \text{整环 (integral domain)} \arrow[d] \\
+& \text{除环 (division ring)} \arrow[r] & \text{域 (field)}
+\end{tikzcd}
+\end{center}
+
+\begin{remark}[图的读法]
+图中箭头由“结构更少”的环类指向“结构更多”的环类：沿箭头方向是逐条增加定义中的要求，因此\textbf{逆着箭头方向是恒成立的蕴含}。按上面的定义逐条核对：
+\begin{itemize}
+    \item 含幺环 $\Rightarrow$ 环；交换环 $\Rightarrow$ 环（若按某些教材的约定“交换环”含幺，则还有 交换环 $\Rightarrow$ 含幺环）；
+    \item 整环 $\Rightarrow$ 无零因子环（整环就是含幺交换的无零因子环），且 整环 $\Rightarrow$ 交换环 $\Rightarrow$ 环；
+    \item 除环 $\Rightarrow$ 含幺环，且 除环 $\Rightarrow$ 无零因子环（前面的命题）；
+    \item 域 $=$ 交换除环 $\Rightarrow$ 除环，且 域 $\Rightarrow$ 整环（域交换、含幺、无零因子）。
+\end{itemize}
+所以图中每条箭头的反向都是真正的蕴含，不需要任何附加假设。
+\end{remark}
+
+\begin{example}[若干标准例子]
+常见例子如下：
+\begin{enumerate}
+    \item \textbf{自同态环}：设 $M$ 是一个 Abel 群（加法群），
+    \[
+    \End(M)=\{f:M\to M\mid f \text{ 是群同态}\},
+    \]
+    加法逐点定义，乘法为映射复合 $\circ$。则 $(\End(M),+,\circ)$ 是环，单位元为 $\mathrm{id}_M$。一般地 $\End(M)$ 不交换。
+    \item \textbf{乘积环}：$R_1\times R_2\times R_3$ 上按分量作加法与乘法，得环。
+    \item \textbf{函数环}：$R$ 为环、$S$ 为集合，
+    \[
+    R^{S}=\{f:S\to R\},\qquad (f+g)(s)=f(s)+g(s),\quad (fg)(s)=f(s)g(s).
+    \]
+    \item \textbf{多项式环}：$R[x]=\Bigl\{\sum_{i=0}^{n}a_ix^{i}\ \Big|\ n\in\mathbb{N},\ a_i\in R\Bigr\}$，按通常的多项式加法与乘法成环。
+    \item \textbf{群环}（group ring）：$R$ 为含幺环、$G$ 为\textbf{半群}，
+    \[
+    R[G]=\Bigl\{\sum_{g\in G}a_g\,g\ \Big|\ a_g\in R,\ \text{只有有限多个 } a_g\neq 0\Bigr\},
+    \]
+    乘法由 $(a_gg)(b_hh)=(a_gb_h)(gh)$ 双线性延拓得到。若 $G$ 是群，则 $R[G]\supseteq R\cdot 1_R$ 且 $R[G]\supseteq\{1\cdot g\}\cong G$。
+\end{enumerate}
+\end{example}
+
+\begin{example}[Hamilton 四元数：除环但非域]
+取 $\mathbb{H}=\{a+bi+cj+dk\mid a,b,c,d\in\mathbb{R}\}$，其中
+\[
+i^{2}=j^{2}=k^{2}=-1,\qquad ij=k,\ jk=i,\ ki=j,\qquad ji=-k,\ kj=-i,\ ik=-j .
+\]
+则 $\mathbb{H}$ 是除环。由于 $ij=k\neq -k=ji$，$\mathbb{H}$ 不是交换环，从而不是域。它是“除环 $\neq$ 域”的第一个标准例子。
+
+注：$\{\pm 1,\pm i,\pm j,\pm k\}$ 在乘法下封闭，构成 $8$ 阶群，即四元数群 $Q_8$。
+\end{example}
+
+\section*{子环、同态与理想 (Homomorphisms and Ideals)}
+
+\begin{definition}[子环、同态]
+设 $R,R'$ 为环。
+\begin{itemize}
+    \item $S\subseteq R$ 称为\textbf{子环}，若 $(S,+)\le (R,+)$ 且 $S\cdot S\subseteq S$。（若 $R$ 含幺，通常还要求 $1\in S$。）
+    \item 映射 $f:R\to R'$ 称为\textbf{环同态}，若
+    \[
+    f(a+b)=f(a)+f(b),\qquad f(ab)=f(a)f(b),\qquad \forall a,b\in R .
+    \]
+    含幺环之间通常还要求 $f(1_R)=1_{R'}$。
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+设 $f:R\to R'$ 为环同态，则
+\[
+\operatorname{Im}f \text{ 是 } R' \text{ 的子环},\qquad \ker f=\{a\in R\mid f(a)=0\} \text{ 是 } R \text{ 的理想}.
+\]
+\end{proposition}
+
+\begin{proof}[证明]
+像对加法、乘法封闭，显然。
+
+核：若 $a,b\in\ker f$ 则 $f(a\pm b)=0$；且对任意 $r\in R$，
+\[
+f(ra)=f(r)f(a)=0,\qquad f(ar)=f(a)f(r)=0,
+\]
+故 $ra,ar\in\ker f$。
+\end{proof}
+
+\begin{definition}[理想]
+设 $I\subseteq R$。称 $I$ 为 $R$ 的\textbf{（双边）理想}（ideal），若
+\begin{enumerate}
+    \item $(I,+)\le (R,+)$，即 $I$ 是加法子群；
+    \item \textbf{吸收性}：$\forall a\in I,\ \forall b\in R$，
+    \[
+    ab\in I \quad\text{且}\quad ba\in I .
+    \]
+\end{enumerate}
+若只要求左（相应地右）吸收性，称为左（右）理想。
+\end{definition}
+
+\begin{remark}[理想是一种特殊的 rng]
+理想 $I$ 本身在 $(I,+)$ 与乘法下已经是一个环（但不一定含幺），故常把理想视为“特殊的、不含幺的环”。这正是 $\ker f$ 虽然不含 $1$ 却仍称为“$R$ 的子环（subrng）”的原因：它是 $R$ 的理想，只差单位元。
+\end{remark}
+
+\section*{商环与同态基本定理 (Quotient Rings)}
+
+\begin{proposition}[商环的良定义]
+设 $I$ 是 $R$ 的理想，在 $R/I=\{a+I\mid a\in R\}$ 上定义
+\[
+(a+I)+(b+I):=(a+b)+I,\qquad (a+I)(b+I):=ab+I ,
+\]
+则这两个运算\textbf{良定义}，且 $R/I$ 构成环（零元 $0+I$，若 $R$ 含幺则幺元为 $1+I$）。
+\end{proposition}
+
+\begin{proof}[证明]
+设 $a+I=a'+I$，$b+I=b'+I$，即
+\[
+a'=a+i,\qquad b'=b+j,\qquad i,j\in I .
+\]
+相加部分显然。乘法部分：
+\[
+a'b'=(a+i)(b+j)=ab+\underbrace{aj}_{\in I}+\underbrace{bi}_{\in I}+\underbrace{ij}_{\in I},
+\]
+其中 $aj\in I$（$j\in I$，左吸收）、$bi\in I$（$i\in I$，右吸收）、$ij\in I$（$i\in I$ 或 $j\in I$）。于是
+\[
+a'b'=ab+k,\quad k\in I\ \Longrightarrow\ a'b'+I=ab+I .
+\]
+故乘法与代表元的选取无关。加法交换群与环公理逐项由代表元验证。
+\end{proof}
+
+\begin{theorem}[第一同态定理]
+设 $f:R\to R'$ 为环同态，则
+\[
+R/\ker f\ \cong\ \operatorname{Im}f .
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+定义
+\[
+\bar f:R/\ker f\to R',\qquad \bar f(a+\ker f):=f(a).
+\]
+\textbf{良定义}：若 $a'+\ker f=a+\ker f$，即 $a'=a+i$，$i\in\ker f$，则
+\[
+f(a')=f(a)+f(i)=f(a)+0=f(a),
+\]
+故 $\bar f$ 与代表元无关。$\bar f$ 是环同态，且 $\operatorname{Im}\bar f=\operatorname{Im}f$；
+\[
+\bar f(a+\ker f)=0\iff f(a)=0\iff a\in\ker f\iff a+\ker f=\ker f,
+\]
+故 $\bar f$ 单射。于是 $R/\ker f\cong\operatorname{Im}f$。
+\end{proof}
+
+\begin{center}
+\begin{tikzcd}[row sep=2.4em, column sep=3.2em]
+R \arrow[r, "f"] \arrow[d, "\pi"'] & R' \\
+R/\ker f \arrow[ur, "\bar f"'] &
+\end{tikzcd}
+\end{center}
+
+\section*{什么时候需要验证“良定义”（well-defined）}
+
+只要定义\textbf{用到了代表元 / 不唯一的选取}，而对象在逻辑上只应依赖等价类（或只应依赖结果本身），就必须验证良定义。
+形式化地：对商集 $A/{\sim}$ 上由代表元给出的规则
+\[
+\bar f([a]):=f(a),
+\]
+良定义 $\iff$
+\[
+a\sim a'\ \Longrightarrow\ f(a)=f(a'),
+\]
+即 $f$ 在每个等价类上取常值；等价地，$f$ 能穿过自然投影 $\pi:A\to A/{\sim}$ 分解为 $f=\bar f\circ\pi$。
+简言之,就是当我们从一个大集合沿着一个满射到一个小集合时,我们要说明选取的代表能真正代表等价类并且不冲突
+
+\begin{theorem}[第三同态定理 / 商环的商]
+设 $I,J$ 都是 $R$ 的理想，且 $I\subseteq J$。则
+\[
+J/I:=\{j+I\mid j\in J\}
+\]
+是 $R/I$ 的理想，且
+\[
+R/J\ \cong\ (R/I)\big/(J/I).
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+定义
+\[
+f:R/I\to R/J,\qquad f(a+I):=a+J .
+\]
+由 $I\subseteq J$ 知 $f$ 良定义。$f$ 是满同态，且
+\[
+\ker f=\{a+I\mid a\in J\}=J/I .
+\]
+由第一同态定理即得 $R/J\cong(R/I)/(J/I)$。
+\end{proof}
+
+\begin{theorem}[对应定理]
+设 $f:R\to R'$ 是满同态，则
+\[
+\{I\mid I \text{ 是 } R \text{ 的理想},\ \ker f\subseteq I\}\ \longleftrightarrow\ \{I'\mid I' \text{ 是 } R' \text{ 的理想}\},
+\]
+对应为 $I\mapsto f(I)$，$I'\mapsto f^{-1}(I')$，且两个方向互为逆映射。
+\end{theorem}
+
+\begin{proof}[证明]
+$I$ 是理想 $\Rightarrow$ $f(I)$ 是理想；$I'$ 是理想 $\Rightarrow$ $f^{-1}(I')$ 是理想且含 $\ker f$。由于 $f$ 满，
+\[
+f\bigl(f^{-1}(I')\bigr)=I',\qquad f^{-1}\bigl(f(I)\bigr)=I+\ker f=I\ (\text{因 }\ker f\subseteq I),
+\]
+故两映射互逆。
+\end{proof}
+
+\section*{理想的运算与生成 (Operations on Ideals)}
+
+\begin{proposition}
+设 $I,J$ 都是 $R$ 的理想，则
+\[
+I\cap J,\qquad I+J=\{a+b\mid a\in I,\ b\in J\},\qquad
+IJ=\Bigl\{\textstyle\sum_{k=1}^{n}x_ky_k\ \Big|\ x_k\in I,\ y_k\in J,\ n\ge 0\Bigr\}
+\]
+都是 $R$ 的理想。
+\end{proposition}
+
+\begin{proof}[证明]
+三者对加法为子群是显然的。吸收性：设 $r\in R$，$x\in I\cap J$，则 $rx\in I$ 且 $rx\in J$，故 $rx\in I\cap J$；对 $a+b\in I+J$ 有 $r(a+b)=ra+rb\in I+J$；对 $\sum x_ky_k\in IJ$ 有 $r\sum x_ky_k=\sum (rx_k)y_k\in IJ$（因 $rx_k\in I$）。
+\end{proof}
+
+\begin{remark}
+恒有 $IJ\subseteq I\cap J$，因为 $x\in I$、$y\in J$ 时 $xy\in I$（右吸收）且 $xy\in J$（左吸收）。反向一般不成立，需要“互素”条件，见下文。
+\end{remark}
+
+\begin{definition}[生成的理想、主理想]
+设 $R$ 为含幺环，$S\subseteq R$。记 $(S)$ 为所有包含 $S$ 的理想之交，称为\textbf{由 $S$ 生成的理想}（smallest ideal containing $S$）。
+\begin{itemize}
+    \item $(S)$ 中的元素形如
+    \[
+    \sum_{i=1}^{n}x_ia_iy_i,\qquad x_i,y_i\in R,\ a_i\in S ;
+    \]
+    若 $R$ 交换，则 $(S)=\bigl\{\sum_i x_ia_i\bigr\}$。
+    \item 单元素生成的理想 $(a):=(\{a\})$ 称为\textbf{主理想}（principal ideal）。交换环中 $(a)=aR=\{ar\mid r\in R\}$。
+\end{itemize}
+（$R$ 不含幺时还要补上整系数项 $\sum n_ia_i$，$n_i\in\mathbb{Z}$。）
+\end{definition}
+
+\begin{example}
+在 $\mathbb{Z}$ 中 $(2)=2\mathbb{Z}=\{0,\pm 2,\pm 4,\dots\}$，一般地 $(n)=n\mathbb{Z}$。
+\end{example}
+
+\begin{theorem}
+$\mathbb{Z}$ 的每个理想都是主理想。
+\end{theorem}
+
+\begin{proof}[证明]
+设 $I$ 是 $\mathbb{Z}$ 的理想。若 $I=\{0\}$ 则 $I=(0)$。否则 $I$ 含非零元，从而含正整数；取其中\textbf{最小}的正整数 $d$（良序性）。对任意 $a\in I$ 作带余除法
+\[
+a=qd+r,\qquad 0\le r<d .
+\]
+则 $r=a-qd\in I$。由 $d$ 的最小性，$r>0$ 不可能，故 $r=0$，即 $d\mid a$。于是 $I\subseteq(d)$；另一方向 $(d)\subseteq I$ 由 $d\in I$ 得到。故 $I=(d)$。
+\end{proof}
+
+\begin{proposition}
+在 $\mathbb{Z}$ 中，对任意 $a,b\in\mathbb{Z}$，
+\[
+(a)\cap(b)=\bigl(\lcm(a,b)\bigr),\qquad
+(a)+(b)=\bigl(\gcd(a,b)\bigr),\qquad
+(a)\cdot(b)=(ab).
+\]
+\end{proposition}
+
+\begin{proof}[证明]
+\textbf{(1)} $x\in(a)\cap(b)\iff a\mid x$ 且 $b\mid x \iff \lcm(a,b)\mid x \iff x\in(\lcm(a,b))$。
+
+\textbf{(2)} 由 Bézout 定理，$\gcd(a,b)=ax+by\in(a)+(b)$，故 $(\gcd(a,b))\subseteq(a)+(b)$；反之 $a,b$ 都是 $\gcd(a,b)$ 的倍数，故 $(a),(b)\subseteq(\gcd(a,b))$，即 $(a)+(b)\subseteq(\gcd(a,b))$。
+
+\textbf{(3)} $(a)(b)\subseteq(ab)$ 显然；又 $ab\in(a)(b)$，故 $(ab)\subseteq(a)(b)$。
+\end{proof}
+
+\section*{素理想、极大理想与单环 (Prime and Maximal Ideals)}
+
+\begin{definition}[平凡理想、单环]
+$(0)$ 与 $R$ 称为\textbf{平凡理想}；不含其它理想的环称为\textbf{单环}（simple ring）。
+\end{definition}
+
+\begin{theorem}
+设 $R$ 为交换含幺环。下列条件等价：
+\begin{enumerate}
+    \item $R$ 是域；
+    \item $R$ 是单环（只有 $(0)$ 与 $R$ 两个理想）；
+    \item $\forall a\in R\setminus\{0\}$，$(a)=R$，即 $\{xa\mid x\in R\}\ni 1$。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[证明]
+$(1)\Rightarrow(3)$：$a\neq 0$ 可逆，$1=a\cdot a^{-1}\in(a)$，故 $(a)=R$。
+
+$(3)\Rightarrow(2)$：若 $I$ 是 $R$ 的理想且 $(0)\neq I$，取 $0\neq a\in I$，则 $R=(a)\subseteq I\subseteq R$，故 $I=R$。
+
+$(2)\Rightarrow(1)$：设 $a\neq 0$，$(a)$ 是非零理想，故 $(a)=R$，于是存在 $x$ 使 $xa=1$，$a$ 可逆；由 $a$ 任意，$R$ 是域。
+\end{proof}
+
+\begin{definition}[极大理想]
+设 $I$ 是 $R$ 的理想且 $I\neq R$，称 $I$ 为\textbf{极大理想}（maximal ideal），若不存在理想 $J$ 使
+\[
+I\subsetneq J\subsetneq R .
+\]
+等价地：若 $J$ 是 $R$ 的理想且 $J\supseteq I$，则 $J=I$ 或 $J=R$。
+\end{definition}
+
+\begin{theorem}
+设 $R$ 为交换含幺环，$I$ 是 $R$ 的理想。则
+\[
+I \text{ 极大}\iff R/I \text{ 是域}.
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+由对应定理，$R/I$ 的理想与 $R$ 中含 $I$ 的理想一一对应，且 $(0)\leftrightarrow I$、$R/I\leftrightarrow R$。于是
+\[
+I \text{ 极大}\iff R/I \text{ 无真非零理想}\iff R/I \text{ 是域},
+\]
+最后一步用上一个定理。
+\end{proof}
+
+\begin{definition}[素理想]
+设 $I$ 是 $R$ 的理想且 $I\neq R$，称 $I$ 为\textbf{素理想}（prime ideal），若
+\[
+\forall a,b\in R:\quad ab\in I\ \Longrightarrow\ a\in I\ \text{或}\ b\in I .
+\]
+\end{definition}
+
+\begin{theorem}
+设 $R$ 为交换含幺环，$I$ 是 $R$ 的理想。则
+\[
+I \text{ 素}\iff R/I \text{ 是整环}.
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+在 $R/I$ 中 $(a+I)(b+I)=ab+I$，且 $a+I=0$ 即 $a\in I$。故
+\[
+R/I \text{ 无零因子}
+\iff \Bigl[(a+I)(b+I)=0\Rightarrow a+I=0\text{ 或 }b+I=0\Bigr]
+\iff \Bigl[ab\in I\Rightarrow a\in I\text{ 或 }b\in I\Bigr].
+\]
+\end{proof}
+
+\begin{remark}
+极大 $\Rightarrow$ 素（域是整环），反之不然：$(0)$ 是 $\mathbb{Z}$ 的素理想但非极大（$\mathbb{Z}$ 是整环但不是域）。
+\end{remark}
+
+\begin{proposition}[互素理想的乘积]
+设 $R$ 为交换含幺环，$I,J$ 都是 $R$ 的理想。若 $I,J$ \textbf{互素}，即 $I+J=R$，则
+\[
+I\cap J=IJ .
+\]
+\end{proposition}
+
+\begin{proof}[证明]
+$IJ\subseteq I\cap J$ 总是成立。反之由 $I+J=R$ 可取 $i\in I$，$j\in J$ 使
+\[
+i+j=1 .
+\]
+任取 $a\in I\cap J$，则
+\[
+a=a\cdot 1=a(i+j)=\underbrace{ai}_{\in IJ}+\underbrace{aj}_{\in IJ}\in IJ,
+\]
+其中 $ai\in IJ$（$a\in J$，$i\in I$）、$aj\in IJ$（$a\in I$，$j\in J$）。故 $I\cap J\subseteq IJ$，从而 $I\cap J=IJ$。
+\end{proof}
+
+\begin{remark}[不含幺时命题失效]
+取无幺环 $R=2\mathbb{Z}$，$I=J=R$。则 $I+J=R$，但
+\[
+I\cap J=2\mathbb{Z},\qquad IJ=2\mathbb{Z}\cdot 2\mathbb{Z}=4\mathbb{Z},
+\]
+二者不相等。失效的根源是上面的 $a=a\cdot 1$ 无法进行：$1\notin 2\mathbb{Z}$。
+\end{remark}
+
+\begin{theorem}[中国剩余定理 (CRT)]
+设 $R$ 为交换含幺环，$I,J$ 都是 $R$ 的理想且 $I+J=R$。则
+\[
+R/(I\cap J)\ \cong\ R/I\times R/J .
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+考虑
+\[
+f:R\to R/I\times R/J,\qquad x\mapsto (x+I,\ x+J).
+\]
+$f$ 是环同态，$\ker f=I\cap J=IJ$。只需证 $f$ 满。
+
+取 $i+j=1$（$i\in I$，$j\in J$）。对任意 $(a+I,\ b+J)$，令
+\[
+x=aj+bi .
+\]
+则
+\[
+x-a=a(j-1)+bi=-ai+bi=(b-a)i\in I,\qquad
+x-b=aj+b(i-1)=aj-bj=(a-b)j\in J,
+\]
+即 $x+I=a+I$，$x+J=b+J$，故 $f(x)=(a+I,b+J)$。于是 $f$ 满，由第一同态定理得证。
+
+与笔记的写法等价：由 $ai\in I$、$bj\in J$（此处用到 $i+j=1$），同一个原像也可写成
+\[
+(x+I,\ x+J)=(aj+I,\ bi+J)=\bigl(a(i+j)+I,\ b(i+j)+J\bigr)=(a+I,\ b+J).
+\]
+\end{proof}
+
+\begin{example}
+取 $R=\mathbb{Z}$，$I=(p)$，$J=(q)$，$p\neq q$ 为素数。则 $(p)+(q)=\mathbb{Z}$，故
+\[
+\mathbb{Z}/pq\mathbb{Z}\ \cong\ \mathbb{Z}/p\mathbb{Z}\times\mathbb{Z}/q\mathbb{Z}.
+\]
+一般地对 $n=\prod p_i^{e_i}$ 有 $\mathbb{Z}/n\mathbb{Z}\cong\prod_i\mathbb{Z}/p_i^{e_i}\mathbb{Z}$。
+\end{example}
+
+\section*{整环中的因子分解：UFD、PID 与 ED}
+
+\subsection*{单位与相伴}
+
+\begin{definition}[单位、相伴]
+设 $R$ 为交换环，$r,s\in R$。
+\begin{itemize}
+    \item $u\in R$ 称为\textbf{单位}（unit），若 $\exists v\in R$ 使 $uv=vu=1$；$R$ 的单位全体记为 $R^{\times}$，它在乘法下成群。
+    \item 在交换环中，称 $r$ 与 $s$ \textbf{相伴}（associates），记 $r\sim s$，若存在单位 $u$ 使 $r=us$。
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+设 $R$ 为整环，$a,b\in R$。则
+\[
+a\mid b\ \text{且}\ b\mid a \iff a\sim b .
+\]
+\end{proposition}
+
+\begin{proof}[证明]
+“$\Leftarrow$”显然。“$\Rightarrow$”：设 $b=ac$，$a=bd$，则 $a=acd$，即 $a(1-cd)=0$。若 $a=0$，则 $b=0$，取 $u=1$；若 $a\neq 0$，由整环无零因子得 $cd=1$，即 $c$ 是单位，故 $a\sim b$。
+\end{proof}
+
+\subsection*{不可约元与素元}
+
+\begin{definition}[不可约元、素元]
+设 $R$ 为整环，$a\in R$。
+\begin{itemize}
+    \item $a$ \textbf{不可约}（irreducible），若 $a\notin R^{\times}$，且
+    \[
+    a=xy\ \Longrightarrow\ x\sim 1\ \text{或}\ y\sim 1 .
+    \]
+    等价地（用 $x\mid a$ 的语言）：$x\mid a\Rightarrow x\sim a$ 或 $x\sim 1$，并附加条件 $a\notin R^{\times}$。
+    \item $p$ \textbf{素}（prime），若 $p\notin R^{\times}$，且
+    \[
+    p\mid ab\ \Longrightarrow\ p\mid a\ \text{或}\ p\mid b .
+    \]
+    （注意 $p$ 素 $\iff$ $(p)$ 是素理想。）
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+整环中素元必不可约。
+\end{proposition}
+
+\begin{proof}[证明]
+设 $p$ 素，$p=xy$。则 $p\mid xy$，故 $p\mid x$ 或 $p\mid y$。若 $p\mid x$，写 $x=pc$，则
+\[
+p=pcy\ \Longrightarrow\ p(1-cy)=0\ \Longrightarrow\ cy=1\ (p\neq 0),
+\]
+故 $y$ 是单位，$x=pc\sim p$。同理 $p\mid y$ 时 $x$ 是单位。
+\end{proof}
+
+\begin{remark}
+反之一般不成立：“不可约 $\Rightarrow$ 素”正是 UFD 的判别特征（见下），而下面的例说明它可以失败。
+\end{remark}
+
+\begin{example}[不可约但非素]
+在 $R=\mathbb{Z}[\sqrt{-5}]=\{a+b\sqrt{-5}\mid a,b\in\mathbb{Z}\}$ 中，定义范数
+\[
+N(a+b\sqrt{-5})=a^{2}+5b^{2}\in\mathbb{N},
+\]
+它满足 $N(xy)=N(x)N(y)$，且 $N(x)=1\iff x$ 是单位。
+\begin{itemize}
+    \item $2$ 不可约：若 $2=xy$，则 $4=N(x)N(y)$，$N(x)\in\{1,2,4\}$；而 $a^{2}+5b^{2}=2$ 无整数解，故 $N(x)=1$ 或 $N(y)=1$。
+    \item $2\mid (1+\sqrt{-5})(1-\sqrt{-5})=6$，但 $2\nmid 1\pm\sqrt{-5}$（因 $(1\pm\sqrt{-5})/2\notin\mathbb{Z}[\sqrt{-5}]$）。
+\end{itemize}
+故 $2$ 是不可约元而非素元。
+\end{example}
+
+\subsection*{唯一分解整环 (UFD)}
+
+\begin{definition}[UFD]
+整环 $R$ 称为\textbf{唯一分解整环}（unique factorization domain, UFD），若每个非零、非单位的 $r\in R$ 都可写成有限个不可约元之积
+\[
+r=p_1p_2\cdots p_t ,
+\]
+且这种分解在\textbf{不计次序、不计单位}的意义下唯一：若 $p_1\cdots p_t=q_1\cdots q_s$，则 $t=s$，且适当重排后有 $p_i\sim q_i$。
+\end{definition}
+
+\begin{theorem}[UFD 中的 Euclid 引理]
+设 $R$ 是 UFD，$p\in R$ 不可约。则
+\[
+p\mid ab\ \Longrightarrow\ p\mid a\ \text{或}\ p\mid b .
+\]
+即：\textbf{UFD 中不可约元 $=$ 素元}。
+\end{theorem}
+
+\begin{proof}[证明]
+设 $p\mid ab$，把 $a,b$ 分解为不可约元之积（单位吸收进符号）：
+\[
+a=u\,p_1\cdots p_r,\qquad b=v\,q_1\cdots q_s ,\qquad u,v\in R^{\times}.
+\]
+则 $ab=(uv)\,p_1\cdots p_r q_1\cdots q_s$ 是 $ab$ 的一个不可约分解。另一方面 $ab=pc$，把 $c$ 分解并代入，得到 $ab$ 的另一个含因子 $p$ 的不可约分解。由唯一性，$p$ 必与某个 $p_i$ 或 $q_j$ 相伴，于是 $p\mid a$ 或 $p\mid b$。
+\end{proof}
+
+\begin{theorem}[UFD 的等价判据]
+设 $R$ 为整环。若
+\begin{enumerate}
+    \item \textbf{因子链条件}：不存在无限序列 $a_1,a_2,\dots$ 使 $a_{i+1}\mid a_i$ 且 $a_{i+1}\nsim a_i$；
+    \item \textbf{素性}：$R$ 中每个不可约元都是素元，
+\end{enumerate}
+则 $R$ 是 UFD。
+\end{theorem}
+
+\begin{proof}[证明]
+\textbf{存在性}：若某非零非单位元 $r$ 不能写成不可约元之积，则 $r$ 可约，$r=a_1b_1$，其中 $a_1,b_1$ 均非单位；$a_1,b_1$ 中至少一个不能分解(即不能写成不可约元素之积)，设为 $a_1$。递归得到
+\[
+r=a_0,\quad a_1\mid a_0,\quad a_{i+1}\mid a_i,\quad a_{i+1}\nsim a_i ,
+\]
+与因子链条件矛盾。
+
+\textbf{唯一性}：由素性把“不可约”换成“素”。设
+\[
+p_1\cdots p_t=q_1\cdots q_s
+\]
+是两族素元之积。$p_1\mid q_1\cdots q_s$，由素性存在 $i$ 使 $p_1\mid q_i$；因 $q_i$ 不可约（素元不可约），故 $p_1\sim q_i$。不妨设 $i=1$，约去 $p_1$ 得
+\[
+p_2\cdots p_t=q_2\cdots q_s ,
+\]
+对 $t$ 归纳即得 $t=s$ 且 $p_i\sim q_i$。
+\end{proof}
+
+\subsection*{主理想整环 (PID) 与欧几里得整环 (ED)}
+
+\begin{definition}[PID]
+整环 $R$ 称为\textbf{主理想整环}（principal ideal domain, PID），若每个理想都是主理想。
+\end{definition}
+
+\begin{theorem}
+$\mathrm{PID}\ \Longrightarrow\ \mathrm{UFD}$。
+\end{theorem}
+
+\begin{proof}[证明]
+只需验证上一个定理的两条判据。
+
+\textbf{(1) 因子链条件}：设 $a_{i+1}\mid a_i$ 且 $a_{i+1}\nsim a_i$，则
+\[
+(a_i)\subsetneq(a_{i+1}).
+\]
+令 $I=\bigcup_i(a_i)$，则 $I$ 是理想（链的并；验证对加法与吸收性封闭）。由 PID，$I=(b)$。因 $b\in I$，存在 $n$ 使 $b\in(a_n)$，于是
+\[
+(b)\subseteq(a_n)\subseteq(a_{n+1})\subseteq I=(b),
+\]
+从而 $(a_n)=(b)=(a_{n+1})$，即 $a_n\sim a_{n+1}$，与“$\nsim$”矛盾。故这样的无限链不存在。
+
+\textbf{(2) 不可约 $\Rightarrow$ 素}：设 $p$ 不可约，$p\mid ab$。若 $p\nmid a$，考察主理想
+\[
+(a,p)=(s).
+\]
+则 $s\mid a$ 且 $s\mid p$。因 $p$ 不可约，$s\sim p$ 或 $s\sim 1$；若 $s\sim p$ 则 $p\mid a$，矛盾，故 $s\sim 1$，即 $(a,p)=R$，存在 $\alpha,\beta$ 使
+\[
+\alpha a+\beta p=1 .
+\]
+同理，若 $p\nmid b$，存在 $\alpha',\beta'$ 使 $\alpha'b+\beta'p=1$。两式相乘：
+\[
+(\alpha a+\beta p)(\alpha'b+\beta'p)=1
+\ \Longrightarrow\ \alpha\alpha' ab+\bigl(\alpha\beta'b+\beta'\alpha a+\beta\beta'p\bigr)p=1 .
+\]
+因 $p\mid ab$，右边除最后一项外都被 $p$ 整除，故 $p\mid 1$，这与 $p$ 非单位矛盾。所以 $p\mid a$ 或 $p\mid b$。
+
+（笔记中的写法：由 $1=\alpha a+\beta p$ 得 $1-\beta p=\alpha a$，同法 $1-\beta'p=\alpha'b$，相乘得
+\[
+(1-\beta p)(1-\beta'p)=\alpha\alpha'ab ,
+\]
+左边 $=1-kp$。因 $p\mid ab$，得 $p\mid 1$，矛盾。）
+\end{proof}
+
+\begin{definition}[ED]
+整环 $R$ 称为\textbf{欧几里得整环}（Euclidean domain, ED），若存在函数 $\|\cdot\|:R\to\mathbb{N}$ 使
+\begin{enumerate}
+    \item $\|a\|=0\iff a=0$；
+    \item $\forall a\neq 0,\ \forall b\in R$，存在 $q,r\in R$ 使
+    \[
+    b=aq+r,\qquad \|r\|<\|a\| .
+    \]
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+常见的 ED 有：
+\begin{itemize}
+    \item $\mathbb{Z}$：$\|n\|=|n|$（带余除法）。
+    \item $F[x]$（$F$ 为域）：$\|f\|=\deg f+1$（多项式带余除法）。若 $b=aq+r$，则 $r=0$ 或 $\deg r<\deg a$，即 $\|r\|<\|a\|$。
+    \item $\mathbb{Z}[i]$：$\|a+bi\|=a^{2}+b^{2}$。
+\end{itemize}
+\end{example}
+
+\begin{theorem}
+$\mathrm{ED}\ \Longrightarrow\ \mathrm{PID}$。
+\end{theorem}
+
+\begin{proof}[证明]
+设 $I$ 是 $R$ 的理想，$I\neq\{0\}$。取 $a\in I\setminus\{0\}$ 使 $\|a\|$ \textbf{最小}。断言 $I=(a)$。
+
+显然 $(a)\subseteq I$。反之若存在 $t\in I$ 而 $a\nmid t$，由欧几里得性质写
+\[
+t=aq+r,\qquad \|r\|<\|a\| .
+\]
+则 $r=t-aq\in I$ 且 $\|r\|<\|a\|$，与 $a$ 的最小性矛盾。故 $I=(a)$。
+\end{proof}
+
+\subsection*{因子分解的范数工具与两个反例}
+
+\begin{example}[{$\mathbb{Z}[\sqrt{10}]$ 不是 UFD}]
+令
+\[
+\mathbb{Z}[\sqrt{10}]=\{a+b\sqrt{10}\mid a,b\in\mathbb{Z}\},\qquad
+\bigl\|a+b\sqrt{10}\bigr\|:=\bigl|a^{2}-10b^{2}\bigr| .
+\]
+\textbf{范数可乘}：设 $x=a+b\sqrt{10}$，$y=c+d\sqrt{10}$，则
+\[
+xy=(ac+10bd)+(ad+bc)\sqrt{10},
+\]
+于是
+\[
+\|xy\|=\bigl|(ac+10bd)^{2}-10(ad+bc)^{2}\bigr|
+=\bigl|a^{2}c^{2}-10a^{2}d^{2}-10b^{2}c^{2}+100b^{2}d^{2}\bigr|
+=\|x\|\cdot\|y\| .
+\]
+由此得到判断整除的实用准则：
+\[
+x\mid y\ \Longrightarrow\ \|x\|\mid\|y\| ,
+\]
+故寻找 $y$ 的（真）因子时，只需检验范数整除 $\|y\|$ 的那些元——候选范围被范数压得很小。
+
+但 $\mathbb{Z}[\sqrt{10}]$ 中分解并不唯一：
+\[
+15=3\cdot 5=(5+\sqrt{10})(5-\sqrt{10}),\qquad
+6=2\cdot 3=(4+\sqrt{10})(4-\sqrt{10}).
+\]
+用范数可检查 $3,\ 5,\ 5\pm\sqrt{10}$（以及 $2,\ 4\pm\sqrt{10}$）都不可约：范数分别为
+\[
+\|3\|=9,\ \|5\|=25,\ \|5\pm\sqrt{10}\|=15,\ \|2\|=4,\ \|4\pm\sqrt{10}\|=6,
+\]
+而 $\mathbb{Z}[\sqrt{10}]$ 中不存在范数为 $3$ 或 $5$ 的元素，故上述因子都不能再分。于是 $15$ 有两种本质不同的分解，$\mathbb{Z}[\sqrt{10}]$ 不是 UFD。
+\end{example}
+
+\begin{example}[{$\mathbb{Z}[\sqrt{-5}]$ 不是 UFD}]
+\[
+6=2\cdot 3=(1+\sqrt{-5})(1-\sqrt{-5}),
+\]
+其中 $2,3,1\pm\sqrt{-5}$ 都不可约（范数分别为 $4,9,6$，而 $a^{2}+5b^{2}=2,3$ 无解）。故 $\mathbb{Z}[\sqrt{-5}]$ 不是 UFD。
+\end{example}
+
+\begin{remark}
+$\mathbb{Z}[\sqrt{d}]$ 与商环的联系：$\mathbb{Z}[\sqrt{10}]\cong\mathbb{Z}[x]/(x^{2}-10)$，$\mathbb{Z}[\sqrt{-5}]\cong\mathbb{Z}[x]/(x^{2}+5)$。
+\end{remark}
+
+\section*{分式域 (Field of Fractions)}
+
+\begin{definition}[分式域]
+设 $R$ 为整环，令
+\[
+\Frac(R):=\bigl(R\times R\setminus\{0\}\bigr)\big/\sim,\qquad
+(a,b)\sim(c,d)\iff ad=bc ,
+\]
+其中等价类 $(a,b)$ 记作 $\dfrac{a}{b}$。其上加乘定义为
+\[
+\frac{a}{b}+\frac{c}{d}:=\frac{ad+bc}{bd},\qquad
+\frac{a}{b}\cdot\frac{c}{d}:=\frac{ac}{bd}.
+\]
+\end{definition}
+
+\begin{remark}
+$\sim$ 是等价关系，传递性用到“整环无零因子”（$bd\neq 0$）。运算的良定义同样用到这一点。$\Frac(R)$ 是域，且
+\[
+\eta:R\to\Frac(R),\qquad a\mapsto \frac{a}{1}
+\]
+是单同态。注意 $\dfrac{a}{b}=\dfrac{2a}{2b}$，这正是 $(a,b)\sim(2a,2b)$（因 $a\cdot 2b=2a\cdot b$）。
+\end{remark}
+
+\begin{theorem}[分式域的泛性质]
+设 $R$ 为整环，$K$ 为域，$\varphi:R\to K$ 是单同态且 $\varphi(R\setminus\{0\})\subseteq K^{\times}$。则存在唯一的同态 $\bar\varphi:\Frac(R)\to K$ 使下图交换：
+\begin{center}
+\begin{tikzcd}[row sep=2.6em, column sep=3.2em]
+R \arrow[r, "\eta"] \arrow[dr, "\varphi"'] & \Frac(R) \arrow[d, "\exists!\,\bar\varphi"] \\
+& K
+\end{tikzcd}
+\end{center}
+且
+\[
+\bar\varphi\!\left(\frac{a}{b}\right)=\frac{\varphi(a)}{\varphi(b)},\qquad \frac{a}{b}\in\Frac(R).
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+\textbf{唯一性}：由 $\bar\varphi(a/1)=\varphi(a)$ 与同态性，
+\[
+\bar\varphi\!\left(\frac{a}{b}\right)\varphi(b)=\bar\varphi\!\left(\frac{a}{b}\cdot\frac{b}{1}\right)=\bar\varphi(a/1)=\varphi(a),
+\]
+故 $\bar\varphi(a/b)=\varphi(a)\varphi(b)^{-1}$ 被唯一确定。
+
+\textbf{存在性}：按上式定义。若 $a/b=a'/b'$，即 $ab'=a'b$，作用 $\varphi$ 得 $\varphi(a)\varphi(b')=\varphi(a')\varphi(b)$，两边乘 $\varphi(bb')^{-1}$ 即得 $\varphi(a)/\varphi(b)=\varphi(a')/\varphi(b')$，故良定义；同态性由定义直接验证。
+\end{proof}
+
+\begin{remark}
+$\Frac(R)$ 在如下意义下是“包含 $R$ 的最小的域”：任何包含 $R$ 的域 $K$ 都包含 $\Frac(R)$ 的同构像（上面的泛性质即此）。这解释了笔记中“$\Frac(R)$ 为某种意义下最小的”这句话。
+\end{remark}
+
+\begin{example}
+$\Frac(\mathbb{Z})=\mathbb{Q}$；$\Frac(F[x])=F(x)$，即有理函数域，其中元素形如
+\[
+\frac{c_0+c_1x+\cdots}{b_0+b_1x+\cdots}\qquad (b_i\in F\ \text{不全为 }0).
+\]
+在 $F[x]$ 中单位恰为非零常数 $\{c_0\mid c_0\neq 0\}=F^{\times}$，而 $\mathbb{Z}$ 的单位只有 $\pm 1$。
+\end{example}
+
+\section*{特征与素域 (Characteristic and Prime Field)}
+
+\begin{definition}[特征]
+设 $R$ 含幺。若存在 $n\ge 1$ 使
+\[
+\underbrace{1+1+\cdots+1}_{n}=n\cdot 1=0 ,
+\]
+则称其中最小的 $n$ 为 $R$ 的\textbf{特征}，记 $\chr(R)$；若不存在这样的 $n$，规定 $\chr(R)=0$。
+\end{definition}
+
+\begin{proposition}
+设 $R$ 为整环（或域）。则 $\chr(R)=0$ 或 $\chr(R)$ 是素数。
+\end{proposition}
+
+\begin{proof}[证明]
+设 $\chr(R)=n\ge 1$。若 $n=ab$ 且 $1<a,b<n$，则
+\[
+(a\cdot 1)(b\cdot 1)=(ab)\cdot 1=n\cdot 1=0 ,
+\]
+而 $a\cdot 1\neq 0$、$b\cdot 1\neq 0$（否则与 $n$ 的最小性矛盾），这与无零因子矛盾。故 $n$ 是素数。
+\end{proof}
+
+\begin{proposition}[素子环]
+设 $R$ 为含幺环。
+\begin{itemize}
+    \item $\chr(R)=p$（素数）时，$\{0,1,2\cdot 1,\dots,(p-1)\cdot 1\}$ 是 $R$ 的子环，且
+    \[
+    \cong\mathbb{Z}/p\mathbb{Z}=\Fp .
+    \]
+    \item $\chr(R)=0$ 时，$\{n\cdot 1\mid n\in\mathbb{Z}\}\cong\mathbb{Z}$ 是 $R$ 的子环。
+\end{itemize}
+\end{proposition}
+
+\begin{theorem}[素域]
+设 $F$ 为域，则 $F$ 的最小子域（\textbf{素域} prime field，亦称 ground field）为
+\[
+\chr(F)=p\ \Longrightarrow\ \Fp\cong\mathbb{Z}/p\mathbb{Z};\qquad
+\chr(F)=0\ \Longrightarrow\ \mathbb{Q}.
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+$F$ 的最小子域必含 $1$，从而含 $\mathbb{Z}\cdot 1$ 的像。$\chr(F)=p$ 时该像 $\cong\mathbb{Z}/p\mathbb{Z}$ 已是域；$\chr(F)=0$ 时该像 $\cong\mathbb{Z}$，而包含它的最小域是其分式域 $\Frac(\mathbb{Z})=\mathbb{Q}$。
+\end{proof}
+
+\begin{example}
+$\Fp$ 是最小的特征 $p$ 域（有 $p$ 个元素），$\mathbb{Q}$ 是最小的特征 $0$ 域。但特征不决定大小：
+\[
+\Fp(x)=\Frac(\Fp[x])
+\]
+是一个特征 $p$ 的\textbf{无限}域。
+\end{example}
+
+\section*{域扩张与代数元 (Field Extension)}
+
+\begin{definition}[域扩张与次数]
+设 $F\subseteq K$ 都是域，记 $K/F$，称 $F$ 为\textbf{基域}（base field），$K$ 为 $F$ 的\textbf{扩张}。此时 $K$ 自然成为 $F$-向量空间，定义
+\[
+[K:F]:=\dim_F K\in\mathbb{N}\cup\{\infty\} ,
+\]
+称为扩张次数。$[K:F]<\infty$ 时称有限扩张。
+\end{definition}
+
+\begin{example}[两种最基本的扩张]
+设 $F$ 为域，$F$ 上的扩张有两大类：
+\begin{enumerate}
+    \item \textbf{代数型}：$p\in F[x]$ 不可约，$E=F[x]/(p)$。则 $E$ 是域，$[E:F]=\deg p$。
+    \item \textbf{超越型}：$E=F(x)=\Frac(F[x])$。则 $[E:F]=\infty$。
+\end{enumerate}
+\end{example}
+
+\begin{theorem}[塔律]
+设 $F\subseteq K\subseteq H$ 为域，则
+\[
+[H:F]=[H:K]\cdot[K:F]
+\]
+（约定 $\infty\cdot n=\infty$）。
+\end{theorem}
+
+\begin{proof}[证明]
+设 $\{e_i\}_{i=1}^{n}$ 是 $K/F$ 的基，$\{f_j\}_{j=1}^{m}$ 是 $H/K$ 的基。断言 $\{e_if_j\}$ 是 $H/F$ 的基。
+
+\textbf{张成}：任意 $h\in H$ 可写 $h=\sum_j k_jf_j$（$k_j\in K$），每个 $k_j=\sum_i c_{ij}e_i$（$c_{ij}\in F$），故 $h=\sum_{i,j}c_{ij}e_if_j$。
+
+\textbf{线性无关}：若 $\sum_{i,j}c_{ij}e_if_j=0$，则对每个 $j$，$\sum_i c_{ij}e_i\in K$，而这些元素在 $K$-基 $\{f_j\}$ 下的系数为 $0$，故 $\sum_i c_{ij}e_i=0$，再由 $\{e_i\}$ 的 $F$-线性无关得 $c_{ij}=0$。
+\end{proof}
+
+\begin{theorem}[{单扩张：$F[x]/(f)\cong F(\alpha)$}]
+设 $f\in F[x]$ 不可约，$\alpha\in K/F$ 满足 $f(\alpha)=0$。则
+\[
+F[x]/(f)\ \cong\ F(\alpha)\ \bigl(=F[\alpha]\bigr),
+\]
+且 $f$ 是 $\alpha$ 的极小多项式。
+\end{theorem}
+
+\begin{proof}[证明]
+定义
+\[
+\pi:F[x]\to F(\alpha),\qquad g\mapsto g(\alpha).
+\]
+（这是良定义的环同态：代入即可。）
+
+\textbf{$\pi$ 在 $F$ 上单}：$\pi|_F=\mathrm{id}_F$，故 $\ker\pi\neq F[x]$（因 $\pi(1)=1\neq 0$）。
+
+\textbf{求 $\ker\pi$}：$F[x]$ 是 PID，故 $\ker\pi=(g)$ 对某个 $g$ 成立。由 $f(\alpha)=0$ 知 $f\in\ker\pi$，故 $g\mid f$。因 $f$ 不可约，
+\[
+g\sim f\quad\text{或}\quad g\sim 1 .
+\]
+若 $g\sim 1$，则 $\ker\pi=F[x]$，即 $\pi$ 是零同态，与 $\pi(1)=1$ 矛盾。故 $g\sim f$，即 $\ker\pi=(f)$。
+
+于是由第一同态定理
+\[
+F[x]/(f)\cong\operatorname{Im}\pi=F[\alpha]\subseteq F(\alpha).
+\]
+左边是域（$f$ 不可约 $\Rightarrow$ $(f)$ 极大），故像 $F[\alpha]$ 是域，从而 $F[\alpha]=F(\alpha)$。
+\end{proof}
+
+\begin{center}
+\begin{tikzcd}[row sep=2.6em, column sep=3.8em]
+F \arrow[r, hook, "\subseteq"] \arrow[dr, hook, "\subseteq"'] & E=F[x]/(f) \arrow[d, "\pi\colon x+(f)\mapsto\alpha"] \\
+& E'
+\end{tikzcd}
+\end{center}
+
+\begin{definition}[代数元、超越元与极小多项式]
+设 $K/F$，$\alpha\in K$。
+\begin{itemize}
+    \item $\alpha$ 在 $F$ 上\textbf{代数}（algebraic），若 $\exists f\in F[x]\setminus\{0\}$ 使 $f(\alpha)=0$。
+    \item 否则称 $\alpha$ \textbf{超越}（transcendental）。
+    \item $\alpha$ 代数时，使 $f(\alpha)=0$ 的\textbf{次数最低的首一}多项式 $f$ 称为 $\alpha$ 的\textbf{极小多项式}（minimal polynomial），它是 $\ker\pi$ 的首一生成元，不可约。
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+设 $K/F$，$\alpha\in K$。则
+\[
+\alpha \text{ 代数}\iff F(\alpha)=F[\alpha]\iff[F(\alpha):F]<\infty ;
+\]
+\[
+\alpha \text{ 超越}\iff F(\alpha)\cong F(x).
+\]
+\end{proposition}
+
+\begin{proof}[证明]
+代数时由上一段 $\ker\pi=(f)\neq(0)$，故 $F[x]/(f)\cong F[\alpha]$，且 $[F(\alpha):F]=\deg f<\infty$。
+
+超越时 $\ker\pi=0$，故 $F[x]\cong F[\alpha]$（$g\mapsto g(\alpha)$）是单同态。由分式域的泛性质，存在唯一同态
+\[
+F(x)=\Frac(F[x])\to F(\alpha),\qquad \frac{g}{h}\mapsto \frac{g(\alpha)}{h(\alpha)},
+\]
+其中 $h(\alpha)\neq 0$ 正是“超越”所保证的（否则 $h$ 是 $\alpha$ 的极小多项式）。故 $F(x)\cong F(\alpha)$。
+\end{proof}
+
+\begin{example}[应用：尺规作图与次数]
+考虑尺规可作性：由 $(0,0)$ 与 $(1,0)$ 出发，可作点的坐标集 $F$ 是 $\mathbb{Q}$ 的域扩张，且每一步新点由直线与圆（一次、二次方程）得到，故
+\[
+[F:\mathbb{Q}]=2^{d}.
+\]
+$\sqrt2$ 可作，$[\mathbb{Q}(\sqrt2):\mathbb{Q}]=2$。由塔律
+\[
+[F:\mathbb{Q}]=[F:\mathbb{Q}(\sqrt2)]\cdot[\mathbb{Q}(\sqrt2):\mathbb{Q}].
+\]
+一般地：\textbf{若 $\alpha$ 可作，则 $[\mathbb{Q}(\alpha):\mathbb{Q}]$ 必是 $2$ 的幂}。例如 $\sqrt[3]{2}$ 的极小多项式是 $x^{3}-2$，$[\mathbb{Q}(\sqrt[3]{2}):\mathbb{Q}]=3$；若它可作，则 $3\mid2^{d}$，矛盾，故立方倍积不可作。
+\end{example}
+
+\section*{分裂域 (Splitting Field)}
+
+\begin{definition}[分裂、分裂域]
+设 $f\in F[x]$，$K\supseteq F$。
+\begin{itemize}
+    \item 称 $f$ 在 $K$ 中\textbf{分裂}（splits），若
+    \[
+    f(x)=\prod_{i=1}^{\deg f}(x-u_i),\qquad u_i\in K\ \text{（取 $f$ 首一）}.
+    \]
+    \item 若 $f$ 在 $K$ 中分裂，且 $K=F(u_1,\dots,u_n)$（由 $f$ 的全部根生成），称 $K$ 是 $f$ 在 $F$ 上的\textbf{分裂域}（splitting field）。
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[分裂域的存在性]
+对任意 $f\in F[x]$，分裂域存在，且 $[K:F]\le(\deg f)!$。
+\end{theorem}
+
+\begin{proof}[证明]
+由第 6 节，$F[x]$ 是 ED 从而 PID 从而 UFD，故可把 $f$ 分解为首一不可约元之积
+\[
+f=p_1\cdots p_t .
+\]
+对 $\deg f$ 归纳。
+\begin{itemize}
+    \item 若所有 $\deg p_i=1$，则 $f$ 已在 $F$ 中分裂，取 $K=F$。
+    \item 否则取 $\deg p\ge2$，$p\mid f$。令
+    \[
+    F_1=F[y]/(p),
+    \]
+    则 $F_1$ 是域且 $f$ 在 $F_1$ 中至少有一个根（即 $y\bmod p$）。把 $f$ 看作 $F_1[x]$ 中的元素，$\deg f$ 不变，递归构造。设第 $i$ 步时 $f$ 的剩余次数为 $\deg f-i+1$，则第 $i$ 步所添的根来自一个次数 $\le\deg f-i+1$ 的不可约因子，故
+    \[
+    [K:F]\le(\deg f)(\deg f-1)\cdots 2\cdot 1=(\deg f)! ,
+    \]
+    且 $f$ 至多 $\deg f$ 步即完全分裂。\qedhere
+\end{itemize}
+\end{proof}
+
+\begin{example}[$x^{3}-2$ 在 $\mathbb{Q}$ 上]
+$f=x^{3}-2$ 不可约（Eisenstein 判别法，$p=2$），故
+\[
+\mathbb{Q}[x]/(x^{3}-2)\cong\mathbb{Q}(\sqrt[3]{2}),\qquad[\mathbb{Q}(\sqrt[3]{2}):\mathbb{Q}]=3 .
+\]
+但在 $\mathbb{Q}(\sqrt[3]{2})[x]$ 中
+\[
+x^{3}-2=(x-\sqrt[3]{2})\bigl(x^{2}+\sqrt[3]{2}\,x+\sqrt[3]{4}\bigr),
+\]
+二次因子在 $\mathbb{Q}(\sqrt[3]{2})$ 中“拆不开”（其判别式为 $-3\sqrt[3]{4}<0$，且其在 $\mathbb{R}$ 中无根），故还需添入本原三次单位根 $\omega=e^{2\pi i/3}$：
+\[
+K=\mathbb{Q}(\sqrt[3]{2},\ \omega)=\mathbb{Q}(\sqrt[3]{2},\ \sqrt[3]{2}\,\omega),\qquad[K:\mathbb{Q}]=6 .
+\]
+三个根是 $\sqrt[3]{2},\ \sqrt[3]{2}\omega,\ \sqrt[3]{2}\omega^{2}$。
+\end{example}
+
+\begin{theorem}[分裂域的唯一性]
+设 $K,K'$ 都是 $f\in F[x]$ 在 $F$ 上的分裂域，则存在 $F$-同构 $K\cong K'$。
+\end{theorem}
+
+\begin{proof}[证明（思路）]
+对次数归纳。取不可约 $g\mid f$ 于 $F[x]$，取 $\alpha\in K$ 使 $g(\alpha)=0$，令
+\[
+F_1=F[y]/(g)\cong F(\alpha)\subseteq K .
+\]
+同理 $K'$ 中有 $\alpha'$ 使 $g(\alpha')=0$，$F_1\cong F(\alpha')\subseteq K'$。于是 $K$ 与 $K'$ 都是 $f$ 在同一个域 $F_1$（同构意义下）上的分裂域，而 $\deg f$ 未变、但“已分裂的根”多了一个，由归纳假设 $K\cong K'$（作为 $F_1$-同构，从而是 $F$-同构）。
+\begin{center}
+\begin{tikzcd}[row sep=2.4em, column sep=3.2em]
+F \arrow[r, hook] \arrow[d, hook] & K \arrow[d, dashed, "\exists\,\cong"]\\
+F_1=F[y]/(g) \arrow[r, hook] & K'
+\end{tikzcd}
+\end{center}
+一般情形只需逐层重复：$F\to F(\alpha)\to K$ 与 $F\to F_1\to F_1(\alpha_1)\to K'$ 依此类推，每一步把 $F_i$ 与 $K$ 的某个子域对应起来，最终得到 $K\cong K'$。
+\end{proof}
+
+\section*{有限域 (Finite Fields)}
+
+\begin{theorem}
+设 $F$ 为有限域，则 $|F|=p^{d}$，其中 $p=\chr(F)$，$d=[F:\Fp]$。
+\end{theorem}
+
+\begin{proof}[证明]
+由素域定理，$\Fp\subseteq F$。$F$ 是 $\Fp$ 上的有限维向量空间，维数 $d$，故 $|F|=p^{d}$。
+\end{proof}
+
+\begin{theorem}[有限域的存在与唯一]
+对每个素数幂 $q=p^{d}$，存在域 $\mathbb{F}_{q}$ 且 $|\mathbb{F}_{q}|=q$；在同构意义下唯一。它是
+\[
+x^{p^{d}}-x\in\Fp[x]
+\]
+在 $\Fp$ 上的分裂域。
+\end{theorem}
+
+\begin{proof}[证明]
+\textbf{存在性}：设 $K$ 是 $f(x)=x^{p^{d}}-x$ 在 $\Fp$ 上的分裂域（存在性见上一节）。令
+\[
+K'=\{u\in K\mid u^{p^{d}}=u\}.
+\]
+断言 $K'$ 是域：
+\begin{itemize}
+    \item $0,1\in K'$；
+    \item 若 $a,b\in K'$，由 $\chr=p$ 的 Frobenius 恒等式 $(a+b)^{p}=a^{p}+b^{p}$ 迭代得
+    \[
+    (a+b)^{p^{d}}=a^{p^{d}}+b^{p^{d}}=a+b ;
+    \]
+    \item $(ab)^{p^{d}}=a^{p^{d}}b^{p^{d}}=ab$；
+    \item 若 $a\neq0$，则 $(a^{-1})^{p^{d}}=(a^{p^{d}})^{-1}=a^{-1}$。
+\end{itemize}
+又 $f$ 无重根：
+\[
+f'(x)=p^{d}x^{p^{d}-1}-1=-1\neq 0\quad(\text{因 }\chr=p),
+\]
+故 $(f,f')=1$，$f$ 有 $\deg f=p^{d}$ 个不同的根，即 $|K'|=p^{d}$。而 $K$ 由 $f$ 的根生成，故 $K=K'$。
+
+\textbf{唯一性}：设 $E$ 是任一 $p^{d}$ 元域，则 $\Fp\subseteq E$ 且 $E^{\times}$ 有 $p^{d}-1$ 个元素，任意 $u\in E$ 满足 $u^{p^{d}}=u$（$u=0$ 时显然，$u\neq0$ 时由 $u^{p^{d}-1}=1$），即 $E$ 中每个元素都是 $f$ 的根，故 $E$ 恰是 $f$ 的分裂域。由分裂域的唯一性得 $E\cong\mathbb{F}_{p^{d}}$。
+\end{proof}
+
+\begin{theorem}[不可约多项式的次数判据]
+设 $f\in\Fp[x]$ 首一不可约，$\deg f=d$。则
+\[
+f\mid x^{p^{d}}-x .
+\]
+更一般地，对 $n\ge1$：
+\[
+f\mid x^{p^{n}}-x\iff \deg f\mid n .
+\]
+\end{theorem}
+
+\begin{proof}[证明]
+令 $K=\Fp[x]/(f)$，$\alpha=x\bmod f$，则 $f(\alpha)=0$ 且 $[K:\Fp]=d$，故 $|K|=p^{d}$。由上一段，$K$ 中每个元素都是 $x^{p^{d}}-x$ 的根，特别地
+\[
+\alpha^{p^{d}}=\alpha\ \Longrightarrow\ x-\alpha\mid x^{p^{d}}-x .
+\]
+又 $x-\alpha\mid f$，故在 $K[x]$ 中 $x-\alpha$ 是 $f$ 与 $x^{p^{d}}-x$ 的公因子。于是在 $\Fp[x]$ 中
+\[
+(f,\ x^{p^{d}}-x)\neq1 .
+\]
+而 $(f,x^{p^{d}}-x)\mid f$，$f$ 不可约，故 $(f,x^{p^{d}}-x)=f$，即 $f\mid x^{p^{d}}-x$。
+
+反之若 $f\mid x^{p^{n}}-x$，则 $f$ 的根 $\alpha\in\mathbb{F}_{p^{n}}$，于是 $\Fp\subseteq\Fp(\alpha)\subseteq\mathbb{F}_{p^{n}}$，由塔律
+\[
+d=[\Fp(\alpha):\Fp]\mid[\mathbb{F}_{p^{n}}:\Fp]=n .
+\]
+\end{proof}
+
+\begin{theorem}[$x^{p^{n}}-x$ 的完全分解]
+设 $\varphi_{d}(x)$ 为所有 $d$ 次首一不可约多项式之积，则
+\[
+x^{p^{n}}-x=\prod_{d\mid n}\varphi_{d}(x),
+\]
+其中每个因子只出现一次。
+\end{theorem}
+
+\begin{proof}[证明]
+由上一个定理，首一不可约 $f$ 满足 $f\mid x^{p^{n}}-x$ $\iff$ $\deg f\mid n$；且 $x^{p^{n}}-x$ 无重根（导数 $=-1$），故每个不可约因子只出现一次。
+\end{proof}
+
+\begin{corollary}[$d$ 次不可约多项式的存在性]
+对每个 $d\ge1$，$\Fp[x]$ 中存在 $d$ 次不可约多项式，且其个数为
+\[
+\frac{1}{d}\deg\varphi_{d},\qquad
+\deg\varphi_{d}=p^{d}-\sum_{\substack{d'\mid d\\ d'\neq d}}\deg\varphi_{d'} .
+\]
+\end{corollary}
+
+\begin{proof}[证明]
+比较次数：在 $x^{p^{n}}-x=\prod_{d\mid n}\varphi_{d}$ 中令 $n=d$，得
+\[
+p^{d}=\sum_{d'\mid d}\deg\varphi_{d'} .
+\]
+于是
+\[
+\deg\varphi_{d}
+=p^{d}-\sum_{\substack{d'\mid d\\ d'<d}}\deg\varphi_{d'}
+\ \ge\ p^{d}-\sum_{\substack{d'\mid d\\ d'<d}}p^{d'}
+\ \ge\ p^{d}-\sum_{k=0}^{d-1}p^{k}
+=p^{d}-\frac{p^{d}-1}{p-1}>0 .
+\]
+故 $\deg\varphi_{d}>0$，即 $d$ 次不可约多项式存在，个数为 $\deg\varphi_{d}/d$（每个 $d$ 次不可约多项式贡献 $d$ 个根）。
+\end{proof}
+
+\begin{example}
+$p=2$：$x^{2}-x=\varphi_{1}=x(x-1)$；$x^{4}-x=\varphi_{1}\varphi_{2}$，故
+\[
+\varphi_{2}=\frac{x^{4}-x}{x^{2}-x}=x^{2}+x+1,
+\]
+这与“$\mathbb{F}_{2}$ 上唯一的 $2$ 次不可约多项式是 $x^{2}+x+1$”一致。
+
+$p=3$、$d=2$：$\deg\varphi_{2}=9-3=6$，故 $6/2=3$ 个（即 $3$ 个 $2$ 次不可约多项式）。
+\end{example}
+
+\section*{$\mathbb{F}_{q}[x]$ 上的因式分解算法}
+
+设 $q=p^{d}$，$f\in\mathbb{F}_{q}[x]$。目标是给出 $f$ 的不可约分解（Cantor--Zassenhaus 算法）。以下四步按顺序进行。
+
+\subsection*{第 1 步：去掉平方因子 (square-free part)}
+
+若某个不可约多项式的平方整除 $f$，则它已整除 $\gcd(f,f')$。具体地：计算
+\[
+h=\gcd(f,f'),
+\]
+若 $h\neq1$，则 $f=h\cdot(f/h)$，对 $h$ 与 $f/h$ 分别递归。反复进行，可得
+\[
+f=\prod_{i\ge1}f_i^{\,i},
+\]
+其中每个 $f_i$ 无平方因子且两两互素。此后只需分解无平方因子的 $f$。
+
+\subsection*{第 2 步：$f'=0$ 的“$p$ 次幂”情形}
+
+设 $f=\sum a_ix^{i}$，则
+\[
+f'=\sum i\,a_ix^{i-1}.
+\]
+在特征 $p$ 中有
+\[
+f'=0\iff \forall i:\ ia_i=0 \iff \text{所有 }a_i\neq0\text{ 的 }i\text{ 都是 }p\text{ 的倍数}.
+\]
+此时
+\[
+f(x)=g(x^{p}),\qquad g(y)=\sum_{i}a_{i}\,y^{i/p},
+\]
+于是分解 $f$ 归结为分解 $g$ 再回代 $x^{p}$。例：
+\[
+f=x^{2p}-x^{p}+3=g(x^{p}),\qquad g(y)=y^{2}-y+3 .
+\]
+注意此情形下 $f$ 必有重根（$f'=0$ 且 $f\neq$ 常数），故第 1 步会先把它剥离出来。
+
+\subsection*{第 3 步：不同次数分解 (distinct-degree factorization)}
+
+设 $f$ 首一、无平方因子。对 $d=1,2,\dots$ 计算
+\[
+g_{d}(x)=\gcd\bigl(f(x),\ x^{q^{d}}-x\bigr),
+\]
+则 $g_{d}$ 恰是 $f$ 的所有\textbf{次数整除 $d$} 的不可约因子之积。于是次数恰为 $d$ 的部分为
+\[
+r_{d}=\frac{g_{d}}{g_{d-1}}\qquad(g_{0}=1),
+\]
+它是 $f$ 的所有 $d$ 次不可约因子之积。当 $2d>\deg f$ 时停止。
+
+计算要点：$x^{q^{d}}\bmod f$ 用\textbf{快速幂}（平方-乘法）在 $\mathbb{F}_{q}[x]/(f)$ 中进行，只需 $O(\log q^{d})$ 次多项式乘法，避免直接展开 $q^{d}$ 次方（笔记：“$q^{d}$ 太大 $\to$ 先 mod $f$”）。
+
+\subsection*{第 4 步：同次数分解 (same-degree，Cantor--Zassenhaus)}
+
+设已得到 $f=r_{1}r_{2}r_{3}\cdots$，其中各 $r_i$ 都是 $d$ 次首一不可约。由中国剩余定理
+\[
+\mathbb{F}_{q}[x]/(f)\ \cong\ \prod_{i}\mathbb{F}_{q}[x]/(r_{i})\ \cong\ \prod_{i}\mathbb{F}_{q^{d}},
+\]
+于是 $s\in\mathbb{F}_{q}[x]/(f)$ 对应多重分量 $s\leftrightarrow(s_1,s_2,s_3,\dots)$。
+
+\textbf{核心观察}：若 $\exists s_i=0$，则 $\gcd(s,f)$ 就是 $r_i$ 的倍式，直接给出非平凡因子。若所有 $s_i\neq0$，则利用下面的引理，$s_i^{(q^{d}-1)/2}=\pm1$，计算
+\[
+\gcd\bigl(s^{(q^{d}-1)/2}-1,\ f\bigr)
+\]
+即可把符号为 $+1$ 的分量对应的 $r_i$ 分离出来。
+
+\begin{lemma}
+设 $q$ 为奇数，$\mathbb{F}_{q^{d}}$ 为 $q^{d}$ 元域。则对任意 $y\in\mathbb{F}_{q^{d}}$，
+\[
+y^{(q^{d}-1)/2}\in\{0,\ 1,\ -1\},
+\]
+并且非零元中\textbf{恰有一半取 $+1$、一半取 $-1$}（即“半正半负”）。
+\end{lemma}
+
+\begin{proof}[证明]
+记 $N=q^{d}-1$（$q$ 奇故 $N$ 为偶数）。
+
+\textbf{(1) 取值只能是 $0,\pm1$}：$y=0$ 时显然为 $0$。$y\neq0$ 时 $y^{N}=1$，故
+\[
+\bigl(y^{N/2}\bigr)^{2}=y^{N}=1\ \Longrightarrow\ \bigl(y^{N/2}-1\bigr)\bigl(y^{N/2}+1\bigr)=0 ,
+\]
+域中无零因子，故 $y^{N/2}=\pm1$。
+
+\textbf{(2) 恰有一半为 $+1$}：记
+\[
+S=\{y^{2}\mid y\in\mathbb{F}_{q^{d}}^{\times}\}
+\]
+为（非零）平方元集。
+
+先算 $|S|$：映射 $\varphi_2:\mathbb{F}_{q^{d}}^{\times}\to\mathbb{F}_{q^{d}}^{\times}$，$y\mapsto y^{2}$ 是群同态，其核为
+\[
+\ker\varphi_2=\{y\mid y^{2}=1\}=\{1,-1\},
+\]
+恰有 $2$ 个元素（$q^{d}$ 奇，故 $1\neq-1$）。由同态基本定理
+\[
+|S|=\bigl|\mathbb{F}_{q^{d}}^{\times}\bigr|/\bigl|\ker\varphi_2\bigr|=N/2 .
+\]
+再说明 $S$ 恰是方程 $z^{N/2}=1$ 的解集：一方面，若 $z=y^{2}\in S$，则
+\[
+z^{N/2}=(y^{2})^{N/2}=y^{N}=1 ,
+\]
+故 $S\subseteq\{z\mid z^{N/2}=1\}$；另一方面，$z^{N/2}-1$ 是次数 $N/2$ 的多项式，在域中至多有 $N/2$ 个根，故
+\[
+\bigl|\{z\mid z^{N/2}=1\}\bigr|\le N/2=|S| .
+\]
+两边夹逼得 $S=\{z\mid z^{N/2}=1\}$，即 $y^{N/2}=1$ $\iff$ $y$ 是平方元。
+
+于是非平方元 $y$ 满足 $y^{N/2}=\pm1$ 且 $\neq1$，故 $=-1$。而非零元中平方元与非平方元各 $N/2$ 个，故 $+1$ 与 $-1$ 各占一半。
+\end{proof}
+
+\begin{remark}[第 4 步的成功概率]
+三个分量（更一般地 $n$ 个）的符号独立地各以 $\tfrac12$ 概率取 $\pm1$（忽略 $s_i=0$ 的极小概率 $1/q^{d}$）。若所有符号相同，则
+\[
+s^{(q^{d}-1)/2}-1\equiv 0\ \text{或}\ -2\ \text{在每个分量上},
+\]
+$\gcd$ 取到 $f$ 或 $1$，失败；否则分离成功。三符号全同的概率为
+\[
+2\left(\frac12\right)^{3}=\frac14 ,
+\]
+故一次尝试成功的概率 $\ge\tfrac34>\tfrac12$（这正是笔记中“有 $>1/2$ 概率为 $r_1/r_2/r_3$ 中某一个的倍数”的含义），重复常数次即可把 $f$ 完全拆开。
+\end{remark}
+
+\end{document}
