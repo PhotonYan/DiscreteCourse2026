@@ -16,16 +16,16 @@ Lec10 已经证明：有限域的阶必为素数幂 $p^d$。这一节补上反�
 
 \textbf{有限域的大小必为素数幂。} 反过来的存在唯一性就是本节主定理。
 
-\subsection{Frobenius 映射：特征 $p$ 的“加法变简单”}
+\subsection{Frobenius 引理：特征 $p$ 的“加法变简单”}
 
 
-\textbf{引理。} 设 $K$ 是特征 $p$ 的域。映射
+\textbf{引理（Frobenius 引理）。} 设 $K$ 是特征 $p$ 的域。映射
 
 \[
 \sigma_p:K\longrightarrow K,\qquad a\longmapsto a^p
 \]
 
-是域同态，且是单射；它的不动域 $\{a\in K:a^p=a\}$ 恰为素子域 $\mathbb F_p$。更一般地，$a\mapsto a^{q}$（$q=p^r$）也是域同态，称为 \textbf{$q$-Frobenius 映射}。
+是域同态，且是单射；它的不动域 $\{a\in K:a^p=a\}$ 恰为素子域 $\mathbb F_p$。若 $K$ 还是\textbf{有限域}，则 $\sigma_p$ 是双射，从而是域自同构。更一般地，$a\mapsto a^{q}$（$q=p^r$）也是域同态，称为 \textbf{$q$-Frobenius 映射}（$K$ 有限时同样是自同构）。
 
 \textbf{证明。} $(ab)^p=a^pb^p$、$1^p=1$ 是显然的。加法性来自二项式定理：
 
@@ -33,7 +33,7 @@ Lec10 已经证明：有限域的阶必为素数幂 $p^d$。这一节补上反�
 (a+b)^p=\sum_{k=0}^{p}\binom{p}{k}a^k b^{p-k}=a^p+b^p,
 \]
 
-因为中间的二项式系数 $\binom{p}{k}$（$1\le k\le p-1$）都是 $p$ 的倍数，而在特征 $p$ 的域中 $p=0$，这些项都消失。又 $\sigma_p$ 是域同态，由“域同态非零则单射”（前一节），它是单射。
+因为中间的二项式系数 $\binom{p}{k}$（$1\le k\le p-1$）都是 $p$ 的倍数，而在特征 $p$ 的域中 $p=0$，这些项都消失。又 $\sigma_p$ 是域同态，由“域同态非零则单射”（第 1 节），它是单射。当 $K$ 是有限域时，从有限集到自身的单射必是双射，所以此时 $\sigma_p$ 是自同构。
 
 不动域是一个子域：若 $a^p=a$、$b^p=b$，则 $(a\pm b)^p=a^p\pm b^p=a\pm b$、$(ab)^p=ab$、$(a^{-1})^p=(a^p)^{-1}=a^{-1}$。$x^p-x$ 在域中至多 $p$ 个根，而 $\mathbb F_p$ 的每个元素都是它的根，所以不动域恰为 $\mathbb F_p$。多次复合 $\sigma_p^r$ 就得到 $\sigma_q$。$\square$
 

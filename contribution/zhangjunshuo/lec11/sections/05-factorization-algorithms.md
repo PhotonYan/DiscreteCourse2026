@@ -78,7 +78,7 @@ $$
 f(x)=h(x^p)
 $$
 
-对某个 $h\in\mathbb F_q[x]$ 成立。又因为 $\mathbb F_q$ 中 Frobenius 映射 $a\mapsto a^p$ 是双射，每个系数都有唯一的 $p$ 次方根，于是 $h(x^p)=\bigl(h^{[1/p]}(x)\bigr)^p$，其中 $h^{[1/p]}$ 表示“把每个系数换成它的 $p$ 次方根”。**所以 $f'=0$ 等价于 $f$ 本身是一个 $p$ 次幂。**
+对某个 $h\in\mathbb F_q[x]$ 成立。又因为 $\mathbb F_q$ 中 Frobenius 映射 $a\mapsto a^p$ 是双射（第 4 节 Frobenius 引理：有限域上单射即双射），每个系数都有唯一的 $p$ 次方根，于是 $h(x^p)=\bigl(h^{[1/p]}(x)\bigr)^p$，其中 $h^{[1/p]}$ 表示“把每个系数换成它的 $p$ 次方根”。**所以 $f'=0$ 等价于 $f$ 本身是一个 $p$ 次幂。**
 
 ## 第一步：去平方因子（square-free）
 
@@ -114,7 +114,7 @@ $$
 f=x^{2p}-x^p+3 .
 $$
 
-则 $f'=2p\,x^{2p-1}-p\,x^{p-1}=0$。由 Frobenius（$(a+b)^p=a^p+b^p$、系数 $c^p=c$ 对 $c\in\mathbb F_p$），
+则 $f'=2p\,x^{2p-1}-p\,x^{p-1}=0$。由第 4 节 Frobenius 引理（$(a+b)^p=a^p+b^p$、系数 $c^p=c$ 对 $c\in\mathbb F_p$），
 
 $$
 f=(x^2-x+3)^p .

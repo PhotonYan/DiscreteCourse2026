@@ -90,6 +90,8 @@ $$
 
 由特征 $p$ 的二项式定理（见 §1.5），有 $\sigma(a+b)=(a+b)^p=a^p+b^p=\sigma(a)+\sigma(b)$ 以及 $\sigma(ab)=a^pb^p=\sigma(a)\sigma(b)$，所以 $\sigma$ 是域同态。再从 $a^p=b^p$ 推出 $(a-b)^p=0$，所以 $a=b$，即 $\sigma$ 是单射；在有限域上单射就是双射，因此 $\sigma$ 是**自同构**，叫 **Frobenius 自同构**。
 
+同一个元素在 $\sigma$ 反复作用下的像 $\alpha,\alpha^p,\alpha^{p^2},\dots$ 称为 $\alpha$ 的 **Frobenius 轨道**，同一轨道中的元素互为 **Frobenius 共轭**；它的结构（长度、与极小多项式的关系）在 §3.6 证明，第 2 节的 $\mathbb F_{16}$ 分组表就是按这些轨道分组的。
+
 **被 $\sigma$ 固定的元素。** $a^p=a$ 等价于 $a$ 是 $x^p-x$ 的根。而 $x^p-x$ 是 $p$ 次多项式，至多有 $p$ 个根；另一方面 $\mathbb F_p$ 里的 $p$ 个元素由费马小定理都满足 $a^p=a$。所以
 
 $$
@@ -166,7 +168,7 @@ $$
 
 - **$\mathbb F_p\subseteq\mathbb F_{p^d}$ 是 $d$ 次扩张**，即 $[\mathbb F_{p^d}:\mathbb F_p]=d$。理由：$\mathbb F_{p^d}$ 是 $\mathbb F_p$ 上的 $d$ 维向量空间，元素个数 $p^d$。
 - **取元素看极小多项式。** 每个 $\alpha\in\mathbb F_{p^d}$ 有唯一的首一极小多项式 $m_\alpha\in\mathbb F_p[x]$，次数是 $\deg m_\alpha=[\mathbb F_p(\alpha):\mathbb F_p]$。因为 $\mathbb F_p\subseteq\mathbb F_p(\alpha)\subseteq\mathbb F_{p^d}$，由次数乘法公式得 $\deg m_\alpha\mid d$。这就是原页右上角写的那行 `deg of f | d`。
-- **一个极小多项式对应若干个根。** 若 $f\in\mathbb F_p[x]$ 不可约且 $\deg f=e\mid d$，则 $f$ 在 $\mathbb F_{p^d}$ 里**恰有 $e$ 个不同的根**（证明见 §3.6）。这 $e$ 个根恰好是 $\alpha,\alpha^p,\alpha^{p^2},\dots,\alpha^{p^{e-1}}$ 这样一个 **Frobenius 轨道**。所以「元素 $\leftrightarrow$ 极小多项式」不是一一对应，而是**多对一的分组**：同一个不可约多项式统一「管着」它的 $e$ 个根。原页那行中文「一个对应不同的根」，补全后就是这句话。
+- **一个极小多项式对应若干个根。** 若 $f\in\mathbb F_p[x]$ 不可约且 $\deg f=e\mid d$，则 $f$ 在 $\mathbb F_{p^d}$ 里**恰有 $e$ 个不同的根**（证明见 §3.6）。这 $e$ 个根恰好是 $\alpha,\alpha^p,\alpha^{p^2},\dots,\alpha^{p^{e-1}}$ 这样一个 **Frobenius 轨道**（术语定义见 §1.3）。所以「元素 $\leftrightarrow$ 极小多项式」不是一一对应，而是**多对一的分组**：同一个不可约多项式统一「管着」它的 $e$ 个根。原页那行中文「一个对应不同的根」，补全后就是这句话。
 
 > **直觉**：把 $\mathbb F_{p^d}$ 的 $p^d$ 个元素按极小多项式分组。$\mathbb F_p$ 里的元素自己一组一组（极小多项式都是一次的）；极小多项式次数恰好为 $d$ 的元素，按 Frobenius 轨道每 $d$ 个一组。§3 的核心恒等式就是「分组求和」的正式写法。
 
