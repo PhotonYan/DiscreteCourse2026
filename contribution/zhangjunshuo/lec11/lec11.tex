@@ -1,0 +1,48 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 11}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{分裂域、有限域与有限域上的多项式因式分解}\author{zhangjunshuo}\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 20 日的两段课堂转写、三页手写原稿和课程教材整理。本讲紧接 Lec10 末尾的域扩张与分裂域，先用域扩张语言（次数、三种造域方式、代数元与极小多项式）打底，用塔律证明倍立方与三等分角不可作；再证明分裂域存在且在同构意义下唯一；然后用它证明有限域 $\mathbb F_{p^d}$ 的存在唯一性，把 $x^{p^d}-x$ 分解成不可约多项式之积、数出每个次数的不可约多项式个数，并给出有限域上多项式因式分解的三步算法（去平方因子、按次数分组、Cantor--Zassenhaus 同次数拆分）。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义，不依赖读者记得前面讲次的写法。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-field-extensions-recap}
+\input{sections/02-tower-law-ruler-compass}
+\input{sections/03-splitting-field}
+\input{sections/04-finite-fields}
+\input{sections/05-factorization-algorithms}
+
+\section*{一页式总览}
+\begin{itemize}
+\item $K/F$ 是扩域，$[K:F]=\dim_F K$ 是次数；$K$ 是 $F$-线性空间，这是整讲的计算引擎。
+\item 造域的三种方式：$F[x]/(f)$（添形式根）、$\operatorname{Frac}(F[x])=F(x)$（添分母）、$F(\alpha)$（在具体扩域里取真实根）。
+\item $f$ 不可约、$f(\alpha)=0$ 时 $F[x]/(f)\cong F(\alpha)$，$\bar x\mapsto\alpha$；$[F(\alpha):F]=\deg m_{\alpha,F}$。
+\item 域同态非单即零；有限扩张必代数，反之不然；超越元满足 $\operatorname{Frac}(F[x])\cong F(\alpha)$。
+\item 塔律 $[H:F]=[H:K][K:F]$；中间域次数整除总次数。尺规作图每步至多二次扩张，可作数满足 $[\mathbb Q(x):\mathbb Q]=2^m$。
+\item 倍立方需 $\sqrt[3]{2}$（次数 $3$），三等分 $60^\circ$ 需 $\cos20^\circ$（次数 $3$），都推出 $3\mid2^m$ 的矛盾；化圆为方：若可作则 $\sqrt\pi$ 必在 $\mathbb Q$ 上代数；但 $\pi$ 超越 $\Rightarrow$ $\sqrt\pi$ 超越，矛盾。
+\item 分裂域：$f$ 在 $E$ 上完全分裂且 $E=F(\text{全部根})$；存在，且 $[E:F]\le(\deg f)!$；在同构意义下唯一。
+\item 有限域：$\mathbb F_{p^d}$ 存在唯一；$\mathbb F_{p^d}$ 是 $x^{p^d}-x$ 在 $\mathbb F_p$ 上的分裂域；$x^{q^d}-x=\prod_{e\mid d}\Phi_e$，$\deg\Phi_d=dN_d$，$q^d=\sum_{e\mid d}eN_e$。
+\item 每个次数 $d$ 都有不可约多项式：$\deg\Phi_d\ge q^d-\sum_{e\mid d,e<d}q^e>0$；$N_d=\frac1d\sum_{e\mid d}\mu(d/e)q^e$。
+\item 有限域上因式分解：去平方因子（$\gcd(f,f')$；$f'=0$ 时开 $p$ 次方）$\to$ 按次数分组（渐进除法，$f^\ast$ 与 $x^{q^i}-x$ 做 $\gcd$）$\to$ 同次数拆分（Cantor--Zassenhaus：随机 $s$，算 $\gcd(s^{(q^d-1)/2}-1,f)$；$q$ 奇且 $k\ge2$ 时，按含退化处理的算法，成功概率 $\ge1/2$）。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item \textbf{[DF]} D. S. Dummit, R. M. Foote. \emph{Abstract Algebra}, 3rd ed. §13.1--13.4（域扩张、代数扩张、古典尺规作图、分裂域），§14.3（有限域与不可约多项式计数、Möbius 公式）。有限域在第 14 章 §14.3，不在 §13.4。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》§10.3（特征、素域、$F[x]/(f)$ 是域 $\iff f$ 不可约、有限域的存在唯一性）。该书没有分裂域与多项式分解算法的系统讨论。
+\item \textbf{[讲义]} 课程讲义 \texttt{25-26-lecture\_notes.pdf} 第八章：§8.1 域扩张（定义 8.1--8.2、定理 8.1--8.3、命题 8.1--8.4）、§8.2 分裂域（定义 8.3--8.4、定理 8.4）、§8.3 有限域（定理 8.5、命题 8.5--8.6、引理 8.1、定理 8.6--8.9）。该讲义为 2025--2026 秋季版本。
+\item 原始材料：\texttt{DiscreteCourse2026/课堂手记和录音转写/Lec11/}（两段转写与三页手写原稿）。
+\item 第 3 页的零基础讲解见 \texttt{专题整理/图离散Lec11-笔记第3页讲解稿.pdf}。
+\end{itemize}
+\end{document}

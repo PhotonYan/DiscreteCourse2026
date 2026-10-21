@@ -1,0 +1,383 @@
+\section{有限域上的多项式因式分解}
+
+
+这是本讲的最后一个主题，也是手写稿第 3 页下半页的内容：\textbf{给定有限域 $\mathbb F_q$ 上的多项式 $f$，怎样高效地把 $f$ 分解成不可约多项式之积。} 在整数里分解质因数被认为是很难的问题（没有量子计算机时）；但在有限域的多项式环里，分解可以做到多项式时间——这正是这页三个算法要说明的事。
+
+\textbf{本节用到的记号：} $q=p^r$ 为素数幂，$\mathbb F_q$ 为有限域；$f\in\mathbb F_q[x]$ 首一、次数 $\ge1$；$f'$ 为\textbf{形式导数}；$\gcd$ 表示首一最大公因式（在 $\mathbb F_q[x]$ 中算）；称 $f$ \textbf{无平方因子}，若它没有重复的不可约因子（即每个不可约因子只出现一次）。
+
+\subsection{问题与递归策略}
+
+
+\textbf{输入：} 首一多项式 $f\in\mathbb F_q[x]$。
+\textbf{输出：} 不可约多项式的乘积分解
+
+\[
+f=f_1^{e_1}f_2^{e_2}\cdots f_s^{e_s},
+\]
+
+其中 $f_i$ 首一不可约、互不相同，$e_i\ge1$。
+
+\textbf{递归策略。} 只要能找到一个\textbf{非平凡因子} $g$（$1<\deg g<\deg f$，$g\mid f$），就可以递归分解 $g$ 与 $f/g$。所以下面三个算法都只负责回答一个问题：
+
+\begin{quote}
+怎样从 $f$ 里“高效地切出一刀”？
+\end{quote}
+
+
+整条流水线是：
+
+\begin{itemize}
+\item \textbf{去平方因子}：把重复的因子与重数处理好，剩下无平方因子的部分；
+\item \textbf{按次数分组}（distinct-degree）：把不可约因子按次数 $1,2,3,\dots$ 分成一堆一堆；
+\item \textbf{同次数拆分}（equal-degree，Cantor–Zassenhaus）：把一堆次数相同、但互不相同的不可约因子逐个分开。
+\end{itemize}
+
+
+三步都做完，就得到完整分解。
+
+\subsection{形式导数与重根}
+
+
+设
+
+\[
+f(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0 .
+\]
+
+定义\textbf{形式导数}
+
+\[
+f'(x)=n a_nx^{n-1}+(n-1)a_{n-1}x^{n-2}+\cdots+a_1 .
+\]
+
+它满足通常的乘积法则 $(gh)'=g'h+gh'$（直接把两边按定义展开即可验证，不需要极限）。注意系数 $a_i$ 与整数 $n$ 的乘积要理解成在 $\mathbb F_q$ 中相加 $n$ 次；当 $p\mid n$ 时 $na_n=0$。
+
+\textbf{引理（重因子与导数）。} 若 $g^2\mid f$，则 $g\mid f'$。
+
+\textbf{证明。} 写 $f=g^2h$。由乘积法则
+
+\[
+f'=2gg'h+g^2h'=g\,(2g'h+gh'),
+\]
+
+故 $g\mid f'$。$\square$
+
+\textbf{推论。} 若 $\gcd(f,f')=1$，则 $f$ 无平方因子；反过来，$f$ 无平方因子当且仅当 $\gcd(f,f')=1$。
+
+\textbf{证明。} 写 $f=\prod_i r_i^{e_i}$ 为不可约分解。
+
+先证“有重复因子 $\Rightarrow\gcd\ne1$”。若某个 $e_i\ge2$：在 $r_i$ 处局部写 $f=r_i^{e_i}h$（$r_i\nmid h$），则
+\[
+f'=e_i r_i^{e_i-1}r_i'h+r_i^{e_i}h'.
+\]
+\begin{itemize}
+\item 若 $p\nmid e_i$，则括号 $e_ir_i'h+r_ih'$ 不被 $r_i$ 整除（这里用到 $r_i\nmid r_i'$：不可约多项式在特征 $p$ 下导数非零，否则它是 $p$ 次幂），故 $r_i^{e_i-1}\mid f'$，与 $r_i^{e_i}\mid f$ 一起给出 $r_i\mid\gcd(f,f')$；
+\item 若 $p\mid e_i$，则 $e_ir_i^{e_i-1}r_i'h=0$，$f'=r_i^{e_i}h'$，仍有 $r_i\mid f'$。
+\end{itemize}
+
+
+所以 $\gcd(f,f')\ne1$。
+
+再证“无重复因子 $\Rightarrow\gcd=1$”。设 $f=\prod_i r_i$（互不相同）。若某个不可约 $r_i\mid f'$，则 $f'\equiv0\pmod{r_i}$。但 $f=\prod_j r_j$，由乘积法则
+\[
+f'\equiv r_i'\prod_{j\ne i}r_j \pmod{r_i},
+\]
+而 $r_i\nmid r_i'$、$r_i\nmid\prod_{j\ne i}r_j$，矛盾（域上无零因子）。故没有 $r_i$ 整除 $f'$，$\gcd(f,f')=1$。$\square$
+
+\textbf{边界情形 $f'=0$。} 上面推理里用到“$r_i'\ne0$”。什么时候 $f'=0$？逐个单项式看：$(x^{m})'=mx^{m-1}$，所以 $f'=0$ 当且仅当每个非零项的次数都是 $p$ 的倍数，即
+
+\[
+f(x)=h(x^p)
+\]
+
+对某个 $h\in\mathbb F_q[x]$ 成立。又因为 $\mathbb F_q$ 中 Frobenius 映射 $a\mapsto a^p$ 是双射，每个系数都有唯一的 $p$ 次方根，于是 $h(x^p)=\bigl(h^{[1/p]}(x)\bigr)^p$，其中 $h^{[1/p]}$ 表示“把每个系数换成它的 $p$ 次方根”。\textbf{所以 $f'=0$ 等价于 $f$ 本身是一个 $p$ 次幂。}
+
+\subsection{第一步：去平方因子（square-free）}
+
+
+\textbf{目标。} 把 $f$ 写成若干个无平方因子多项式之积（带重数），从而把问题化归到无平方因子的情形。
+
+\textbf{算法。}
+
+\begin{itemize}
+\item \textbf{第一步}：计算 $f'$。
+\item \textbf{第二步}：若 $f'=0$，则由上面的讨论 $f=h^p$，其中 $h=h^{[1/p]}$。递归分解 $h$，得到 $h=\prod r_i^{e_i}$，则 $f=\prod r_i^{p e_i}$；返回。
+\item \textbf{第三步}：否则计算 $c=\gcd(f,f')$，并令 $w=f/c$。
+\item 若 $c=1$：$f$ 无平方因子，直接返回（交给第二步）；
+\item 若 $c\ne1$：$w=f/c$ \textbf{无平方因子}，但它只含那些重数不被 $p$ 整除的不可约因子各一次；重数被 $p$ 整除的因子全部留在 $c$ 里（详见下一段的说明）。递归对 $c$ 做去平方因子，得到 $c=\prod_m a_m^m$（$a_m$ 无平方因子）；再把 $w$ 的因子按“重数 $+1$”并入，即对每个不可约因子 $r$，它在 $f$ 中的重数等于它在 $c$ 中的重数加上“$r$ 是否出现在 $w$ 中”。
+\end{itemize}
+
+
+\textbf{为什么 $w=f/\gcd(f,f')$ 无平方因子。} 在不可约分解 $f=\prod r_i^{e_i}$ 下，局部看 $r_i$ 的指数：若 $p\nmid e_i$，则 $\gcd$ 中 $r_i$ 的指数是 $e_i-1$，相除后剩 $1$；若 $p\mid e_i$，则 $\gcd$ 中指数是 $e_i$，相除后不出现。两种情形相除后 $r_i$ 的指数都在 $\{0,1\}$，所以 $w$ 无平方因子。
+
+\textbf{例一（重因子）。} 在 $\mathbb F_3$ 上取
+
+\[
+f=(x^2+1)^2(x+2)=x^5-x^4-x^3+x^2+x-1 .
+\]
+
+计算 $f'=5x^4-4x^3-3x^2+2x+1\equiv -x^4-x^3-x+1$（系数模 $3$）。用辗转相除得
+
+\[
+\gcd(f,f')=x^2+1,\qquad f/\gcd(f,f')=x^3-x^2+x-1=(x^2+1)(x+2).
+\]
+
+于是 $f=(x^2+1)\cdot\bigl[(x^2+1)(x+2)\bigr]$，重因子 $x^2+1$ 被“降了一次重数”，继续处理剩余部分即可。
+
+\textbf{例二（$f'=0$）。} 在 $\mathbb F_p$ 上取
+
+\[
+f=x^{2p}-x^p+3 .
+\]
+
+则 $f'=2p\,x^{2p-1}-p\,x^{p-1}=0$。由 Frobenius（$(a+b)^p=a^p+b^p$、系数 $c^p=c$ 对 $c\in\mathbb F_p$），
+
+\[
+f=(x^2-x+3)^p .
+\]
+
+于是 $p$ 次方根为 $x^2-x+3$；递归分解它即可，最后把每个因子的重数乘 $p$。例如 $p=3$ 时 $f=(x^2-x+3)^3=(x^2-x)^3=x^6-x^3$，而 $x^2-x=x(x-1)$，所以 $f=x^3(x-1)^3$。
+
+\textbf{注意。} 去平方因子之后，$f$ 无平方因子，但这\textbf{不表示 $f$ 不可约}。它只是把“重数”问题解决了，下一步才按次数分组。
+
+\subsection{第二步：按次数分组（distinct-degree）}
+
+
+从这一步起假设 $f$ 无平方因子。
+
+\textbf{引理（关键）。} 设 $f$ 无平方因子，则
+
+\[
+\gcd\bigl(f,\ x^{q^i}-x\bigr)
+\]
+
+等于“$f$ 的那些次数整除 $i$ 的不可约因子”之积。
+
+\textbf{证明。} 由上一节，$x^{q^i}-x=\prod_{e\mid i}\Phi_e$，而 $\Phi_e$ 是全体 $e$ 次首一不可约多项式之积。所以“$f$ 的某个不可约因子 $r$ 整除 $x^{q^i}-x$”当且仅当 $\deg r\mid i$。又 $f$ 无平方因子，故 $\gcd$ 就是这些因子的乘积。$\square$
+
+\textbf{算法（渐进除法版）。}
+
+\begin{itemize}
+\item 初始化：令 $f^\ast\leftarrow f$，$i\leftarrow1$。
+\item 循环（当 $\deg f^\ast\ge 2i$ 时）：计算 $g=\gcd\bigl(f^\ast,\ x^{q^i}-x\bigr)$。若 $g\ne1$，就输出 $g$——它是 $f^\ast$ 中全体 $i$ 次不可约因子之积（次数相同，交给第三步）；并令 $f^\ast\leftarrow f^\ast/g$。然后 $i\leftarrow i+1$。
+\item 收尾：循环结束后，若 $\deg f^\ast>0$，输出 $f^\ast$，它本身不可约。
+\end{itemize}
+
+
+\textbf{正确性。} 用归纳不变量：每轮开始时，$f^\ast$ 无平方因子，且它的所有不可约因子的次数都 $\ge i$。
+
+\begin{itemize}
+\item $i=1$ 时显然（次数都 $\ge1$）。
+\item 设第 $i$ 轮开始时不变量成立。由引理，$g=\gcd(f^\ast,x^{q^i}-x)$ 是“$f^\ast$ 中次数整除 $i$ 的因子”之积；而不变量说次数都 $\ge i$，所以“次数整除 $i$”等价于“次数等于 $i$”。于是 $g$ 恰是全体 $i$ 次因子之积；除掉它后，剩余因子的次数都 $>i$，即 $\ge i+1$，不变量保持。
+\item 退出时 $\deg f^\ast<2i$，而 $f^\ast$ 的每个因子次数都 $\ge i$。若 $f^\ast$ 有两个或更多因子，则 $\deg f^\ast\ge2i$，矛盾。所以 $f^\ast$ 至多一个因子，即不可约（或为 $1$）。$\square$
+\end{itemize}
+
+
+\textbf{为什么不能用累积的 $\gcd$ 直接相除？} 一个常见的错误写法是：令 $G_i=\gcd(f,x^{q^i}-x)$，然后认为 $G_i/G_{i-1}$ 是次数恰为 $i$ 的因子。\textbf{这不成立}，因为 $G_i$ 不嵌套。反例（$\mathbb F_3$）：
+
+\[
+f=(x+1)(x^2+1)(x^3-x+1)=x^6+x^5+x^3+1 .
+\]
+
+此时
+
+\[
+G_1=x+1,\qquad G_2=(x+1)(x^2+1)=x^3+x^2+x+1,
+\]
+\[
+G_3=(x+1)(x^3-x+1)=x^4+x^3-x^2+1 .
+\]
+
+$G_2$ 不整除 $G_3$（$G_3$ 含 $x^3-x+1$，$G_2$ 含 $x^2+1$，两者互不相同），所以 $G_3/G_2$ 没有意义。原因：$G_2$ 收集“次数整除 $2$”的因子，$G_3$ 收集“次数整除 $3$”的因子，两个集合互不包含。\textbf{正确做法是每一步先把已找到的因子除掉}（渐进版），使剩余因子的次数都 $\ge i$。
+
+\textbf{例三（$\mathbb F_3$ 上的完整分组）。} 仍取上面的 $f=x^6+x^5+x^3+1$。
+
+\begin{itemize}
+\item $i=1$：$f^\ast=f$，$\deg f^\ast=6\ge2$。$g=\gcd(f,x^3-x)=x+1$。输出 $x+1$；$f^\ast=(x^2+1)(x^3-x+1)$，次数 $5$。
+\item $i=2$：$\deg f^\ast=5\ge4$。$g=\gcd(f^\ast,x^9-x)=x^2+1$。输出 $x^2+1$；$f^\ast=x^3-x+1$，次数 $3$。
+\item $i=3$：$\deg f^\ast=3<6=2i$，退出；输出 $f^\ast=x^3-x+1$，它不可约。
+\end{itemize}
+
+
+最终得到三个因子：$x+1$、$x^2+1$、$x^3-x+1$。
+
+\textbf{例四（$\mathbb F_2$）。} 取 $f=x^3+1=(x+1)(x^2+x+1)$。$i=1$：$g=\gcd(f,x^2-x)=x+1$，输出后 $f^\ast=x^2+x+1$（次数 $2$）；$i=2$ 时 $2\ge4$ 不成立，退出，输出 $x^2+x+1$。其中 $x^2+x+1$ 不可约。
+
+\textbf{计算 $x^{q^i}\bmod f^\ast$。} 直接展开 $x^{q^i}$ 是不可能的（次数指数级）。用快速幂：先在 $\mathbb F_q[x]/(f^\ast)$ 中算 $x^q$，再反复“取 $q$ 次幂”：
+
+\[
+x^{q^i}=\bigl(x^{q^{i-1}}\bigr)^{q}.
+\]
+
+每次取 $q$ 次幂可以做 $O(\log q)$ 次多项式乘法再取模，因此第二步的总代价是 $\deg f$ 的多项式级别。
+
+\subsection{第三步：同次数拆分（Cantor–Zassenhaus）}
+
+
+现在假设 $f$ 无平方因子，而且它的全部不可约因子次数都相同，记这个公共次数为 $d$：
+
+\[
+f=r_1r_2\cdots r_k,\qquad \deg r_1=\cdots=\deg r_k=d .
+\]
+
+\textbf{中国剩余定理拆环。} 不同的不可约多项式两两互素，所以由中国剩余定理（Lec09 第 3 节），
+
+\[
+\mathbb F_q[x]/(f)\ \cong\ \mathbb F_q[x]/(r_1)\times\mathbb F_q[x]/(r_2)\times\cdots\times\mathbb F_q[x]/(r_k).
+\]
+
+每个 $\mathbb F_q[x]/(r_i)$ 都是域；因为 $\deg r_i=d$，它同构于
+
+\[
+\mathbb F_{q^d}.
+\]
+
+于是“在 $\mathbb F_q[x]/(f)$ 里算东西”，等价于“在每个 $\mathbb F_{q^d}$ 里分别算，再拼起来”。
+
+\textbf{关键事实（$q$ 为奇数时）。} 在 $\mathbb F_{q^d}$ 中取非零元 $y$。由 Fermat 小定理的有限域版，
+
+\[
+y^{q^d-1}=1 .
+\]
+
+因为 $q$ 是奇数，$q^d-1$ 是偶数，令 $m=(q^d-1)/2$。则
+
+\[
+\bigl(y^{m}\bigr)^2=y^{q^d-1}=1,
+\]
+
+而在域中 $z^2=1$ 只有 $z=\pm1$，所以
+
+\[
+y^{(q^d-1)/2}=\pm1 .
+\]
+
+更进一步，\textbf{$\mathbb F_{q^d}^\times$ 中恰好一半元素给出 $+1$，一半给出 $-1$}：方程 $z^{(q^d-1)/2}-1=0$ 在 $\mathbb F_{q^d}$ 中至多 $(q^d-1)/2$ 个根，$z^{(q^d-1)/2}+1=0$ 也至多 $(q^d-1)/2$ 个；而 $q^d-1$ 个元素每个都满足其中一个，所以两边各恰好占一半。
+
+\textbf{随机采样与分裂。} 均匀随机取一个多项式 $s\in\mathbb F_q[x]/(f)$（即随机取次数 $<\deg f$ 的系数）。由 CRT，它对应一个随机元组
+
+\[
+s\ \longleftrightarrow\ (s_1,\dots,s_k),\qquad s_i=s\bmod r_i\in\mathbb F_{q^d},
+\]
+
+而且因为 CRT 是同构（两边元素个数相同），均匀随机的 $s$ 对应\textbf{独立均匀}的 $s_i$。
+
+\begin{itemize}
+\item 若某个 $s_i=0$：那么 $r_i\mid s$，直接算 $\gcd(s,f)$ 就可能切出因子（这一步顺手处理）。
+\item 否则每个 $s_i\ne0$，令 $\varepsilon_i=s_i^{(q^d-1)/2}\in\{\pm1\}$。计算
+\end{itemize}
+
+
+\[
+h=s^{(q^d-1)/2}-1\pmod f .
+\]
+
+在分量 $i$ 上，$h\bmod r_i=\varepsilon_i-1$：当 $\varepsilon_i=1$ 时 $r_i\mid h$，当 $\varepsilon_i=-1$ 时 $r_i\nmid h$。因此
+
+\[
+\gcd(h,f)=\prod_{\varepsilon_i=1}r_i ,
+\]
+
+只要 $\varepsilon_i$ 不全相同，这个 $\gcd$ 就是 $f$ 的\textbf{非平凡因子}。
+
+\textbf{成功率。} 需要先处理两个“退化情况”：
+
+\begin{itemize}
+\item 若 $s=0$（所有分量都为 $0$），则 $\gcd(s,f)=f$，得不到信息，重抽即可；这个概率是 $1/q^{\deg f}$，可以忽略。
+\item 若某个 $s_i=0$ 但 $s\ne0$，则 $r_i\mid s$，直接用 $\gcd(s,f)$ 就能切出因子（不必再算 $h$）。
+\end{itemize}
+
+
+排除这些情况后，每个 $\varepsilon_i$ 独立地以 $1/2$ 的概率取 $+1$、以 $1/2$ 的概率取 $-1$。试验失败当且仅当全部 $\varepsilon_i$ 相同，概率为
+
+\[
+\left(\frac12\right)^k+\left(\frac12\right)^k=2^{1-k}\le\frac12\qquad(k\ge2),
+\]
+
+所以一次试验成功（得到非平凡因子）的概率至少 $1/2$。失败只有两种情形：全部 $+1$（此时 $\gcd=f$）或全部 $-1$（此时 $\gcd=1$）。
+
+\textbf{严格合并一步。} 设 $F$ 为失败事件。失败只可能来自两类抽样：$s=0$（此时 $\gcd(s,f)=f$、$h=-1$，什么也得不到），或所有分量都非零且符号全同。因此
+
+\[
+F\subseteq\{\text{所有分量非零且符号全同}\}\cup\{s=0\},
+\]
+
+\[
+P(F)\le\Bigl(1-\frac1{q^d}\Bigr)^k 2^{1-k}+\frac1{q^{kd}} .
+\]
+
+$k\ge2$ 时这个上界严格小于 $1/2$（$k=2$ 时它等于 $1/2-1/q^d+3/(2q^{2d})<1/2$；$k\ge3$ 时更小），故 $P(\text{成功})\ge1/2$。这里把「某个分量为 $0$ 而 $s\ne0$」的情形算作成功（用 $\gcd(s,f)$ 直接拆分）；若完全不处理退化、只算 $\gcd(s^{(q^d-1)/2}-1,f)$，$k=2$ 时的成功率是 $1/2-1/(2q^{2d})$（本讲例子 $40/81$）。
+
+\textbf{算法。}
+
+\begin{itemize}
+\item 若 $\deg f=d$，则 $f$ 不可约，返回。
+\item 随机取 $s$。先算 $g_0=\gcd(s,f)$：若 $1<\deg g_0<\deg f$，说明有某个分量 $s_i=0$，直接拆分 $f=g_0\cdot(f/g_0)$。
+\item 否则计算 $t=s^{(q^d-1)/2}-1\bmod f$，再算 $g=\gcd(t,f)$。
+\item 若 $1<\deg g<\deg f$：递归分解 $g$ 与 $f/g$（两者仍然无平方因子、因子次数都是 $d$）。
+\item 否则重复上一步。
+\end{itemize}
+
+
+期望试验次数是常数（约 $2$ 次）；每次分裂至少把因子个数分开一些，总期望试验次数与 $k$ 同阶。
+
+\textbf{完整手算例子（$\mathbb F_3$）。} 取
+
+\[
+f=(x^2+1)(x^2+x-1)=x^4+x^3+x-1,\qquad q=3,\ d=2,
+\]
+
+于是 $(q^d-1)/2=(9-1)/2=4$。
+
+\textbf{成功的一次：取 $s=x$。} 先算 $x^4\bmod f$：由 $f=0$ 得 $x^4=-x^3-x+1$。所以 $s^4\bmod f=-x^3-x+1$，而
+
+\[
+h=s^4-1\equiv -x^3-x=-(x^3+x)\pmod f .
+\]
+
+于是 $\gcd(f,h)=\gcd(x^4+x^3+x-1,\ x^3+x)$。直接观察：$x^3+x=x(x^2+1)$，而 $x^2+1\mid f$，故
+
+\[
+\gcd(f,h)=x^2+1 .
+\]
+
+一次就拆开：$f=(x^2+1)(x^2+x-1)$。
+
+\textbf{失败的样子。} 取 $s=x+1$：计算得 $s^4\equiv-1\pmod f$，于是 $h\equiv-2\equiv1$（常数），$\gcd=1$，失败。取 $s=x^2$：计算得 $s^4\equiv1\pmod f$，于是 $h\equiv0$，$\gcd=f$，也失败。其余随机选择中，只要两个分量的 $\pm1$ 不同，就能拆开；因此成功率超过 $1/2$。
+
+\textbf{$q$ 为偶数时怎么办？} 若 $q=p^r$ 且 $p=2$，则 $q^d-1$ 是奇数，$(q^d-1)/2$ 不是整数，上面的“正负号拆分”失效。替代做法是用\textbf{迹映射}
+
+\[
+T(y)=y+y^q+y^{q^2}+\cdots+y^{q^{d-1}}\in\mathbb F_q
+\]
+
+把 $\mathbb F_{q^d}^\times$ 按 $T$ 的值分组，再对 $\gcd(T(s)-a,f)$ 做拆分。原理与奇数情形相同（每个分量独立、以一定概率落在不同值上），细节不要求。手写稿注明的“暂且只考虑 odd $q$”正是这个原因。
+
+\subsection{三个算法合起来}
+
+
+\begin{itemize}
+\item \textbf{去平方因子}：解决“重数”问题，输出若干个无平方因子部分；
+\item \textbf{按次数分组}：把次数不同的不可约因子分开，输出按次数分好的乘积（每堆里次数相同）；
+\item \textbf{同次数拆分}：把同次数、互不相同的因子逐个分开，输出单个不可约因子。
+\end{itemize}
+
+
+对每个无平方因子部分依次做后两步；每一步切出的因子再递归调用整条流水线。
+
+\textbf{复杂度结论（不必背具体阶）。} 三个步骤都只用到多项式乘法、快速幂、辗转相除和中国剩余定理，在 $\mathbb F_q[x]$ 中都是多项式时间；这与整数分解“目前没有已知多项式时间算法”形成对比。课堂最后顺带提到量子算法（Shor 算法）能在多项式时间分解整数，但那是另一条线，本课程不展开。
+
+\subsection{本节的勘误与提醒（对应手写稿第 3 页下半页）}
+
+
+\begin{itemize}
+\item \textbf{手写稿第一块（square-free）的例子是 $x^{2p}-x^p+3=(x^2-x+3)^p$。} 注意例子里的“$3$”要在 $\mathbb F_p$ 中理解（$3^p=3$），并且 $p=2$ 时也成立（此时 $-x^p=x^p$，$3\equiv1$）。写 $x^2+x+3$ 还是 $x^2-x+3$ 只差一个符号，在特征 $2$ 下相同；一般 $p$ 下应为 $x^2-x+3$。
+\item \textbf{手写稿第二块（distinct-degree）那两行只是“单步说明”。} $r_1\mid x^{q^{d_1}}-x$、$r_2\nmid x^{q^{d_1}}-x$（其中 $d_1=\deg r_1$）说明不同次数的因子可以用 $\gcd$ 分开；完整算法必须按上文的渐进除法写，不能直接用 $G_i/G_{i-1}$。
+\item \textbf{“some degree” 是“同次数”（equal-degree）的意思}，不是“某个次数”。手写稿标题里的 some degree 即 Cantor–Zassenhaus 这一步。
+\item \textbf{“暂且只考虑 odd $q$”是必要的限制。} $q$ 偶数时 $(q^d-1)/2$ 不是整数，正负号拆分不成立，需要改用迹映射。
+\item \textbf{公式里的 $d$ 是“每个不可约因子的公共次数”，不是 $\deg f$。} 例如 $f$ 是 6 个二次因子之积时，$d=2$，指数用 $(q^2-1)/2$。
+\item \textbf{$\gcd$ 全程在 $\mathbb F_q[x]$ 里做。} 辗转相除不会把系数带到扩域；这也是“用 $x^{q^i}\bmod f^\ast$ 去算 gcd”合法的原因。
+\item \textbf{$f'=0$ 不是“$f$ 没有重根”，恰恰相反：它是 $p$ 次幂，重数全都很高。} 判断重因子要用 $\gcd(f,f')$，不是看 $f'$ 是否为零。
+\item \textbf{平方因子与不可约是两件事。} 去平方因子后的 $f$ 可能仍然可约（如 $x^4+x^3+x-1=(x^2+1)(x^2+x-1)$ 无平方因子但可约）。
+\item 课堂转写里“精确讲，这个地方应该是……”一处老师在纠正口误，指的就是 $f'$ 与 $\gcd$ 的关系；以本节引理为准。
+\end{itemize}
