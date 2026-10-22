@@ -1,0 +1,229 @@
+\section{组合恒等式与求和技巧}
+
+
+上一节给出了二项式系数与二项式定理。这一节把它们变成"可运算的"工具：先证明几条最常用的求和恒等式（曲棍球恒等式、Vandermonde、加权和），再说明"把 $k$ 的多项式拆成二项式系数"这一机械化方法，最后把二项式系数推广到负的 $n$，并用一个例子（$A_m=\sum_k(-1)^k\binom{m-k}{k}$）引出线性递推的特征方程解法。
+
+\textbf{本节用到的记号：} $\binom nk$ 为二项式系数；约定 $\binom nk=0$（$k<0$ 或 $n\ge0$ 且 $k>n$）；$n^{\underline{k}}$ 为下降阶乘；对固定 $j$，$\binom kj$ 视为 $k$ 的函数；$\lambda$ 为递推的特征根。
+
+\subsection{曲棍球恒等式（斜向求和）}
+
+
+\textbf{定理一。} 对 $0\le m\le n$，
+
+\[
+\sum_{k=m}^{n}\binom km=\binom{n+1}{m+1}.
+\]
+
+\textbf{证明（双计数）。} 右边数的是 $[n+1]$ 的 $(m+1)$ 元子集。对每个这样的子集，看它的\textbf{最大元素}：若最大元素为 $k+1$（其中 $k$ 从 $m$ 到 $n$），则其余 $m$ 个元素从 $[k]=\{1,\dots,k\}$ 中选，共 $\binom km$ 种。按最大元素分类求和即得左边。$\square$
+
+这条恒等式在帕斯卡三角上表现为一条斜线的和，因此叫\textbf{曲棍球恒等式}（hockey-stick identity）。特例 $m=1$：$\sum_{k=1}^n k=\binom{n+1}{2}$；$m=2$：$\sum_{k=2}^n\binom k2=\binom{n+1}{3}$。
+
+\textbf{定理二（另一种斜向求和，一般 $r$ 版）。} 对整数 $r\ge0$、$n\ge0$，
+
+\[
+\sum_{k=0}^{n}\binom{r+k}{k}=\binom{r+n+1}{n}.
+\]
+
+\textbf{证明（双计数）。} 右边数 $[r+n+1]$ 的 $n$ 元子集 $S$。因为 $|S|=n<r+n+1$，$S$ 之外必有元素，设 $j$ 是\textbf{最小的不属于 $S$ 的元素}。令 $k=n+1-j$，则 $k$ 取值 $0,1,\dots,n$；此时 $1,2,\dots,j-1=n-k$ 都在 $S$ 中，$j$ 不在 $S$ 中，而 $S$ 还要在 $\{j+1,\dots,r+n+1\}$ 中选剩下的 $k$ 个元素。该集合的大小是
+
+\[
+(r+n+1)-(n-k+1)=r+k,
+\]
+
+所以对应 $\binom{r+k}{k}$ 个 $S$。按 $j$（也就是按 $k$）分类求和即得。取 $r=n$ 即得特例
+
+\[
+\sum_{k=0}^{n}\binom{n+k}{k}=\binom{2n+1}{n}.
+\]
+
+$\square$
+
+\textbf{例。} 取 $r=3,n=3$：左边 $=\binom30+\binom41+\binom52+\binom63=1+4+10+20=35$，右边 $\binom{7}{3}=35$。
+
+\subsection{Vandermonde 恒等式}
+
+
+\textbf{定理三（Vandermonde）。} 对 $r,m,n\ge0$，
+
+\[
+\sum_{k=0}^{n}\binom rk\binom m{n-k}=\binom{r+m}{n}.
+\]
+
+\textbf{证明（双计数）。} 右边数 $r+m$ 个对象中选 $n$ 个。把对象分成两组：$r$ 个与 $m$ 个。设选出的 $n$ 个中恰有 $k$ 个来自第一组，则来自第二组的有 $n-k$ 个；按 $k$ 分类求和即得。$\square$
+
+\textbf{推论（平方和）。} 取 $r=m=n$，并用对称性 $\binom m{n-k}=\binom nk$，得
+
+\[
+\sum_{k=0}^{n}\binom nk^2=\binom{2n}{n}.
+\]
+
+\textbf{例。} $n=3$：$\binom30^2+\binom31^2+\binom32^2+\binom33^2=1+9+9+1=20=\binom63$。
+
+\subsection{加权和：把 $k$ 降成组合数}
+
+
+求 $\sum_k k\binom nk$、$\sum_k k^2\binom nk$ 这类和式，核心是把"$k$ 的幂"改写成"组合数"，再利用下面的双计数恒等式。
+
+\textbf{定理四（核心引理）。} 对 $0\le j\le n$，
+
+\[
+\sum_{k=0}^{n}\binom kj\binom nk=\binom nj 2^{n-j}.
+\]
+
+\textbf{证明（双计数）。} 左边数的是"先选 $k$ 元子集、再从其中选 $j$ 元子集"，等价于"先选 $j$ 元子集，再在剩下的 $n-j$ 个元素中任选若干个"：先选 $\binom nj$ 种，剩下的 $n-j$ 个每个都有选/不选两种，共 $2^{n-j}$ 种。$\square$
+
+\textbf{推论一。} 取 $j=1$：因为 $\binom k1=k$，
+
+\[
+\sum_{k=0}^{n}k\binom nk=\binom n1 2^{n-1}=n\,2^{n-1}.
+\]
+
+\textbf{推论二。} 取 $j=2$，并用 $k^2=k(k-1)+k=2\binom k2+\binom k1$：
+
+\[
+\sum_{k=0}^{n}k^2\binom nk
+=2\sum_k\binom k2\binom nk+\sum_k\binom k1\binom nk
+=2\binom n2 2^{n-2}+n\,2^{n-1}
+=n(n+1)2^{n-2}.
+\]
+
+\textbf{推论三（平方和公式的另一种证法）。} 对普通平方和，取 $\binom nk$ 换成 $1$ 不适用；改用 $k^2=2\binom k2+\binom k1$ 与曲棍球恒等式：
+
+\[
+\sum_{k=0}^{n}k^2=2\binom{n+1}{3}+\binom{n+1}{2}=\frac{n(n+1)(2n+1)}{6}.
+\]
+
+\textbf{机械化方法。} 任何关于 $k$ 的多项式都能唯一写成 $\binom kj$ 的线性组合（等价地，写成下降阶乘之和）；再套定理四即可。例：$k^3=6\binom k3+6\binom k2+\binom k1$，于是
+
+\[
+\sum_k k^3\binom nk=6\binom n3 2^{n-3}+6\binom n2 2^{n-2}+n2^{n-1}.
+\]
+
+这就是课堂上说的"对任何一个多项式，都有一种比较机械化的方式先把它变成若干二项式系数之和"。
+
+\subsection{广义二项式系数：让 $n$ 取负整数}
+
+
+\textbf{定义。} 对任意整数 $n$（包括负数）与 $k\ge0$，定义
+
+\[
+\binom nk=\frac{n(n-1)\cdots(n-k+1)}{k!}=\frac{n^{\underline{k}}}{k!},
+\]
+
+并约定 $k<0$ 时 $\binom nk=0$。当 $n\ge0$、$k>n$ 时，乘积中会出现因子 $0$，所以仍然是 $0$；但 $n<0$ 时不会自动为零。
+
+\textbf{例。} $\binom{-1}{k}=\frac{(-1)(-2)\cdots(-k)}{k!}=(-1)^k$。更一般地，
+
+\[
+\binom{-m}{k}=(-1)^k\binom{m+k-1}{k}\qquad(m\ge1).
+\]
+
+\textbf{为什么有用。} 帕斯卡恒等式与吸收恒等式对任意整数 $n$ 仍然成立：
+
+\[
+\binom nk=\binom{n-1}{k}+\binom{n-1}{k-1},\qquad k\binom nk=n\binom{n-1}{k-1}.
+\]
+
+于是很多"对正整数 $n$ 证明的组合恒等式"可以自然地延拓到负数；反过来，对负数 $n$ 的恒等式常能化成对正整数的新恒等式。它与形式幂级数
+
+\[
+(1+x)^{-m}=\sum_{k\ge0}\binom{-m}{k}x^k=\sum_{k\ge0}(-1)^k\binom{m+k-1}{k}x^k
+\]
+
+配合，是生成函数与线性递推的标准工具（本课程下一章生成函数会系统使用）。
+
+\subsection{例子：$A_m=\sum_k(-1)^k\binom{m-k}{k}$ 与线性递推}
+
+
+\textbf{定义。} 令
+
+\[
+A_m=\sum_{k=0}^{\lfloor m/2\rfloor}(-1)^k\binom{m-k}{k}\qquad(m\ge0).
+\]
+
+这里上标 $m-k$ 始终非负，所以 $\binom{m-k}{k}$ 就是第 1 节的普通二项式系数，与第 2.4 小节"$n$ 取负整数"的推广无关。（等价写法是 $\sum_{k\ge0}$ 并规定 $k>m-k$ 时该项为 $0$。）
+
+\textbf{递推。} 由帕斯卡恒等式
+
+\[
+\binom{m-k}{k}=\binom{m-1-k}{k}+\binom{m-1-k}{k-1},
+\]
+
+代入并对 $k$ 求和：
+
+\[
+A_m=\sum_{k\ge0}(-1)^k\binom{m-1-k}{k}+\sum_{k\ge0}(-1)^k\binom{m-1-k}{k-1}
+=A_{m-1}-A_{m-2},
+\]
+
+第二个等号中令 $j=k-1$ 并用 $(-1)^{j+1}=-(-1)^j$。这里出现的 $\binom{m-1-k}{k}$ 等仍按第 1 节的\textbf{普通约定}理解（$k$ 超过上标时为 $0$），不套用第 2.4 小节负 $n$ 的定义；递推从 $m\ge2$ 起使用。初值：$A_0=\binom00=1$，$A_1=\binom10-\binom01=1$。于是
+
+\[
+A_0,A_1,A_2,A_3,A_4,A_5,A_6,\dots=1,1,0,-1,-1,0,1,\dots
+\]
+
+\textbf{解递推（特征方程法）。} 对二阶线性递推
+
+\[
+a_m=\alpha a_{m-1}+\beta a_{m-2},
+\]
+
+设 $a_m=\lambda^m$ 代入得
+
+\[
+\lambda^2=\alpha\lambda+\beta .
+\]
+
+\begin{itemize}
+\item 若有两个相异根 $\lambda_1\neq\lambda_2$，则通解为 $a_m=C_1\lambda_1^m+C_2\lambda_2^m$；
+\item 若有重根 $\lambda$，则通解为 $a_m=(C_1+C_2m)\lambda^m$。
+\end{itemize}
+
+
+常数 $C_1,C_2$ 由初值确定。（验证：两种形式代入递推都成立；两个参数恰好匹配两个初值。）
+
+对 $A_m$：方程 $\lambda^2=\lambda-1$，即 $\lambda^2-\lambda+1=0$，两根为 $\lambda=e^{\pm i\pi/3}$（六次本原单位根）。因此
+
+\[
+A_m=C\,e^{im\pi/3}+\overline{C}\,e^{-im\pi/3}.
+\]
+
+由 $A_0=1$、$A_1=1$ 解得 $C=\frac12-\frac{i}{2\sqrt3}$，即
+
+\[
+A_m=\cos\frac{m\pi}{3}+\frac1{\sqrt3}\sin\frac{m\pi}{3}
+=\frac{2}{\sqrt3}\sin\frac{(m+1)\pi}{3}.
+\]
+
+特别地 $A_m$ 以 $6$ 为周期。
+
+\textbf{这个例子的意义。} 它说明"带 $(-1)^k$ 的组合和"可以化成线性递推，从而用特征方程求出闭式——这是组合恒等式与递推方法之间的桥梁。
+
+\subsection{本节的勘误与提醒}
+
+
+\begin{itemize}
+\item \textbf{手写稿底部的 $A_m$ 与 $A_n$ 是两种不同的和，不要读混。} 手写稿（高倍放大可辨）写的是
+\end{itemize}
+
+
+\[
+  \begin{aligned}
+  A_m&=\sum_{k\ge0}\binom{k}{m}2^{-k}
+  =\sum_k\binom{k-1}{m}2^{-k}+\sum_k\binom{k-1}{m-1}2^{-k}\\
+  &=\sum_k\binom{k}{m}2^{-k-1}+\sum_k\binom{k}{m-1}2^{-k-1}
+  =\frac12A_m+\frac12A_{m-1}.
+  \end{aligned}
+\]
+
+  下标是 $m$、上标是 $k$。这个推导是\textbf{正确}的：由 $\sum_{k\ge m}\binom{k}{m}x^k=\frac{x^m}{(1-x)^{m+1}}$ 取 $x=1/2$ 得 $A_m=2$，所以 $A_m=\frac12A_m+\frac12A_{m-1}$ 与 $A_m=A_{m-1}$ 都成立（两边都等于 $2$）。它是"换指标 $+$ 折半"技巧的演示，不是错误。
+
+  但注意另一种容易混淆的和：若定义 $A_n=\sum_{k=0}^{n}\binom{n}{k}2^{-k}$（\textbf{上标是 $n$、下标是 $k$}，与上面的 $A_m$ 不同），则由二项式定理 $A_n=(3/2)^n$，正确的递推是 $A_n=A_{n-1}+\frac12A_{n-1}=\frac32A_{n-1}$；此时末行 $\frac12A_n+\frac12A_{n-1}$ 不成立（反例 $n=2$：左边 $9/4$，右边 $15/8$）。做题时先看清二项式系数是"上标变化"还是"下标变化"。
+\begin{itemize}
+\item \textbf{手写稿 $\sum_k k^2$ 一行的小笔误。} 该行把 $2\binom{n+1}{3}$ 写成了 $2\binom{k+1}{3}$，上标应为 $n+1$；最终结果 $\frac{n(n+1)(2n+1)}6$ 正确。
+\item \textbf{曲棍球恒等式的方向。} 是 $\sum_{k=m}^n\binom km=\binom{n+1}{m+1}$，不是 $\binom{n+1}{m}$；注意"上限 $+1$、$m$ 也 $+1$"。
+\item \textbf{定理四要求 $j\le n$。} 当 $j>n$ 时两边都是 $0$（按约定），公式仍成立；但若把 $\binom kj$ 换成别的函数，机械化方法不一定成立。
+\item \textbf{特征方程法只适用于常系数线性递推。} 系数随 $n$ 变化时（如 $a_n=na_{n-1}$）不能用 $\lambda^n$ 试解，那要靠生成函数或其它方法。
+\item \textbf{重根时通解是 $(C_1+C_2m)\lambda^m$，不是 $C\lambda^m$。} 课堂转写中"$A_n=n\lambda^n$"的说法是重根情形的简化形式，需补上另一项。
+\item 转写里"广义二项式系数 $\binom{-1}{k}$"一段识别得很乱；以本节定义与 $\binom{-1}{k}=(-1)^k$ 为准。
+\end{itemize}

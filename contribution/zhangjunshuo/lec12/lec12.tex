@@ -1,0 +1,50 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 12}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{组合计数}\author{zhangjunshuo}\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 22 日的两段课堂转写、三页手写原稿和课程教材整理。手写稿与转写都是部分覆盖：手写稿以清单、公式与推导为主（含格路/括号推导、广义二项式系数、线性递推特征方程、三角剖分与容斥的指示函数证明），转写补充口述解释、具体计数例子与部分细节；整理版按"取并集"处理，两边冲突或疑似笔误处给出勘误。
+
+本讲主线：基本计数原理 $\to$ 二项式系数与组合恒等式 $\to$ 卡特兰数 $\to$ 球与桶 $\to$ 容斥原理与抽屉原理（Erdős--Szekeres 定理）。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义，不依赖读者记得前面讲次的写法。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-basic-counting-binomial}
+\input{sections/02-identities-and-sums}
+\input{sections/03-catalan-numbers}
+\input{sections/04-balls-and-bins}
+\input{sections/05-inclusion-exclusion-pigeonhole}
+
+\section*{一页式总览}
+\begin{itemize}
+\item 加法原理：不交并的大小相加；乘法原理：$|A\times B|=|A||B|$，分步独立相乘。
+\item $P(n,k)=n^{\underline{k}}=\frac{n!}{(n-k)!}$（单射计数）；$\binom nk=\frac{n^{\underline{k}}}{k!}$（子集计数）；$\binom{n}{k_1,\dots,k_t}=\frac{n!}{k_1!\cdots k_t!}$（有序分组）。
+\item 基本恒等式：$\binom nk=\binom n{n-k}$；$\binom nk=\binom{n-1}{k-1}+\binom{n-1}k$；$k\binom nk=n\binom{n-1}{k-1}$；$\binom nm\binom mk=\binom nk\binom{n-k}{m-k}$。
+\item 二项式定理：$(x+y)^n=\sum_k\binom nk x^ky^{n-k}$；$\sum_k\binom nk=2^n$；$\sum_k(-1)^k\binom nk=0$；多项式定理：$(x_1+\cdots+x_t)^n=\sum_{k_1+\cdots+k_t=n}\binom{n}{k_1,\dots,k_t}x_1^{k_1}\cdots x_t^{k_t}$。
+\item 曲棍球：$\sum_{k=m}^n\binom km=\binom{n+1}{m+1}$；一般斜向求和 $\sum_{k=0}^n\binom{r+k}{k}=\binom{r+n+1}{n}$（$r=n$ 时为 $\binom{2n+1}{n}$）；Vandermonde：$\sum_k\binom rk\binom m{n-k}=\binom{r+m}{n}$，特例 $\sum_k\binom nk^2=\binom{2n}{n}$。
+\item 加权和：$\sum_k\binom kj\binom nk=\binom nj2^{n-j}$，于是 $\sum_k k\binom nk=n2^{n-1}$、$\sum_k k^2\binom nk=n(n+1)2^{n-2}$；任何 $k$ 的多项式都可化成 $\binom kj$ 的线性组合再求和。
+\item 广义二项式系数：$\binom nk=\frac{n^{\underline k}}{k!}$（$n$ 可为负整数），$\binom{-1}{k}=(-1)^k$，$\binom{-m}{k}=(-1)^k\binom{m+k-1}{k}$；帕斯卡与吸收恒等式仍成立。\item 注意两种容易混淆的求和：$A_m=\sum_{k\ge0}\binom{k}{m}2^{-k}\equiv2$（手写稿底部），而 $A_n=\sum_{k=0}^n\binom{n}{k}2^{-k}=(3/2)^n$；两者递推不同。
+\item $A_m=\sum_k(-1)^k\binom{m-k}{k}$ 满足 $A_m=A_{m-1}-A_{m-2}$，$A_0=A_1=1$，周期为 $6$（$1,1,0,-1,-1,0,\dots$）；二阶线性递推用特征方程 $\lambda^2=\alpha\lambda+\beta$ 求通解（相异根 $\lambda_1^n,\lambda_2^n$；重根 $(C_1+C_2m)\lambda^m$）。
+\item 卡特兰数：$C_n=\frac1{n+1}\binom{2n}{n}$，递推 $C_n=\sum_{k=0}^{n-1}C_kC_{n-1-k}$；计数 $n$ 对括号、Dyck 格路、$(n+2)$ 边形三角剖分、$n+1$ 个符号的加括号方式。
+\item 球与桶：$m^n$（可区分球/桶、允许空）；$\sum_i(-1)^i\binom mi(m-i)^n$（可区分球/桶、非空=满射）；$\binom{n-1}{m-1}$（相同球、非空）；$\binom{n+m-1}{m-1}$（相同球、允许空）。
+\item 容斥：$|\bigcup_iA_i|=\sum_{\varnothing\ne S\subseteq[n]}(-1)^{|S|+1}|\bigcap_{i\in S}A_i|$；满射数 $=\sum_i(-1)^i\binom mi(m-i)^n$；错排 $D_n=n!\sum_{k=0}^n(-1)^k/k!$。
+\item 抽屉原理：$kn+1$ 个对象放入 $n$ 个盒子 $\Rightarrow$ 某盒 $\ge k+1$ 个；Erdős--Szekeres：$rs+1$ 个两两不同的数必有长 $r+1$ 上升子列或长 $s+1$ 下降子列。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》§11.1（基本计数模型）、§11.2（组合恒等式）、§11.3（容斥原理）、§11.4（抽屉原理与 Erdős--Szekeres）。§13（生成函数）属于后续内容。
+\item \textbf{[讲义]} 课程讲义 \texttt{25-26-lecture\_notes.pdf} 第九章：§9.1 基本计数原理、§9.2 组合数性质、§9.3 二项式定理的例子、§9.4 卡特兰数、§9.5 Balls \& Bins、§9.6 多项式推广、§9.7 容斥原理、§9.8 鸽笼原理；§9.9 生成函数为下一讲内容。
+\item 原始材料：\texttt{DiscreteCourse2026/课堂手记和录音转写/Lec12/}（两段转写与三页手写原稿）。
+\end{itemize}
+\end{document}
