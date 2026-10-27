@@ -102,7 +102,7 @@ $$
 \operatorname{char}(F)=\min\{n\ge1:\underbrace{1+\cdots+1}_{n}=0\},
 $$
 
-若不存在这样的 $n$ 则规定为 $0$。因为域是整环，**特征不是 $0$ 就一定是素数**（[Lec 09 §4](../lec09/sections/04-units-fractions-characteristic.md)）。
+若不存在这样的 $n$ 则规定为 $0$。因为域是整环，**特征不是 $0$ 就一定是素数**（见 Lec 09 §4）。
 
 考察所有"若干个 $1$ 相加或相减"得到的元素，它们构成 $F$ 的一个子环：特征为 $p$ 时这个子环同构于 $\mathbb Z/p\mathbb Z=\mathbb F_p$；特征为 $0$ 时同构于 $\mathbb Z$。当 $F$ 是域时，特征 $0$ 的情形还可以再取分式域，于是 $F$ 含有一个同构于 $\mathbb Q$ 的子域（因为 $\mathbb Z$ 的分式域是 $\mathbb Q$）。总结：
 
