@@ -17,10 +17,11 @@
 | Lec 10 | 唯一分解整环、主理想整环与欧几里得整环 | [lec10.md](lec10/lec10.md) | [lec10.tex](lec10/lec10.tex) | [lec10.pdf](lec10/lec10.pdf) |
 | Lec 11 | 分裂域、有限域与有限域上的多项式因式分解 | [lec11.md](lec11/lec11.md) | [lec11.tex](lec11/lec11.tex) | [lec11.pdf](lec11/lec11.pdf) |
 | Lec 12 | 组合计数：基本计数、组合恒等式、卡特兰数、球与桶、容斥与抽屉原理 | [lec12.md](lec12/lec12.md) | [lec12.tex](lec12/lec12.tex) | [lec12.pdf](lec12/lec12.pdf) |
+| Lec 13 | 生成函数：OGF/EGF、Catalan、3×n 覆盖、幂和与 Bernoulli 数（附 OGF vs EGF 讲解稿） | [lec13.md](lec13/lec13.md) | [lec13.tex](lec13/lec13.tex) | [lec13.pdf](lec13/lec13.pdf) |
 
 ## 目录约定
 
-- `lec01-02/`、`lec03/`、`lec04/`、`lec05/`、`lec06/`、`lec07/`、`lec08/`、`lec09/`、`lec10/`、`lec11/`、`lec12/` 分别对应课程讲次；Lec 01 与 Lec 02 因材料来源合并整理。
+- `lec01-02/`、`lec03/`、`lec04/`、`lec05/`、`lec06/`、`lec07/`、`lec08/`、`lec09/`、`lec10/`、`lec11/`、`lec12/`、`lec13/` 分别对应课程讲次；Lec 01 与 Lec 02 因材料来源合并整理。
 - Lec 06 统一收录 Oct 9 的群与正规子群、Oct 14 的群同态与同构定理；手写页首标为“Lec05”，但其内容是群论，现有 Lec 05 保留为数论。
 - Lec 11 的手写稿页首写的是日期“10.20”而非“Lec11”；按讲次顺序归档为 Lec 11。
 - 每个讲次目录的 `README.md` 提供章节说明和本目录内的编译提示。

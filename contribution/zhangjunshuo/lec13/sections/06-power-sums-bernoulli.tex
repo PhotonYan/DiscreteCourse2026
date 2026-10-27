@@ -1,0 +1,131 @@
+\section{幂和与 Bernoulli 数：用 EGF 把求和变成乘法}
+
+
+这一节是 EGF 的一个漂亮应用：求
+
+\[
+S_m(n)=1^m+2^m+\cdots+n^m
+\]
+
+的\textbf{关于 $n$ 的公式}（$m$ 固定）。直接对每个 $m$ 硬算很麻烦；若把 $S_m(n)$ 看成"以 $m$ 为下标"的数列，它的\textbf{指数生成函数}恰好可以写成两个已知函数的乘积，乘积一展开，公式就出来了。
+
+\textbf{本节用到的记号：} $S_m(n)=\sum_{k=1}^{n}k^m$；$B_j$ 为 Bernoulli 数（本讲采用 $B_1=+\frac12$ 的约定，记作 $B_j^+$，见下）；$[x^n]$ 为系数提取；$\binom nk$ 为二项式系数。
+
+\subsection{关键恒等式：幂和的 EGF}
+
+
+对固定的 $n$，考虑以 $m$ 为下标的数列 $\{S_m(n)\}_{m\ge0}$。它的指数生成函数是
+
+\[
+\sum_{m\ge0}S_m(n)\frac{x^m}{m!}
+=\sum_{m\ge0}\left(\sum_{k=1}^{n}k^m\right)\frac{x^m}{m!}
+=\sum_{k=1}^{n}\sum_{m\ge0}\frac{(kx)^m}{m!}
+=\sum_{k=1}^{n}e^{kx}.
+\]
+
+（第一步交换求和顺序；第二步用 $e^{kx}=\sum_m (kx)^m/m!$。）右边是等比级数：
+
+\[
+\sum_{k=1}^{n}e^{kx}=e^x\frac{e^{nx}-1}{e^x-1}
+=\left(\frac{xe^x}{e^x-1}\right)\cdot\left(\frac{e^{nx}-1}{x}\right).
+\]
+
+这两个因子分别有干净的展开：
+
+\[
+\frac{xe^x}{e^x-1}=\sum_{j\ge0}B_j^+\frac{x^j}{j!},
+\qquad
+\frac{e^{nx}-1}{x}=\sum_{i\ge0}\frac{n^{i+1}x^i}{(i+1)!}.
+\]
+
+第一个定义的就是 \textbf{Bernoulli 数}（采用"加号约定"，见下）；第二个只是把 $e^{nx}-1$ 的展开除以 $x$。于是\textbf{幂和的 EGF 是两个已知级数的乘积}，这就是它好算的原因。
+
+\subsection{Bernoulli 数的定义与计算}
+
+
+\textbf{定义（加号约定）.} 定义 $B_j^+$ 为
+
+\[
+\frac{xe^x}{e^x-1}=\sum_{j\ge0}B_j^+\frac{x^j}{j!}.
+\]
+
+前几个值：
+
+\[
+B_0^+=1,\quad B_1^+=\frac12,\quad B_2^+=\frac16,\quad B_3^+=0,\quad B_4^+=-\frac1{30},\quad B_5^+=0,\quad B_6^+=\frac1{42}.
+\]
+
+（有的书用 $\dfrac{x}{e^x-1}=\sum B_j\frac{x^j}{j!}$，此时 $B_1=-\frac12$，其余 $B_j$ 与 $B_j^+$ 在 $j\ne1$ 时相同。两种约定只差 $B_1$ 的符号，公式里要配套使用。）
+
+\textbf{递推.} 由
+
+\[
+\frac{xe^x}{e^x-1}\cdot\frac{e^x-1}{x}=e^x
+\]
+
+两边展开、比较 $x^m/m!$ 的系数，可得
+
+\[
+\sum_{j=0}^{m}\binom{m+1}{j}B_j^+=m+1\qquad(m\ge0).
+\]
+
+前三项验证：$m=0$：$B_0^+=1$；$m=1$：$B_0^++2B_1^+=2$，即 $B_1^+=\frac12$；$m=2$：$B_0^++3B_1^++3B_2^+=3$，即 $B_2^+=\frac16$。这个递推可以依次算出所有 $B_j^+$，且奇数下标 $j\ge3$ 的 Bernoulli 数为 $0$。
+
+\subsection{幂和公式}
+
+
+把上面的乘积按 $x^m/m!$ 取系数。设 $j+i=m$，则
+
+\[
+S_m(n)=\sum_{j=0}^{m}\frac{m!}{j!\,(i+1)!}B_j^+\,n^{i+1}
+=\frac{1}{m+1}\sum_{j=0}^{m}\binom{m+1}{j}B_j^+\,n^{m+1-j}.
+\]
+
+\textbf{这就是 Bernoulli 幂和公式。}
+
+\textbf{验证几个低次情形.}
+
+\begin{itemize}
+\item $m=0$：$S_0(n)=\dfrac{1}{1}\dbinom10B_0^+n=n$（共 $n$ 项，每项 $1$）。
+\item $m=1$：$S_1(n)=\dfrac12\left(B_0^+n^2+2B_1^+n\right)=\dfrac{n^2+n}{2}=\dfrac{n(n+1)}2$。
+\item $m=2$：$S_2(n)=\dfrac13\left(B_0^+n^3+3B_1^+n^2+3B_2^+n\right)=\dfrac13\left(n^3+\dfrac32n^2+\dfrac12n\right)=\dfrac{n(n+1)(2n+1)}6$。
+\item $m=3$：$S_3(n)=\dfrac14\left(n^4+2n^3+n^2\right)=\left(\dfrac{n(n+1)}2\right)^2$。
+\item $m=4$：$S_4(n)=\dfrac15\left(n^5+\dfrac52n^4+\dfrac53n^3-\dfrac16n\right)=\dfrac{n(n+1)(2n+1)(3n^2+3n-1)}{30}$。
+\end{itemize}
+
+
+这些都与常用的求和公式一致。
+
+\subsection{为什么这比"背公式"省事}
+
+
+对每个固定的 $m$，$S_m(n)$ 是关于 $n$ 的 $m+1$ 次多项式，且常数项为 $0$（因为 $S_m(0)=0$）。若用待定系数法，每个 $m$ 都要解一个 $m+2$ 元线性方程组；而用上面的公式，\textbf{只需要一套 Bernoulli 数 $B_0^+,B_1^+,\dots$}，代入即可。$m$ 增大时，Bernoulli 数可以递推得到，计算量是"一次算好、反复使用"。
+
+课堂手写稿里把这写成
+
+\[
+S_m(n)=m!\sum_{j=0}^{m}\frac{B_j^+\,n^{m+1-j}}{j!\,(m+1-j)!},
+\]
+
+它与上面的公式只差把 $\frac{1}{m+1}\binom{m+1}{j}$ 拆成 $\frac{m!}{j!(m+1-j)!}$，是同一个式子。
+
+\subsection{与 EGF 主题的联系}
+
+
+这个例子把 EGF 的两个特点都用上了：
+
+1. \textbf{EGF 的乘法是二项卷积}：两个级数相乘后，$x^m/m!$ 的系数自动带出 $\binom{m+?}{?}$ 的组合系数，正好对应公式里的二项式系数；
+2. \textbf{指数函数的 Taylor 展开}把"离散求和 $\sum_{k=1}^n$"变成了"等比级数"，从而可以写成乘积。
+
+如果一开始把 $S_m(n)$ 看成普通数列（以 $n$ 或 $m$ 为下标）用 OGF 处理，就很难得到这样干净的乘积结构；这正是 EGF 适合"带组合系数/带标号"问题的体现。
+
+\subsection{本节的提醒}
+
+
+\begin{itemize}
+\item \textbf{Bernoulli 约定要统一。} 用 $B_1^+=\frac12$ 时公式里全是加号；若用 $B_1=-\frac12$，公式中 $j=1$ 的项要变号。不要两套约定混用。
+\item \textbf{$S_m(n)$ 是 $n$ 的多项式，不是 $m$ 的多项式。} 公式对固定 $m$、任意 $n$ 成立；对调 $m,n$ 不成立。
+\item \textbf{常数项为 $0$。} 因为 $n=0$ 时和为 $0$；用公式算出的多项式应满足这一点，可作为检查。
+\item \textbf{$m=0$ 的约定。} 按 $0^0=1$（组合上通常约定）或直接数项数，$S_0(n)=n$；公式给出 $n$，一致。
+\item \textbf{手写稿的端点有 off-by-one。} 手写稿把 $\sum_{k=1}^ne^{kx}$ 写成 $\dfrac{e^{nx}-1}{e^x-1}$ 一类的形式，漏掉了 $k=1$ 那项的 $e^x$ 因子；正确是 $\dfrac{e^{(n+1)x}-e^x}{e^x-1}=e^x\dfrac{e^{nx}-1}{e^x-1}$。整理版以本节的式子为准。
+\end{itemize}

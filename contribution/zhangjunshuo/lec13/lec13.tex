@@ -1,0 +1,52 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 13}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{生成函数}\author{zhangjunshuo}\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 27 日的两段课堂转写、两页手写原稿和课程教材整理。手写稿是公式清单（基本生成函数表、运算、找零、Catalan、$3\times n$ 覆盖的辅助状态、指数生成函数、Bernoulli 数），转写补充口述解释、图形分解与幂和推导；整理版按"取并集"处理，两边冲突或疑似笔误处给出勘误。
+
+本讲主线：普通生成函数（定义/运算/多米诺/找零/部分分式）$\to$ 组合方程（Catalan、$3\times n$ 覆盖）$\to$ 指数生成函数（二项卷积、$\exp$/集合、教室与标号树）$\to$ 幂和与 Bernoulli 数。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-ogf-basics}
+\input{sections/02-rational-partial-fractions}
+\input{sections/03-catalan-generating-function}
+\input{sections/04-3xn-domino-states}
+\input{sections/05-exponential-generating-functions}
+\input{sections/06-power-sums-bernoulli}
+
+\section*{一页式总览}
+\begin{itemize}
+\item 普通生成函数：$A(x)=\sum_{n\ge0}a_nx^n$，$a_n=[x^n]A$；形式幂级数，不必考虑收敛。
+\item OGF 基本表：$1/(1-x)$、$1/(1-\alpha x)$、$1/(1-x^p)$、$x^p/(1-x)^{p+1}\leftrightarrow\binom np$、$1/(1-x)^k\leftrightarrow\binom{n+k-1}{k-1}$。
+\item OGF 运算：右移 $xA$、左移 $(A-A(0))/x$、$\alpha^na_n\leftrightarrow A(\alpha x)$、偶/奇子列 $(A(x)\pm A(-x))/2$、乘积 $=$ 卷积、$A'(x)=\sum(n+1)a_{n+1}x^n$、$xA'(x)=\sum na_nx^n$、部分和 $A/(1-x)$。
+\item 多米诺/斐波那契：$F=1+xF+x^2F=\dfrac1{1-x-x^2}$；两种骨牌 $\dfrac1{1-x-y}=\sum\binom{m+n}{m}x^my^n$。
+\item 找零：$\prod_i 1/(1-x^{w_i})$；4 张 1 元 + 无限 5 元 $\Rightarrow (1-x^5)/(1-x)\cdot 1/(1-x^5)=1/(1-x)$。
+\item 部分分式：有理函数拆成 $\sum c_{ij}/(1-\alpha_ix)^j$，用 $1/(1-\alpha x)^j=\sum_n\binom{n+j-1}{j-1}\alpha^nx^n$ 取系数；斐波那契 $f_n=(\varphi^{n+1}-\psi^{n+1})/\sqrt5$。
+\item Catalan：$C=1+xC^2\Rightarrow C=(1-\sqrt{1-4x})/(2x)$；广义二项式展开得 $C_n=\frac1{n+1}\binom{2n}{n}$。
+\item $3\times n$ 覆盖：轮廓状态 C/V/W/Z，$C=1+2xV+xZ$、$V=x(C+W)$、$W=xV$、$Z=xC$；解得 $C(x)=\dfrac{1-x^2}{1-4x^2+x^4}$，$a_n=4a_{n-2}-a_{n-4}$（$n$ 为偶数）。
+\item 指数生成函数：$\hat A(x)=\sum a_nx^n/n!$；乘法 $n![x^n]\hat A\hat B=\sum_i\binom ni a_ib_{n-i}$；求导=左移；$\exp(\hat G)$ 数"无序集合"，$1/(1-\hat G)$ 数"有序序列"。
+\item EGF 例：$1\leftrightarrow e^x$、$n!\leftrightarrow 1/(1-x)$、错排 $\leftrightarrow e^{-x}/(1-x)$、Bell $\leftrightarrow e^{e^x-1}$、满射 $\leftrightarrow (e^x-1)^m$；$\le3$ 个无序孩子的有根树 $\hat T=x(1+\hat T+\hat T^2/2!+\hat T^3/3!)$。
+\item 幂和：$\sum_{m\ge0}S_m(n)\frac{x^m}{m!}=e^x\dfrac{e^{nx}-1}{e^x-1}$。
+\item Bernoulli：$B_j^+$ 由 $\dfrac{xe^x}{e^x-1}=\sum_jB_j^+x^j/j!$ 定义；$S_m(n)=\dfrac1{m+1}\sum_{j=0}^m\binom{m+1}{j}B_j^+n^{m+1-j}$。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》第 13 章：§13.1 用生成函数求解递归式、§13.2 一般生成函数、§13.3 指数生成函数。
+\item \textbf{[讲义]} 课程讲义 \texttt{25-26-lecture\_notes.pdf} §9.9 生成函数（定义、基本表、运算、找零、部分分式、Fibonacci、Catalan）。
+\item 原始材料：本地归档（手写原稿与录音转写），不纳入课程仓库。
+\item 附加讲解稿：本目录 \texttt{explainer-ogf-vs-egf.pdf}。
+\end{itemize}
+\end{document}

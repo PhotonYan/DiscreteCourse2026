@@ -1,0 +1,210 @@
+\section{指数生成函数与带标号结构}
+
+
+前几节的生成函数都是 $A(x)=\sum a_nx^n$，乘法对应普通卷积。这一节引入\textbf{指数生成函数}（exponential generating function，EGF）
+
+\[
+\hat A(x)=\sum_{n\ge0}a_n\frac{x^n}{n!}.
+\]
+
+多除一个 $n!$，换来的是：\textbf{乘法对应"二项卷积"}，而二项卷积正好描述"把 $n$ 个带标签的对象分成两部分"。因此 EGF 是数\textbf{带标号结构}（排列、映射、集合划分、标号树等）的专用工具。
+
+\textbf{本节用到的记号：} $a_n$ 为某个组合对象在 $n$ 元集合上的个数；$\hat A(x)=\sum a_nx^n/n!$；$[x^n]$ 为系数提取；$\binom ni$ 为二项式系数；$S(n,k)$ 为第二类 Stirling 数；$D_n$ 为错排数。
+
+\subsection{定义与第一个例子}
+
+
+\textbf{定义.} 数列 $\{a_n\}$ 的\textbf{指数生成函数}是
+
+\[
+\hat A(x)=\sum_{n\ge0}a_n\frac{x^n}{n!}.
+\]
+
+注意 $a_n=n![x^n]\hat A(x)$。例如：
+
+\begin{itemize}
+\item $a_n=1$（所有 $n$ 只有一种结构）：$\hat A(x)=\sum x^n/n!=e^x$；
+\item $a_n=n!$（$n$ 元排列）：$\hat A(x)=\sum n!\,x^n/n!=\sum x^n=\dfrac{1}{1-x}$；
+\item $a_n=\binom nk$：$\hat A(x)=\sum\binom nk\frac{x^n}{n!}=e^x\dfrac{x^k}{k!}$（因为 $\binom nk/n!=1/(k!(n-k)!)$）。
+\end{itemize}
+
+
+对比：同样一个数列，用 OGF 和 EGF 得到的闭式往往完全不同。例如 $a_n=n!$ 的 OGF 是 $\sum n!x^n$（没有简单的初等闭式），但 EGF 是 $\frac{1}{1-x}$，非常好用。这说明\textbf{选对生成函数类型}很重要。
+
+\subsection{乘法：二项卷积}
+
+
+\textbf{定理（EGF 乘法）.} 设 $\hat A(x)=\sum a_nx^n/n!$、$\hat B(x)=\sum b_nx^n/n!$，则
+
+\[
+n!\,[x^n]\hat A(x)\hat B(x)=\sum_{i=0}^{n}\binom ni a_i b_{n-i}.
+\]
+
+\textbf{证明.} 直接算：
+
+\[
+\hat A\hat B
+=\sum_{i,j\ge0}\frac{a_i}{i!}\frac{b_j}{j!}x^{i+j}
+=\sum_{n\ge0}\left(\sum_{i=0}^{n}\frac{a_ib_{n-i}}{i!(n-i)!}\right)x^n.
+\]
+
+乘以 $n!$ 并把 $n!/(i!(n-i)!)$ 写成 $\binom ni$，即得。$\square$
+
+\textbf{组合意义（关键）.} 若 $a_i$ 是"在 $i$ 个带标签的元素上造一个 $\mathcal A$ 结构"的个数，$b_j$ 同理，那么
+
+\[
+\binom ni a_ib_{n-i}
+\]
+
+数的是：\textbf{从 $n$ 个标签中选出 $i$ 个分给 $\mathcal A$ 结构，剩下 $n-i$ 个分给 $\mathcal B$ 结构，再分别在各自标签集上造结构}。对所有 $i$ 求和，就是"把 $n$ 个标签分成两部分、分别造 $\mathcal A$ 与 $\mathcal B$ 结构"的总数。因此
+
+\[
+\hat A\hat B \ \text{的系数}\times n! \ =\ \text{把标签分成两部分分别造结构的方案数}.
+\]
+
+这就是 EGF 乘法的含义：\textbf{先分标签，再做结构}。OGF 的普通卷积不区分标签，因此不能用来数带标号对象。
+
+\subsection{平移、求导与 $\exp$}
+
+
+\textbf{求导（平移）.} 若 $\hat A(x)=\sum a_nx^n/n!$，则
+
+\[
+\hat A'(x)=\sum_{n\ge1}a_n\frac{x^{n-1}}{(n-1)!}=\sum_{m\ge0}a_{m+1}\frac{x^m}{m!},
+\]
+
+即\textbf{求导等于数列左移一格}。这是 EGF 比 OGF 方便的地方之一：OGF 求导会带出因子 $n$，而 EGF 求导是干净的平移。
+
+\textbf{多项式的算子写法.} 若 $P$ 是多项式，则 $\{P(n)a_n\}$ 的 EGF 是 $P\!\left(x\dfrac{d}{dx}\right)\hat A(x)$，因为 $x\frac{d}{dx}$ 把 $a_n$ 变成 $n a_n$。
+
+\textbf{指数公式（集合构造）.} 设 $\hat G(x)$ 是"连通/不可分结构"的 EGF。把若干个这样的结构\textbf{无序地}拼成一个整体（称为集合构造，SET），其 EGF 为
+
+\[
+e^{\hat G(x)}=1+\hat G+\frac{\hat G^2}{2!}+\frac{\hat G^3}{3!}+\cdots
+\]
+
+\textbf{解释.} $\hat G^k$ 数的是"把标签分成 $k$ 个有序部分、每部分造一个 $\mathcal G$ 结构"（因为每次乘法都先分标签）；但集合里的 $k$ 个部分\textbf{没有顺序}，所以要除以 $k!$。对 $k$ 求和即得 $e^{\hat G}$。类似地，\textbf{有序序列}（SEQ）的 EGF 是
+
+\[
+\frac{1}{1-\hat G}=1+\hat G+\hat G^2+\cdots
+\]
+
+（这里不除以 $k!$，因为序列有顺序）。
+
+\subsection{例一：排列、错排、集合划分}
+
+
+\textbf{排列.} 一个 $n$ 元排列可以看成"若干个轮换（cycle）的无序集合"。$k$ 元轮换的个数是 $(k-1)!$，所以轮换的 EGF 是
+
+\[
+\sum_{k\ge1}(k-1)!\frac{x^k}{k!}=\sum_{k\ge1}\frac{x^k}{k}=-\log(1-x).
+\]
+
+由集合构造公式，排列的 EGF 是
+
+\[
+\exp\bigl(-\log(1-x)\bigr)=\frac{1}{1-x},
+\]
+
+其 $x^n$ 系数乘以 $n!$ 得 $n!$，正是排列数。验证了公式。
+
+\textbf{错排.} 错排是"没有长度 $1$ 轮换"的排列，即只由长度 $\ge2$ 的轮换组成的集合。轮换 EGF 去掉长度 $1$ 的项 $x$，得 $-\log(1-x)-x$，于是错排 EGF 为
+
+\[
+\exp\bigl(-\log(1-x)-x\bigr)=\frac{e^{-x}}{1-x}.
+\]
+
+展开：$e^{-x}/(1-x)=\sum_n\left(\sum_{k=0}^n(-1)^k/k!\right)x^n$，乘以 $n!$ 得
+
+\[
+D_n=n!\sum_{k=0}^{n}\frac{(-1)^k}{k!},
+\]
+
+与第 12 讲容斥得到的公式一致。
+
+\textbf{集合划分与 Bell 数.} 非空块（一个块就是一个非空集合）的 EGF 是 $e^x-1$（$n$ 元集合只有一种结构，$n\ge1$）。集合划分是"非空块的无序集合"，所以 Bell 数的 EGF 是
+
+\[
+\exp(e^x-1).
+\]
+
+前几项：$B_0,B_1,B_2,\dots=1,1,2,5,15,52,203,\dots$。
+
+\textbf{满射.} 从 $n$ 元集到 $m$ 元集的满射：把 $n$ 个标签分成 $m$ 个非空有序块（每块是某个原像），每块的 EGF 是 $e^x-1$，所以满射数的 EGF 是 $(e^x-1)^m$。其 $x^n$ 系数乘以 $n!$ 等于 $\sum_i(-1)^i\binom mi(m-i)^n=m!S(n,m)$，与容斥公式一致。
+
+\subsection{例二：教室与"集合"的直观解释}
+
+
+课堂上的例子：有 $n$ 个\textbf{不同的}学生，要分到若干间\textbf{教室}；若一间教室里有 $j$ 个学生，这 $j$ 个学生在教室内部有 $g_j$ 种安排方式（约定 $g_0=0$，空教室不计）。设
+
+\[
+\hat G(x)=\sum_{j\ge0}g_j\frac{x^j}{j!}.
+\]
+
+\begin{itemize}
+\item 若教室是\textbf{有编号}的，且恰好用 $k$ 间：先把 $n$ 个标签分成 $k$ 个有序部分（每部分对应一间教室），每部分内部造 $\mathcal G$ 结构，总数正是 $n![x^n]\hat G^k$；
+\item 若教室\textbf{没有编号}：$k$ 间教室的排列不区分，所以要除以 $k!$，总数是 $n![x^n]\dfrac{\hat G^k}{k!}$；
+\item 若教室数量不限：对 $k$ 求和，得到 $n![x^n]e^{\hat G(x)}$。
+\end{itemize}
+
+
+这就是 $e^{\hat G}$ 的"集合构造"含义：\textbf{把带标签的对象分成若干个无序的块，每块内部是一个 $\mathcal G$ 结构}。
+
+\subsection{例三：有根树（每个结点最多 3 个无序孩子）}
+
+
+设 $t_n$ 是 $n$ 个结点的\textbf{带标号有根树}个数，每个结点最多有 $3$ 个孩子，孩子之间\textbf{不区分顺序}。设 $\hat T(x)=\sum t_nx^n/n!$。
+
+一棵树 = 根 + 一个"由 $0,1,2,3$ 棵子树组成的无序集合"：
+\begin{itemize}
+\item $0$ 棵子树：$1$；
+\item $1$ 棵：$\hat T$；
+\item $2$ 棵：两棵子树无序，EGF 为 $\hat T^2/2!$；
+\item $3$ 棵：$\hat T^3/3!$。
+\end{itemize}
+
+
+再乘上根自己的标签 $x$，得
+
+\[
+\hat T(x)=x\left(1+\hat T+\frac{\hat T^2}{2!}+\frac{\hat T^3}{3!}\right).
+\]
+
+展开前几项（用 $t_n=n![x^n]\hat T$）：
+
+\[
+t_1,t_2,t_3,t_4,t_5,t_6=1,2,9,64,620,7620.
+\]
+
+作为对比，若孩子数量不限，方程是 $\hat T=xe^{\hat T}$，其系数为 $t_n=n^{n-1}$（Cayley 公式的带标号有根树版本）：$1,2,9,64,625,7776,\dots$。前 $4$ 项相同（因为 $n\le4$ 时不可能有 $4$ 个孩子），从 $n=5$ 开始分叉（$620$ 对 $625$）。这个对比说明：\textbf{"最多 3 个孩子"这个限制只影响 $n\ge5$ 的项}，EGF 方程精确地反映了这一点。
+
+\textbf{注意标号与无标号的区别.} 上面数的是\textbf{带标号}的有根树（$n$ 个结点带 $1,\dots,n$ 的标签），所以用 EGF。若问的是\textbf{无标号}的形状（同构的树算一种），则要换成 OGF，方程变为
+
+\[
+T(x)=x\bigl(1+T+T^2+T^3\bigr),
+\]
+
+前几项是 $1,1,2,4,9,20,\dots$。两种模型不能混用；课堂转写这段没有讲完，整理版按"带标号树"叙述，并在此注明无标号版本的区别。
+
+\subsection{本节与 OGF 的对照（先给结论）}
+
+
+\begin{itemize}
+\item \textbf{OGF 的乘法是普通卷积}：$\sum a_ib_{n-i}$，对应"把总大小 $n$ 分成 $i$ 和 $n-i$，两部分不区分标签"；
+\item \textbf{EGF 的乘法是二项卷积}：$\sum\binom ni a_ib_{n-i}$，对应"先把 $n$ 个标签分成两部分，再分别造结构"；
+\item 因此：数\textbf{带标号}对象（排列、映射、集合划分、标号树、满射）用 EGF；数\textbf{无标号}对象（分拆、整数解、格路、括号、Catalan、找零）用 OGF；
+\item 结构是"无序集合"时，EGF 用 $\exp$；结构是"有序列"时，EGF 用 $1/(1-\hat G)$；相应的 OGF 运算则是普通乘积/复合。
+\end{itemize}
+
+
+更系统的对比、判别准则与常见错误，见附加讲解稿《普通生成函数 vs 指数生成函数》。
+
+\subsection{本节的提醒}
+
+
+\begin{itemize}
+\item \textbf{EGF 的系数要乘回 $n!$。} 算出的 $\hat A$ 的 $x^n$ 系数是 $a_n/n!$；答案要的是 $a_n$，别忘了乘以 $n!$。
+\item \textbf{$\exp$ 只对 EGF 成立。} 对 OGF 写 $e^{A(x)}$ 通常没有组合意义；Catalan 的 OGF 满足 $C=1+xC^2$，不能写成 $1/(1-C)$ 之类。
+\item \textbf{"标签"要真的可区分。} 若对象没有标签（如相同的球、整数分拆），用 EGF 会多除 $n!$，答案会错。
+\item \textbf{有序与无序。} 有序序列用 $1/(1-\hat G)$，无序集合用 $e^{\hat G}$；两者差一个 $k!$，对应"是否给块编号"。
+\end{itemize}

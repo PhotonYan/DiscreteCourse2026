@@ -1,0 +1,173 @@
+\section{有理生成函数、部分分式与线性递推}
+
+
+上一节把多米诺覆盖化成了 $F(x)=\dfrac{1}{1-x-x^2}$。这一节说明：\textbf{任何有理生成函数都能拆成若干 $\dfrac{1}{(1-\alpha x)^k}$ 之和}，从而把数列的通项写出来；反过来，\textbf{常系数线性递推}的生成函数一定是有理函数。这就是"用生成函数解递推"的完整流程。
+
+\textbf{本节用到的记号：} $A(x),B(x),P(x),Q(x)$ 为多项式或形式幂级数；$\alpha,\beta$ 为常数；$[x^n]$ 为系数提取；$\binom nk$ 为二项式系数。
+
+\subsection{有理函数与部分分式}
+
+
+\textbf{定义.} 若 $A(x)=\dfrac{P(x)}{Q(x)}$，其中 $P,Q$ 是多项式、$Q(0)\neq0$，则称 $A(x)$ 是\textbf{有理生成函数}（或有理形式幂级数）。例如 $\dfrac{1}{1-x-x^2}$、$\dfrac{1+x}{(1-x)^3}$ 都是。
+
+\textbf{基本事实（部分分式分解）.} 设 $Q(x)\neq0$ 且 $Q(0)\neq0$。在复数域上，$Q$ 可以分解成一次因子的乘积。则存在多项式 $R(x)$ 与常数 $c_{i,j}$，使
+
+\[
+\frac{P(x)}{Q(x)}=R(x)+\sum_{i=1}^{r}\sum_{j=1}^{k_i}\frac{c_{i,j}}{(1-\alpha_i x)^j},
+\]
+
+其中 $\alpha_i^{-1}$ 是 $Q$ 的根（重数 $k_i$）。若 $P$ 的次数小于 $Q$，则 $R=0$。
+
+\textbf{为什么有用.} 因为每个 $\dfrac{1}{(1-\alpha x)^j}$ 的系数都知道：
+
+\[
+\frac{1}{(1-\alpha x)^j}=\sum_{n\ge0}\binom{n+j-1}{j-1}\alpha^n x^n.
+\]
+
+于是把部分分式拆开、逐项取系数，就得到原数列的通项公式（指数函数与多项式的乘积之和）。多项式部分 $R(x)$ 只影响有限项，后面可以忽略。
+
+\textbf{操作步骤.} 求 $[x^n]P(x)/Q(x)$：
+
+1. 若 $\deg P\ge\deg Q$，先做多项式除法，把 $P/Q$ 写成 $R+P_1/Q$，其中 $\deg P_1<\deg Q$；
+2. 把 $Q$ 分解成一次因子的幂；
+3. 设部分分式，比较系数（或代入特殊值）求出 $c_{i,j}$；
+4. 对每个 $\dfrac{c}{(1-\alpha x)^j}$ 用上面的公式取 $x^n$ 的系数，相加。
+
+\subsection{例一：斐波那契数的通项（Binet 公式）}
+
+
+设 $f_0=f_1=1$、$f_n=f_{n-1}+f_{n-2}$，生成函数
+
+\[
+F(x)=\frac{1}{1-x-x^2}.
+\]
+
+\textbf{分解分母.} 令 $\varphi=\dfrac{1+\sqrt5}{2}$、$\psi=\dfrac{1-\sqrt5}{2}$，则 $\varphi+\psi=1$、$\varphi\psi=-1$，于是
+
+\[
+1-x-x^2=(1-\varphi x)(1-\psi x).
+\]
+
+\textbf{设部分分式.}
+
+\[
+\frac{1}{(1-\varphi x)(1-\psi x)}=\frac{A}{1-\varphi x}+\frac{B}{1-\psi x}.
+\]
+
+通分得 $A(1-\psi x)+B(1-\varphi x)=1$，即
+
+\[
+(A+B)-(A\psi+B\varphi)x=1.
+\]
+
+比较常数项与一次项：$A+B=1$、$A\psi+B\varphi=0$。解得
+
+\[
+A=\frac{\varphi}{\sqrt5},\qquad B=-\frac{\psi}{\sqrt5}.
+\]
+
+（也可用"代入 $x=1/\varphi$、$x=1/\psi$"的留数法快速求。）
+
+\textbf{取系数.}
+
+\[
+F(x)=\frac{1}{\sqrt5}\left(\frac{\varphi}{1-\varphi x}-\frac{\psi}{1-\psi x}\right)
+=\frac{1}{\sqrt5}\sum_{n\ge0}(\varphi^{n+1}-\psi^{n+1})x^n.
+\]
+
+所以
+
+\[
+f_n=\frac{\varphi^{n+1}-\psi^{n+1}}{\sqrt5}.
+\]
+
+这就是\textbf{Binet 公式}。验证：$n=0$ 时 $(\varphi-\psi)/\sqrt5=1$；$n=1$ 时 $(\varphi^2-\psi^2)/\sqrt5=(\varphi+\psi)=1$，都对。
+
+\textbf{注意.} 这里的 $\varphi,\psi$ 是分母 $1-x-x^2$ 的根 $x$ 的倒数：$x^2=x+1$ 的正根是 $\varphi$，所以因子写成 $(1-\varphi x)$。做题时先把分母整理成"常数项为 $1$"的形式，再找它的根的倒数，比较不容易混。
+
+\subsection{例二：一般二阶线性递推}
+
+
+设 $a_n=\alpha a_{n-1}+\beta a_{n-2}$（$n\ge2$），初值 $a_0,a_1$ 给定。设 $A(x)=\sum a_nx^n$。由递推，
+
+\[
+A(x)-a_0-a_1x=\alpha x(A(x)-a_0)+\beta x^2A(x).
+\]
+
+整理：
+
+\[
+A(x)=\frac{a_0+(a_1-\alpha a_0)x}{1-\alpha x-\beta x^2}.
+\]
+
+分母是二次多项式。若 $1-\alpha x-\beta x^2=(1-\lambda_1x)(1-\lambda_2x)$ 有两个不同根，部分分式给出
+
+\[
+a_n=C_1\lambda_1^n+C_2\lambda_2^n;
+\]
+
+若重根 $\lambda$，则
+
+\[
+a_n=(C_1+C_2n)\lambda^n.
+\]
+
+这与第 12 讲用特征方程得到的形式完全一致；生成函数只是把"解递推"变成了"拆分式"。\textbf{重根时出现 $n\lambda^n$}，是因为部分分式里有 $\dfrac{1}{(1-\lambda x)^2}$ 这样的项，而它的系数是 $(n+1)\lambda^n$。
+
+\textbf{一般结论（常系数线性递推与有理生成函数对应）.} 数列 $\{a_n\}$ 满足常系数线性递推
+
+\[
+a_n=c_1a_{n-1}+c_2a_{n-2}+\cdots+c_ra_{n-r}\qquad(n\ge r)
+\]
+
+当且仅当它的生成函数是有理函数
+
+\[
+A(x)=\frac{P(x)}{1-c_1x-c_2x^2-\cdots-c_rx^r},
+\]
+
+其中 $P$ 由初值决定、次数小于 $r$。这是因为递推两边乘以 $x^n$ 并对 $n\ge r$ 求和，右边恰好是 $A(x)$ 乘以 $1-c_1x-\cdots-c_rx^r$，左边只剩下有限个初值项。
+
+\textbf{推论.} 常系数线性递推的解一定是"指数函数 × 多项式"的线性组合；反过来，任何有理生成函数对应的数列都满足某个常系数线性递推。
+
+\subsection{例三：$\frac{1}{(1-x)^k}$ 与高阶部分分式}
+
+
+由二项式定理（负指数版本），
+
+\[
+\frac{1}{(1-x)^k}=\sum_{n\ge0}\binom{n+k-1}{k-1}x^n.
+\]
+
+若分母有重根，例如
+
+\[
+\frac{1}{(1-2x)^3}=\sum_{n\ge0}\binom{n+2}{2}2^nx^n,
+\]
+
+系数是"多项式 × 指数"。这正是部分分式拆开后每一项的标准形式。
+
+\textbf{综合例子.} 求 $[x^n]\dfrac{1+x}{(1-x)^3}$。先拆：
+
+\[
+\frac{1+x}{(1-x)^3}=\frac{2}{(1-x)^3}-\frac{1}{(1-x)^2}.
+\]
+
+因为 $1+x=2-(1-x)$。于是
+
+\[
+[x^n]\frac{1+x}{(1-x)^3}=2\binom{n+2}{2}-\binom{n+1}{1}
+=2\cdot\frac{(n+2)(n+1)}{2}-(n+1)=(n+1)^2.
+\]
+
+所以 $\dfrac{1+x}{(1-x)^3}=\sum_{n\ge0}(n+1)^2x^n$。这个例子说明：\textbf{部分分式的系数不必真的解方程组，凑成已知形式往往更快}。
+
+\subsection{本节的提醒}
+
+
+\begin{itemize}
+\item \textbf{先保证常数项为 $1$。} 部分分式的标准形式是 $\dfrac{1}{1-\alpha x}$；若分母常数项不是 $1$，先提出常数，或者改用 $(x-\alpha_i)$ 的形式并相应调整。
+\item \textbf{部分分式在复数域上做。} 实系数多项式可能没有实根（如 $1+x^2$），但分解成一次因子需要复数；组合计数里允许用复数中间结果，最后实系数会抵消。
+\item \textbf{有限项与无限项分开。} 若 $\deg P\ge\deg Q$，先做多项式除法；多项式部分只影响前有限项，不要漏掉。
+\item \textbf{生成函数法与特征方程法等价。} 特征方程 $\lambda^2=\alpha\lambda+\beta$ 的根，就是分母 $1-\alpha x-\beta x^2$ 的根的倒数；两种写法不要混。
+\end{itemize}

@@ -1,0 +1,213 @@
+\section{普通生成函数：定义、基本例子与运算}
+
+
+生成函数把\textbf{数列}变成\textbf{形式幂级数}，从而把"数数列"的问题翻译成"做代数/微积分"的问题。这一节建立普通生成函数（ordinary generating function，OGF）的定义、基本例子与运算表，并用多米诺覆盖与找零两个问题说明它的用法。
+
+\textbf{本节用到的记号：} $[x^n]A(x)$ 表示形式幂级数 $A(x)$ 中 $x^n$ 的系数；$\delta_{n,0}$ 在 $n=0$ 时为 $1$、否则为 $0$；$\binom nk$ 为二项式系数；$n^{\underline{k}}$ 为下降阶乘。若无特别说明，$\sum$ 的下标都从 $0$ 开始。
+
+\subsection{定义：数列与形式幂级数}
+
+
+\textbf{定义（普通生成函数）。} 给定数列 $\{a_n\}_{n\ge0}$，称形式幂级数
+
+\[
+A(x)=a_0+a_1x+a_2x^2+\cdots=\sum_{n\ge0}a_nx^n
+\]
+
+为它的\textbf{普通生成函数}。反过来，已知 $A(x)$ 时，$a_n=[x^n]A(x)$。
+
+这里的"形式"指：我们只把 $x$ 当成一个记号，按幂级数的加法、乘法、求导、复合等代数规则运算，\textbf{不关心它是否收敛}。若某个具体问题中 $x$ 取实数、级数收敛，那当然更好（可以把 $A(x)$ 当成函数做分析），但组合计数里的恒等式在形式上就成立，不需要收敛性。这一点在后面的"有理函数"与"指数生成函数"里同样适用。
+
+\textbf{例.} 常数数列 $1,1,1,\dots$ 的生成函数是
+
+\[
+1+x+x^2+\cdots=\frac{1}{1-x}.
+\]
+
+严格说，这是形式幂级数的等式：$(1-x)(1+x+x^2+\cdots)=1$，两边按幂级数乘法计算即可，不需要 $|x|<1$。
+
+\subsection{一些最基本的生成函数}
+
+
+下面这张表要熟记（都可以由等比级数或二项式定理直接得到）：
+
+\begin{itemize}
+\item $\{1,0,0,0,\dots\}\longleftrightarrow 1$；
+\item $\{0,\dots,0,1,0,\dots\}$（第 $m$ 位为 $1$）$\longleftrightarrow x^m$；
+\item $\{1,1,1,\dots\}\longleftrightarrow \dfrac{1}{1-x}$；
+\item $\{1,\alpha,\alpha^2,\dots\}\longleftrightarrow \dfrac{1}{1-\alpha x}$；
+\item $\{1,0,1,0,1,\dots\}\longleftrightarrow \dfrac{1}{1-x^2}$；
+\item $\{1,0,\dots,0,1,0,\dots\}$（每隔 $p$ 位一个 $1$）$\longleftrightarrow \dfrac{1}{1-x^p}$；
+\item $\left\{\binom nk\right\}_{n\ge0}\longleftrightarrow \dfrac{x^k}{(1-x)^{k+1}}$；
+\item $\left\{\binom{n+k-1}{k-1}\right\}_{n\ge0}\longleftrightarrow \dfrac{1}{(1-x)^k}$；
+\item $\left\{\binom{n}{k}\alpha^{n-k}\right\}_{n\ge0}\longleftrightarrow \dfrac{x^k}{(1-\alpha x)^{k+1}}$。
+\end{itemize}
+
+
+\textbf{推导示例.} 最后两行来自
+
+\[
+\frac{1}{(1-x)^k}=(1+x+x^2+\cdots)^k=\sum_{n\ge0}\binom{n+k-1}{k-1}x^n,
+\]
+
+因为 $x_1+\cdots+x_k=n$ 的非负整数解个数是 $\binom{n+k-1}{k-1}$（第 4 节"球与桶"的隔板法）。而
+
+\[
+\frac{x^k}{(1-x)^{k+1}}=\sum_{m\ge0}\binom{m+k}{k}x^{m+k}=\sum_{n\ge k}\binom nk x^n,
+\]
+
+所以 $[x^n]\frac{x^k}{(1-x)^{k+1}}=\binom nk$。
+
+\subsection{运算表：生成函数怎么"翻译"数列操作}
+
+
+设 $A(x)=\sum a_nx^n$、$B(x)=\sum b_nx^n$。下面是最常用的一组对应关系；每条都可以按系数逐项验证。
+
+\textbf{线性组合。} $\{\alpha a_n+\beta b_n\}\longleftrightarrow \alpha A(x)+\beta B(x)$。
+
+\textbf{右移。} $\{0,a_0,a_1,a_2,\dots\}\longleftrightarrow xA(x)$；更一般地，$\{0,\dots,0,a_0,a_1,\dots\}$（前面补 $m$ 个零）$\longleftrightarrow x^mA(x)$。
+
+\textbf{左移。} 左移一格：
+
+\[
+\{a_1,a_2,a_3,\dots\}\longleftrightarrow \frac{A(x)-A(0)}{x}.
+\]
+
+若要从 $a_h$ 开始：
+
+\[
+\{a_h,a_{h+1},\dots\}\longleftrightarrow \frac{A(x)-a_0-a_1x-\cdots-a_{h-1}x^{h-1}}{x^h}.
+\]
+
+\textbf{数乘指数。} $\{\alpha^na_n\}\longleftrightarrow A(\alpha x)$。
+
+\textbf{偶数项 / 奇数项。} 偶数下标：
+
+\[
+\{a_0,0,a_2,0,\dots\}\longleftrightarrow \frac{A(x)+A(-x)}{2};
+\]
+
+奇数下标：
+
+\[
+\{0,a_1,0,a_3,\dots\}\longleftrightarrow \frac{A(x)-A(-x)}{2}.
+\]
+
+\textbf{乘积（卷积）。} 设 $c_n=\sum_{i=0}^{n}a_ib_{n-i}$，则
+
+\[
+\{c_n\}\longleftrightarrow A(x)B(x).
+\]
+
+按系数展开即可：$[x^n]A(x)B(x)=\sum_{i=0}^na_ib_{n-i}$。
+
+\textbf{求导。} $A'(x)=\sum_{n\ge1}na_nx^{n-1}=\sum_{n\ge0}(n+1)a_{n+1}x^n$。于是 $\{na_n\}\longleftrightarrow xA'(x)$。
+
+\textbf{积分。} $\displaystyle\int_0^xA(t)\,dt=\sum_{n\ge0}\frac{a_n}{n+1}x^{n+1}$，即 $\left\{\frac{a_{n-1}}{n}\right\}_{n\ge1}\longleftrightarrow \displaystyle\int_0^xA(t)\,dt$。
+
+\textbf{部分和。} 设 $s_n=a_0+a_1+\cdots+a_n$，则
+
+\[
+\{s_n\}\longleftrightarrow \frac{A(x)}{1-x},
+\]
+
+因为乘以 $\frac1{1-x}=1+x+x^2+\cdots$ 正是"对系数做部分和"。
+
+这些运算合起来，就能把很多关于数列的递推/求和问题变成关于 $A(x)$ 的代数方程。
+
+\subsection{例一：多米诺覆盖与斐波那契数}
+
+
+\textbf{问题.} 用 $2\times1$ 的多米诺骨牌覆盖 $2\times n$ 的区域，有多少种覆盖方式？记这个数为 $f_n$，约定 $f_0=1$（什么都不放）。
+
+\textbf{直接递推.} 看最左边：
+
+\begin{itemize}
+\item 若第一块是\textbf{竖}的，它占满第一列，剩下 $2\times(n-1)$ 的区域，有 $f_{n-1}$ 种；
+\item 若第一块是\textbf{横}的，它必须与另一块横骨牌上下拼成一个 $2\times2$ 的方块，占掉前两列，剩下 $2\times(n-2)$，有 $f_{n-2}$ 种。
+\end{itemize}
+
+
+所以 $f_n=f_{n-1}+f_{n-2}$，初值 $f_0=f_1=1$。前几项是 $1,1,2,3,5,8,\dots$。
+
+\textbf{生成函数解法.} 设 $F(x)=\sum_{n\ge0}f_nx^n$。把上面的分类"翻译"成生成函数：
+
+\begin{itemize}
+\item 空覆盖：贡献 $1$；
+\item 第一块竖：贡献 $xF(x)$（占一列，用 $x$ 记一列）；
+\item 第一块横（一对）：贡献 $x^2F(x)$（占两列）。
+\end{itemize}
+
+
+于是
+
+\[
+F(x)=1+xF(x)+x^2F(x)
+\quad\Longrightarrow\quad
+F(x)=\frac{1}{1-x-x^2}.
+\]
+
+这个式子把"递推关系"变成了"一个分式"；接下来只要把分式展开就能读出任意 $f_n$（下一节用部分分式给出通项）。
+
+\textbf{两种骨牌的版本.} 若竖骨牌有 $x$ 种选择、横的一对有 $y$ 种选择，同样的分解给出
+
+\[
+F(x,y)=\frac{1}{1-x-y}=\sum_{m,n\ge0}\binom{m+n}{m}x^my^n.
+\]
+
+组合意义：一个覆盖由 $m$ 个竖块与 $n$ 个横对组成，共 $m+n$ 个"块"，选出哪 $m$ 个位置放竖块有 $\binom{m+n}{m}$ 种。
+
+\subsection{例二：找零问题}
+
+
+\textbf{问题.} 有 4 张 1 元硬币、无限多张 5 元纸币，凑出 $n$ 元有多少种方式？
+
+分别写出两部分的生成函数：
+
+\begin{itemize}
+\item 4 张 1 元：最多用 4 张，方式数为 $1,1,1,1,1,0,0,\dots$，生成函数
+\end{itemize}
+
+
+\[
+1+x+x^2+x^3+x^4=\frac{1-x^5}{1-x};
+\]
+
+\begin{itemize}
+\item 无限 5 元：方式数为 $1,0,0,0,0,1,0,\dots$（0 元、5 元、10 元……），生成函数
+\end{itemize}
+
+
+\[
+1+x^5+x^{10}+\cdots=\frac{1}{1-x^5}.
+\]
+
+（$n=0$ 时什么都不找，算 $1$ 种；这与两个生成函数的常数项都是 $1$ 一致。）两部分可以独立选择，所以"总方式数"的生成函数是两者\textbf{相乘}：
+
+\[
+\frac{1-x^5}{1-x}\cdot\frac{1}{1-x^5}=\frac{1}{1-x}.
+\]
+
+也就是说，凑出 $n$ 元恰好只有 $1$ 种方式——因为 1 元的张数只能是 $0,1,2,3,4$，而 $n$ 除以 5 的余数唯一确定了要用几张 1 元，剩下的用 5 元补足。这个例子说明：\textbf{生成函数的乘法对应"把 n 分成两部分、分别计数再求和"}；有时乘积会化简，从而直接看出答案。
+
+\textbf{一般硬币问题.} 若有面值为 $w_1,\dots,w_k$ 的硬币各无限多张，凑出 $n$ 元的方式数的生成函数是
+
+\[
+\prod_{i=1}^{k}\frac{1}{1-x^{w_i}}.
+\]
+
+若第 $i$ 种硬币只有 $m_i$ 张，则对应因子换成 $\dfrac{1-x^{(m_i+1)w_i}}{1-x^{w_i}}$。整数分拆（把 $n$ 写成正整数之和，不计顺序）的生成函数就是
+
+\[
+\prod_{w\ge1}\frac{1}{1-x^w}.
+\]
+
+\subsection{本节的提醒}
+
+
+\begin{itemize}
+\item \textbf{生成函数是形式幂级数。} 写 $\frac{1}{1-x}$ 时不需要 $|x|<1$；只要按 $1+x+x^2+\cdots$ 理解即可。只有在做分析（如估计系数增长）时才需要收敛性。
+\item \textbf{$x$ 记录什么要统一。} 在多米诺问题里 $x$ 记"一列的宽度"；若改成记"一块骨牌"，同一个问题的生成函数会变（通常变成 $x$ 与 $x^2$ 的多项式/分式）。定义清楚后，方程才不会列错。
+\item \textbf{卷积的方向。} $[x^n]A(x)B(x)=\sum_{i=0}^na_ib_{n-i}$；若两边的"大小"含义不同（例如一边记列数、一边记块数），乘积的系数含义要先解释清楚。
+\item \textbf{找零例子中"相乘"的前提是两部分独立。} 如果硬币之间有依赖（例如总共只能用 5 枚），就不能简单相乘，要引入新变量或改用别的模型。
+\end{itemize}
