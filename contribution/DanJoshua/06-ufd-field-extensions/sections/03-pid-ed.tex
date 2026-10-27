@@ -1,0 +1,130 @@
+% ===========================================================================
+\section{UFD 的刻画、PID 与 ED}\label{sec:pid-ed}
+
+\subsection{UFD 的刻画：因子链条件 + 素性条件}
+
+\begin{theorem}[UFD 的刻画]
+整环 $R$ 是 UFD，当且仅当：
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item \keyword{因子链条件：}不存在无穷序列 $a_1, a_2, \dots$ 使每个
+        $a_{i+1}$ 都是 $a_i$ 的\keyword{真因子}（$a_{i+1}\mid a_i$
+        且二者不相伴）；
+  \item \keyword{素性条件：}每个不可约元都是素元。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[UFD $\Rightarrow$ 两条件]
+\leavevmode
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 若因子链条件不成立：$a_2\mid a_1$ 贡献一个不可约因子，
+        $a_3\mid a_2$ 又贡献一个……$a_1$ 的分解将无穷长，矛盾；
+  \item 素性：设不可约元 $p\mid ab$。把 $a$、$b$ 各自分解再拼起来，得到
+        $ab$ 的一个分解；把 $ab/p$ 分解后与 $p$ 拼起来，得到 $ab$ 的
+        另一个分解。由唯一性，$p$ 必与 $a$ 或 $b$ 的某个不可约因子相伴，
+        故 $p\mid a$ 或 $p\mid b$。
+\end{itemize}
+\end{proof}
+
+\begin{proof}[两条件 $\Rightarrow$ UFD]
+与整数唯一分解的证明完全一样。因子链条件保证分解的\keyword{存在性}
+（不断分解真因子的过程必须终止）。唯一性：设
+\[
+  p_1 p_2 \cdots p_r = q_1 q_2 \cdots q_s,\qquad
+  p_i, q_j\ \text{均不可约}.
+\]
+由素性条件 $p_1$ 是素元，且 $p_1\mid q_1\cdots q_s$，故 $p_1$ 整除某个
+$q_j$，不妨 $p_1\mid q_1$；$q_1$ 不可约而 $p_1$ 非单位，故 $p_1$ 与
+$q_1$ 相伴。由消去律，$p_2\cdots p_r$ 与 $q_2\cdots q_s$ 相伴，递归做
+下去即得两个分解在相伴与次序意义下相同。
+\end{proof}
+
+\subsection{主理想整环（PID）：PID \texorpdfstring{$\Rightarrow$}{=>} UFD}
+
+\begin{definition}[主理想整环（Principal Ideal Domain, PID）]
+由单个元素生成的理想 $(a) = aR$ 称为\keyword{主理想}。若整环 $R$ 中
+\keyword{每个理想都是主理想}，则称 $R$ 为\keyword{主理想整环}。
+\end{definition}
+
+\begin{example}
+$\Z$ 是 PID（上节课已证：其理想都是某个数的全体倍数）。
+\end{example}
+
+\begin{theorem}[PID $\Rightarrow$ UFD]
+PID 是 UFD。
+\end{theorem}
+
+\begin{proof}
+验证 PID 满足因子链条件与素性条件。
+
+\keyword{因子链条件：}反设存在真因子链 $a_1, a_2, \dots$。由
+$a_{i+1}\mid a_i$ 得 $(a_i)\subseteq(a_{i+1})$，即主理想升链
+\[
+  (a_1)\subseteq(a_2)\subseteq(a_3)\subseteq\cdots.
+\]
+其并 $I = \bigcup_i (a_i)$ 仍是理想（升链之并：对加减封闭显然；$x\in I$
+属于某个 $(a_i)$，乘任何环元素后仍在 $(a_i)\subseteq I$ 中）。由 PID，
+$I = (b)$ 是主理想。而 $b\in\bigcup_i(a_i)$，故存在 $i$ 使
+$b\in(a_i)$，于是 $I = (b)\subseteq(a_i)$，即 $I = (a_i)$——链在第
+$i$ 步后停止增长，$(a_i) = (a_{i+1}) = \cdots$，与「真因子链」矛盾。
+
+\keyword{素性条件：}设 $p$ 不可约，$p\mid ab$。由 PID，$(a,p) = (s)$
+是主理想。由 $p\in(s)$ 得 $s\mid p$；$p$ 不可约，只有两种可能：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item $s$ 与 $p$ 相伴：此时 $(a,p) = (p)$，故 $a\in(p)$，即 $p\mid a$；
+  \item $s$ 与 $1$ 相伴：此时 $(a,p) = (1)$，存在 $\alpha,\beta$ 使
+        $1 = \alpha a + \beta p$。
+\end{itemize}
+对 $b$ 同理。若 $p$ 既不整除 $a$ 也不整除 $b$，则
+$1 = \alpha a + \beta p$ 与 $1 = \alpha' b + \beta' p$ 移项相乘得
+\[
+  (1-\beta p)(1-\beta' p) = \alpha\alpha'\, ab.
+\]
+右边被 $p$ 整除；左边展开为 $1 - (\beta + \beta' - \beta\beta' p)p$，
+其中含 $p$ 的项被 $p$ 整除，于是 $p\mid 1$，$p$ 是单位——与不可约元
+非单位矛盾。故 $p\mid a$ 或 $p\mid b$。
+\end{proof}
+
+\subsection{欧几里得整环（ED）：ED \texorpdfstring{$\Rightarrow$}{=>} PID}
+
+如何证明一个环是 PID？给它一个更好的性质——带余除法。
+
+\begin{definition}[欧几里得整环（Euclidean Domain, ED）]
+整环 $R$ 称为\keyword{欧几里得整环}，若存在\keyword{范数}
+$N\colon R\to\N$，满足：
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item $N(a) = 0 \iff a = 0$；
+  \item \keyword{带余除法：}对任意 $b\in R$ 与 $a\ne 0$，存在 $q, r\in R$
+        使
+        \[
+          b = aq + r, \qquad N(r) < N(a).
+        \]
+\end{enumerate}
+\end{definition}
+
+\begin{example}[最重要的例子]
+域 $F$ 上的多项式环 $F[x]$ 是 ED，取
+\[
+  N(f) = \deg f + 1 \quad (f\ne 0).
+\]
+任给 $f\ne 0$ 与 $g$，多项式长除法给出 $g = fq + r$ 且
+$\deg r < \deg f$，故 $N(r) < N(f)$。（$\Z$ 也是 ED，范数为绝对值。）
+\end{example}
+
+\begin{theorem}[ED $\Rightarrow$ PID]
+欧几里得整环是主理想整环。
+\end{theorem}
+
+\begin{proof}
+设 $I\trianglelefteq R$，$I\ne 0$。从 $I$ 的非零元中取范数最小者
+\[
+  a \in \arg\min_{x\in I,\ x\ne 0} N(x)
+\]
+（$N$ 取值于自然数，良序性保证最小值取得到）。断言 $I = (a)$：任取
+$b\in I$，带余除法给出 $b = aq + r$，$N(r) < N(a)$。此时
+$r = b - aq\in I$；但 $a$ 已是 $I$ 中非零元范数的最小者，唯一可能是
+$N(r) = 0$ 即 $r = 0$。故 $a\mid b$，$I = (a)$。
+\end{proof}
+
+\begin{corollary}[{$F[x]$ 集所有好性质于一身}]
+域上多项式环 $F[x]$ 是 ED，因而是 PID、UFD，具有之前所说的所有好性质。
+\end{corollary}

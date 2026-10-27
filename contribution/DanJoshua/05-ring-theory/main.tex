@@ -1,0 +1,56 @@
+% ===========================================================================
+%  离散数学与结构（I） 2026-10-13（第 5--6 节）课堂笔记
+%  环、理想与同构定理
+%  Compile:  latexmk -xelatex main      (or: xelatex main, twice)
+% ===========================================================================
+\documentclass[cjk]{loom}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\HH}{\mathbb{H}}               % 四元数
+\newcommand{\F}{\mathbb{F}}                % 有限域
+\newcommand{\ideal}{\trianglelefteq}       % 理想
+\newcommand{\Frac}{\mathrm{Frac}}          % 分式域
+\newcommand{\charr}{\mathrm{char}}         % 特征（\char 是 TeX 原语，故用此名）
+\newcommand{\Img}{\mathrm{Im}\,}           % 像
+\newcommand{\End}{\mathrm{End}}            % 自同态环
+
+\runningthread{离散数学与结构 · 第四周（上）}
+
+\begin{document}
+
+\loomcover
+  {环、理想与同构定理}
+  {离散数学与结构（I）· 第四周（上）课堂笔记}
+  {}
+  {2026 年 10 月 13 日}
+
+\begin{strand}
+本讲脉络：先给出环的定义与术语（含幺环、交换环、除环、域、零因子、整环）；
+然后是一批环的例子——数环、$\Z/n\Z$、矩阵环、自同态环、函数环、多项式环、
+群环、四元数；接着讨论子环、环同态、核与理想、商环；证明第一同构定理并
+建立理想的运算（交、和、积、生成理想与主理想）；再证第三同构定理与对应
+定理，刻画单环——含幺交换环是域当且仅当它没有非平凡理想；由此得到极大
+理想与素理想的刻画（$M$ 极大 $\iff$ $R/M$ 是域，$P$ 素 $\iff$ $R/P$
+是整环）；随后是中国剩余定理（环版本）；最后讨论单位与单位群、分式域、
+特征，并构造有限域 $\F_p$ 与无穷特征 $p$ 域 $\F_p(x)$。
+
+本讲的动机：抽象代数部分的最终目标是讨论\keyword{有限域}以及性质非常好
+的环（特别是多项式环）。
+\end{strand}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-rings}
+\input{sections/02-examples}
+\input{sections/03-subring-hom-ideal}
+\input{sections/04-iso-theorems}
+\input{sections/05-maximal-prime}
+\input{sections/06-crt-frac}
+
+\end{document}

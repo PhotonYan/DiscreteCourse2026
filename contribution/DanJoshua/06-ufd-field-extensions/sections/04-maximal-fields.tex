@@ -1,0 +1,69 @@
+% ===========================================================================
+\section{极大理想与构造域}\label{sec:maximal}
+
+\subsection{PID 中的极大理想}
+
+回忆上节课的判别法（含幺交换环中）：
+\[
+  M\text{ 是极大理想} \iff R/M\text{ 是域}; \qquad
+  P\text{ 是素理想} \iff R/P\text{ 是整环}.
+\]
+（域是整环，故极大理想必是素理想。）这给出构造域的方法：找一个整环，
+取极大理想 $\mathfrak{m}$，则 $R/\mathfrak{m}$ 是域。在 PID 中判断极大
+理想非常容易：
+
+\begin{theorem}[PID 中极大理想的判别]
+设 $R$ 为 PID，$a\in R$ 非零且非单位，则
+\[
+  a\text{ 不可约} \iff (a)\text{ 是极大理想}.
+\]
+\end{theorem}
+
+\begin{proof}[双向都用逆否]
+\leavevmode
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item 若 $(a)$ 不极大，则存在 $J\supsetneq(a)$；$R$ 是 PID，$J = (b)$。
+        由 $(a)\subsetneq(b)$ 知 $b\mid a$ 且不相伴，即 $b$ 是 $a$ 的
+        真因子——$a$ 可约；
+  \item 若 $a$ 可约，取真因子 $b$，则 $(b)\supsetneq(a)$，$(a)$ 不极大。
+\end{itemize}
+\end{proof}
+
+\begin{corollary}[模掉不可约多项式得到域]
+设 $F$ 为域，$f\in F[x]$ 不可约，则
+\[
+  F[x]/(f)\ \text{是一个域}.
+\]
+\end{corollary}
+
+\begin{remark}[统一的观点]
+之前见过的域也可以统一看成这种「模掉一个理想」的形式：例如
+$\Q(\sqrt{2})\cong\Q[x]/(x^2-2)$——模掉理想相当于「给 $x$ 加一个
+限制」：理想中的元素都被视为 $0$，即 $x^2 - 2$ 被看作 $0$，于是 $x$
+就变成了 $\sqrt{2}$。
+\end{remark}
+
+\subsection{分式域的泛性质（复习与补充）}
+
+\block{复习（分式域）}
+设 $R$ 为整环，所有「分数」 $\frac{a}{b}$（$b\ne 0$）模去等价关系
+$\frac{a}{b}\sim\frac{c}{d} \iff ad = bc$，所得集合构成域 $\Frac(R)$。
+
+\begin{theorem}[分式域的泛性质 / 最小性]
+$\Frac(R)$ 是把 $R$ 扩成域的\keyword{最小}办法：设
+$\varphi\colon R\to R'$ 是单同态，且对任意 $x\ne 0$ 都有
+$\varphi(x)\in(R')^\times$（$R'$ 是域时此条件自动成立），则存在
+\keyword{唯一}同态 $\tilde\varphi\colon\Frac(R)\to R'$ 使
+\[
+  \tilde\varphi\circ\iota = \varphi, \qquad
+  \iota\colon R\hookrightarrow\Frac(R),\quad x\mapsto\tfrac{x}{1}.
+\]
+\end{theorem}
+
+\begin{proof}[构造]
+$\tilde\varphi$ 的定义别无选择：
+\[
+  \tilde\varphi\!\left(\frac{a}{b}\right) = \varphi(a)\,\varphi(b)^{-1},
+\]
+这成立是因为 $\varphi(b)$ 在 $R'$ 中可逆。再验证它确实是同态即可。
+\end{proof}

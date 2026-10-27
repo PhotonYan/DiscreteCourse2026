@@ -1,0 +1,163 @@
+% ===========================================================================
+\section{中国剩余定理与分式域}\label{sec:crt-frac}
+
+\subsection{中国剩余定理（Chinese Remainder Theorem）}
+
+\begin{definition}[互素理想]
+理想 $I, J$ 称为\keyword{互素}，若 $I + J = R$（等价地，$1\in I + J$）。
+\end{definition}
+
+回顾整数版本：$(a) + (b) = (\gcd(a,b))$，故 $(a)$ 与 $(b)$ 互素当且仅当
+$\gcd(a,b) = 1$。
+
+\begin{proposition}
+设 $R$ 为含幺交换环，$I, J$ 互素，则
+\[
+  I\cap J = IJ.
+\]
+\end{proposition}
+
+\begin{proof}
+（$\supseteq$）$IJ$ 中元素 $xy$（$x\in I$, $y\in J$）既属于 $I$ 又属于
+$J$，故 $IJ\subseteq I\cap J$。
+
+（$\subseteq$）由互素，写成 $1 = i + j$（$i\in I$, $j\in J$）。任取
+$a\in I\cap J$，则
+\[
+  a = a\cdot 1 = ai + aj,
+\]
+其中 $ai\in IJ$（$i\in I$ 且 $a\in J$），$aj\in IJ$（$a\in I$ 且
+$j\in J$），故 $a\in IJ$。
+\end{proof}
+
+\begin{example}[无幺元时命题不成立]
+取 $R = 2\Z$（无幺元），$I = J = R$，则 $I\cap J = 2\Z$ 而 $IJ = 4\Z$，
+两者不等。
+\end{example}
+
+\begin{theorem}[中国剩余定理（CRT）]
+设 $R$ 为含幺交换环，$I, J$ 互素，则
+\[
+  R/(I\cap J) \;\cong\; R/I\times R/J
+\]
+（由上一命题，左端分母也可写成 $IJ$）。
+\end{theorem}
+
+\begin{proof}
+构造环同态
+\[
+  \varphi\colon R\longrightarrow R/I\times R/J, \qquad
+  x\mapsto (x + I,\ x + J).
+\]
+
+\keyword{核：}$\varphi(x) = 0 \iff x\in I$ 且 $x\in J$，故
+$\ker\varphi = I\cap J$。
+
+\keyword{满：}任取 $(a + I,\ b + J)$。写 $1 = i + j$（$i\in I$,
+$j\in J$），取 $x = aj + bi$。则
+\[
+  x + I = aj + I = a(1-i) + I = a + I \quad(\text{因 }ai\in I),
+\]
+同理 $x + J = b + J$。故 $\varphi(x) = (a+I,\ b+J)$。
+
+由第一同构定理，$R/(I\cap J)\cong R/I\times R/J$。
+\end{proof}
+
+\begin{remark}[整数版本]
+$p, q$ 互素时（取 $I = p\Z$, $J = q\Z$），
+\[
+  \Z/pq\Z \;\cong\; \Z/p\Z\times\Z/q\Z.
+\]
+\end{remark}
+
+\subsection{单位、相伴与单位群（Group of Units）}
+
+\begin{definition}[单位]
+元素 $u\in R$ 称为\keyword{单位}（可逆元），若存在 $v\in R$ 使
+$uv = vu = 1$。注意一般的环中，除 $0$ 之外还可能有其他元素也不是单位
+（这与域不同）。
+\end{definition}
+
+\begin{definition}[相伴关系]
+在交换环中，定义 $r\sim s \iff$ 存在单位 $u$ 使 $r = us$。这是一个
+等价关系。
+\end{definition}
+
+\begin{definition}[单位群（Group of Units）]
+$R$ 的全体单位
+\[
+  R^\times = \{\,u\in R \mid u\text{ 是单位}\,\}
+\]
+在乘法下构成群，称为 $R$ 的\keyword{单位群}。
+\end{definition}
+
+\begin{example}
+$\Z^\times = \{\pm 1\}$；域 $k$ 上多项式环的单位恰为非零常数多项式：
+$k[x]^\times = k\setminus\{0\}$（次数 $\ge 1$ 的多项式均不可逆）。
+\end{example}
+
+\subsection{整环的分式域（Field of Fractions）}
+
+\block{分式域的构造}
+设 $R$ 为整环。形式上考虑“分数”
+\[
+  \frac{a}{b}, \qquad a\in R,\ b\in R\setminus\{0\}.
+\]
+分数的表示不唯一（$\frac{a}{b}$ 与 $\frac{2a}{2b}$ 是同一个分数），
+模去等价关系：
+\[
+  \frac{a}{b}\sim\frac{c}{d} \iff ad = bc
+\]
+（交叉相乘相等）。等价类全体记为 $\Frac(R)$，按普通分数的法则定义
+加法与乘法。
+
+\begin{theorem}[分式域]
+设 $R$ 为整环，则 $\Frac(R)$ 是域，称为 $R$ 的\keyword{分式域}。
+\end{theorem}
+
+\begin{proof}[证明要点]
+关键是每个非零元有逆：
+\[
+  \frac{a}{b}\ne 0 \iff a\ne 0,\qquad
+  \text{此时其逆为}\ \frac{b}{a};
+\]
+乘法幺元为 $\frac{1}{1}$（的等价类）。
+\end{proof}
+
+\begin{example}
+\[
+  \Frac(\Z) = \Q; \qquad
+  \Frac\big(k[x]\big) = k(x)\ (\text{有理函数域}).
+\]
+\end{example}
+
+\subsection{特征（Characteristic）与有限域 \texorpdfstring{$\F_p$}{Fp}}
+
+\begin{definition}[特征（Characteristic）]
+环 $R$ 的\keyword{特征} $\charr R$ 是使
+\[
+  \underbrace{1 + 1 + \cdots + 1}_{n\text{ 次}} = 0
+\]
+首次成立的最小正整数 $n$；若 $1$ 无论加多少次都不等于 $0$，则称特征为
+$0$。等价地，凡满足 $m\cdot 1 = 0$ 的整数 $m$ 都被 $\charr R$ 整除。
+\end{definition}
+
+\begin{proposition}
+整环（特别地，域）的特征若非零，必为素数。
+\end{proposition}
+
+\begin{example}[有限域 $\F_p$]
+对任意素数 $p$，模 $p$ 剩余类构成域
+\[
+  \F_p = \Z/p\Z,
+\]
+它是最小的特征为 $p$ 的域。
+\end{example}
+
+\block{构造（无穷的特征 $p$ 域）}
+从有限域 $\F_p$ 出发，先取多项式环 $\F_p[x]$（这是一个整环），再取其
+分式域：
+\[
+  \F_p(x) = \Frac\big(\F_p[x]\big),
+\]
+便得到一个元素个数无穷、特征为 $p$ 的域。

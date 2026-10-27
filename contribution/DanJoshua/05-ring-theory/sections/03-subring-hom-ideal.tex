@@ -1,0 +1,87 @@
+% ===========================================================================
+\section{子环、同态与理想}\label{sec:subring-hom-ideal}
+
+\subsection{子环与环同态}
+
+\begin{definition}[子环]
+$R'\subseteq R$ 称为 $R$ 的\keyword{子环}，若它在同样的加法与乘法下
+自身构成环。验证时只需检查 $R'$ 对\keyword{减法与乘法封闭}。
+\end{definition}
+
+\begin{definition}[环同态]
+映射 $f\colon R\to R'$ 称为\keyword{（环）同态}，若对任意 $a,b\in R$：
+\[
+  f(a+b) = f(a) + f(b), \qquad f(ab) = f(a)f(b).
+\]
+由于 $f$ 保加法，它自动是加法群同态，故 $f(0) = 0$，$f(-a) = -f(a)$。
+\end{definition}
+
+\begin{proposition}[像是子环]
+同态 $f\colon R\to R'$ 的像 $\Img f = \{\,f(a) : a\in R\,\}$ 是 $R'$
+的子环。
+\end{proposition}
+
+\begin{proof}
+由群论已知 $\Img f$ 对减法封闭；又 $f(a)f(b) = f(ab)\in\Img f$，
+对乘法封闭。
+\end{proof}
+
+\subsection{核与理想}
+
+\begin{definition}[核]
+环同态 $f\colon R\to R'$ 的\keyword{核}为
+\[
+  \ker f = \{\,b\in R : f(b) = 0\,\}.
+\]
+\end{definition}
+
+核是子环，且还有更强的性质：对任意 $a\in R$、$b\in\ker f$，
+\[
+  f(ab) = f(a)f(b) = f(a)\cdot 0 = 0 \;\Longrightarrow\; ab\in\ker f,
+\]
+同理 $ba\in\ker f$。即\keyword{环中任意元素乘核中元素（无论左右）仍
+落在核中}。
+
+\begin{definition}[理想（Ideal）]
+环 $R$ 的非空子集 $I$ 称为 $R$ 的\keyword{理想}，记 $I\ideal R$，若
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item $(I,+)$ 是 $(R,+)$ 的子群（对减法封闭）；
+  \item \keyword{吸收性}：对任意 $a\in R$、$b\in I$，有 $ab\in I$ 且
+        $ba\in I$。
+\end{enumerate}
+\end{definition}
+
+\begin{strand}
+理想的定义正是\keyword{照着核的性质}写出来的，因此同态的核自然是
+理想——理想在环论中的地位对应正规子群在群论中的地位。
+\end{strand}
+
+\subsection{商环（Quotient Ring）}
+
+设 $I$ 是环 $R$ 的理想。$(I,+)$ 是阿贝尔群 $(R,+)$ 的子群（自动正规），
+可考虑加法陪集
+\[
+  a + I = \{\,a + i : i\in I\,\},
+\]
+其全体记为 $R/I$。在 $R/I$ 上定义运算：
+\[
+  (a+I) + (b+I) = (a+b) + I, \qquad (a+I)(b+I) = ab + I.
+\]
+
+\begin{theorem}[商环]
+$(R/I, +, \cdot)$ 构成环，称为 $R$ 模 $I$ 的\keyword{商环}。
+\end{theorem}
+
+\begin{proof}
+加法部分的全部性质由商群理论保证；乘法只需验证\keyword{良好定义性}。
+设 $a + I = a' + I$，$b + I = b' + I$，则 $a' = a + i$，$b' = b + j$
+（$i,j\in I$），于是
+\[
+  a'b' = (a+i)(b+j) = ab + aj + ib + ij.
+\]
+由吸收性，$aj, ib, ij\in I$，故 $aj + ib + ij\in I$，从而
+\[
+  a'b' + I = ab + I,
+\]
+即乘积与代表元选取无关。
+\end{proof}

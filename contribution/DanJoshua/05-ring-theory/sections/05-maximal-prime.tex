@@ -1,0 +1,93 @@
+% ===========================================================================
+\section{极大理想与素理想}\label{sec:maximal-prime}
+
+\subsection{单环与域的刻画}
+
+\begin{definition}[平凡理想、单环]
+零理想 $\{0\}$ 与整个环 $R$ 称为\keyword{平凡理想}；没有非平凡理想的环
+称为\keyword{单环}（类比单群：没有非平凡正规子群的群）。
+\end{definition}
+
+\begin{theorem}[含幺交换环是域的刻画]
+设 $R$ 为含幺交换环，则
+\[
+  R\text{ 是域} \iff R\text{ 没有非平凡理想（}R\text{ 是单环）}.
+\]
+\end{theorem}
+
+\begin{proof}
+（$\Rightarrow$）域的理想只要包含非零元 $a$，由 $a$ 可逆，
+$1 = a^{-1}a$ 也落入该理想，于是理想等于整个环。
+
+（$\Leftarrow$）任取 $a\in R$，$a\ne 0$。因 $R$ 交换，
+$(a) = \{\,ra : r\in R\,\}$。$(a)\ne\{0\}$，而理想只有平凡的两个，故
+$(a) = R\ni 1$，即存在 $r$ 使 $ra = 1$，$a$ 可逆。每个非零元可逆，
+故 $R$ 是域。
+\end{proof}
+
+\subsection{极大理想（Maximal Ideal）}
+
+\begin{definition}[极大理想]
+理想 $M\subsetneq R$ 称为\keyword{极大理想}，若任何包含 $M$ 的理想
+$I$ 只有 $I = M$ 或 $I = R$ 两种可能。
+\end{definition}
+
+\begin{theorem}[极大理想的刻画]
+设 $R$ 为含幺交换环，$M\subsetneq R$ 为理想，则
+\[
+  M\text{ 是极大理想} \iff R/M\text{ 是域}.
+\]
+\end{theorem}
+
+\begin{proof}
+由对应定理，$R/M$ 的理想与 $R$ 中包含 $M$ 的理想一一对应。
+
+（$\Rightarrow$）$M$ 极大，故包含 $M$ 的理想只有 $M$ 与 $R$ 两个，
+从而 $R/M$ 没有非平凡理想。又 $R/M$ 交换，由上面的定理，$R/M$ 是域。
+
+（$\Leftarrow$）$R/M$ 是域，由上面的定理它没有非平凡理想，故 $R$ 中
+包含 $M$ 的理想只有 $M$ 与 $R$ 两个——这正是 $M$ 极大的定义。
+\end{proof}
+
+\subsection{素理想（Prime Ideal）}
+
+\begin{definition}[素理想]
+理想 $P\subsetneq R$ 称为\keyword{素理想}，若对任意 $a,b\in R$，
+\[
+  ab\in P \implies a\in P\ \text{或}\ b\in P.
+\]
+\end{definition}
+
+\begin{example}
+在 $\Z$ 中，素数 $p$ 的倍数构成素理想 $(p)$：若 $ab$ 是 $p$ 的倍数，
+则 $a, b$ 中至少一个是 $p$ 的倍数。
+\end{example}
+
+\begin{theorem}[素理想的刻画]
+设 $R$ 为含幺交换环，$P\subsetneq R$ 为理想，则
+\[
+  P\text{ 是素理想} \iff R/P\text{ 是整环}.
+\]
+\end{theorem}
+
+\begin{proof}
+商环 $R/P$ 中（零元即 $P$ 本身）：
+\[
+  (a + P)(b + P) = 0 \iff ab + P = P \iff ab\in P, \qquad
+  a + P = 0 \iff a\in P.
+\]
+
+（$\Rightarrow$）若 $P$ 是素理想：$(a+P)(b+P) = 0$ 即 $ab\in P$，
+由素理想定义 $a\in P$ 或 $b\in P$，即 $a+P = 0$ 或 $b+P = 0$。故 $R/P$
+无零因子，是整环。
+
+（$\Leftarrow$）若 $R/P$ 是整环：$ab\in P$ 即 $(a+P)(b+P) = 0$，
+由无零因子得 $a+P = 0$ 或 $b+P = 0$，即 $a\in P$ 或 $b\in P$。故 $P$
+是素理想。
+\end{proof}
+
+\begin{remark}
+两个方向的证明其实是同一串等价的正读与倒读：$ab\in P$ 与
+“$(a+P)(b+P)=0$”本就是一回事，素理想的定义正是“商环无零因子”的
+逐元素写法。
+\end{remark}

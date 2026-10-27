@@ -1,6 +1,6 @@
 # DanJoshua 课堂笔记索引
 
-本目录按 `00`–`04` 顺序存放五份笔记。每份笔记都包含已编译的 `main.pdf` 与对应 LaTeX 源文件；源文件入口均为各子目录下的 `main.tex`。
+本目录按 `00`–`06` 顺序存放七份笔记。每份笔记都包含已编译的 `main.pdf` 与对应 LaTeX 源文件；源文件入口均为各子目录下的 `main.tex`。
 
 | 顺序 | 目录 | 内容 | PDF | 源文件 |
 |---|---|---|---|---|
@@ -9,6 +9,8 @@
 | 02 | [`02-number-theory`](./02-number-theory/) | 数论初步：整除、欧几里得算法、素数分解、同余、Euler 定理、CRT、RSA | [`main.pdf`](./02-number-theory/main.pdf) | [`main.tex`](./02-number-theory/main.tex), [`sections/`](./02-number-theory/sections/) |
 | 03 | [`03-stern-brocot`](./03-stern-brocot/) | Stern–Brocot 树：构造、矩阵形式、性质、连分数、Calkin–Wilf、Farey 序列 | [`main.pdf`](./03-stern-brocot/main.pdf) | [`main.tex`](./03-stern-brocot/main.tex), [`sections/`](./03-stern-brocot/sections/) |
 | 04 | [`04-group-actions-sylow`](./04-group-actions-sylow/) | 群作用、类方程与 Sylow 定理：单群与合成列、轨道与稳定子、Burnside 引理、Sylow 三大定理及 $pq$ 阶群分类 | [`main.pdf`](./04-group-actions-sylow/main.pdf) | [`main.tex`](./04-group-actions-sylow/main.tex), [`sections/`](./04-group-actions-sylow/sections/) |
+| 05 | [`05-ring-theory`](./05-ring-theory/) | 环与理想：商环与第一同构定理、极大理想与素理想、中国剩余定理、分式域与特征 | [`main.pdf`](./05-ring-theory/main.pdf) | [`main.tex`](./05-ring-theory/main.tex), [`sections/`](./05-ring-theory/sections/) |
+| 06 | [`06-ufd-field-extensions`](./06-ufd-field-extensions/) | 唯一分解与域扩张：UFD/PID/欧几里得整环、分裂域、有限域的构造 | [`main.pdf`](./06-ufd-field-extensions/main.pdf) | [`main.tex`](./06-ufd-field-extensions/main.tex), [`sections/`](./06-ufd-field-extensions/sections/) |
 
 ## 编译说明
 

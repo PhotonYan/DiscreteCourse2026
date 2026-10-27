@@ -1,0 +1,82 @@
+% ===========================================================================
+\section{域扩张}\label{sec:extensions}
+
+\subsection{域扩张与扩域的线性空间结构}
+
+\begin{definition}[域扩张（Field Extension）]
+设 $F\subseteq E$ 都是域，称 $F$ 是 $E$ 的\keyword{子域}，$E$ 是 $F$
+的\keyword{扩域}（扩张）。
+\end{definition}
+
+\begin{example}
+\leavevmode
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item $E = F[x]/(p(x))$（$p$ 不可约）：$F$ 可看作 $E$ 的子域
+        （常数多项式的等价类构成与 $F$ 同构的子域）；
+  \item $E = \Frac(F[x])$（有理函数域）。
+\end{itemize}
+\end{example}
+
+\begin{remark}[扩域的线性空间结构]
+扩域 $E$ 天然地是基域 $F$ 上的\keyword{线性空间}：数乘就是域中的乘法，
+逐条代入即知线性空间公理都满足。
+\end{remark}
+
+\subsection{特征与素域}
+
+\block{复习（特征，Characteristic）}
+含幺环 $R$ 的特征 $\chr R$ 是使
+$\underbrace{1+\cdots+1}_{n\text{ 个}} = 0$ 首次成立的最小正整数 $n$；
+若永不成立则为 $0$。
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item $\chr R = n\ne 0$：由 $1$ 反复加减得到的元素构成子环，同构于
+        $\Z/n\Z$；
+  \item $\chr R = 0$：该子环同构于 $\Z$；
+  \item $R$ 是\keyword{整环}且特征非零时，特征必为素数 $p$
+        （整环无零因子）。
+\end{itemize}
+
+\block{域的情形（素域，Prime Field）}
+设 $F$ 为域：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item $\chr F = p\ne 0$：$F$ 有子域同构于 $\F_p = \Z/p\Z$；
+  \item $\chr F = 0$：先有子环同构于 $\Z$；域中非零元都是单位，由分式域
+        的泛性质，$F$ 含有子域同构于 $\Frac(\Z) = \Q$。
+\end{itemize}
+这个最小的子域（$\F_p$ 或 $\Q$）称为 $F$ 的\keyword{素域}。
+
+\subsection{有限域的大小必为素数幂}
+
+\begin{theorem}[有限域的大小]
+设 $E$ 为有限域，则 $|E| = p^k$ 为某个素数 $p$ 的幂。
+\end{theorem}
+
+\begin{proof}
+有限域的特征必有限，故特征为某个素数 $p$；于是 $E$ 含有素域 $\F_p$；
+而 $E$ 是 $\F_p$ 上的线性空间，故
+\[
+  |E| = p^k, \qquad k = \dim_{\F_p} E.
+\]
+\end{proof}
+
+\begin{remark}[自然的问题]
+是不是所有素数幂 $p^k$ 都能取到？构造方法：从 $\F_p$ 出发，取
+$\F_p[x]$ 模掉一个 $k$ 次不可约多项式 $f$：
+\[
+  \F_p[x]/(f).
+\]
+由上一节的推论这是一个域，且有 $p^k$ 个元素（等价类由次数 $<k$ 的余式
+代表）。所以问题归结为：\keyword{任意次数的不可约多项式是否存在}
+（下一讲证明）。
+\end{remark}
+
+\subsection{扩张次数 \texorpdfstring{$[E:F]$}{[E:F]}}
+
+\begin{definition}[扩张次数]
+对域扩张 $F\subseteq E$，记
+\[
+  [E : F] := \dim_F E,
+\]
+即 $E$ 作为 $F$ 上线性空间的维数。注意与群论的记号不同：$[G:H]$ 表示
+陪集的个数（指数）。
+\end{definition}

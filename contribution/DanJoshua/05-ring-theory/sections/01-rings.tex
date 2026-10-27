@@ -1,0 +1,68 @@
+% ===========================================================================
+\section{环的定义}\label{sec:rings}
+
+\subsection{环与含幺环}
+
+\begin{definition}[环（Ring）]
+环 $(R, +, \cdot)$ 是一个集合 $R$ 连同两个二元运算——\keyword{加法} $+$
+与\keyword{乘法} $\cdot$（常省略记 $ab$），满足：
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item $(R, +)$ 是\keyword{阿贝尔群}：结合律、交换律、存在零元 $0$、
+        每个 $a$ 有负元 $-a$；
+  \item $(R, \cdot)$ 是\keyword{半群}：结合律 $(ab)c = a(bc)$；
+  \item \keyword{分配律}（乘法对加法）：
+        \[
+          a(b+c) = ab + ac, \qquad (a+b)c = ac + bc.
+        \]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[含幺环]
+若存在 $1\in R$ 使对任意 $a\in R$ 有 $1\cdot a = a\cdot 1 = a$，则称 $R$
+为\keyword{含幺环}。
+\end{definition}
+
+\begin{remark}[术语说明]
+环的定义在文献中不统一：一派把不一定含幺的结构叫环（ring），含幺的叫
+含幺环；另一派把含幺的叫环，不一定含幺的叫 \keyword{rng}（把 ``ring''
+中的 ``i''（identity）丢掉）。后面真正关心的对象（如域）几乎都是含幺
+且交换的。
+\end{remark}
+
+\begin{example}[无幺元的环]
+在任一阿贝尔群上定义乘法 $a\cdot b = 0$（任意两元素相乘恒为零），则除
+“存在幺元”外其余公理全部满足。
+\end{example}
+
+\subsection{交换环、除环、域}
+
+\begin{definition}[交换环]
+乘法满足交换律 $ab = ba$ 的环称为\keyword{交换环}。
+\end{definition}
+
+\begin{definition}[除环（Division Ring）]
+若含幺环 $R$ 中每个非零元素都有乘法逆，即对任意 $a\ne 0$ 存在 $a^{-1}$
+使
+\[
+  a\cdot a^{-1} = a^{-1}\cdot a = 1,
+\]
+则称 $R$ 为\keyword{除环}（体）。
+\end{definition}
+
+\begin{definition}[域（Field）]
+交换的除环称为\keyword{域}。即：含幺、交换、每个非零元可逆。
+\end{definition}
+
+\subsection{零因子与整环}
+
+\begin{definition}[零因子（Zero Divisor）]
+环 $R$ 中若存在 $a\ne 0$，$b\ne 0$ 使得 $ab = 0$，则称 $a$ 为
+\keyword{左零因子}、$b$ 为\keyword{右零因子}，统称\keyword{零因子}。
+\end{definition}
+
+除环（特别地，域）中没有零因子：若 $ab = 0$ 且 $a\ne 0$，两边左乘
+$a^{-1}$ 即得 $b = 0$。
+
+\begin{definition}[整环（Integral Domain）]
+无零因子的交换（含幺）环称为\keyword{整环}。
+\end{definition}

@@ -1,0 +1,96 @@
+% ===========================================================================
+\section{唯一分解整环（UFD）}\label{sec:ufd}
+
+\subsection{概览：整环与域之间的三个层次}
+
+环的谱系：
+\[
+  \text{环} \supset \text{交换环} \supset \text{整环} \supset \text{域}.
+\]
+本讲把「整环」到「域」之间再拆成三层，一层比一层性质更好：
+\[
+  \text{整环} \supset \text{唯一分解整环 (UFD)} \supset
+  \text{主理想整环 (PID)} \supset \text{欧几里得整环 (ED)}.
+\]
+最重要的是：我们关心的环——\keyword{域上的多项式环 $F[x]$}——具有上述
+所有好性质。
+
+\subsection{单位、整除与相伴（复习）}
+
+以下均在交换环 $R$ 中讨论。
+
+\begin{definition}[单位（Unit）]
+$a\in R$ 是\keyword{单位}，若存在 $a^{-1}\in R$ 使
+$a\cdot a^{-1} = 1$。（例：$\Z$ 的单位只有 $\pm 1$。）
+\end{definition}
+
+\begin{definition}[整除]
+$a\mid b$，若存在 $c\in R$ 使 $b = ac$。
+\end{definition}
+
+\begin{definition}[相伴（Associate）]
+$a$ 与 $b$ \keyword{相伴}，若存在单位 $u\in R^\times$ 使 $a = bu$。
+\end{definition}
+
+若 $a$ 与 $b$ 相伴，显然 $a\mid b$ 且 $b\mid a$。反过来，在整环中也成立：
+
+\begin{proposition}[互整除则相伴]
+设 $R$ 为整环，$a,b\in R$。若 $a\mid b$ 且 $b\mid a$，则 $a$ 与 $b$ 相伴。
+\end{proposition}
+
+\begin{proof}
+由条件存在 $c,d$ 使 $b = ac$，$a = bd$。于是 $a = adc$，即
+$a\cdot 1 = a\cdot dc$。整环中有消去律，消去 $a$（设 $a\ne 0$）得
+$dc = 1$，故 $c, d$ 都是单位。
+\end{proof}
+
+\subsection{素元与不可约元}
+
+动机：整数中任何非零自然数都唯一地分解为素数之积（不计次序）。要推广到
+一般整环，先定义「素」与「不可约」——分解只有限制在不可约因子上才谈得
+上唯一。
+
+\begin{definition}[素元（Prime Element）]
+非零非单位元素 $p\in R$ 称为\keyword{素元}，若
+\[
+  p\mid ab \;\Longrightarrow\; p\mid a\ \text{或}\ p\mid b.
+\]
+\end{definition}
+
+\begin{definition}[不可约元（Irreducible）]
+非零非单位元素 $a\in R$ 称为\keyword{不可约元}（既约元），若
+\[
+  d\mid a \;\Longrightarrow\; d\ \text{与}\ a\ \text{相伴，或}\
+  d\ \text{是单位},
+\]
+即 $a$ 只有平凡的因子。
+\end{definition}
+
+\begin{proposition}[素元不可约]
+在整环中，素元一定是不可约元；反之不然（反例见第 \ref{sec:counter} 节）。
+\end{proposition}
+
+\subsection{唯一分解整环}
+
+\begin{definition}[唯一分解整环（Unique Factorization Domain, UFD）]
+整环 $R$ 称为\keyword{唯一分解整环}，若每个非零元 $r\in R$ 都可写成
+\[
+  r = u\, p_1 p_2 \cdots p_t,
+\]
+其中 $u\in R^\times$ 是单位，$p_i$ 是不可约元；且该分解在
+\keyword{相伴与交换次序}的意义下唯一。
+\end{definition}
+
+\begin{remark}
+\leavevmode
+\begin{itemize}[leftmargin=1.3em,itemsep=1pt]
+  \item 「唯一」必须在相伴意义下理解：$6 = 2\times 3 = (-2)\times(-3)$，
+        但 $2$ 与 $-2$ 相伴，仍是同一个分解；
+  \item 前面的单位 $u$ 用来涵盖 $r$ 本身是单位的情形（此时 $t = 0$）。
+        若不愿意写 $u$，也可以把等号改为相伴关系。
+\end{itemize}
+\end{remark}
+
+\begin{example}
+$\Z$ 是 UFD（算术基本定理）。
+\end{example}

@@ -1,0 +1,52 @@
+% ===========================================================================
+%  离散数学与结构（I） 2026-10-15（第 3--4 节）课堂笔记
+%  唯一分解与域扩张：从 UFD 到有限域
+%  Compile:  xelatex main   (twice, for bookmarks and cross-references)
+% ===========================================================================
+\documentclass[cjk]{loom}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Frac}{\mathrm{Frac}}           % 分式域
+\newcommand{\chr}{\mathrm{char}}            % 特征
+
+\runningthread{离散数学与结构 · 第四周（下）}
+
+\begin{document}
+
+\loomcover
+  {唯一分解与域扩张：从 UFD 到有限域}
+  {离散数学与结构（I）· 第四周（下）课堂笔记}
+  {}
+  {2026 年 10 月 15 日}
+
+\begin{strand}
+本讲脉络：在「整环」与「域」之间再分出三层——\keyword{UFD $\supset$ PID
+$\supset$ ED}，一层比一层性质更好，而我们最关心的域上多项式环 $F[x]$
+具有全部好性质。先复习整除与相伴，定义\keyword{素元}与\keyword{不可约元}，
+给出\keyword{唯一分解整环}的定义；随即用 $\Z[\sqrt{-5}]$ 与 $\Z[\sqrt{10}]$
+两个反例说明唯一分解并不自动成立。接着给出 UFD 的刻画
+（\keyword{因子链条件} + \keyword{素性条件}），证明 PID $\Rightarrow$ UFD、
+ED $\Rightarrow$ PID。应用上：PID 中 $(p)$ 极大当且仅当 $p$ 不可约，
+由此用 $F[x]/(f)$ 构造域；再补充分式域的\keyword{泛性质}。后半讲转入
+\keyword{域扩张}：扩域是基域上的线性空间，特征与\keyword{素域}，
+有限域大小必为素数幂，扩张次数 $[E:F]$；$F[x]/(f)$ 中 $f$ 有根与
+\keyword{嵌入定理}；最后引出\keyword{分裂域}。
+\end{strand}
+
+\clearpage
+{\small\tableofcontents}
+
+\clearpage
+\input{sections/01-ufd}
+\input{sections/02-counterexamples}
+\input{sections/03-pid-ed}
+\input{sections/04-maximal-fields}
+\input{sections/05-extensions}
+\input{sections/06-splitting}
+
+\end{document}

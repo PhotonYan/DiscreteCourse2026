@@ -1,0 +1,88 @@
+% ===========================================================================
+\section{嵌入定理与分裂域}\label{sec:splitting}
+
+\subsection{\texorpdfstring{$F[x]/(f)$}{F[x]/(f)} 中
+\texorpdfstring{$f$}{f} 有根；嵌入定理}
+
+\begin{remark}[观察：不可约多项式在商环中获得根]
+设 $f\in F[x]$ 不可约，$E := F[x]/(f)$。
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item $f$ 在 $F$ 上不可约，故在 $F$ 中无根（若 $\alpha$ 是根，则
+        $x - \alpha$ 是 $f$ 的因子）；
+  \item 但在 $E$ 中 $f$ \keyword{有根}：根就是 $\bar x$（$x$ 在商环中的
+        像）——$f(\bar x) = \overline{f(x)} = 0$，因为 $f(x)\in(f)$，
+        而理想中的元素在商环中就是 $0$；
+  \item 于是 $f$ 在 $E$ 中变得可约：在 $E[Y]$ 中（改用 $Y$ 表示变量），
+        一次因子 $Y - \bar x$ 整除 $f(Y)$。
+\end{itemize}
+\end{remark}
+
+\begin{theorem}[嵌入定理 / 构造的唯一性]
+设 $f\in F[x]$ 不可约，$E = F[x]/(f)$。设 $E'$ 是 $F$ 的扩域且 $f$ 在
+$E'$ 中有根 $u$（即 $f(u) = 0$），则存在\keyword{保 $F$ 的单同态}
+\[
+  \varphi\colon E = F[x]/(f)\hookrightarrow E'
+\]
+（保 $F$：$\varphi$ 限制在 $F$ 上是恒等）。
+\end{theorem}
+
+\begin{proof}
+定义 $\varphi$ 为\keyword{赋值映射}：把等价类 $\alpha$ 映到
+$\alpha(u)$，即 $\bar x\mapsto u$。
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item \keyword{良定义：}若 $\alpha' = \alpha + q\cdot f$ 是同一等价类
+        的另一代表，则 $\alpha'(u) = \alpha(u) + q(u)f(u) = \alpha(u)$
+        （因 $f(u) = 0$）；
+  \item \keyword{同态：}和在某点的取值等于取值的和，积同理；
+  \item \keyword{单射：}域之间的非零同态必为单射（核是理想，而域只有
+        平凡理想）。
+\end{itemize}
+\end{proof}
+
+\begin{remark}[意义]
+任何使 $f$ 有根的扩域 $E'$ 都同构地包含 $F[x]/(f)$——它是
+\keyword{使 $f$ 有根的最小扩域}。注意嵌入一般不唯一：$f$ 在 $E'$ 中
+每个根都给出一个嵌入（$\bar x$ 映到哪个根）。
+\end{remark}
+
+\subsection{分裂域}
+
+\begin{definition}[分裂（Split）]
+设 $f\in F[x]$。若 $f$ 在扩域 $E$ 上完全分解（在 $E[x]$ 中写成一次
+多项式之积），称 $f$ 在 $E$ 中\keyword{分裂}。
+\end{definition}
+
+\begin{example}
+$\R$ 上并非每个多项式都分裂；扩到 $\C$ 后所有多项式都分裂。使 $f$
+分裂的扩域不唯一：$x^2 - 2$ 在 $\Q$ 上不可约，在 $\R$ 与 $\C$ 上都
+分裂。
+\end{example}
+
+\begin{definition}[分裂域（Splitting Field）]
+使 $f$ 分裂的\keyword{最小}扩域称为 $f$ 在 $F$ 上的\keyword{分裂域}。
+\end{definition}
+
+\block{目标定理（证明见下一讲）}
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item 对任何素数幂 $p^k$，存在大小为 $p^k$ 的有限域，且在同构意义下
+        唯一；
+  \item 对任何域 $F$ 与 $f\in F[x]$，分裂域存在且在同构意义下唯一。
+\end{enumerate}
+
+\begin{strand}
+\keyword{分裂域存在性的直观构造：}把 $f$ 在 $F[x]$ 中分解为不可约因子；
+一次因子不用管；取一个次数 $\ge 2$ 的不可约因子，按上一小节做一次商
+（加入它的一个根），$f$ 就劈出一个一次因子；若尚未分解完全，继续往上
+扩，有限步后得到分裂域。
+\end{strand}
+
+\begin{example}[一次取商一般得不到分裂域]
+取 $\Q$ 上三次不可约多项式：加入一个根后只进来一个根，剩下一个二次
+因子仍不可约，需要再做一次二次扩张。分裂域是六次扩张：先三次再二次，
+$3\times 2 = 6$。
+\end{example}
+
+\begin{remark}[扩张顺序不影响结果]
+从 $F$ 出发可以先加这个根、也可以先加那个根；对两条扩张路径分别用
+嵌入定理构造单同态，拼起来即得两个扩域之间的同构。
+\end{remark}

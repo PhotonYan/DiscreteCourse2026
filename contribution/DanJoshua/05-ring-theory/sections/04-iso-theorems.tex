@@ -1,0 +1,140 @@
+% ===========================================================================
+\section{同构定理}\label{sec:iso-theorems}
+
+\subsection{第一同构定理（同态基本定理）}
+
+\begin{theorem}[环的第一同构定理]
+设 $f\colon R\to R'$ 为环同态，则 $f$ 可分解为满同态、同构、单同态的
+复合：
+\[
+  R \xrightarrow{\ \pi\ } R/\ker f \xrightarrow{\ \bar f\ }
+  \Img f \xrightarrow{\ \iota\ } R',
+\]
+其中 $\pi\colon a\mapsto a+\ker f$ 是典范投影（满同态），
+$\iota\colon\Img f\hookrightarrow R'$ 是包含映射（单同态），
+$\bar f\colon a+\ker f\mapsto f(a)$ 是诱导同构。特别地，
+\[
+  R/\ker f \;\cong\; \Img f.
+\]
+\end{theorem}
+
+\begin{proof}[证明要点]
+$\bar f$ 的良好定义性：若 $a' = a + i$（$i\in\ker f$），则
+\[
+  f(a') = f(a) + f(i) = f(a) + 0 = f(a).
+\]
+$\bar f$ 显然满；又 $\bar f(a+\ker f) = 0 \iff f(a) = 0 \iff a\in\ker f$，
+故单，从而是同构。
+\end{proof}
+
+\subsection{理想的运算}
+
+\begin{proposition}[理想之交仍为理想]
+任意多个理想的交仍是理想（由定义逐条验证即得）。
+\end{proposition}
+
+\begin{definition}[生成理想与主理想（Principal Ideal）]
+设 $S\subseteq R$，所有包含 $S$ 的理想之交是包含 $S$ 的\keyword{最小
+理想}，称为 \keyword{$S$ 生成的理想}，记 $\langle S\rangle$。由单个
+元素生成的理想 $\langle a\rangle$ 称为\keyword{主理想}。
+\end{definition}
+
+\begin{proposition}[生成理想的显式刻画]
+\[
+  \langle S\rangle = \left\{ \sum_{i=1}^{n} x_i\, s_i\, y_i
+    \ \middle|\ n\in\N,\ x_i, y_i\in R,\ s_i\in S \right\}.
+\]
+特别地，$\langle a\rangle = \left\{\sum_i x_i\, a\, y_i\right\}$。
+若 $R$ 交换（含幺），则
+\[
+  \langle a\rangle = aR = \{\,ar : r\in R\,\}.
+\]
+\end{proposition}
+
+\begin{proof}
+右端 $\subseteq \langle S\rangle$：由吸收性每项
+$x_i s_i y_i\in\langle S\rangle$，有限和亦然。右端
+$\supseteq \langle S\rangle$：右端对加减法封闭，且被任意环元素左乘
+（右乘）后形状不变（乘进去的元素吸收进 $x_i$ 或 $y_i$），故右端本身是
+包含 $S$ 的理想。
+\end{proof}
+
+\begin{definition}[理想的和]
+设 $I, J$ 为理想，定义
+\[
+  I + J = \{\,x + y \mid x\in I,\ y\in J\,\}.
+\]
+\end{definition}
+
+\begin{proposition}
+$I + J$ 仍是理想。
+\end{proposition}
+
+\begin{proof}
+加减封闭：$(x_1 + y_1)\pm(x_2 + y_2) = (x_1\pm x_2) + (y_1\pm y_2)\in I+J$。
+吸收性：对任意 $r\in R$，
+\[
+  r(x+y) = rx + ry, \qquad rx\in I,\ ry\in J,
+\]
+故 $r(x+y)\in I+J$；另一侧同理。
+\end{proof}
+
+\begin{definition}[理想的积]
+字面乘积集合 $\{xy \mid x\in I, y\in J\}$ 一般不是理想，定义 $IJ$ 为它
+\keyword{生成的理想}。
+\end{definition}
+
+\begin{example}[$\Z$ 的理想都是主理想]
+设 $I$ 是 $\Z$ 的理想，令 $d = \gcd\{\,a \mid a\in I\,\}$。辗转相减始终
+在 $I$ 内部进行，故 $d\in I$，从而 $(d)\subseteq I$；另一方面 $I$ 中
+元素都是 $d$ 的倍数，即 $I\subseteq(d)$。所以 $I = (d)$：$\Z$ 的每个
+理想都是主理想。由此
+\[
+  (a) + (b) = \big(\gcd(a,b)\big), \qquad
+  (a)\cap(b) = \big(\mathrm{lcm}(a,b)\big), \qquad
+  (a)(b) = (ab).
+\]
+这些好性质只对整数环成立，一般的环没有这么好的事情。
+\end{example}
+
+\subsection{同构定理（续）}
+
+\begin{definition}[同构]
+既是同态又是双射的映射称为\keyword{同构}；同构的两个对象在代数意义上
+等价。
+\end{definition}
+
+\block{商同态}
+对任意理想 $I$，自然满同态
+\[
+  \pi\colon R\longrightarrow R/I, \qquad x\mapsto x + I,
+\]
+的核恰为 $I$。
+
+\begin{theorem}[第三同构定理]
+设 $I\subseteq J$ 是 $R$ 的理想，则
+\[
+  (R/I)\,\big/\,(J/I) \;\cong\; R/J.
+\]
+\end{theorem}
+
+\begin{proof}
+构造 $\varphi\colon R/I\to R/J$，$x + I\mapsto x + J$（由
+$I\subseteq J$ 知良定义）。它是满射，且
+\[
+  \ker\varphi = \{\,x + I : x\in J\,\} = J/I,
+\]
+由第一同构定理即得。
+\end{proof}
+
+\begin{theorem}[对应定理]
+设 $\varphi\colon R\to R'$ 是满同态，则有双射
+\[
+  \{\,R\text{ 中包含 }\ker\varphi\text{ 的理想}\,\}
+  \;\longleftrightarrow\;
+  \{\,R'\text{ 的理想}\,\},
+\]
+正向取像 $I\mapsto\varphi(I)$，反向取原像
+$J'\mapsto\varphi^{-1}(J')$。特别地（取 $\varphi$ 为商同态），$R/I$
+的理想与 $R$ 中包含 $I$ 的理想一一对应。
+\end{theorem}

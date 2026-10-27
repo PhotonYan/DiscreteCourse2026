@@ -1,0 +1,79 @@
+% ===========================================================================
+\section{环的例子}\label{sec:ring-examples}
+
+\begin{example}[数环]
+$\Z$、$\Q$、$\R$、$\C$ 在通常加法与乘法下都是含幺交换环。
+\end{example}
+
+\begin{example}[模 $n$ 剩余类环]
+$\Z/n\Z$ 是含幺交换环；$n$ 为合数时有零因子。
+\end{example}
+
+\begin{example}[矩阵环]
+设 $R$ 是环，$R$ 上全体 $n\times n$ 矩阵 $M_n(R)$ 在通常矩阵加法与乘法
+下构成环。$R$ 含幺当且仅当 $M_n(R)$ 含幺（单位矩阵）；即使 $R$ 交换，
+$M_n(R)$（$n\ge 2$）一般也不交换。
+\end{example}
+
+\begin{example}[自同态环]
+设 $A$ 为阿贝尔群，全体自同态 $\End(A)$ 构成环：加法逐点定义
+$(f+g)(a) = f(a)+g(a)$，乘法为复合 $f\circ g$。
+\end{example}
+
+\begin{example}[直积]
+环的笛卡尔积 $R_1\times R_2\times R_3$ 在按分量的运算下构成环。
+\end{example}
+
+\begin{example}[函数环]
+对任意集合 $S$ 与环 $R$，全体映射
+\[
+  R^S = \{\,f\colon S\to R\,\}
+\]
+在逐点运算下构成环。取 $S = \{1,2,3\}$ 时 $R^S$ 就是直积
+$R\times R\times R$。
+\end{example}
+
+\begin{example}[多项式环]
+设 $R$ 为环，$X$ 为形式符号，定义\keyword{多项式环}
+\[
+  R[X] = \left\{ f(X) = c_0 + c_1 X + \cdots + c_n X^n
+    \ \middle|\ c_i\in R \right\},
+\]
+元素是只有有限项非零的形式多项式；加法对应系数相加，乘法按形式展开
+合并同类项。一般讨论中要求 $R$ 含幺且交换，但单就写出定义而言这两个
+条件都不必要。
+\end{example}
+
+\begin{example}[群环 / 半群环]
+设 $R$ 为环，$G$ 为半群，定义\keyword{半群环} $R[G]$：元素为形式有限和
+\[
+  \sum_{g\in G} r_g\, g, \qquad r_g\in R\ (\text{仅有限个非零}),
+\]
+加法对应项相加，乘法由分配律展开（系数在 $R$ 中相乘、半群元素在 $G$
+中相乘）：
+\[
+  \left(\sum_g r_g g\right)\left(\sum_h s_h h\right)
+  = \sum_{g,h} r_g s_h\, (gh).
+\]
+取半群 $G = \{X^0, X^1, X^2, \dots\}$（$X^i\cdot X^j = X^{i+j}$），
+$R[G]$ 正是多项式环 $R[X]$。
+\end{example}
+
+\begin{example}[Hamilton 四元数]
+取四个符号 $1, i, j, k$，规定
+\[
+  i^2 = j^2 = k^2 = -1, \qquad
+  ij = k,\ ji = -k,\ jk = i,\ kj = -i,\ ki = j,\ ik = -j.
+\]
+\keyword{实四元数环} $\HH$ 的元素形如 $a + bi + cj + dk$
+（$a,b,c,d\in\R$）。$\HH$ 的特点：
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+  \item \keyword{不交换}：$ij = k$ 而 $ji = -k$；
+  \item 但它是\keyword{除环}：$a+bi+cj+dk\ne 0$ 时
+        \[
+          (a+bi+cj+dk)^{-1}
+          = \frac{a - bi - cj - dk}{a^2+b^2+c^2+d^2}.
+        \]
+\end{itemize}
+这是一个“不交换但每个非零元可逆”的除环（因而不是域）的例子。
+\end{example}
