@@ -1,0 +1,101 @@
+# 群作用、轨道与 Burnside 引理
+
+“对称意义下有多少种不同对象”这句话可以严格化为：群 $G$ 作用在集合 $S$ 上，数**轨道**的个数。Burnside 引理把轨道数化成“每个群元素的不动点个数”的平均，这是本讲所有计数公式的出发点。
+
+**本节用到的记号：** $G\times S\to S$ 为左作用；$\operatorname{Orb}(x)=\{g\cdot x:g\in G\}$；$\operatorname{Stab}(x)=\{g\in G:g\cdot x=x\}$；$S/G$ 为轨道集合；$\operatorname{Fix}(g)=\{x\in S:g\cdot x=x\}$。
+
+## 群作用与轨道
+
+**定义.** 群 $G$ 在集合 $S$ 上的一个**左作用**是映射 $G\times S\to S$，$(g,x)\mapsto g\cdot x$，满足
+
+$$
+e\cdot x=x,\qquad (gh)\cdot x=g\cdot(h\cdot x).
+$$
+
+对每个 $g\in G$，$x\mapsto g\cdot x$ 是 $S$ 的一个置换；于是有同态 $G\to\operatorname{Sym}(S)$。
+
+**轨道与稳定子.** $x$ 的轨道是它能被 $G$ 送到的一切元素；稳定子是固定 $x$ 的群元素。轨道是 $S$ 的划分，$S/G$ 表示全体轨道。
+
+**命题（轨道--稳定子）.** 对任意 $x\in S$，
+
+$$
+|G|=|\operatorname{Orb}(x)|\cdot|\operatorname{Stab}(x)|,
+$$
+
+即 $|\operatorname{Orb}(x)|=[G:\operatorname{Stab}(x)]$。
+
+**证明思路.** 构造双射 $G/\operatorname{Stab}(x)\to\operatorname{Orb}(x)$，$g\operatorname{Stab}(x)\mapsto g\cdot x$；良定义与单射来自稳定子的定义，满射显然。$\square$
+
+## Burnside 引理
+
+**定理（Burnside）.** 有限群 $G$ 作用在有限集 $S$ 上，则轨道数为
+
+$$
+|S/G|=\frac{1}{|G|}\sum_{g\in G}|\operatorname{Fix}(g)|.
+$$
+
+**证明（双计数）.** 数集合
+
+$$
+X=\{(g,x)\in G\times S:g\cdot x=x\}.
+$$
+
+按 $g$ 数：$|X|=\sum_{g\in G}|\operatorname{Fix}(g)|$。按 $x$ 数：固定 $x$ 的 $g$ 有 $|\operatorname{Stab}(x)|$ 个，所以
+
+$$
+|X|=\sum_{x\in S}|\operatorname{Stab}(x)|
+=\sum_{x\in S}\frac{|G|}{|\operatorname{Orb}(x)|}
+=|G|\sum_{x\in S}\frac{1}{|\operatorname{Orb}(x)|}.
+$$
+
+同一轨道内的元素贡献相同，若轨道为 $O$，其中每个 $x$ 贡献 $1/|O|$，整条轨道共贡献 $1$。于是 $|X|=|G|\cdot|S/G|$，即得公式。$\square$
+
+**使用要点.** 把 $S$ 取成“所有染色/标号方案”，$G$ 取成“允许的对称操作”；Burnside 数出的就是**对称意义下的方案数**。
+
+## 例一：四颗珠子的旋转染色
+
+用黑白两色给 $4$ 个位置染色，只允许旋转（群 $C_4$）。所有染色共 $2^4=16$ 种。
+
+四个旋转的不动点数：
+
+- 转 $0^\circ$（恒等）：$16$；
+- 转 $90^\circ$ 或 $270^\circ$：四颗必须同色，$2$ 种；
+- 转 $180^\circ$：两对相对位置分别同色，$2^2=4$ 种。
+
+由 Burnside，
+
+$$
+|S/C_4|=\frac{1}{4}(16+2+4+2)=6.
+$$
+
+若进一步允许**翻转**（群 $D_4$），还要数 $4$ 个翻转的不动点：两条顶点轴各固定 $2^3=8$ 种，两条边轴各固定 $2^2=4$ 种，于是
+
+$$
+|S/D_4|=\frac{1}{8}(16+2+4+2+8+8+4+4)=6.
+$$
+
+（这个例子中两种群给出的轨道数恰好相同；一般并不相同。）
+
+## 例二：$GL_2(\mathbb F_q)$ 共轭作用
+
+$G=GL_2(\mathbb F_q)$ 通过 $g\cdot M=gMg^{-1}$ 作用在 $2\times2$ 矩阵集合 $M_2(\mathbb F_q)$ 上；轨道就是共轭类。由 Burnside，
+
+$$
+\#\text{共轭类}
+=\frac{1}{|G|}\#\{(g,M):gM=Mg\}.
+$$
+
+按 $M$ 的中心化子大小分类可以算出结果为
+
+$$
+q^2+q.
+$$
+
+也可直接按特征多项式分类：标量矩阵 $q$ 类；非标量、有重特征值但不可对角化 $q$ 类；两个不同特征值（无序）$\binom q2$ 类；不可约二次特征多项式 $\frac{q^2-q}{2}$ 类，合计 $q^2+q$。这个例子说明 Burnside 也可以用来数“矩阵在相似意义下的类型”。
+
+## 本节的提醒
+
+- **$|\operatorname{Fix}(g)|$ 是对整个 $S$ 数的**，不是只数某个轨道。
+- **群作用要与“等价关系”一致**：旋转、翻转、置换标签分别对应不同的群；换群就换答案。
+- **轨道--稳定子**给出单个轨道大小；Burnside 给出轨道个数，两者不要混。
+- 恒等元的不动点数就是 $|S|$，可作为公式中的首项检查。

@@ -1,0 +1,127 @@
+\section{循环指数与 Pólya 计数}
+
+
+Burnside 只给出“颜色数固定时的方案数”。
+
+若还想知道“用了几种颜色、每种颜色几个”，就要把每个群元素的\textbf{轮换结构}编码成多项式，再代入颜色权重——这就是循环指数与 Pólya 计数。
+
+\textbf{本节用到的记号：} 置换 $g$ 的轮换型记为 $1^{c_1}2^{c_2}\cdots$，其中 $c_i(g)$ 是长度为 $i$ 的轮换个数。
+
+$Z_G(t_1,t_2,\dots)$ 为循环指数；$C$ 为颜色数；$w_1,\dots,w_C$ 为颜色权重。
+
+\subsection{置换的轮换型与循环指数}
+
+
+\textbf{定义（循环指数）.} 有限群 $G$ 作用在有限集 $\Omega$ 上，对 $g\in G$ 记 $c_i(g)$ 为 $g$ 作为置换时长度为 $i$ 的轮换个数。定义
+
+\[
+Z_G(t_1,t_2,\dots)=\frac{1}{|G|}\sum_{g\in G}
+t_1^{c_1(g)}t_2^{c_2(g)}\cdots .
+\]
+
+\textbf{例：循环群 $C_n$.} 旋转 $k$ 步的轮换个数是 $\gcd(k,n)$，每个轮换长度都是 $n/\gcd(k,n)$。令 $d=n/\gcd(k,n)$（即轮换长度），则 $d\mid n$，且满足 $\gcd(k,n)=n/d$ 的 $k$ 有 $\varphi(d)$ 个；每个这样的旋转贡献 $t_d^{n/d}$。因此
+
+\[
+Z_{C_n}(t_1,t_2,\dots)=\frac{1}{n}\sum_{d\mid n}\varphi(d)\,t_d^{\,n/d}.
+\]
+
+\textbf{例：二面体群 $D_n$（$2n$ 阶）.} 旋转部分同上；翻转部分分奇偶：
+
+\begin{itemize}
+\item $n$ 为奇数：$n$ 个翻转，每个有 $1$ 个不动点、$(n-1)/2$ 个对换，轮换型 $1^1 2^{(n-1)/2}$，贡献 $n\,t_1t_2^{(n-1)/2}$；
+\item $n$ 为偶数：$n/2$ 个顶点轴翻转，轮换型 $1^2 2^{(n-2)/2}$，贡献 $\frac n2 t_1^2t_2^{(n-2)/2}$；$n/2$ 个边轴翻转，轮换型 $2^{n/2}$，贡献 $\frac n2 t_2^{n/2}$。
+\end{itemize}
+
+
+因此
+
+\[
+Z_{D_n}=\frac{1}{2n}\left(\sum_{d\mid n}\varphi(d)t_d^{n/d}
++\begin{cases}
+n\,t_1t_2^{(n-1)/2}, & n\ \text{奇},\\[2pt]
+\frac n2\left(t_1^2t_2^{(n-2)/2}+t_2^{n/2}\right), & n\ \text{偶}.
+\end{cases}\right)
+\]
+
+\textbf{例（$n=4$）.}
+
+\[
+Z_{C_4}=\frac14\left(t_1^4+t_2^2+2t_4\right),\qquad
+Z_{D_4}=\frac18\left(t_1^4+t_2^2+2t_4+2t_1^2t_2+2t_2^2\right).
+\]
+
+\subsection{Pólya 计数定理}
+
+
+\textbf{定理（Pólya）.} 设颜色集为 $\{1,\dots,C\}$，颜色 $j$ 的权重为 $w_j$。用这些颜色给 $\Omega$ 染色，在 $G$ 作用下等价，则“按各颜色使用次数计权”的生成函数为
+
+\[
+Z_G\left(\sum_{j=1}^{C}w_j,\ \sum_{j=1}^{C}w_j^2,\ \sum_{j=1}^{C}w_j^3,\dots\right).
+\]
+
+若只数方案数（每种颜色权重取 $1$），令所有 $t_i=C$，得
+
+\[
+\#(\text{染色轨道})=Z_G(C,C,\dots).
+\]
+
+\textbf{为什么是 $t_i=\sum_j w_j^i$.} 在一个长度为 $i$ 的轮换中，置换会把位置循环移动，要保持染色不变，这 $i$ 个位置必须同色；选颜色 $j$ 时该轮换贡献 $w_j^i$。一个群元素 $g$ 的不动染色按轮换乘起来，正好是 $\prod_i(\sum_jw_j^i)^{c_i(g)}$；再用 Burnside 取平均即得。
+
+\subsection{例：四颗珠子的双色染色}
+
+
+取 $C_4$，颜色权重 $b,w$，代入 $t_i=b^i+w^i$：
+
+\[
+Z_{C_4}(b+w,b^2+w^2,b^4+w^4)
+=\frac14\left((b+w)^4+(b^2+w^2)^2+2(b^4+w^4)\right).
+\]
+
+展开：
+
+\[
+b^4+b^3w+2b^2w^2+bw^3+w^4.
+\]
+
+各项系数就是“用 $0,1,2,3,4$ 颗黑珠”在旋转等价下的方案数（例如两黑两白有 $2$ 类：相邻与相对）。
+
+若同时允许翻转（$D_4$），再代入 $Z_{D_4}$：
+
+\[
+\frac18\left[(b+w)^4+(b^2+w^2)^2+2(b^4+w^4)+2(b+w)^2(b^2+w^2)+2(b^2+w^2)^2\right].
+\]
+
+展开后也是 $b^4+b^3w+2b^2w^2+bw^3+w^4$——在 $n=4$ 这个例子中，旋转与翻转给出的计数多项式恰好相同；一般 $n$ 时两者不同。
+
+\textbf{一般颜色数.} 令所有 $t_i=C$，由 $Z_{C_n}$ 得
+
+\[
+\#(\text{旋转等价})= \frac1n\sum_{d\mid n}\varphi(d)C^{n/d}.
+\]
+
+由 $Z_{D_n}$ 得
+
+\[
+\#(\text{翻转等价})=
+\begin{cases}
+\dfrac{1}{2n}\left(\sum_{d\mid n}\varphi(d)C^{n/d}+nC^{(n+1)/2}\right), & n\ \text{奇},\\[6pt]
+\dfrac{1}{2n}\left(\sum_{d\mid n}\varphi(d)C^{n/d}+\dfrac n2\left(C^{n/2+1}+C^{n/2}\right)\right), & n\ \text{偶}.
+\end{cases}
+\]
+
+\subsection{带“特殊颜色/不染色”的计数}
+
+
+若要数“有些位置不染色，并关心不染色点的个数”，可把每个轮换的贡献改成 $C+x^i$（$C$ 种普通颜色，或用 $x$ 标记“这一个轮换不染色”），再代入循环指数。这样得到的多项式 $F(x)=\sum a_kx^k$ 中，$a_k$ 就是“恰有 $k$ 个点不染色”的轨道数。
+
+\textbf{奇偶筛选.} 想只要不染色点为偶数个，取 $\frac{F(1)+F(-1)}2$；要 $3$ 的倍数等可用单位根/周期筛选。这是生成函数与 Burnside 结合的常见技巧。
+
+\subsection{本节的提醒}
+
+
+\begin{itemize}
+\item \textbf{循环指数先看群，再看集合大小}：$Z_G$ 只依赖群在 $\Omega$ 上的置换表示。
+\item \textbf{$D_n$ 的阶是 $2n$}：公式分母是 $2n$，不是 $n$；记号 $D_n$ 与 [DF] 的 $D_{2n}$ 相差下标。
+\item \textbf{Pólya 代入的是 $t_i=\sum_j w_j^i$}，不是 $w_j$；指数 $i$ 来自轮换长度。
+\item 颜色权重取 $1$ 时，$t_i=C$，才得到纯计数公式。
+\end{itemize}

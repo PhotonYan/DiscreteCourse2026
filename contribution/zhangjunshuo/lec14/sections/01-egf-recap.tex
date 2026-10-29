@@ -1,0 +1,109 @@
+\section{从 EGF 到树与排列：本讲的前置例子}
+
+
+这一讲的主线是\textbf{用群作用数“对称意义下不同的对象”}：Burnside 引理、循环指数与 Pólya 计数。开头的几个 EGF 例子是第 13 讲的延续，也正好提供了“带标号结构”的对照——后面无标号树要用普通生成函数与 Pólya 计数，不能混用。
+
+\textbf{本节用到的记号：} $\hat A(x)=\sum a_nx^n/n!$ 为 EGF；$[x^n]$ 为系数提取；$b_n$ 为 $n$ 个结点的带标号树个数；$C_n$ 为循环群（这里不表示卡特兰数，按上下文区分）。
+
+\subsection{EGF 的两条基本事实}
+
+
+\textbf{乘积（二项卷积）.} 若 $\hat A,\hat B$ 分别是 $\{a_n\},\{b_n\}$ 的 EGF，则
+
+\[
+n!\,[x^n]\hat A(x)\hat B(x)=\sum_{i=0}^{n}\binom ni a_i b_{n-i}.
+\]
+
+组合意义：把 $n$ 个标签分成两部分，分别造 $\mathcal A$ 与 $\mathcal B$ 结构。
+
+\textbf{集合构造.} 若“连通/不可分结构”的 EGF 是 $\hat G$，则由若干这样的结构\textbf{无序}拼成的对象的 EGF 是
+
+\[
+\exp\hat G=1+\hat G+\frac{\hat G^2}{2!}+\frac{\hat G^3}{3!}+\cdots
+\]
+
+（$\hat G^k$ 先给 $k$ 个有序部分，再除以 $k!$ 消去顺序。）
+
+\subsection{例一：排列与轮换}
+
+
+$n$ 元排列的 EGF 是
+
+\[
+\hat P(x)=\sum_{n\ge0}n!\frac{x^n}{n!}=\frac{1}{1-x}.
+\]
+
+一个 $k$ 元轮换有 $(k-1)!$ 个，故轮换的 EGF 是
+
+\[
+\hat C(x)=\sum_{k\ge1}(k-1)!\frac{x^k}{k!}
+=\sum_{k\ge1}\frac{x^k}{k}=-\log(1-x).
+\]
+
+排列 = 轮换的无序集合，因此
+
+\[
+\exp\hat C(x)=\exp\bigl(-\log(1-x)\bigr)=\frac{1}{1-x}=\hat P(x),
+\]
+
+与“排列分解为轮换”一致。这条例子说明：\textbf{EGF 的 $\exp$ 对应集合构造}。
+
+\subsection{例二：带标号的有根二叉树}
+
+
+考虑每个结点至多有 $2$ 个\textbf{无序}孩子的有根树，结点带 $1,\dots,n$ 的标签；$b_n$ 为 $n$ 个结点的方案数，约定 $b_0=1$（空树）。
+
+\textbf{递推/组合方程.} 去掉根后，剩下的孩子组成一个无序集合，大小可以是 $0,1,2$：
+
+\begin{itemize}
+\item $0$ 个孩子：$1$ 种；
+\item $1$ 个孩子：一棵非空树，EGF 为 $T(x)=B(x)-1$；
+\item $2$ 个孩子：两棵子树无序，EGF 为 $T(x)^2/2$。
+\end{itemize}
+
+
+再乘上根自己的标签 $x$，得
+
+\[
+T(x)=x\left(1+T(x)+\frac{T(x)^2}{2}\right),\qquad B(x)=1+T(x).
+\]
+
+消去 $T=B-1$，可写成
+
+\[
+B(x)=1+\frac{x}{2}\bigl(B(x)^2+1\bigr).
+\]
+
+\textbf{解方程.} 由 $xB^2-2B+(x+2)=0$，取 $x\to0$ 时 $B\to1$ 的分支：
+
+\[
+B(x)=\frac{1-\sqrt{1-2x-x^2}}{x}.
+\]
+
+展开得
+
+\[
+B(x)=1+x+x^2+\frac{3}{2}x^3+\frac{5}{2}x^4+\frac{9}{2}x^5+\cdots,
+\]
+
+所以
+
+\[
+b_0,b_1,b_2,b_3,b_4,b_5,\dots=1,1,2,9,60,540,\dots
+\]
+
+（$b_n=n![x^n]B$）。这些数可以用递推验证：$b_n$ 来自“根 + 无序的 $0/1/2$ 棵子树”。
+
+\subsection{与下一节的衔接}
+
+
+带标号树用 EGF，因为“标签”在乘法中要先分配；而\textbf{无标号}树（同构算一种）不能用 EGF 的 $\exp$，要用下一节的 Burnside/Pólya 或普通生成函数。这是本讲反复出现的分界。
+
+\subsection{本节的提醒}
+
+
+\begin{itemize}
+\item \textbf{EGF 的 $x^n$ 系数是 $a_n/n!$}，读答案时要乘回 $n!$。
+\item \textbf{$\exp$ 只对 EGF/带标号结构成立}；对普通生成函数直接写 $e^{A(x)}$ 一般没有组合意义。
+\item 二叉树方程中“无序”二字很关键：有顺序孩子会得到不同的方程与计数。
+\end{itemize}

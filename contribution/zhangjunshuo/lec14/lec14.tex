@@ -1,0 +1,47 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 14}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{Burnside 引理与 Pólya 计数}\author{zhangjunshuo}\date{2026 年 10 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 10 月 29 日的三页手写原稿、第二段课堂转写和课程教材整理。第一段转写不可用；手写稿第 1 页含 EGF 回顾（带标号二叉树、排列/轮换），转写中缺失，按手写稿与第 13 讲补全。整理版按“手写稿 + 转写 + 讲义/教材”取并集，不一致处给出勘误。
+
+本讲主线：EGF 回顾 $\to$ 群作用与 Burnside 引理 $\to$ 循环指数与 Pólya 计数 $\to$ 无标号有根树的 Pólya 方程。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-egf-recap}
+\input{sections/02-group-actions-burnside}
+\input{sections/03-cycle-index-polya}
+\input{sections/04-unlabelled-trees}
+
+\section*{一页式总览}
+\begin{itemize}
+\item EGF：$\hat A(x)=\sum a_nx^n/n!$；乘法 $n![x^n]\hat A\hat B=\sum_i\binom ni a_ib_{n-i}$；$\exp$ 数无序集合。
+\item 例：排列 $\hat P=1/(1-x)$、轮换 $\hat C=-\log(1-x)$、$\exp\hat C=\hat P$；带标号有根二叉树（孩子无序、至多 2 个）$T=x(1+T+T^2/2)$，$B=1+T=(1-\sqrt{1-2x-x^2})/x$，$b_n=1,1,2,9,60,540,\dots$。
+\item 群作用：轨道 $\operatorname{Orb}(x)$、稳定子 $\operatorname{Stab}(x)$，$|G|=|\operatorname{Orb}(x)|\,|\operatorname{Stab}(x)|$。
+\item Burnside：$|S/G|=\frac1{|G|}\sum_{g\in G}|\operatorname{Fix}(g)|$。
+\item 四珠双色：旋转群 $C_4$ 下 $6$ 种；二面体群 $D_4$ 下也是 $6$ 种（分布 $b^4+b^3w+2b^2w^2+bw^3+w^4$）。
+\item 循环指数：$Z_G(t_1,t_2,\dots)=\frac1{|G|}\sum_{g\in G}t_1^{c_1(g)}t_2^{c_2(g)}\cdots$。
+\item $Z_{C_n}=\frac1n\sum_{d\mid n}\varphi(d)t_d^{n/d}$；$Z_{D_n}$ 的翻转项：$n$ 奇 $n\,t_1t_2^{(n-1)/2}$，$n$ 偶 $\frac n2(t_1^2t_2^{(n-2)/2}+t_2^{n/2})$。
+\item Pólya：把 $t_i$ 换成 $\sum_j w_j^i$；颜色数 $C$ 时 $t_i=C$，得染色轨道数。
+\item 项链数：$C_n$ 群下 $\frac1n\sum_{d\mid n}\varphi(d)C^{n/d}$；$D_n$ 群下按奇偶加翻转项再除 $2n$。
+\item 无标号树：$R(x)=1+\frac{x}{6}(R(x)^3+3R(x)R(x^2)+2R(x^3))$；$R=1+x+x^2+2x^3+4x^4+8x^5+17x^6+\cdots$。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》第 14 章：§14.1 群作用和计数原理、§14.2 Burnside 引理、§14.3 Pólya 定理。
+\item \textbf{[讲义]} 课程讲义 \texttt{25-26-lecture\_notes.pdf} §9.10 Burnside's Lemma、§9.11 Polya Counting、§9.12 共轭类计数。
+\item 原始材料：本地归档（手写原稿、第二段转写）。
+\end{itemize}
+\end{document}
