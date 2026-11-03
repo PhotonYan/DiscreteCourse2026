@@ -7,17 +7,16 @@
 % 目的: 字体相关设置, 呼叫相关宏包.
 % 将由 AJbook.cls 引入
 % 必须提供 \kaishu, \songti, \heiti, \thmheiti, \fangsong 几种字型切换命令, 在文档类中使用.
-\ProvidesFile{font-setup-local.tex}[2026/09/20 Project font files]
+\ProvidesFile{font-setup-local.tex}[2026/10/07 Project text font files]
 
-% 设置 xeCJK 字体及中文数字
-%\setmainfont{TeX Gyre Pagella}	% 设置西文衬线字体
-%\setsansfont{TeX Gyre Heros}[	% 设置西文无衬线字体
-\setsansfont{texgyreheros}[     % 设置西文无衬线字体
-Extension=.otf,
-UprightFont=*-regular,
-BoldFont=*-bold,
-ItalicFont=*-italic,
-BoldItalicFont=*-bolditalic]
+% 正文及等宽使用 Latin Modern，无衬线正文使用 Arial。
+% no-math 保持传统 LaTeX 数学字体不被 fontspec 改写。
+\setmainfont{lmroman10-regular.otf}[BoldFont=lmroman10-bold.otf,
+  ItalicFont=lmroman10-italic.otf,BoldItalicFont=lmroman10-bolditalic.otf,Ligatures=TeX]
+\setsansfont{Arial}[BoldFont={Arial Bold},
+  ItalicFont={Arial Italic},BoldItalicFont={Arial Bold Italic},Ligatures=TeX]
+\setmonofont{lmmono10-regular.otf}[ItalicFont=lmmono10-italic.otf,
+  BoldFont=lmmonolt10-bold.otf,BoldItalicFont=lmmonolt10-boldoblique.otf]
 
 % 使用用户提供的项目字体；从 notes/ 编译，源码包保留同级 font/。
 % 宋体正文；黑体用于标题和粗体；楷体用于中文斜体；仿宋用于定理正文。
@@ -47,6 +46,8 @@ BoldItalicFont=*-bolditalic]
 \setCJKfamilyfont{sectionfont}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
 \setCJKfamilyfont{pffont}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
 \setCJKfamilyfont{emfont}[Path=../font/,BoldFont=FZHTK.TTF]{FZHTK.TTF}
+
+\punctstyle{kaiming}
 
 \defaultfontfeatures{Ligatures=TeX} 
 \XeTeXlinebreaklocale "zh"
