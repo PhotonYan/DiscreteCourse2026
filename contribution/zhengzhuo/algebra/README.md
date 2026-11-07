@@ -25,7 +25,6 @@
 | [2026.9.24.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.9.24.pdf) | 5（内容 p. 1–4） | 中国剩余定理与阿贝尔群分类的素数幂形式；直积；群作用、Cayley 定理、自同构群；半直积及例子。 |
 | [2026.10.8.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.8.pdf) | 6（内容 p. 1–5） | 稳定子、轨道与共轭类；中心化子、中心、正规化子；轨道与陪集的对应、类方程、p-群中心；内外自同构、特征子群。 |
 | [2026.10.15.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.15.pdf) | 5（内容 p. 1–4） | Sylow 三定理及证明；Sylow 子群的正规化子、正规子群与商群中的 Sylow 子群；pq 阶群分类、132 阶与 105 阶群例题；交换子与导子群。 |
-
 | [2026.10.19.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) | 6（内容 p. 1–5） | 阿贝尔化及其泛性质、二面体群的导子群；导列与可解性；中心列、幂零群及有限幂零群的等价刻画。 |
 | [2026.10.22.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) | 6（内容 p. 1–5） | 有限群的复线性表示、正则表示、子表示与直和；平均化方法、Maschke 定理、Schur 引理及分解唯一性；张量积、对偶与特征标。 |
 | [2026.10.29.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) | 6（内容 p. 1–5） | 特征标与类函数、Schur 正交关系；表示的重数、同构与不可约性判别；正则表示分解、维数平方和公式；不可约特征标构成类函数空间的标准正交基，及不可约表示维数整除群阶。 |
