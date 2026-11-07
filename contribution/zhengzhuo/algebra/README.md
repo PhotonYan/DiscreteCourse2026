@@ -26,11 +26,15 @@
 | [2026.10.8.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.8.pdf) | 6（内容 p. 1–5） | 稳定子、轨道与共轭类；中心化子、中心、正规化子；轨道与陪集的对应、类方程、p-群中心；内外自同构、特征子群。 |
 | [2026.10.15.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.15.pdf) | 5（内容 p. 1–4） | Sylow 三定理及证明；Sylow 子群的正规化子、正规子群与商群中的 Sylow 子群；pq 阶群分类、132 阶与 105 阶群例题；交换子与导子群。 |
 
+| [2026.10.19.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) | 6（内容 p. 1–5） | 阿贝尔化及其泛性质、二面体群的导子群；导列与可解性；中心列、幂零群及有限幂零群的等价刻画。 |
+| [2026.10.22.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) | 6（内容 p. 1–5） | 有限群的复线性表示、正则表示、子表示与直和；平均化方法、Maschke 定理、Schur 引理及分解唯一性；张量积、对偶与特征标。 |
+| [2026.10.29.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) | 6（内容 p. 1–5） | 特征标与类函数、Schur 正交关系；表示的重数、同构与不可约性判别；正则表示分解、维数平方和公式；不可约特征标构成类函数空间的标准正交基，及不可约表示维数整除群阶。 |
+
 ## 知识点索引
 
-仅索引上述七份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.15 笔记第 8 节已开始讨论交换子与导子群；幂零群目前仅见于章节标题，尚无展开。
+仅索引上述十份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标。
 
-主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子与导子群](#交换子与导子群)
+主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解)
 
 ### 群论基础与典型群
 
@@ -122,10 +126,46 @@
 | 正规子群与商群中的 Sylow 子群：H∩N 与 π(H) 的结论及证明 | [2026.10.15.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.15.pdf) |
 | 105 阶群若有正规 Sylow 3-子群，则为循环群：共轭作用、中心及正规化子的应用 | [2026.10.15.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.15.pdf) |
 
-### 交换子与导子群
+### 交换子、导子群与阿贝尔化
 
 | 知识点／证明／例题 | 文件与页码 |
 | --- | --- |
 | 交换子 [x,y]=x⁻¹y⁻¹xy 的定义、与交换性的关系及共轭公式 | [2026.10.15.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.15.pdf) |
 | 交换子群／导子群 G′=[G,G] 的定义；由交换子生成的子群与单个交换子的区别；G′ 正规、G/G′ 阿贝尔 | [2026.10.15.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.15.pdf) |
+| 阿贝尔化 G/G′ 的泛性质：到阿贝尔群的同态唯一经 G/G′ 分解；Hom 集之间的对应 | [2026.10.19.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 二面体群的导子群与阿贝尔化：按 n 的奇偶性讨论 D_{2n}′ 及 D_{2n}/D_{2n}′ | [2026.10.19.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
 
+### 导列、可解群与幂零群
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 导列定义；可解当且仅当导列有限步到达平凡群的证明；可解长度与上三角矩阵群例子 | [2026.10.19.pdf，p. 1–2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 导列各项为特征子群；可解群对子群、商群及扩张的封闭性；Feit–Thompson 定理（陈述） | [2026.10.19.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 中心列与幂零群定义；幂零群蕴含可解群 | [2026.10.19.pdf，p. 2–3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 下中心列与上中心列；幂零性的两种等价判据及证明 | [2026.10.19.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 幂零类；单位上三角矩阵群的例子及可解但非幂零的上三角矩阵群例子 | [2026.10.19.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 有限 p-群为幂零群；非平凡正规子群与中心相交非平凡；真子群严格包含于其正规化子，及指数 p 子群正规 | [2026.10.19.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+| 有限幂零群的等价刻画及证明：正规化子条件、所有 Sylow 子群正规、各 Sylow 子群的直积 | [2026.10.19.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) |
+
+### 有限群的线性表示
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 复线性表示的定义：G→GL(V) 与保持线性结构的群作用；一维表示与阿贝尔化 | [2026.10.22.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+| 正则表示 C[G]；由 G-集合构造的置换表示 C[X] | [2026.10.22.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+| 表示的同态与同构、子表示、平凡表示、同态的核与表示的直和 | [2026.10.22.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+| 平均化方法与不变补空间；Maschke 定理的证明；不可约表示及完全可约性 | [2026.10.22.pdf，p. 2–3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+| Schur 引理及证明；不可约直和分解的唯一性（同构及排列意义下） | [2026.10.22.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+| 张量积表示与对偶表示的定义；对偶表示作用公式 | [2026.10.22.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+
+### 特征标与表示的分解
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 特征标的定义；单位元处的值、共轭不变性及对偶特征标与复共轭的关系 | [2026.10.22.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) |
+| 特征标基本性质的续证；类函数；直和与张量积的特征标公式 | [2026.10.29.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
+| 类函数空间上的 Hermitian 内积；Schur 正交关系及平均化证明 | [2026.10.29.pdf，p. 1–2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
+| 用特征标内积计算不可约表示的重数；同特征标当且仅当表示同构；不可约性判别 | [2026.10.29.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
+| 正则表示的特征标与分解：不可约表示的重数等于维数；群阶等于不可约表示维数的平方和 | [2026.10.29.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
+| 不可约特征标构成类函数空间的标准正交基及证明；不可约表示同构类数等于共轭类数 | [2026.10.29.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
+| 不可约表示维数整除群阶的证明：共轭类和、代数整数及 Cayley–Hamilton 定理 | [2026.10.29.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
