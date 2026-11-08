@@ -28,12 +28,13 @@
 | [2026.10.19.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.19.pdf) | 6（内容 p. 1–5） | 阿贝尔化及其泛性质、二面体群的导子群；导列与可解性；中心列、幂零群及有限幂零群的等价刻画。 |
 | [2026.10.22.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) | 6（内容 p. 1–5） | 有限群的复线性表示、正则表示、子表示与直和；平均化方法、Maschke 定理、Schur 引理及分解唯一性；张量积、对偶与特征标。 |
 | [2026.10.29.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) | 6（内容 p. 1–5） | 特征标与类函数、Schur 正交关系；表示的重数、同构与不可约性判别；正则表示分解、维数平方和公式；不可约特征标构成类函数空间的标准正交基，及不可约表示维数整除群阶。 |
+| [2026.11.5.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) | 7（内容 p. 1–6） | 环、除环、域与典型例子；环同态、零因子、单位与整环；有限整环为域、分式域；理想、商环、同构定理与理想对应；生成理想、理想的和交积及商环中的关系。 |
 
 ## 知识点索引
 
-仅索引上述十份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标。
+仅索引上述十一份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环。
 
-主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解)
+主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理)
 
 ### 群论基础与典型群
 
@@ -168,3 +169,30 @@
 | 正则表示的特征标与分解：不可约表示的重数等于维数；群阶等于不可约表示维数的平方和 | [2026.10.29.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
 | 不可约特征标构成类函数空间的标准正交基及证明；不可约表示同构类数等于共轭类数 | [2026.10.29.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
 | 不可约表示维数整除群阶的证明：共轭类和、代数整数及 Cayley–Hamilton 定理 | [2026.10.29.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) |
+
+### 环、整环与分式域
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 含幺环、除环与域的定义；整数环、模 n 剩余类环、Z[1/N]、多项式环与矩阵环 | [2026.11.5.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| Hamilton 四元数：共轭、范数与逆元；非交换除环的例子 | [2026.11.5.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 群环 R[G] 的定义与乘法；无限循环群的群环与 Laurent 多项式环 | [2026.11.5.pdf，p. 1–2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 环同态与同构（保持单位元）；自然投影与多项式求值同态 | [2026.11.5.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 左右零因子、单位与单位群、整环及消去律；Z/nZ 中的单位与零因子；整环上的多项式环 | [2026.11.5.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 有限整环为域的证明：非零元素的乘法映射单射，有限性推出满射 | [2026.11.5.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 分式域 Frac(R) 的构造；Frac(Z)=Q 与有理函数域 F(x) | [2026.11.5.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+
+### 理想、商环与同构定理
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 左理想、右理想与双边理想；吸收性；理想与含幺子环的区别 | [2026.11.5.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 商环 R/I 的构造、加法与乘法、良定义及自然投影的核 | [2026.11.5.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 第一同构定理：核为双边理想、像为子环及 R/ker φ≅im φ；理想的逆像 | [2026.11.5.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 第三同构定理；理想对应定理：包含 I 的左／右／双边理想与 R/I 中相应理想的对应（陈述） | [2026.11.5.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 交换环中的生成理想；整数环中的 (4,6)=(2) 与自然投影的核 (n) | [2026.11.5.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 求值同态的核 (x−a) 及 R[x]/(x−a)≅R | [2026.11.5.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 群环的增广映射与增广理想；直积环中的理想例子 | [2026.11.5.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 理想的和、交与积；积由有限和构成；生成元公式及 IJ⊆I∩J⊆I+J | [2026.11.5.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 第二同构定理：(S+I)/I≅S/(S∩I)（陈述） | [2026.11.5.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+| 将商环理解为施加关系；F[x,y]/(x−y², y−x³) 中的计算例子 | [2026.11.5.pdf，p. 5–6](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
