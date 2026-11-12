@@ -1,3 +1,7 @@
+% !TeX program = xelatex
+% 更新日期：2026-11-12；含连续两个正面停止的生成函数例子。
+% Overleaf 单文件版本：将本文件全部内容替换到 main.tex，编译器选择 XeLaTeX。
+% 所有正文与样式均已内嵌，不需要上传其他文件。
 \documentclass[UTF8,a4paper,11pt,fontset=fandol]{ctexart}
 \usepackage[left=29mm,right=25mm,top=23mm,bottom=24mm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
@@ -381,6 +385,98 @@ $\pnCov(X,Y)=\pnCov(Y,X)$，便得到第二个公式。
  \qquad \mathrm i^2=-1.
 \]
 \end{pnRemark}
+
+\subsection{应用：等待连续两个正面}
+
+\begin{pnExample}{连续出现两次正面时停止}
+独立地重复抛一枚硬币，每次出现正面 $H$ 的概率为 $p$，
+出现反面 $T$ 的概率为 $q=1-p$，其中 $0<p\leq1$。
+当第一次连续出现两个正面时停止，令 $X$ 表示停止时已经抛掷的总次数。
+因此 $X\in\{2,3,\ldots\}$，并且 $p>0$ 时试验以概率 $1$ 停止。
+
+可能的停止序列包括
+\[
+ HH,\quad THH,\quad TTHH,\quad THTHH,\quad\ldots.
+\]
+每个停止序列都以 $HH$ 结尾，且在结尾之前没有出现过 $HH$。
+\end{pnExample}
+
+\paragraph{用带权序列表示概率生成函数}
+记所有停止序列组成的集合为 $\mathcal S$。
+对 $s\in\mathcal S$，记其长度为 $|s|$，正面、反面的个数分别为
+$h(s),t(s)$。由各次抛掷的独立性，
+\[
+ \Pr[\text{停止序列为 }s]=p^{h(s)}q^{t(s)}.
+\]
+按停止时间或按停止序列求和，得到同一个生成函数：
+\begin{align*}
+ G_X(z)
+ &=\sum_{x=2}^{\infty}\Pr[X=x]z^x\\
+ &=\sum_{s\in\mathcal S}p^{h(s)}q^{t(s)}z^{|s|}.
+\end{align*}
+例如，序列 $THTHH$ 有 $3$ 个正面、$2$ 个反面，长度为 $5$，
+所以它在生成函数中的贡献为 $p^3q^2z^5$。
+
+若把每个字母的权重记为
+\[
+ W(H)=pz,\qquad W(T)=qz,
+\]
+则连接两个字串时权重相乘。例如
+$W(HH)=p^2z^2$，$W(HT)=pqz^2$。
+这样，$G_X(z)$ 就是所有停止序列的权重之和。
+
+\paragraph{按开头分类：停止或重新开始}
+根据前一至两次抛掷，可以把停止序列分成三类：
+\begin{enumerate}
+ \item 开头为 $HH$：第二次抛掷就停止，序列恰为 $HH$。
+ \item 开头为 $T$：没有留下可接成 $HH$ 的末尾正面，从此重新开始等待。
+ \item 开头为 $HT$：第二次出现反面，同样重新开始等待。
+\end{enumerate}
+后两类中，重新开始之后的抛掷与之前独立，规则也和最初相同。
+因此有不交分解
+\[
+ \mathcal S=\{HH\}\mathbin{\dot\cup}T\mathcal S
+             \mathbin{\dot\cup}HT\mathcal S,
+\]
+其中 $T\mathcal S=\{Ts:s\in\mathcal S\}$，
+$HT\mathcal S=\{HTs:s\in\mathcal S\}$。
+对各类的权重求和，得到
+\[
+ G_X(z)=p^2z^2+qzG_X(z)+pqz^2G_X(z).
+\]
+移项并解出 $G_X$：
+\begin{equation}
+ \boxed{G_X(z)=\frac{p^2z^2}{1-qz-pqz^2}
+ =\frac{p^2z^2}{1-(1-p)z-p(1-p)z^2}.}
+ \label{eq:pn-two-heads-pgf}
+\end{equation}
+由于分母的常数项为 $1$，上述关系也可以按形式幂级数理解。
+代入 $z=1$ 时，$1-q-pq=p^2$，所以 $G_X(1)=1$，与归一化性质一致。
+
+\paragraph{由生成函数求期望}
+为避免直接对商求导，先把式~\eqref{eq:pn-two-heads-pgf} 写为
+\[
+ G_X(z)(1-qz-pqz^2)=p^2z^2.
+\]
+两边求导，得到
+\[
+ G_X'(z)(1-qz-pqz^2)+G_X(z)(-q-2pqz)=2p^2z.
+\]
+取 $z=1$，利用 $G_X(1)=1$ 及 $1-q-pq=p^2$，有
+\begin{align*}
+ p^2G_X'(1)-q-2pq&=2p^2,\\
+ p^2G_X'(1)&=2p^2+q+2pq=1+p.
+\end{align*}
+因此
+\[
+ \boxed{\pnE[X]=G_X'(1)=\frac{1+p}{p^2}
+ =\frac1{p^2}+\frac1p.}
+\]
+求方差时仍使用前面的通式
+\[
+ \pnVar(X)=G_X''(1)+G_X'(1)-\bigl(G_X'(1)\bigr)^2.
+\]
+
 
 \subsection{常见分布及其概率生成函数}
 
