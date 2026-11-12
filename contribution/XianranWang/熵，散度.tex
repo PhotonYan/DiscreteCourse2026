@@ -1,0 +1,482 @@
+% !TeX program = xelatex
+% 熵与散度：Overleaf 单文件入口。编译器选择 XeLaTeX。
+\documentclass[UTF8,a4paper,11pt,fontset=fandol]{ctexart}
+\usepackage[left=29mm,right=25mm,top=23mm,bottom=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\definecolor{pnRed}{HTML}{A62930}
+\definecolor{pnBlue}{HTML}{253C68}
+\definecolor{pnGold}{HTML}{BD8D24}
+\definecolor{pnDefinitionBg}{HTML}{F0E3D7}
+\definecolor{pnPropositionBg}{HTML}{F8F5EF}
+\definecolor{pnExampleBg}{HTML}{EFE5CB}
+\newcommand{\pnE}{\mathbb E}
+\newcommand{\pnVar}{\operatorname{Var}}
+\newcommand{\pnCov}{\operatorname{Cov}}
+\newcommand{\pnIndicator}{\mathbf 1}
+\newcounter{pnstatement}[section]
+\renewcommand{\thepnstatement}{\thesection.\arabic{pnstatement}}
+\tcbset{pnbase/.style={enhanced,breakable,sharp corners,boxrule=0pt,
+ borderline west={1.2pt}{0pt}{pnBlue},left=9pt,right=9pt,top=7pt,bottom=7pt,
+ before skip=10pt,after skip=10pt,fonttitle=\bfseries,coltitle=pnBlue,
+ attach title to upper={\quad},title after break={},
+ overlay unbroken and first={\fill[tcbcolframe] ([xshift=-9pt,yshift=-9pt]frame.north west) rectangle ++(4pt,4pt);}}}
+\newenvironment{pnDefinition}[1]{\refstepcounter{pnstatement}\begin{tcolorbox}[
+ pnbase,colback=pnDefinitionBg,colframe=pnRed,coltitle=pnRed,
+ borderline west={1.2pt}{0pt}{pnRed},title={定义~\thepnstatement\ (#1).}]}{\end{tcolorbox}}
+\newenvironment{pnProposition}[1]{\refstepcounter{pnstatement}\begin{tcolorbox}[
+ pnbase,colback=pnPropositionBg,colframe=pnBlue,
+ title={命题~\thepnstatement\ (#1).}]}{\end{tcolorbox}}
+\newenvironment{pnExample}[1]{\refstepcounter{pnstatement}\begin{tcolorbox}[
+ pnbase,colback=pnExampleBg,colframe=pnGold,coltitle=pnGold,
+ borderline west={1.2pt}{0pt}{pnGold},title={例~\thepnstatement\ (#1).}]}{\end{tcolorbox}}
+\newenvironment{pnRemark}[1]{\par\medskip\noindent
+ \refstepcounter{pnstatement}\textcolor{pnRed}{注~\thepnstatement\ (#1).}\ }{\par\medskip}
+\renewcommand{\proofname}{证明}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage[unicode,hidelinks]{hyperref}
+\ctexset{section={format=\Large\bfseries\color{pnRed}},
+ subsection={format=\large\bfseries\color{pnRed}}}
+\setlength{\parskip}{0.4em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{gray}离散数学与结构（I）}
+\fancyfoot[R]{\small\color{gray}\thepage}
+\AddToShipoutPictureBG{\begin{tikzpicture}[remember picture,overlay]
+ \fill[pnExampleBg!55] ([xshift=10.5mm,yshift=-19mm]current page.north west)
+ rectangle ([xshift=15mm,yshift=20mm]current page.south west);
+ \foreach \x in {10.5,12,15}{\draw[pnGold!55,line width=0.3pt]
+ ([xshift=\x mm,yshift=-19mm]current page.north west) --
+ ([xshift=\x mm,yshift=20mm]current page.south west);}
+\end{tikzpicture}}
+\begin{document}
+% 接续前一节概率笔记；从第 1 节开始时把 9 改为 0。
+\setcounter{section}{9}
+% 正文片段：配合此前的 probability_style.tex，或本目录的 lecture_style.tex。
+% 本节统一用以 2 为底的对数；保留换底因子 log_2 e。
+\section{熵、统计距离与散度}
+\label{sec:it-entropy}
+
+本节讨论离散随机变量。沿用 $p_X(x)=\Pr[X=x]$、
+$p_{X,Y}(x,y)=\Pr[X=x,Y=y]$ 和 $p_{X\mid Y}(x\mid y)$ 的记号。
+一般分布记作 $P,Q$；$H(P)$ 和 $H(X)$ 分别表示分布及服从该分布的随机变量的熵。
+除非特别说明，$\log=\log_2$，并约定 $0\log(1/0)=0$。
+涉及熵的相减及取等条件时，假设有关熵有限，以避免 $\infty-\infty$。
+
+\subsection{熵及其基本性质}
+
+\begin{pnDefinition}{熵（Entropy）}
+若 $X\sim p_X$，定义
+\[
+ H(X)=H(p_X)=\sum_xp_X(x)\log\frac1{p_X(x)}
+ =\pnE\left[\log\frac1{p_X(X)}\right].
+\]
+求和中的零概率项按 $0$ 处理。
+\end{pnDefinition}
+
+对数的底决定熵的单位：
+\[
+ \begin{array}{c|ccc}
+  \text{对数}&\log_2&\ln&\log_{256}\\ \hline
+  \text{单位}&\text{bit}&\text{nat}&\text{byte}
+ \end{array}
+\]
+全文使用同一个底数；在求导时，$\frac{\mathrm d}{\mathrm dt}\log t
+=(\log e)/t$，其中 $\log e=1/\ln2$。
+
+\begin{pnProposition}{非负性与双射不变性}
+有 $H(X)\geq0$，且 $H(X)=0$ 当且仅当 $X$ 以概率 $1$ 为某个常数。
+若 $f$ 在 $X$ 的取值集合上是双射，则 $H(f(X))=H(X)$。
+\end{pnProposition}
+\begin{proof}
+每个 $p_X(x)\log(1/p_X(x))$ 都非负；所有正概率项均为零时，
+唯一的正概率必须为 $1$。双射只重新标记这些概率，不改变求和结果。
+\end{proof}
+
+\begin{pnProposition}{有限支持集上的熵上界}
+记 $\operatorname{supp}(X)=\{x:p_X(x)>0\}$。若支持集有限，则
+\[
+ H(X)\leq\log\bigl|\operatorname{supp}(X)\bigr|
+ =H_{\max}(X).
+\]
+\end{pnProposition}
+\begin{proof}
+利用 $\log$ 的凹性及 Jensen 不等式，
+\begin{align*}
+ H(X)
+ &=\sum_{x\in\operatorname{supp}(X)}p_X(x)\log\frac1{p_X(x)}\\
+ &\leq\log\left(\sum_{x\in\operatorname{supp}(X)}
+ p_X(x)\frac1{p_X(x)}\right)
+ =\log\bigl|\operatorname{supp}(X)\bigr|.
+\end{align*}
+\end{proof}
+
+\begin{pnExample}{二元熵函数}
+若 $X\sim\operatorname{Bern}(p)$，定义
+\[
+ h(p)=H(X)=p\log\frac1p+(1-p)\log\frac1{1-p},\qquad 0\leq p\leq1.
+\]
+它关于 $p=1/2$ 对称，$h(0)=h(1)=0$，$h(1/2)=1$ bit。
+板书图中的半比特水平线约对应 $p=0.11$ 和 $p=0.89$。
+\end{pnExample}
+
+\begin{center}
+\begin{tikzpicture}[x=8cm,y=2.7cm]
+ \draw[->,gray] (-0.03,0)--(1.08,0) node[right] {$p$};
+ \draw[->,gray] (0,-0.04)--(0,1.17) node[above] {$h(p)$};
+ \draw[pnBlue,thick,domain=0.001:0.999,samples=120]
+ plot (\x,{-\x*ln(\x)/ln(2)-(1-\x)*ln(1-\x)/ln(2)});
+ \draw[gray,dashed] (0,1)--(0.5,1)--(0.5,0);
+ \draw[gray,dashed] (0,0.5)--(0.89,0.5);
+ \node[left] at (0,1) {$1$}; \node[left] at (0,0.5) {$1/2$};
+ \node[below left] at (0,0) {$0$}; \node[below] at (0.5,0) {$1/2$};
+ \node[below] at (1,0) {$1$};
+\end{tikzpicture}
+\end{center}
+
+\subsection{联合熵、条件熵与链式法则}
+
+\begin{pnDefinition}{联合熵与条件熵}
+定义
+\[
+ H(X,Y)=\sum_{x,y}p_{X,Y}(x,y)\log\frac1{p_{X,Y}(x,y)}.
+\]
+对 $p_Y(y)>0$，记
+\[
+ H(X\mid Y=y)=\sum_xp_{X\mid Y}(x\mid y)
+ \log\frac1{p_{X\mid Y}(x\mid y)}.
+\]
+条件熵是这些条件分布的熵的加权平均：
+\[
+ H(X\mid Y)=\sum_{y:\,p_Y(y)>0}p_Y(y)H(X\mid Y=y).
+\]
+\end{pnDefinition}
+
+展开定义并用 $p_Y(y)p_{X\mid Y}(x\mid y)=p_{X,Y}(x,y)$，有
+\begin{align*}
+ H(X\mid Y)
+ &=\sum_y p_Y(y)\sum_xp_{X\mid Y}(x\mid y)
+       \log\frac1{p_{X\mid Y}(x\mid y)}\\
+ &=\sum_{x,y}p_{X,Y}(x,y)\log\frac1{p_{X\mid Y}(x\mid y)}\\
+ &=\pnE_{(X,Y)\sim p_{X,Y}}
+       \left[\log\frac1{p_{X\mid Y}(X\mid Y)}\right].
+\end{align*}
+这里求和仅涉及正联合概率的点；零概率条件事件不参与计算。
+
+\begin{pnProposition}{条件熵的非负性与零值条件}
+$H(X\mid Y)\geq0$，且 $H(X\mid Y)=0$ 当且仅当对每个 $p_Y(y)>0$ 的 $y$，
+给定 $Y=y$ 后 $X$ 以概率 $1$ 为常数。等价地，存在函数 $g$，使 $X=g(Y)$ 以概率 $1$ 成立。
+\end{pnProposition}
+\begin{proof}
+条件熵是各个非负熵 $H(X\mid Y=y)$ 的加权平均。
+平均值为零等价于每个具有正权重的条件熵都为零，再用熵的零值条件即可。
+\end{proof}
+
+\begin{pnProposition}{熵的链式法则}
+\[
+ H(X,Y)=H(Y)+H(X\mid Y)=H(X)+H(Y\mid X).
+\]
+\end{pnProposition}
+\begin{proof}
+在正联合概率的点上，
+\[
+ \log\frac1{p_{X,Y}(x,y)}
+ =\log\frac1{p_Y(y)}+\log\frac1{p_{X\mid Y}(x\mid y)}.
+\]
+两边对联合分布取期望，得到第一个等式；交换 $X,Y$ 得到第二个等式。
+\end{proof}
+
+\subsection{熵的凹性与条件化的作用}
+
+\begin{pnProposition}{熵对分布的凹性}
+设 $P_0,P_1$ 是同一离散集合上的分布，$0\leq\lambda\leq1$，则
+\[
+ H\bigl(\lambda P_1+(1-\lambda)P_0\bigr)
+ \geq\lambda H(P_1)+(1-\lambda)H(P_0).
+\]
+\end{pnProposition}
+\begin{proof}
+端点 $\lambda=0,1$ 时显然成立。以下设 $0<\lambda<1$。
+取 $Z\sim\operatorname{Bern}(\lambda)$，给定 $Z=i$ 后按分布 $P_i$ 抽取 $Y$。
+这也可写为：取 $X_i\sim P_i$，使 $Z$ 独立于 $(X_0,X_1)$，并令
+\[
+ Y=X_Z=\begin{cases}X_0,&Z=0,\\X_1,&Z=1.\end{cases}
+\]
+则 $Y$ 的分布为 $P=\lambda P_1+(1-\lambda)P_0$。
+由链式法则，
+\begin{align*}
+ H(Y,Z)&=H(Z)+H(Y\mid Z)\\
+ &=h(\lambda)+\lambda H(P_1)+(1-\lambda)H(P_0),\\
+ H(Y,Z)&=H(Y)+H(Z\mid Y).
+\end{align*}
+设 $f(y)=\Pr[Z=1\mid Y=y]$，则
+\[
+ f(y)=\frac{\lambda P_1(y)}{\lambda P_1(y)+(1-\lambda)P_0(y)}
+ \quad(P(y)>0),
+\]
+并且
+\[
+ \pnE[f(Y)]=\Pr[Z=1]=\lambda,\qquad
+ H(Z\mid Y)=\pnE[h(f(Y))].
+\]
+二元熵 $h$ 是凹函数：在 $0<t<1$ 上有
+$h''(t)=-(\log e)(1/t+1/(1-t))<0$。
+由 Jensen 不等式，
+\[
+ H(Z\mid Y)=\pnE[h(f(Y))]
+ \leq h(\pnE[f(Y)])=h(\lambda).
+\]
+比较 $H(Y,Z)$ 的两种表达，即得结论。
+\end{proof}
+
+上面的 $f(y)$ 一般不恒等于 $\lambda$；它是后验概率。
+当 $P_0=P_1$ 时，在 $P(y)>0$ 的点上有 $f(y)=\lambda$。
+
+\begin{pnProposition}{条件化不增加平均熵}
+\[
+ H(X\mid Y)\leq H(X).
+\]
+\end{pnProposition}
+\begin{proof}
+边缘分布是条件分布的混合：
+\[
+ p_X=\sum_{y:\,p_Y(y)>0}p_Y(y)\,p_{X\mid Y=y}.
+\]
+由熵的凹性（同样适用于上述加权混合），
+\[
+ H(X)=H(p_X)\geq\sum_y p_Y(y)H(p_{X\mid Y=y})=H(X\mid Y).
+\]
+\end{proof}
+
+\begin{pnProposition}{联合熵的上界与取等条件}
+\[
+ H(X,Y)=H(X)+H(Y\mid X)\leq H(X)+H(Y),
+\]
+等号成立当且仅当 $X,Y$ 独立。
+\end{pnProposition}
+\begin{proof}
+不等式由链式法则与条件化不增加平均熵得到。
+熵对分布严格凹，所以混合分布的熵等于条件熵平均值，当且仅当所有正权重的条件分布相同。
+这正是 $p_{Y\mid X=x}=p_Y$ 对所有 $p_X(x)>0$ 的 $x$ 成立，即 $X,Y$ 独立。
+\end{proof}
+
+\begin{pnProposition}{完整链式法则与相互独立}
+对 $X_1,\ldots,X_n$，
+\begin{align*}
+ H(X_1,\ldots,X_n)
+ &=H(X_1)+\sum_{i=2}^n H(X_i\mid X_1,\ldots,X_{i-1})\\
+ &\leq\sum_{i=1}^n H(X_i).
+\end{align*}
+等号成立当且仅当 $X_1,\ldots,X_n$ 相互独立，即
+\[
+ p_{X_1,\ldots,X_n}(x_1,\ldots,x_n)=\prod_{i=1}^np_{X_i}(x_i).
+\]
+等价地，对每个 $i$，$X_i$ 与其余变量组成的向量
+$(X_1,\ldots,X_{i-1},X_{i+1},\ldots,X_n)$ 独立。
+\end{pnProposition}
+\begin{proof}
+反复使用二元链式法则，再对每个条件熵应用上界。
+等号要求每一步均取等，因而各个条件分布依次等于相应边缘分布，得到乘积分解；反之直接代入即可。
+\end{proof}
+
+\subsection{统计距离：全变差距离与耦合}
+
+\begin{pnDefinition}{全变差距离（Total Variation Distance）}
+对同一离散集合上的分布 $P,Q$，定义
+\[
+ \Delta_{\mathrm{TV}}(P,Q)=\frac12\lVert P-Q\rVert_1
+ =\frac12\sum_x|P(x)-Q(x)|.
+\]
+板书中的 statistical distance 指这里的全变差距离。
+\end{pnDefinition}
+
+因为 $\sum_x(P(x)-Q(x))=0$，正差之和等于负差绝对值之和，故
+\begin{align*}
+ \Delta_{\mathrm{TV}}(P,Q)
+ &=\sum_x\max\{0,P(x)-Q(x)\}\\
+ &=1-\sum_x\min\{P(x),Q(x)\}.
+\end{align*}
+
+\begin{pnProposition}{全变差距离的耦合解释}
+在所有边缘分布满足 $X\sim P$、$Y\sim Q$ 的联合分布中，
+\[
+ \min\Pr[X\ne Y]=\Delta_{\mathrm{TV}}(P,Q).
+\]
+这样的联合分布称为 $P,Q$ 的耦合；这里不要求 $X,Y$ 独立。
+\end{pnProposition}
+\begin{proof}
+任意耦合都满足
+\[
+ \Pr[X=Y=v]\leq\min\{P(v),Q(v)\}.
+\]
+所以
+\[
+ \Pr[X=Y]\leq\sum_v\min\{P(v),Q(v)\}
+ =1-\Delta_{\mathrm{TV}}(P,Q).
+\]
+为使等号达到，记 $a(v)=\min\{P(v),Q(v)\}$，
+$\delta=1-\sum_va(v)$。
+若 $\delta=0$，取 $X=Y\sim P=Q$。
+若 $\delta>0$，定义联合分布
+\[
+ R(x,y)=a(x)\mathbf1_{\{x=y\}}
+       +\frac{(P(x)-a(x))(Q(y)-a(y))}{\delta}.
+\]
+其边缘分布分别为 $P,Q$，而
+$(P(v)-a(v))(Q(v)-a(v))=0$，故 $R(v,v)=a(v)$。
+于是 $\Pr[X\ne Y]=\delta=\Delta_{\mathrm{TV}}(P,Q)$。
+\end{proof}
+
+\subsection{KL 散度及其非负性}
+
+\begin{pnDefinition}{KL 散度（Kullback--Leibler Divergence）}
+对分布 $P,Q$，定义
+\[
+ D_{\mathrm{KL}}(P\Vert Q)
+ =\sum_xP(x)\log\frac{P(x)}{Q(x)}
+ =\pnE_{X\sim P}\left[\log\frac{P(X)}{Q(X)}\right].
+\]
+简记为 $D(P\Vert Q)$。若
+$\operatorname{supp}(P)\nsubseteq\operatorname{supp}(Q)$，则 $D(P\Vert Q)=+\infty$。
+零概率项按 $0\log(0/q)=0$（包括 $q=0$）处理；正概率除以零的项为 $+\infty$。
+\end{pnDefinition}
+
+\begin{pnProposition}{KL 散度的非负性}
+\[
+ D(P\Vert Q)\geq0,
+ \qquad D(P\Vert Q)=0\ \Longleftrightarrow\ P=Q.
+\]
+特别地，$D(P\Vert P)=0$。
+\end{pnProposition}
+\begin{proof}
+支持集条件不满足时，散度为 $+\infty$，结论成立。
+否则，令 $\varphi(t)=t\log t$ 并连续定义 $\varphi(0)=0$。
+由 $\varphi$ 的严格凸性及 Jensen 不等式，
+\begin{align*}
+ D(P\Vert Q)
+ &=\sum_{x:\,Q(x)>0}Q(x)\varphi\left(\frac{P(x)}{Q(x)}\right)\\
+ &\geq\varphi\left(\sum_{x:\,Q(x)>0}Q(x)\frac{P(x)}{Q(x)}\right)
+ =\varphi(1)=0.
+\end{align*}
+等号成立当且仅当 $P(x)/Q(x)$ 在 $Q(x)>0$ 的点上恒定；
+归一化使这个常数为 $1$，即 $P=Q$。
+\end{proof}
+
+\subsection{Bernoulli 散度及其二次下界}
+
+\begin{pnDefinition}{Bernoulli 散度}
+记
+\[
+ d(p\Vert q)=D\bigl(\operatorname{Bern}(p)\Vert\operatorname{Bern}(q)\bigr)
+ =p\log\frac pq+(1-p)\log\frac{1-p}{1-q}.
+\]
+端点按前述零概率与无穷大的约定处理。
+\end{pnDefinition}
+
+固定 $0<q<1$ 时，$p\mapsto d(p\Vert q)$ 在 $p=q$ 处达到最小值 $0$，
+端点值为
+\[
+ d(0\Vert q)=\log\frac1{1-q},\qquad d(1\Vert q)=\log\frac1q.
+\]
+这对应板书中以 $p=q$ 为最低点的凸曲线。
+
+\begin{pnProposition}{Bernoulli 散度的二次下界}
+对 $p,q\in[0,1]$，有
+\[
+ d(p\Vert q)\geq2(\log e)(p-q)^2.
+\]
+\end{pnProposition}
+\begin{proof}
+先固定 $0<q<1$，在 $0<p<1$ 上求导：
+\begin{align*}
+ \frac{\partial}{\partial p}d(p\Vert q)
+ &=\log\frac pq+\log e-\log\frac{1-p}{1-q}-\log e\\
+ &=\log\frac pq-\log\frac{1-p}{1-q},\\
+ \frac{\partial^2}{\partial p^2}d(p\Vert q)
+ &=(\log e)\left(\frac1p+\frac1{1-p}\right)
+ =\frac{\log e}{p(1-p)}\geq4\log e.
+\end{align*}
+利用 $d(q\Vert q)=0$ 和 $\left.\frac{\partial}{\partial p}d(p\Vert q)\right|_{p=q}=0$，
+Taylor 公式给出
+\[
+ d(p\Vert q)\geq\frac12(4\log e)(p-q)^2.
+\]
+$p=0,1$ 时由连续性得到结论；$q=0,1$ 时，或者 $p=q$ 散度为零，或者散度为 $+\infty$。
+\end{proof}
+
+\begin{pnRemark}{对数底数与常数}
+若使用自然对数，$\log e=1$，上面的二次下界为 $d(p\Vert q)\geq2(p-q)^2$。
+本节用 $\log_2$，因此保留 $\log_2e$；这也是板书最后补上的换底因子。
+\end{pnRemark}
+
+\subsection{条件散度与散度链式法则}
+
+\begin{pnDefinition}{条件分布诱导的联合分布}
+给定边缘分布 $P_X$ 和条件分布 $P_{Y\mid X}$，记
+\[
+ (P_{Y\mid X}P_X)(x,y)=P_X(x)P_{Y\mid X}(y\mid x).
+\]
+同理，$Q_{Y\mid X}P_X$ 表示保持相同边缘 $P_X$，但换用条件分布 $Q_{Y\mid X}$ 所得的联合分布。
+\end{pnDefinition}
+
+\begin{pnDefinition}{条件 KL 散度}
+定义
+\begin{align*}
+ &D(P_{Y\mid X}\Vert Q_{Y\mid X}\mid P_X)\\
+ &\quad=\sum_{x:\,P_X(x)>0}P_X(x)
+ D\bigl(P_{Y\mid X=x}\Vert Q_{Y\mid X=x}\bigr)\\
+ &\quad=\sum_{x,y}P_X(x)P_{Y\mid X}(y\mid x)
+ \log\frac{P_{Y\mid X}(y\mid x)}{Q_{Y\mid X}(y\mid x)}\\
+ &\quad=\pnE_{(X,Y)\sim P_{Y\mid X}P_X}
+ \left[\log\frac{P_{Y\mid X}(Y\mid X)}{Q_{Y\mid X}(Y\mid X)}\right].
+\end{align*}
+这里外层按 $P_X$ 加权，期望按 $P_{Y\mid X}P_X$ 取。
+\end{pnDefinition}
+
+\begin{pnProposition}{相同边缘时的联合散度}
+\[
+ D(P_{Y\mid X}\Vert Q_{Y\mid X}\mid P_X)
+ =D(P_{Y\mid X}P_X\Vert Q_{Y\mid X}P_X).
+\]
+\end{pnProposition}
+\begin{proof}
+在 $P_X(x)>0$ 的点上约去相同边缘概率：
+\begin{align*}
+ &D(P_{Y\mid X}P_X\Vert Q_{Y\mid X}P_X)\\
+ &\quad=\pnE_{(X,Y)\sim P_{Y\mid X}P_X}
+ \left[\log\frac{P_X(X)P_{Y\mid X}(Y\mid X)}
+ {P_X(X)Q_{Y\mid X}(Y\mid X)}\right]\\
+ &\quad=\pnE_{(X,Y)\sim P_{Y\mid X}P_X}
+ \left[\log\frac{P_{Y\mid X}(Y\mid X)}{Q_{Y\mid X}(Y\mid X)}\right].
+\end{align*}
+\end{proof}
+
+\begin{pnProposition}{KL 散度的链式法则}
+设 $P_{X,Y}=P_{Y\mid X}P_X$，$Q_{X,Y}=Q_{Y\mid X}Q_X$，则
+\[
+ \begin{aligned}
+ D(P_{X,Y}\Vert Q_{X,Y})
+ &=D(P_X\Vert Q_X)\\
+ &\quad+D(P_{Y\mid X}\Vert Q_{Y\mid X}\mid P_X).
+ \end{aligned}
+\]
+\end{pnProposition}
+\begin{proof}
+先在 $D(P_{X,Y}\Vert Q_{X,Y})<\infty$ 的情形下展开，所有期望均按 $P_{X,Y}$ 取：
+\begin{align*}
+ D(P_{X,Y}\Vert Q_{X,Y})
+ &=\pnE\left[\log\frac{P_{X,Y}(X,Y)}{Q_{X,Y}(X,Y)}\right]\\
+ &=\pnE\left[\log\frac{P_X(X)}{Q_X(X)}\right]\\
+ &\quad+\pnE\left[\log\frac{P_{Y\mid X}(Y\mid X)}{Q_{Y\mid X}(Y\mid X)}\right]\\
+ &=D(P_X\Vert Q_X)+D(P_{Y\mid X}\Vert Q_{Y\mid X}\mid P_X).
+\end{align*}
+一般情形下，等式按非负扩展实数解释；若 $Q_X(x)=0<P_X(x)$，
+第一项已为 $+\infty$，可在这些点任取 $Q_{Y\mid X=x}$ 的版本而不影响等式。
+\end{proof}
+
+\end{document}
