@@ -1,0 +1,442 @@
+% !TeX program = xelatex
+% 2026-11-13 更新：含用户确认今年同讲的卤代烃计数例子。
+% 生成函数：Overleaf 单文件版本，编译器选择 XeLaTeX。
+\documentclass[UTF8,a4paper,11pt,fontset=fandol]{ctexart}
+\usepackage[left=29mm,right=25mm,top=23mm,bottom=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\definecolor{pnRed}{HTML}{A62930}
+\definecolor{pnBlue}{HTML}{253C68}
+\definecolor{pnGold}{HTML}{BD8D24}
+\definecolor{pnDefinitionBg}{HTML}{F0E3D7}
+\definecolor{pnPropositionBg}{HTML}{F8F5EF}
+\definecolor{pnExampleBg}{HTML}{EFE5CB}
+\newcommand{\pnE}{\mathbb E}
+\newcommand{\pnVar}{\operatorname{Var}}
+\newcommand{\pnCov}{\operatorname{Cov}}
+\newcommand{\pnIndicator}{\mathbf 1}
+\newcounter{pnstatement}[section]
+\renewcommand{\thepnstatement}{\thesection.\arabic{pnstatement}}
+\tcbset{pnbase/.style={enhanced,breakable,sharp corners,boxrule=0pt,
+ borderline west={1.2pt}{0pt}{pnBlue},left=9pt,right=9pt,top=7pt,bottom=7pt,
+ before skip=10pt,after skip=10pt,fonttitle=\bfseries,coltitle=pnBlue,
+ attach title to upper={\quad},title after break={},
+ overlay unbroken and first={\fill[tcbcolframe] ([xshift=-9pt,yshift=-9pt]frame.north west) rectangle ++(4pt,4pt);}}}
+\newenvironment{pnDefinition}[1]{\refstepcounter{pnstatement}\begin{tcolorbox}[
+ pnbase,colback=pnDefinitionBg,colframe=pnRed,coltitle=pnRed,
+ borderline west={1.2pt}{0pt}{pnRed},title={定义~\thepnstatement\ (#1).}]}{\end{tcolorbox}}
+\newenvironment{pnProposition}[1]{\refstepcounter{pnstatement}\begin{tcolorbox}[
+ pnbase,colback=pnPropositionBg,colframe=pnBlue,
+ title={命题~\thepnstatement\ (#1).}]}{\end{tcolorbox}}
+\newenvironment{pnExample}[1]{\refstepcounter{pnstatement}\begin{tcolorbox}[
+ pnbase,colback=pnExampleBg,colframe=pnGold,coltitle=pnGold,
+ borderline west={1.2pt}{0pt}{pnGold},title={例~\thepnstatement\ (#1).}]}{\end{tcolorbox}}
+\newenvironment{pnRemark}[1]{\par\medskip\noindent
+ \refstepcounter{pnstatement}\textcolor{pnRed}{注~\thepnstatement\ (#1).}\ }{\par\medskip}
+\renewcommand{\proofname}{证明}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage[unicode,hidelinks]{hyperref}
+\ctexset{section={format=\Large\bfseries\color{pnRed}},
+ subsection={format=\large\bfseries\color{pnRed}}}
+\setlength{\parskip}{0.4em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{gray}离散数学与结构（I）}
+\fancyfoot[R]{\small\color{gray}\thepage}
+\AddToShipoutPictureBG{\begin{tikzpicture}[remember picture,overlay]
+ \fill[pnExampleBg!55] ([xshift=10.5mm,yshift=-19mm]current page.north west)
+ rectangle ([xshift=15mm,yshift=20mm]current page.south west);
+ \foreach \x in {10.5,12,15}{\draw[pnGold!55,line width=0.3pt]
+ ([xshift=\x mm,yshift=-19mm]current page.north west) --
+ ([xshift=\x mm,yshift=20mm]current page.south west);}
+\end{tikzpicture}}
+\begin{document}
+% 独立预览从第 1 节开始；接入主讲义时删除这行计数器设置。
+\setcounter{section}{0}
+% 可插入讲义的正文；环境采用配套 lecture_style.tex 中的 pn 前缀。
+\section{生成函数}
+\label{sec:gf-generating}
+
+\subsection{从骨牌铺法到普通生成函数}
+
+\begin{pnExample}{用骨牌覆盖 $2\times n$ 棋盘}
+设 $f_n$ 为用 $2\times1$ 骨牌无重叠、无空隙地覆盖 $2\times n$ 棋盘的方法数，允许旋转骨牌。
+空棋盘只有空铺法一种，故
+\[
+ f_0=1,\qquad f_1=1,\qquad f_2=2,\qquad f_3=3.
+\]
+观察棋盘最左端：或者先放一块竖骨牌，或者先放上下两块横骨牌。
+于是
+\[
+ f_n=f_{n-1}+f_{n-2},\qquad n\geq2.
+\]
+\end{pnExample}
+
+把空铺法的权重记为 $1$，一块竖骨牌的权重记为 $x$，
+两块横骨牌组成的 $2\times2$ 块的权重记为 $x^2$。
+一份铺法连接一份后续铺法时，权重相乘；把所有铺法的权重相加，得到
+\[
+ F(x)=\sum_{n=0}^{\infty}f_nx^n.
+\]
+最左端的分类直接给出
+\[
+ F(x)=1+xF(x)+x^2F(x),\qquad
+ \boxed{F(x)=\frac1{1-x-x^2}.}
+\]
+这里 $x$ 的指数等于棋盘宽度；在这个特定例子中，它也等于使用的骨牌数。
+
+\begin{pnRemark}{分别记录两种方向的骨牌}
+若改用 $u$ 记录竖骨牌数，用 $v$ 记录横骨牌数，则一对横骨牌贡献 $v^2$。
+相应的二元生成函数为
+\[
+ F(u,v)=1+uF(u,v)+v^2F(u,v)=\frac1{1-u-v^2}.
+\]
+展开为
+\[
+ F(u,v)=\sum_{a,b\geq0}\binom{a+b}{b}u^av^{2b}.
+\]
+系数记录含 $a$ 块竖骨牌和 $2b$ 块横骨牌的铺法数；它们覆盖的宽度为 $a+2b$。
+令 $u=x,v=x$，便回到 $F(x)$。
+\end{pnRemark}
+
+\begin{pnDefinition}{普通生成函数与系数提取}
+对数列 $a_0,a_1,a_2,\ldots$，定义普通生成函数
+\[
+ A(x)=\sum_{n=0}^{\infty}a_nx^n.
+\]
+记 $[x^n]A(x)=a_n$，表示提取 $x^n$ 的系数。
+\end{pnDefinition}
+
+这里首先把生成函数看作形式幂级数，用代数运算记录数列，无需先讨论解析意义下的收敛。
+例如，常数项为 $1$ 的 $1-x-x^2$ 在形式幂级数中可逆。
+
+\subsection{基本例子与运算规则}
+
+\begin{pnExample}{常见数列的生成函数}
+以下数列均从下标 $0$ 开始：
+\[
+\begin{array}{c|c}
+ \text{数列或系数}&\text{普通生成函数}\\ \hline
+ (1,0,0,\ldots)&1\\
+ a_n=\mathbf1_{\{n=m\}}&x^m\\
+ (1,1,1,\ldots)&\dfrac1{1-x}\\[3pt]
+ (1,\alpha,\alpha^2,\ldots)&\dfrac1{1-\alpha x}\\[3pt]
+ (1,0,1,0,1,0,\ldots)&\dfrac1{1-x^2}\\[3pt]
+ a_n=\binom{k}{n}\ (0\leq n\leq k),\ a_n=0\ (n>k)&(1+x)^k\\[3pt]
+ a_n=\binom{c+n}{n}\ (c\in\mathbb N)&\dfrac1{(1-x)^{c+1}}
+\end{array}
+\]
+其中 $m,k,c\in\mathbb N=\{0,1,2,\ldots\}$，$\alpha$ 为常数。
+\end{pnExample}
+
+\begin{pnProposition}{移位、线性运算、缩放与插零}
+设 $G(x)=\sum_{n\geq0}g_nx^n$，$H(x)=\sum_{n\geq0}h_nx^n$，则
+\[
+\begin{array}{c|c}
+ \text{数列}&\text{普通生成函数}\\ \hline
+ (0,g_0,g_1,\ldots)&xG(x)\\[2pt]
+ (g_1,g_2,g_3,\ldots)&\dfrac{G(x)-g_0}{x}\\[5pt]
+ (\alpha g_n+\beta h_n)_{n\geq0}&\alpha G(x)+\beta H(x)\\[2pt]
+ (g_0,\alpha g_1,\alpha^2g_2,\ldots)&G(\alpha x)\\[2pt]
+ (g_0,0,g_1,0,g_2,0,\ldots)&G(x^2)
+\end{array}
+\]
+\end{pnProposition}
+
+\begin{pnProposition}{乘积对应卷积}
+\[
+ [x^n]\bigl(G(x)H(x)\bigr)=\sum_{i=0}^ng_ih_{n-i}.
+\]
+\end{pnProposition}
+\begin{proof}
+把两个形式级数相乘，收集指数和等于 $n$ 的项：
+\[
+ G(x)H(x)=g_0h_0+(g_0h_1+g_1h_0)x+\cdots
+ =\sum_{n\geq0}\left(\sum_{i=0}^ng_ih_{n-i}\right)x^n.
+\]
+\end{proof}
+
+\begin{pnProposition}{部分和与形式求导}
+设 $s_n=\sum_{i=0}^ng_i$，则
+\[
+ \sum_{n\geq0}s_nx^n=\frac{G(x)}{1-x}.
+\]
+此外，
+\[
+ G'(x)=\sum_{n\geq0}(n+1)g_{n+1}x^n,\qquad
+ xG'(x)=\sum_{n\geq0}ng_nx^n.
+\]
+\end{pnProposition}
+\begin{proof}
+第一式是与 $1/(1-x)=\sum_{n\geq0}x^n$ 作卷积；后两式直接逐项求导。
+\end{proof}
+
+\begin{pnExample}{利用平均消去奇数项}
+将 $1/(1-x)$ 和 $1/(1+x)$ 对应的数列逐项平均，得到
+\[
+ \frac12\left(\frac1{1-x}+\frac1{1+x}\right)=\frac1{1-x^2},
+\]
+即数列 $(1,0,1,0,1,0,\ldots)$ 的生成函数。
+\end{pnExample}
+
+\subsection{卷积的应用与有理式的处理}
+
+\begin{pnExample}{找零：四枚一元硬币与不限量五元纸币}
+一元硬币最多使用四枚，其生成函数是 $1+x+x^2+x^3+x^4$；
+五元纸币不限量，其生成函数是
+\[
+ 1+x^5+x^{10}+\cdots=\frac1{1-x^5}.
+\]
+两者合用的找零方法数由乘积记录：
+\[
+ (1+x+x^2+x^3+x^4)\frac1{1-x^5}=\frac1{1-x}.
+\]
+因此每个非负整数金额恰有一种表示：先取五元纸币，再用 $0$ 到 $4$ 枚一元硬币补足余数。
+\end{pnExample}
+
+对有理生成函数，可以先作多项式除法及部分分式分解，再使用基本生成函数提取系数。
+当分母分解为一次因子的幂时，各项可整理为
+\[
+ P(x)+\sum_{j,r}\frac{A_{j,r}}{(1-\alpha_jx)^r},
+\]
+其中 $P(x)$ 为多项式，并利用
+\[
+ [x^n]\frac1{(1-\alpha x)^r}
+ =\alpha^n\binom{n+r-1}{r-1},\qquad r\geq1.
+\]
+例如，前面的 $1/(1-x-x^2)$ 可先将二次分母分解，再按上述方式处理。
+
+\subsection{Catalan 数的生成函数}
+
+\begin{pnExample}{由递推关系建立二次方程}
+设 Catalan 数满足
+\[
+ C_0=1,\qquad C_n=\sum_{i=0}^{n-1}C_iC_{n-1-i}\quad(n\geq1).
+\]
+记 $C(x)=\sum_{n\geq0}C_nx^n$，由卷积公式，
+\begin{align*}
+ C(x)
+ &=1+\sum_{n\geq1}\sum_{i=0}^{n-1}C_iC_{n-1-i}x^n\\
+ &=1+x\sum_{m\geq0}\sum_{i=0}^{m}C_iC_{m-i}x^m
+ =1+xC(x)^2.
+\end{align*}
+因此 $xC(x)^2-C(x)+1=0$。
+选取常数项为 $1$ 的形式幂级数解，得到
+\[
+ \boxed{C(x)=\frac{1-\sqrt{1-4x}}{2x}.}
+\]
+这里分子含因子 $x$，所以该式确实是形式幂级数；另一个带加号的解含有 $x^{-1}$ 项，应舍去。
+若要提取系数，可继续对 $\sqrt{1-4x}$ 使用广义二项式展开。
+\end{pnExample}
+
+\subsection{卤代烃计数：不可区分分支与 P\'olya 计数}
+
+\begin{pnExample}{用有根树表示卤代烃的结构}
+考虑树状碳骨架的一卤代烃，不计立体异构。以连接卤素的碳原子为根，
+每个碳原子除去连接其父节点（根节点处为卤素）的一个键，还能连接至多三个碳分支。
+因此，本例等价于计数\emph{每个节点至多有三个儿子、儿子之间没有顺序的有根树}。
+
+记含 $n$ 个节点的此类有根树数为 $r_n$，并定义
+\[
+ R(x)=\sum_{n=0}^{\infty}r_nx^n,\qquad r_0=1.
+\]
+其中 $r_0=1$ 代表空分支，在分子模型中对应一个氢原子；它是递归计数的约定，
+不是把空树计为一种含碳的卤代烃。$x$ 记录碳原子个数。
+\end{pnExample}
+
+一个非空对象由一个根及三个可为空的分支组成。
+若临时把三个分支位置区分开，记相应生成函数为 $T(x)$，便有
+\[
+ T(x)=1+xT(x)^3.
+\]
+但本题中交换三个分支的位置不产生新的结构，故需要对三个位置的置换群
+$S_3=\operatorname{Sym}(3)$ 的作用取轨道，不能直接用有序三元组的乘积计数。
+
+\paragraph{按置换的轮换类型计算不动对象}
+对每个分支按碳原子数赋予权重。置换不改变总权重，因此可以在每个固定总次数上
+用 Burnside 平均计算轨道数；这就是本例所用的 P\'olya 计数。
+置换的一个长度为 $j$ 的轮换要求该轮换上的 $j$ 个分支完全相同。
+若这个共同分支有 $k$ 个碳原子，则总权重为 $x^{jk}$，所以该轮换贡献
+\[
+ Z_j=\sum_{k\geq0}r_kx^{jk}=R(x^j).
+\]
+特别地，$Z_1=R(x)$，$Z_2=R(x^2)$，$Z_3=R(x^3)$。
+
+在 $S_3$ 中，六个置换分成三类：
+\[
+\begin{array}{c|c|c}
+ \text{轮换类型}&\text{置换个数}&\text{不动分支三元组的生成函数}\\ \hline
+ 1+1+1&1&Z_1^3=R(x)^3\\
+ 2+1&3&Z_2Z_1=R(x^2)R(x)\\
+ 3&2&Z_3=R(x^3)
+\end{array}
+\]
+恒等置换允许三个分支任意选择；对换要求被交换的两个分支相同；三轮换要求三个分支全部相同。
+这里 $R(x^2)$ 的 $x^{2k}$ 项系数是 $r_k$，而非 $r_k^2$，
+因为需要选择\emph{一个}共同分支，然后重复使用它。
+
+\begin{pnProposition}{卤代烃计数的生成函数方程}
+先对三个分支的置换取平均，再乘上根节点的权重 $x$，并加入空分支，得到
+\[
+ \boxed{R(x)=1+\frac{x}{6}
+ \left(R(x)^3+3R(x)R(x^2)+2R(x^3)\right).}
+\]
+等价地，先写轮换变量再代入，即
+\[
+ R(x)=1+\frac{x}{6}\left(Z_1^3+3Z_1Z_2+2Z_3\right),
+ \qquad Z_j=R(x^j).
+\]
+\end{pnProposition}
+
+右侧除常数项外都含有因子 $x$，因此比较 $x^n$ 的系数时，只会用到更低下标的 $r_k$；
+配合 $r_0=1$，该方程可以逐项确定所需的计数。
+
+
+\subsection{三个边界状态：$3\times n$ 棋盘的骨牌铺法}
+
+本例改用 $x$ 记录\emph{使用的骨牌数}，每块骨牌贡献一个 $x$。
+记完整 $3\times n$ 棋盘的铺法类为 $\mathcal C$，并把空棋盘计入。
+记 $\mathcal V$ 为在左下角缺一个格子的 $3\times n$ 区域的铺法类，
+$\mathcal L$ 为在左上角缺一个格子的铺法类；这两个缺角状态互为上下翻转。
+各类都遍历可铺的宽度，用 $C_3(x),V(x),L(x)$ 分别表示其按骨牌数计权的生成函数。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5,line width=0.6pt]
+ \draw (0,0) rectangle (3,3);
+ \node[below] at (1.5,0) {$\mathcal C$};
+ \draw (5,1)--(6,1)--(6,0)--(8,0)--(8,3)--(5,3)--cycle;
+ \node[below] at (6.5,0) {$\mathcal V$};
+ \draw (10,0)--(13,0)--(13,3)--(11,3)--(11,2)--(10,2)--cycle;
+ \node[below] at (11.5,0) {$\mathcal L$};
+\end{tikzpicture}
+\end{center}
+示意图仅表示边界形状；各状态对应的宽度随铺法变化。
+
+\begin{pnProposition}{边界状态的生成函数方程}
+按照最左端骨牌的摆放分类，可得
+\begin{align*}
+ C_3(x)&=1+x^3C_3(x)+x^2V(x)+x^2L(x),\\
+ V(x)&=xC_3(x)+x^3V(x),\\
+ L(x)&=xC_3(x)+x^3L(x).
+\end{align*}
+\end{pnProposition}
+
+第一式中，$1$ 对应空铺法；三个横骨牌占据最左两列时贡献 $x^3C_3(x)$；
+其余两种情形各先放两块骨牌，余下对应一个缺角状态，故各贡献一个 $x^2$。
+缺角状态或者先放一块骨牌恢复完整状态，或者先放三块骨牌并留下同型缺角状态，得到后两式。
+
+由对称性 $V=L$，并且
+\[
+ V(x)=L(x)=\frac{x}{1-x^3}C_3(x).
+\]
+代回完整状态的方程：
+\[
+ C_3(x)=1+x^3C_3(x)+\frac{2x^3}{1-x^3}C_3(x).
+\]
+整理得到
+\[
+ \boxed{C_3(x)=\frac{1-x^3}{1-4x^3+x^6}.}
+\]
+完整的 $3\times n$ 棋盘只有在 $n$ 为偶数时可铺；$3\times2m$ 的铺法使用 $3m$ 块骨牌，
+其方法数是 $[x^{3m}]C_3(x)$，不能把这里的 $x$ 直接解释为列宽。
+
+\subsection{指数生成函数}
+
+\begin{pnDefinition}{指数生成函数（Exponential Generating Function）}
+对数列 $g_0,g_1,g_2,\ldots$，定义
+\[
+ \widehat G(x)=\sum_{n=0}^{\infty}g_n\frac{x^n}{n!}.
+\]
+因此 $g_n=n!\,[x^n]\widehat G(x)$。
+\end{pnDefinition}
+
+\begin{pnProposition}{指数生成函数的乘积}
+若 $\widehat G,\widehat H$ 分别对应数列 $g_n,h_n$，则
+\[
+ n!\,[x^n]\bigl(\widehat G(x)\widehat H(x)\bigr)
+ =\sum_{i=0}^n\binom ni g_ih_{n-i}.
+\]
+\end{pnProposition}
+\begin{proof}
+按 $x^n$ 项收集系数，
+\[
+ n!\,[x^n]\bigl(\widehat G\widehat H\bigr)
+ =n!\sum_{i=0}^n\frac{g_i}{i!}\frac{h_{n-i}}{(n-i)!}
+ =\sum_{i=0}^n\binom ni g_ih_{n-i}.
+\]
+\end{proof}
+
+笔记还记录了指数形式
+\[
+ 1+\widehat G(x)+\frac{\widehat G(x)^2}{2!}
+ +\frac{\widehat G(x)^3}{3!}+\cdots
+ =\exp\bigl(\widehat G(x)\bigr).
+\]
+在形式幂级数中直接作上述复合时，取 $\widehat G(0)=0$，使每个次数只涉及有限多个求和项。
+
+\subsection{幂和与 Bernoulli 数}
+
+笔记列出的低次幂和为
+\begin{align*}
+ 1+1+\cdots+1&=n,\\
+ 1+2+\cdots+n&=\frac{n(n+1)}2,\\
+ 1^2+2^2+\cdots+n^2&=\frac{n(n+1)(2n+1)}6,\\
+ 1^3+2^3+\cdots+n^3&=\left(\frac{n(n+1)}2\right)^2.
+\end{align*}
+下面用指数生成函数统一处理。为与笔记中的等比求和一致，先定义
+\[
+ S_m(n)=\sum_{k=0}^{n-1}k^m,\qquad n\geq1,
+\]
+其中 $m=0$ 时每项按 $1$ 计，故 $S_0(n)=n$。
+对固定的 $n$，
+\begin{align*}
+ \sum_{m=0}^{\infty}S_m(n)\frac{x^m}{m!}
+ &=\sum_{k=0}^{n-1}\sum_{m=0}^{\infty}\frac{(kx)^m}{m!}
+ =\sum_{k=0}^{n-1}e^{kx}\\
+ &=\frac{e^{nx}-1}{e^x-1}
+ =\frac{x}{e^x-1}\cdot\frac{e^{nx}-1}{x}.
+\end{align*}
+等比式也可写成 $(1-e^{nx})/(1-e^x)$，两种写法相同。
+
+\begin{pnDefinition}{Bernoulli 数的生成函数约定}
+定义 $B_0,B_1,B_2,\ldots$ 满足
+\[
+ \frac{x}{e^x-1}=\sum_{j=0}^{\infty}B_j\frac{x^j}{j!}.
+\]
+此约定给出 $B_0=1$，$B_1=-1/2$，$B_2=1/6$。
+\end{pnDefinition}
+
+另一方面，
+\[
+ \frac{e^{nx}-1}{x}
+ =n+\frac{n^2x}{2!}+\frac{n^3x^2}{3!}+\cdots
+ =\sum_{r\geq0}\frac{n^{r+1}x^r}{(r+1)!}.
+\]
+将它与 Bernoulli 数的级数相乘，并比较 $x^m$ 的系数，即得
+\begin{pnProposition}{幂和的系数表达式}
+\[
+ \boxed{\begin{aligned}
+ S_m(n)&=m!\sum_{j=0}^m\frac{B_jn^{m+1-j}}{j!(m+1-j)!}\\
+ &=\frac1{m+1}\sum_{j=0}^m\binom{m+1}{j}B_jn^{m+1-j}.
+ \end{aligned}}
+\]
+\end{pnProposition}
+
+这也解释了笔记中的前几项乘积：
+\begin{align*}
+ S_0(n)&=0!\,\frac{B_0n}{0!1!}=n,\\
+ S_1(n)&=1!\left(\frac{B_0n^2}{0!2!}+\frac{B_1n}{1!1!}\right)
+ =\frac{n(n-1)}2,\\
+ S_2(n)&=2!\left(\frac{B_0n^3}{0!3!}+\frac{B_1n^2}{1!2!}
+ +\frac{B_2n}{2!1!}\right)
+ =\frac{n(n-1)(2n-1)}6.
+\end{align*}
+注意这里求和止于 $n-1$。对于本小节开头从 $1$ 到 $n$ 的幂和，
+当 $m\geq1$ 时改用 $S_m(n+1)$，即可与前面的低次公式对应。
+
+\end{document}
