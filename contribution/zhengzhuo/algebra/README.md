@@ -27,7 +27,6 @@
 | [2026.10.22.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.22.pdf) | 6（内容 p. 1–5） | 有限群的复线性表示、正则表示、子表示与直和；平均化方法、Maschke 定理、Schur 引理及分解唯一性；张量积、对偶与特征标。 |
 | [2026.10.29.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) | 6（内容 p. 1–5） | 特征标与类函数、Schur 正交关系；表示的重数、同构与不可约性判别；正则表示分解、维数平方和公式；不可约特征标构成类函数空间的标准正交基，及不可约表示维数整除群阶。 |
 | [2026.11.5.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) | 7（内容 p. 1–6） | 环、除环、域与典型例子；环同态、零因子、单位与整环；有限整环为域、分式域；理想、商环、同构定理与理想对应；生成理想、理想的和交积及商环中的关系。 |
-
 | [2026.11.12.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) | 6（内容 p. 1–5） | 交换环的中国剩余定理；Zorn 引理与极大理想的存在性；极大理想、素理想的商环刻画；素理想回避引理与逆像；素谱及 Zariski 拓扑。 |
 
 ## 知识点索引
