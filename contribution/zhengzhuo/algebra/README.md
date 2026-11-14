@@ -28,11 +28,13 @@
 | [2026.10.29.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) | 6（内容 p. 1–5） | 特征标与类函数、Schur 正交关系；表示的重数、同构与不可约性判别；正则表示分解、维数平方和公式；不可约特征标构成类函数空间的标准正交基，及不可约表示维数整除群阶。 |
 | [2026.11.5.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) | 7（内容 p. 1–6） | 环、除环、域与典型例子；环同态、零因子、单位与整环；有限整环为域、分式域；理想、商环、同构定理与理想对应；生成理想、理想的和交积及商环中的关系。 |
 
+| [2026.11.12.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) | 6（内容 p. 1–5） | 交换环的中国剩余定理；Zorn 引理与极大理想的存在性；极大理想、素理想的商环刻画；素理想回避引理与逆像；素谱及 Zariski 拓扑。 |
+
 ## 知识点索引
 
-仅索引上述十一份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环。
+仅索引上述十二份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环；2026.11.12 接续中国剩余定理、极大理想与素理想，并介绍素谱及 Zariski 拓扑。11 月 12 日笔记标题虽列出主理想整环，但正文尚未展开，故暂不索引。
 
-主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理)
+主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理) · [中国剩余定理、极大理想与素理想](#中国剩余定理极大理想与素理想) · [素谱与 Zariski 拓扑](#素谱与-zariski-拓扑)
 
 ### 群论基础与典型群
 
@@ -194,3 +196,26 @@
 | 理想的和、交与积；积由有限和构成；生成元公式及 IJ⊆I∩J⊆I+J | [2026.11.5.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
 | 第二同构定理：(S+I)/I≅S/(S∩I)（陈述） | [2026.11.5.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
 | 将商环理解为施加关系；F[x,y]/(x−y², y−x³) 中的计算例子 | [2026.11.5.pdf，p. 5–6](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) |
+
+### 中国剩余定理、极大理想与素理想
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 互素（共极大）理想的定义：I+J=R；整数环中的 Bézout 等式例子 | [2026.11.12.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 交换环的中国剩余定理及证明：自然映射的核、两两互素时的满射性、理想的交等于积及商环直积分解 | [2026.11.12.pdf，p. 1–2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 偏序、链与极大元；Zorn 引理及其与选择公理的等价性（陈述） | [2026.11.12.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 极大双边理想的定义；每个真双边理想包含于某个极大理想的 Zorn 引理证明 | [2026.11.12.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 交换环中极大理想的商环刻画：R/m 为域及证明；非交换情形的矩阵环反例 | [2026.11.12.pdf，p. 2–3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 极大理想的例子：Z 中的 (p)、Z[x] 中的 (p) 与 (p,x)、R[x] 中的 (x²+1)、复群环的增广理想 | [2026.11.12.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 素理想的定义及整数环例子；R/p 为整环的等价刻画及证明；极大理想必为素理想 | [2026.11.12.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 素理想回避引理及归纳证明：理想包含于有限个素理想的并，则包含于其中一个 | [2026.11.12.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 素理想包含有限个理想的交，则包含其中一个理想及证明 | [2026.11.12.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 交换环同态下素理想的逆像仍为素理想：通过商环嵌入证明 | [2026.11.12.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+
+### 素谱与 Zariski 拓扑
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 素谱 Spec(R)；闭集 V(I) 与开集 D(I) 的定义 | [2026.11.12.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| Zariski 拓扑的闭集公理及证明：V(0)、V(R)、任意交对应理想之和、有限并对应理想之交 | [2026.11.12.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+| 环同态 R→S 通过素理想逆像诱导连续映射 Spec(S)→Spec(R)（陈述） | [2026.11.12.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
