@@ -28,12 +28,13 @@
 | [2026.10.29.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.10.29.pdf) | 6（内容 p. 1–5） | 特征标与类函数、Schur 正交关系；表示的重数、同构与不可约性判别；正则表示分解、维数平方和公式；不可约特征标构成类函数空间的标准正交基，及不可约表示维数整除群阶。 |
 | [2026.11.5.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) | 7（内容 p. 1–6） | 环、除环、域与典型例子；环同态、零因子、单位与整环；有限整环为域、分式域；理想、商环、同构定理与理想对应；生成理想、理想的和交积及商环中的关系。 |
 | [2026.11.12.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) | 6（内容 p. 1–5） | 交换环的中国剩余定理；Zorn 引理与极大理想的存在性；极大理想、素理想的商环刻画；素理想回避引理与逆像；素谱及 Zariski 拓扑。 |
+| [2026.11.16.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) | 6（内容 p. 1–5） | 主理想整环（PID）、二次整数环与范数；欧几里得整环及 ED⇒PID；素元、不可约元与相伴；唯一分解整环（UFD）、最大公因子及 PID⇒UFD；整闭整环及 UFD⇒整闭。 |
 
 ## 知识点索引
 
-仅索引上述十二份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环；2026.11.12 接续中国剩余定理、极大理想与素理想，并介绍素谱及 Zariski 拓扑。11 月 12 日笔记标题虽列出主理想整环，但正文尚未展开，故暂不索引。
+仅索引上述十三份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环；2026.11.12 接续中国剩余定理、极大理想与素理想，并介绍素谱及 Zariski 拓扑。2026.11.16 展开主理想整环、欧几里得整环、唯一分解整环与整闭整环，并讨论它们之间的蕴含关系。
 
-主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理) · [中国剩余定理、极大理想与素理想](#中国剩余定理极大理想与素理想) · [素谱与 Zariski 拓扑](#素谱与-zariski-拓扑)
+主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理) · [中国剩余定理、极大理想与素理想](#中国剩余定理极大理想与素理想) · [素谱与 Zariski 拓扑](#素谱与-zariski-拓扑) · [主理想整环、唯一分解与整闭性](#主理想整环唯一分解与整闭性)
 
 ### 群论基础与典型群
 
@@ -218,3 +219,21 @@
 | 素谱 Spec(R)；闭集 V(I) 与开集 D(I) 的定义 | [2026.11.12.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
 | Zariski 拓扑的闭集公理及证明：V(0)、V(R)、任意交对应理想之和、有限并对应理想之交 | [2026.11.12.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
 | 环同态 R→S 通过素理想逆像诱导连续映射 Spec(S)→Spec(R)（陈述） | [2026.11.12.pdf，p. 5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) |
+
+### 主理想整环、唯一分解与整闭性
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 主理想整环（PID）的定义与例子；Z[√−5] 中非主理想 (2,1+√−5) 的例子 | [2026.11.16.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| PID 中每个非零素理想都是极大理想及证明 | [2026.11.16.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| 二次整数环的介绍；共轭与范数、范数的乘法性；单位当且仅当范数为 ±1 及证明；Pell 方程的提及 | [2026.11.16.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| 欧几里得整环的定义与带余除法；域、整数环、多项式环、高斯整数环及 Eisenstein 整数环的例子 | [2026.11.16.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| 欧几里得整环必为 PID 的证明：取非零理想中范数最小的元素，利用带余除法 | [2026.11.16.pdf，p. 2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| 整除、素元、不可约元与相伴的定义；整环中素元必不可约、PID 中两者等价及证明 | [2026.11.16.pdf，p. 2–3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| Z[√−5] 中 3 不可约但不为素元；6 的两种分解与唯一分解失败的例子 | [2026.11.16.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| 唯一分解整环（UFD）的定义；分解在相伴与排列意义下唯一；UFD 中素元与不可约元等价及证明 | [2026.11.16.pdf，p. 3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| UFD 中最大公因子的定义与存在性：对不可约因子的指数取最小值；最小公倍数与 GCD 整环的提及 | [2026.11.16.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| PID⇒UFD 的证明：利用递增主理想链证明分解存在，利用素元性质证明唯一性 | [2026.11.16.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| ED⇒PID⇒UFD 的关系及逆命题的反例；UFD 上多项式环仍为 UFD（仅陈述） | [2026.11.16.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| 整闭整环的定义：分式域中满足首一多项式的元素；Z[√−3] 不是整闭整环的例子 | [2026.11.16.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+| UFD 为整闭整环的证明：将分式约至互素并由首一方程推出分母为单位；各类整环关系总结 | [2026.11.16.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
