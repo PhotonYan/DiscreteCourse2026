@@ -94,6 +94,41 @@ H(X_1,\dots,X_n)=H(X_1,\dots,X_{n-1})+H(X_n\mid X_1,\dots,X_{n-1}),
 
 再对前 $n-1$ 个变量归纳。
 
+\subsection{熵的凹性（Jensen 证明）}
+
+
+先单独证明熵作为分布的函数是\textbf{凹函数}；这一步只用 Jensen，不用 KL，也不用条件熵，所以后面证明“条件不增加熵”不会循环论证。
+
+\textbf{引理.} 设 $P_0,P_1$ 是两个分布，$\lambda\in[0,1]$，$P=\lambda P_0+(1-\lambda)P_1$。则
+
+\[
+\boxed{
+H(P)\ge\lambda H(P_0)+(1-\lambda)H(P_1)
+}.
+\]
+
+\textbf{证明.} 对每个 $x$，函数
+
+\[
+\varphi(t)=-t\log t\qquad(t\ge0)
+\]
+
+是凹函数，因为
+
+\[
+\varphi''(t)=-\frac1t<0\qquad(t>0).
+\]
+
+由 Jensen（或直接由凹函数定义），
+
+\[
+\varphi\bigl(\lambda P_0(x)+(1-\lambda)P_1(x)\bigr)
+\ge
+\lambda\varphi(P_0(x))+(1-\lambda)\varphi(P_1(x)).
+\]
+
+对 $x$ 求和，左边正好是 $H(P)$，右边是 $\lambda H(P_0)+(1-\lambda)H(P_1)$。因此凹性成立。由于 $\varphi$ 严格凹，$0<\lambda<1$ 时等号当且仅当 $P_0=P_1$。
+
 \subsection{条件熵的非负性与“条件不增加熵”}
 
 
@@ -115,21 +150,36 @@ H(X\mid Y)\le H(X)
 
 等号成立当且仅当 $X,Y$ 独立。
 
-\textbf{证明（用 KL/对数和）.} 计算差值：
+\textbf{证明（用熵的凹性）.} 把条件熵写成“条件分布的熵的加权平均”：
 
 \[
-\begin{aligned}
-H(X)-H(X\mid Y)
-&=\sum_xP_X(x)\log\frac1{P_X(x)}
--\sum_{x,y}P_{X,Y}(x,y)\log\frac1{P_{X\mid Y}(x\mid y)}\\
-&=\sum_{x,y}P_{X,Y}(x,y)\log\frac{P_{X\mid Y}(x\mid y)}{P_X(x)}\\
-&=\sum_{x,y}P_{X,Y}(x,y)\log\frac{P_{X,Y}(x,y)}{P_X(x)P_Y(y)}.
-\end{aligned}
+H(X\mid Y)
+=\sum_yP_Y(y)H(P_{X\mid Y=y}).
 \]
 
-这是 $P_{X,Y}$ 与“乘积分布”$P_XP_Y$ 之间的 KL 散度（见第 4 节）。由 KL 非负性可得差值 $\ge0$；等号当且仅当 $P_{X,Y}=P_XP_Y$，即 $X,Y$ 独立。
+由上面的凹性引理，把 $P_{X\mid Y=y}$ 按权重 $P_Y(y)$ 混合，得到
 
-（如果还没学 KL，也可以直接用 Jensen：$\log$ 凹，$\sum p\log y\le\log\sum py$。）
+\[
+\sum_yP_Y(y)H(P_{X\mid Y=y})
+\le
+H\Bigl(\sum_yP_Y(y)P_{X\mid Y=y}\Bigr).
+\]
+
+而括号里的混合分布正是 $X$ 的边缘分布 $P_X$，所以
+
+\[
+H(X\mid Y)\le H(P_X)=H(X).
+\]
+
+\textbf{等号条件.} 凹性取等需要所有（$P_Y(y)>0$ 的）条件分布 $P_{X\mid Y=y}$ 都相同；此时
+
+\[
+P_{X,Y}(x,y)=P_Y(y)P_X(x),
+\]
+
+即 $X,Y$ 独立。反过来，若 $X,Y$ 独立，则每个条件分布都等于 $P_X$，等号成立。
+
+\textbf{说明.} 这里没有用 KL 散度非负性——KL 是本节之后才引入的；用凹性引理是更直接、也不会循环的证法。
 
 \textbf{联合熵的上界.} 由链式法则和条件熵不等式，
 
@@ -153,52 +203,6 @@ H(X\mid Y)=0
 当且仅当：给定 $Y$ 后，$X$ 没有不确定性，即 $X$ 是 $Y$ 的函数（存在可测函数 $f$ 使 $X=f(Y)$ 几乎必然）。
 
 这与“$H(X,Y)=H(Y)$”等价：联合的不确定性全在 $Y$ 上。
-
-\subsection{熵的凹性（补证）}
-
-
-上一节说 $H$ 是分布的凹函数。这里用条件熵给一个干净的证明。
-
-设 $P=\lambda P_0+(1-\lambda)P_1$，$\lambda\in[0,1]$。构造随机变量 $Z\sim\mathrm{Bern}(\lambda)$，并令
-
-\[
-X\mid Z=0\sim P_0,\qquad X\mid Z=1\sim P_1.
-\]
-
-则 $X$ 的边缘分布正好是 $P$。由链式法则，
-
-\[
-H(X,Z)=H(X)+H(Z\mid X)=H(Z)+H(X\mid Z).
-\]
-
-其中：
-
-\begin{itemize}
-\item $H(Z)=h(\lambda)$；
-\item $H(X\mid Z)=\lambda H(P_0)+(1-\lambda)H(P_1)$；
-\item 由“条件不增加熵”，$H(Z\mid X)\le H(Z)$。
-\end{itemize}
-
-
-于是
-
-\[
-\begin{aligned}
-H(P)=H(X)
-&=H(Z)+H(X\mid Z)-H(Z\mid X)\\
-&\ge H(X\mid Z)\\
-&=\lambda H(P_0)+(1-\lambda)H(P_1).
-\end{aligned}
-\]
-
-这正是凹性。等号当且仅当 $H(Z\mid X)=H(Z)$；在混合模型中，这通常要求 $P_0=P_1$（否则知道 $X$ 会改变 $Z$ 的后验）。
-
-\textbf{结论.}
-
-\[
-H(\lambda P_0+(1-\lambda)P_1)
-\ge\lambda H(P_0)+(1-\lambda)H(P_1).
-\]
 
 \subsection{常见错误}
 
