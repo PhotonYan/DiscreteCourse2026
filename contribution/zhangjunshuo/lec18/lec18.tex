@@ -1,0 +1,47 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 18}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{互信息、集中不等式与 Sanov 大偏差}\author{zhangjunshuo}\date{2026 年 11 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 11 月 17 日的三页手写稿、上半节旧转写和下半节重新转写整理。上一份笔记是 Lec17（11 月 12 日），本次按顺序记为 \textbf{Lec18}。手写稿是公式与结构的主要依据，转写用于补课堂解释与例子；下半节旧转写不完整，本笔记使用重新转写的版本。
+
+本讲主线：KL/互信息 $\to$ Markov/Chebyshev/Chernoff $\to$ 类型计数与 Sanov 大偏差 $\to$ 数据处理不等式。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义。
+\end{quote}
+\setcounter{tocdepth}{1}\tableofcontents\clearpage
+
+\input{sections/01-kl-mutual-info}
+\input{sections/02-concentration}
+\input{sections/03-types-sanov}
+\input{sections/04-data-processing}
+
+\section*{一页式总览}
+\begin{itemize}
+\item KL 对均匀分布：$D(P\Vert U)=\log n-H(P)$。
+\item 互信息：$I(X;Y)=H(X)+H(Y)-H(X,Y)=D(P_{XY}\Vert P_XP_Y)$。
+\item 条件互信息：$I(X;Y\mid Z)=H(X\mid Z)+H(Y\mid Z)-H(X,Y\mid Z)$。
+\item Markov：$P(X\ge a)\le E[X]/a$。
+\item Chebyshev：$P(|X-E[X]|\ge a)\le\operatorname{Var}(X)/a^2$。
+\item Chernoff：$P(X\ge a)\le\min_{t>0}E[e^{tX}]/e^{ta}$。
+\item Bernoulli 和：$P(\sum_iX_i\ge qn)\le e^{-nD(q\Vert p)}$。
+\item 类型：$Q_i=T_i/n$，$|T(Q)|\approx e^{nH(Q)}$，$P^n(T(Q))\approx e^{-nD(Q\Vert P)}$。
+\item Sanov：$P(Q\in\mathcal R)\asymp e^{-n\min_{Q\in\mathcal R}D(Q\Vert P)}$。
+\item DPI：$X\to Y\to Z$ $\Rightarrow$ $I(X;Z)\le I(X;Y)$。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item 课堂手写稿（2026-11-17，三页）。
+\item 上半节旧转写 + 下半节重新转写（\texttt{课堂手记和录音转写/2026-11-17/}）。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》信息论、集中不等式、Sanov 与数据处理不等式相关章节。
+\end{itemize}
+\end{document}

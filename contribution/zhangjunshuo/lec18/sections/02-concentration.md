@@ -1,0 +1,182 @@
+# 集中不等式：Markov、Chebyshev 与 Chernoff
+
+这一节把“偏离期望的概率有多小”变成可计算的不等式。三个层次依次是：
+
+1. **Markov**：只用非负性；
+2. **Chebyshev**：用方差；
+3. **Chernoff**：用矩生成函数/指数变换，得到指数级尾界。
+
+**本节用到的记号：** $X$ 为随机变量；$\mu=E[X]$；$\Delta=\sqrt{\operatorname{Var}(X)}$；$D(q\Vert p)$ 为二元 KL；$X_1,\dots,X_n$ 独立同分布。
+
+## Markov 不等式
+
+若 $X\ge0$，则对任意 $a>0$，
+
+$$
+\boxed{
+P(X\ge a)\le\frac{E[X]}{a}
+}.
+$$
+
+等价地，取 $a=\alpha E[X]$：
+
+$$
+P(X\ge\alpha E[X])\le\frac1\alpha\qquad(\alpha>0).
+$$
+
+**证明.** 因为 $X\ge a\mathbf 1_{\{X\ge a\}}$，取期望：
+
+$$
+E[X]\ge aP(X\ge a).
+$$
+
+两边除以 $a$ 即得。
+
+**用途.** Markov 只要求非负，条件最弱，但界通常很松；它是后面 Chebyshev 和 Chernoff 的证明工具。
+
+## Chebyshev 不等式
+
+对任意 $a>0$，
+
+$$
+\boxed{
+P(|X-E[X]|\ge a)\le\frac{\operatorname{Var}(X)}{a^2}
+}.
+$$
+
+若记 $\Delta=\sqrt{\operatorname{Var}(X)}$，则
+
+$$
+P(|X-E[X]|\ge a\Delta)\le\frac1{a^2}.
+$$
+
+**证明.** 对非负随机变量 $(X-E[X])^2$ 用 Markov：
+
+$$
+P((X-E[X])^2\ge a^2)
+\le\frac{E[(X-E[X])^2]}{a^2}
+=\frac{\operatorname{Var}(X)}{a^2}.
+$$
+
+**用途.** 只要知道方差，就能给出“偏离 $a$ 个标准差”的概率上界；但尾界是多项式级（$1/a^2$），不够精细。
+
+## Chernoff 不等式
+
+对任意 $a$ 和任意 $t>0$，
+
+$$
+\boxed{
+P(X\ge a)
+\le\min_{t>0}\frac{E[e^{tX}]}{e^{ta}}
+}.
+$$
+
+**证明.** 对非负随机变量 $e^{tX}$ 用 Markov：
+
+$$
+P(X\ge a)=P(e^{tX}\ge e^{ta})
+\le\frac{E[e^{tX}]}{e^{ta}}.
+$$
+
+对所有 $t>0$ 取最小，得到最紧的界。
+
+**为什么强.** $E[e^{tX}]$ 把整个分布的信息都编码进来；选择最优 $t$ 后，尾界通常是指数级 $e^{-\Theta(n)}$，比 Chebyshev 的 $1/a^2$ 精细得多。
+
+## Bernoulli 和的 Chernoff 界
+
+设 $X_1,\dots,X_n$ 独立同分布 $\mathrm{Bern}(p)$，$q>p$。则
+
+$$
+P\Bigl(\sum_{i=1}^nX_i\ge qn\Bigr)
+\le\exp\bigl(-nD(q\Vert p)\bigr),
+$$
+
+其中
+
+$$
+D(q\Vert p)
+=q\log\frac qp+(1-q)\log\frac{1-q}{1-p}.
+$$
+
+**推导.** 对任意 $t>0$，
+
+$$
+\begin{aligned}
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+&\le\frac{E[e^{t\sum_iX_i}]}{e^{tqn}}\\
+&=\frac{\bigl(pe^t+(1-p)\bigr)^n}{e^{tqn}}.
+\end{aligned}
+$$
+
+令 $f(t)=\log\bigl(pe^t+(1-p)\bigr)-tq$，求导并令其为零：
+
+$$
+\frac{pe^t}{pe^t+(1-p)}=q
+\quad\Longrightarrow\quad
+e^t=\frac{q(1-p)}{p(1-q)}.
+$$
+
+代回并整理，指数变为
+
+$$
+-\Bigl[q\log\frac qp+(1-q)\log\frac{1-q}{1-p}\Bigr]
+=-D(q\Vert p).
+$$
+
+**二次下界.** 采用自然对数时，当 $q,p$ 接近，
+
+$$
+D(q\Vert p)\ge 2(p-q)^2.
+$$
+
+因此
+
+$$
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\le\exp\bigl(-2n(p-q)^2\bigr).
+$$
+
+若改用 $\log_2$，$D$ 的数值会放大 $1/\ln2$ 倍，$\exp$ 也要换成以 $2$ 为底；不要混用底数。手写稿里的 $2\log e$ 就是换底因子。
+
+## 与 CLT / 正态尾的比较
+
+对 $p=1/2$，中心极限定理给出
+
+$$
+\frac{\sum_iX_i-n/2}{\sqrt{n}/2}
+\approx \mathcal N(0,1).
+$$
+
+因此 $P(\sum_iX_i\ge qn)$ 的正态近似尾概率约为
+
+$$
+\exp\bigl(-2n(q-1/2)^2\bigr),
+$$
+
+与 Chernoff 界的指数一致。
+
+**但要区分“近似”和“上界”：**
+
+- CLT 给的是**近似**，不是严格的尾上界；
+- 严格的指数上界用 Chernoff；
+- 若要一个简单的严格界，也可用 Hoeffding：
+  $$
+  P(|\bar X-E[X]|\ge a)\le2e^{-2na^2}.
+  $$
+
+手写稿把“CLT 正态尾”和“Chernoff 界”放在一起比较，是为了说明两者的指数相同；证明严格上界时不要把 CLT 当成不等式使用。
+
+## 三种界的关系
+
+- **Markov**：需要“非负、期望”；尾界量级 $1/a$；最粗略。
+- **Chebyshev**：需要“方差”；尾界量级 $1/a^2$；快速估计。
+- **Chernoff**：需要“矩生成函数”；尾界量级 $e^{-\Theta(n)}$；独立和、大偏差。
+
+**记忆.** Markov 看“质量”，Chebyshev 看“方差”，Chernoff 看“指数矩”；条件越强，界越紧。
+
+## 常见错误
+
+- 对非正随机变量直接用 Markov。
+- 把 Chernoff 写成 $P(X\ge a)\le e^{-ta}E[e^{tX}]$ 后忘记对所有 $t>0$ 取最小。
+- 把 CLT 的近似尾概率当成严格上界。
+- 在 Bernoulli 界中把 $D(q\Vert p)$ 的两个参数顺序写反：$D(q\Vert p)$ 是“用 $p$ 近似 $q$”的代价，不是 $D(p\Vert q)$。
