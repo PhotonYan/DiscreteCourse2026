@@ -1,0 +1,45 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 17}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{熵、TV 距离与 KL 散度}\author{zhangjunshuo}\date{2026 年 11 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 11 月 12 日的两页手写稿和一段课堂转写整理。上一份笔记是 Lec16（11 月 10 日），本次按顺序记为 \textbf{Lec17}。转写开头仍在讲上一讲的 PGF 例子（等待连续两个正面），之后进入熵与信息论；整理版把它作为第 1 节的收尾。语音识别对术语和公式错误很多，公式以手写稿为准，转写用于补课堂解释；不一致处见总览中的勘误。
+
+本讲主线：PGF 收尾 $\to$ 熵与二元熵 $\to$ 条件熵/联合熵/链式法则 $\to$ TV 距离与耦合 $\to$ KL 散度与条件 KL。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-entropy-basics}
+\input{sections/02-conditional-entropy-chain}
+\input{sections/03-tv-distance}
+\input{sections/04-kl-divergence}
+
+\section*{一页式总览}
+\begin{itemize}
+\item 熵：$H(X)=\sum_xP_X(x)\log\frac1{P_X(x)}$；$H(X)\ge0$，$H(X)\le\log|\operatorname{supp}(X)|$。
+\item 二元熵：$h(p)=p\log\frac1p+(1-p)\log\frac1{1-p}$，在 $p=1/2$ 最大。
+\item 联合/条件熵：$H(X,Y)=H(Y)+H(X\mid Y)$；$H(X\mid Y)\le H(X)$，等号 $\iff X,Y$ 独立。
+\item 全链式：$H(X_1,\dots,X_n)=\sum_iH(X_i\mid X_1,\dots,X_{i-1})$。
+\item TV 距离：$\Delta_{\mathrm{TV}}(P,Q)=\frac12\|P-Q\|_1=\sum_x\max(0,P(x)-Q(x))=1-\sum_x\min(P(x),Q(x))$。
+\item 耦合：$\Delta_{\mathrm{TV}}(P,Q)=\min_{\text{coupling}}\Pr[X\ne Y]$。
+\item KL：$D_{\mathrm{KL}}(P\Vert Q)=\sum_xP(x)\log\frac{P(x)}{Q(x)}\ge0$，等号 $\iff P=Q$。
+\item KL 链式：$D(P_{XY}\Vert Q_{XY})=D(P_X\Vert Q_X)+D(P_{Y\mid X}\Vert Q_{Y\mid X}\mid P_X)$。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item 课堂手写稿（2026-11-12，两页）与课堂转写。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》信息论、熵与 KL 散度相关章节。
+\item 课程讲义中概率、熵、条件熵、TV 距离与 KL 散度相关部分。
+\end{itemize}
+\end{document}

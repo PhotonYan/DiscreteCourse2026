@@ -19,10 +19,12 @@
 | Lec 12 | 组合计数：基本计数、组合恒等式、卡特兰数、球与桶、容斥与抽屉原理 | [lec12.md](lec12/lec12.md) | [lec12.tex](lec12/lec12.tex) | [lec12.pdf](lec12/lec12.pdf) |
 | Lec 13 | 生成函数：OGF/EGF、Catalan、3×n 覆盖、幂和与 Bernoulli 数（附 OGF vs EGF 讲解稿） | [lec13.md](lec13/lec13.md) | [lec13.tex](lec13/lec13.tex) | [lec13.pdf](lec13/lec13.pdf) |
 | Lec 14 | Burnside 引理与 Pólya 计数：群作用、循环指数、染色计数、无标号树 | [lec14.md](lec14/lec14.md) | [lec14.tex](lec14/lec14.tex) | [lec14.pdf](lec14/lec14.pdf) |
+| Lec 16 | 概率与概率生成函数：概率空间、条件期望、方差/协方差、PGF 与常见分布 | [lec16.md](lec16/lec16.md) | [lec16.tex](lec16/lec16.tex) | [lec16.pdf](lec16/lec16.pdf) |
+| Lec 17 | 熵、TV 距离与 KL 散度：条件熵/链式法则、TV 耦合、KL 与条件 KL | [lec17.md](lec17/lec17.md) | [lec17.tex](lec17/lec17.tex) | [lec17.pdf](lec17/lec17.pdf) |
 
 ## 目录约定
 
-- `lec01-02/`、`lec03/`、`lec04/`、`lec05/`、`lec06/`、`lec07/`、`lec08/`、`lec09/`、`lec10/`、`lec11/`、`lec12/`、`lec13/`、`lec14/` 分别对应课程讲次；Lec 01 与 Lec 02 因材料来源合并整理。
+- `lec01-02/`、`lec03/`、`lec04/`、`lec05/`、`lec06/`、`lec07/`、`lec08/`、`lec09/`、`lec10/`、`lec11/`、`lec12/`、`lec13/`、`lec14/`、`lec16/`、`lec17/` 分别对应课程讲次；Lec 01 与 Lec 02 因材料来源合并整理，Lec15 未整理，11 月 10 日按 Lec16、11 月 12 日按 Lec17 归档。
 - Lec 06 统一收录 Oct 9 的群与正规子群、Oct 14 的群同态与同构定理；手写页首标为“Lec05”，但其内容是群论，现有 Lec 05 保留为数论。
 - Lec 11 的手写稿页首写的是日期“10.20”而非“Lec11”；按讲次顺序归档为 Lec 11。
 - 每个讲次目录的 `README.md` 提供章节说明和本目录内的编译提示。

@@ -1,0 +1,183 @@
+\section{PGF 收尾、熵的定义与基本性质}
+
+
+这一讲先用一个“等待连续两个正面”的例子把概率生成函数（PGF）收尾，然后正式进入信息论的主角：\textbf{熵}。熵衡量的是一个随机变量平均能提供多少信息，或者“描述它平均需要多少比特”。
+
+\textbf{本节用到的记号：} $p=P(H)$，$q=1-p$；$X$ 为等待时间；$P_X$ 为分布；$\operatorname{supp}(P_X)=\{x:P_X(x)>0\}$ 为支撑集；$\log$ 的底数暂不固定，$H$ 随底数只差一个常数因子。
+
+\subsection{上一讲收尾：等待连续两个正面的 PGF}
+
+
+设每次抛硬币独立，正面概率为 $p$，反面概率为 $q=1-p$。令 $X$ 为\textbf{第一次出现连续两个正面（HH）所需的抛掷次数}。求 $X$ 的 PGF 和期望。
+
+\textbf{状态法.} 记
+
+\begin{itemize}
+\item $A(z)$：当前没有“上一个正面”时，从此刻到首次 HH 的 PGF；
+\item $B(z)$：当前刚抛出一个正面时，从此刻到首次 HH 的 PGF。
+\end{itemize}
+
+
+从状态 $A$：
+
+\begin{itemize}
+\item 抛反面（概率 $q$）：消耗 $1$ 次，回到 $A$，贡献 $qzA(z)$；
+\item 抛正面（概率 $p$）：消耗 $1$ 次，进入 $B$，贡献 $pzB(z)$。
+\end{itemize}
+
+
+所以
+
+\[
+A(z)=z\bigl(qA(z)+pB(z)\bigr).
+\]
+
+从状态 $B$：
+
+\begin{itemize}
+\item 再抛正面（概率 $p$）：立即完成，贡献 $pz$；
+\item 抛反面（概率 $q$）：消耗 $1$ 次，回到 $A$，贡献 $qzA(z)$。
+\end{itemize}
+
+
+所以
+
+\[
+B(z)=z\bigl(p+qA(z)\bigr).
+\]
+
+解这个方程组。由第一式
+
+\[
+A(z)(1-qz)=pzB(z),
+\]
+
+代入第二式：
+
+\[
+A(z)\bigl(1-qz-pqz^2\bigr)=p^2z^2.
+\]
+
+因此
+
+\[
+\boxed{
+G_X(z)=A(z)
+=\frac{p^2z^2}{1-qz-pqz^2}
+=\frac{p^2z^2}{1-(1-p)z-p(1-p)z^2}
+}.
+\]
+
+\textbf{期望.} 对 $z$ 求导并在 $z=1$ 取值，可得
+
+\[
+E[X]=G_X'(1)=\frac{1+p}{p^2}.
+\]
+
+检验：公平硬币 $p=1/2$ 时 $E[X]=6$，与“平均 6 次抛出 HH”的经典结论一致。
+
+\textbf{直观.} 这个例子说明 PGF 不仅能读分布，还能把“带吸收状态的等待时间”通过一次方程解出来；后面信息论里遇到“平均需要多少符号/比特”时，也会反复使用“先写递推/方程，再读系数或导数”的思路。
+
+\subsection{熵的定义}
+
+
+设 $X$ 是离散随机变量，分布为 $P_X$。定义 $X$ 的熵为
+
+\[
+H(X)=H(P_X)
+=\sum_{x}P_X(x)\log\frac{1}{P_X(x)}
+=E\left[\log\frac{1}{P_X(X)}\right].
+\]
+
+约定 $0\log\frac10=0$；求和只在支撑集上进行，或把零概率项按此约定忽略。
+
+\textbf{log 的底数.} 底数不固定，因为换底只差一个常数：
+
+\begin{itemize}
+\item 底 $2$：单位是 bit；
+\item 底 $e$：单位是 nat；
+\item 底 $256$：单位是 byte。
+\end{itemize}
+
+
+写 $\exp(\cdot)$ 时，指数函数的底要与 $\log$ 的底一致，否则公式会差常数。
+
+\textbf{直观.} $-\log P_X(x)$ 是“看到 $x$ 时的惊讶程度/信息量”：概率越小，信息量越大；$H(X)$ 是它的平均值。
+
+\subsection{二元熵}
+
+
+最重要的例子是 Bernoulli 分布 $X\sim\mathrm{Bern}(p)$。记
+
+\[
+h(p)=H(\mathrm{Bern}(p))
+=p\log\frac1p+(1-p)\log\frac1{1-p}.
+\]
+
+性质：
+
+\begin{itemize}
+\item $h(0)=h(1)=0$；
+\item $h$ 在 $p=1/2$ 处最大，最大值为 $\log2$；
+\item $h$ 关于 $p=1/2$ 对称：$h(p)=h(1-p)$；
+\item $h$ 在 $[0,1]$ 上是\textbf{凹函数}。
+\end{itemize}
+
+
+若用 $\log_2$，则 $h(1/2)=1$ bit；这解释了“一个公平硬币正好提供 1 bit 信息”。
+
+\subsection{熵的基本性质}
+
+
+\textbf{非负性.} $H(X)\ge0$，且
+
+\[
+H(X)=0
+\iff X\text{ 是常数（几乎必然）}.
+\]
+
+因为每一项 $P_X(x)\log\frac1{P_X(x)}\ge0$，且只有 $P_X(x)=1$ 时为零。
+
+\textbf{上界.} 若 $|\operatorname{supp}(P_X)|=m$，则
+
+\[
+H(X)\le\log m,
+\]
+
+等号当且仅当 $X$ 在支撑集上均匀分布。
+
+\textbf{证明（Jensen）.} $\log$ 是凹函数，所以
+
+\[
+\begin{aligned}
+H(X)
+&=\sum_xP_X(x)\log\frac1{P_X(x)}\\
+&\le\log\left(\sum_xP_X(x)\cdot\frac1{P_X(x)}\right)\\
+&=\log m.
+\end{aligned}
+\]
+
+这里用了凹函数的 Jensen 形式：函数值的加权平均不超过加权平均的函数值，即 $\sum p_i\log y_i\le\log\sum p_i y_i$（当 $\sum p_i=1$）；取 $y_i=1/p_i$ 即得。
+
+\textbf{函数处理不会增加熵.} 对任意函数 $f$，
+
+\[
+H(f(X))\le H(X),
+\]
+
+等号当 $f$ 在支撑集上是单射（可逆）时成立。直观：对 $X$ 做确定性处理，只会丢失信息，不会创造信息。
+
+\textbf{凹性.} 若 $P=\lambda P_0+(1-\lambda)P_1$ 是两个分布的混合（$\lambda\in[0,1]$），则
+
+\[
+H(P)\ge\lambda H(P_0)+(1-\lambda)H(P_1).
+\]
+
+也就是说，熵作为分布的函数是凹的；混合分布比“各自熵的混合”更不确定。证明见下一节的条件熵（用 $H(X)\ge H(X\mid Z)$）。
+
+\subsection{熵为什么自然：重复编码的直观}
+
+
+若 $X$ 的熵是 $H$ 比特，独立重复 $n$ 次得到 $X_1,\dots,X_n$，则大概只需要 $nH$ 个比特就能以很小错误率描述这串结果，而不需要 $n\log|\mathcal X|$ 个比特。
+
+例如 $X\sim\mathrm{Bern}(0.1)$，单次熵约 $0.469$ bit；重复 $10000$ 次，大约 $4690$ bit 就够，而不是 $10000$ bit。剩下的“小概率例外”可以用很小的错误概率处理。这正是后续压缩/信道编码讨论的起点。
