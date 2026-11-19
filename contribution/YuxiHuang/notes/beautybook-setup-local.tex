@@ -1,0 +1,186 @@
+% Local adaptation of Beautybook (Shilong Lu, LPPL 1.3c).
+% The upstream class is provided by TeX Live and kept unmodified.
+\ProvidesFile{beautybook-setup-local.tex}[2026/11/04 Discrete math book layout]
+
+% Preserve the course fonts and the existing shared theorem counter.
+\let\songti\undefined
+\let\heiti\undefined
+\let\kaishu\undefined
+\let\fangsong\undefined
+\input{font-setup-local.tex}
+\usepackage{amssymb,mathtools}
+\usepackage[no-math,nohelv,nott]{newtxtext}
+% Keep newtxtext's global OTF extension out of Arial and xeCJK font lookup.
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage[varvw,varbb]{newtxmath}
+% Default calligraphic alphabet; reserve script for distinct special notation.
+\usepackage[cal=euler,scr=rsfso]{mathalpha}
+\input{math-setup-local.tex}
+\hypersetup{unicode,bookmarksnumbered=true,hidelinks}
+\setlength{\parindent}{2em}
+\setcounter{secnumdepth}{2}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\renewcommand{\emptyset}{\ensuremath{\varnothing}}
+
+\newtheoremstyle{coursestatement}{6pt}{6pt}{\fangsong}{}%
+  {\sffamily\bfseries\thmheiti}{}{.5em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{（#3）}}
+\newtheoremstyle{courseexample}{6pt}{6pt}{\normalfont}{}%
+  {\sffamily\bfseries\thmheiti}{}{.5em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{（#3）}}
+\theoremstyle{coursestatement}
+\newtheorem{theorem}{定理}[section]
+% Set the section prefix before thmtools aliases the other theorem counters.
+\renewcommand{\theHtheorem}{\theHsection.\arabic{theorem}}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{axiom}[theorem]{公理}
+\newtheorem{definition-theorem}[theorem]{定义--定理}
+\newtheorem{definition-proposition}[theorem]{定义--命题}
+\newtheorem{hypothesis}[theorem]{假设}
+\newtheorem{conjecture}[theorem]{猜想}
+\theoremstyle{courseexample}
+\newtheorem{example}[theorem]{例}
+\newtheorem{remark}[theorem]{注记}
+\newtheorem{convention}[theorem]{约定}
+\newtheorem{exercise}[theorem]{练习}
+
+\renewcommand{\qedsymbol}{\ensuremath{\square}}
+\makeatletter
+\renewenvironment{proof}[1][]{%
+  \par\pushQED{\qed}\normalfont\topsep6pt
+  \trivlist\item[\hskip\labelsep\sffamily\bfseries\heiti
+    证明\ifstrempty{#1}{}{（#1）}]\ignorespaces
+}{\popQED\endtrivlist\@endpefalse}
+% Chapters are the top level of this book.
+\patchcmd{\ttlf@chapter}{Part\ \thepart}{课程笔记}{}{%
+  \PackageError{beautybook-setup-local}{Unexpected Beautybook chapter format}{}}
+\makeatother
+
+% The upstream chapter heading is a page overlay.
+\geometry{left=2.15cm,right=2.15cm,top=2.4cm,bottom=2.45cm,headheight=18pt}
+\setlength{\footheight}{18pt}
+\titlespacing{\chapter}{0pt}{0pt}{101pt}
+% A standalone heading also works before theorem boxes and lists.
+\titleformat{\paragraph}[block]{\normalfont\sffamily\bfseries\heiti}{}{0pt}{#1}
+\titlespacing*{\paragraph}{0pt}{1.2ex plus .3ex minus .2ex}{.6ex plus .2ex}
+\tikzfading[name=fade up,bottom color=transparent!0,top color=transparent!100]
+\chapimage{artwork/course-chapter-art.pdf}
+\renewcommand{\sc}{\normalfont\heiti}
+\patchcmd{\mysectionformat}{Sec\ \thesection}{\S\ \thesection}{}{%
+  \PackageError{beautybook-setup-local}{Unexpected Beautybook section format}{}}
+
+% Lighten the full-height stripe and remove its checkerboard.
+% Keep the page number, chapter badge, and chapter opener at the original contrast.
+\colorlet{coursepageband}{outermarginfgcolor!6}
+\ModifyLayer[contents={\color{coursepageband}\rule{\layerwidth}{\layerheight}}]{scth.outermargin.bg.even}
+\ModifyLayer[contents={\color{coursepageband}\rule{\layerwidth}{\layerheight}}]{scth.outermargin.bg.odd}
+\RemoveLayersFromPageStyle{scrheadings}{scth.outermargin.fg.even,scth.outermargin.fg.odd}
+\RemoveLayersFromPageStyle{plain.scrheadings}{scth.outermargin.fg.even,scth.outermargin.fg.odd}
+
+\newtcolorbox{wenxintishi}{enhanced,breakable,sharp corners,
+  colback=outermarginbgcolor!15,colframe=outermarginfgcolor!70,boxrule=.35pt,
+  colbacktitle=outermarginbgcolor!15,coltitle=black,
+  fonttitle=\sffamily\bfseries\heiti,titlerule=0pt,
+  title={阅读提示},before skip=9pt,after skip=9pt}
+
+\tcbset{coursebeauty/.style={enhanced,breakable,sharp corners,
+    boxrule=0pt,frame hidden,borderline west={1.15pt}{0pt}{outermarginfgcolor},
+    left=1mm,right=1mm,top=.5mm,bottom=.5mm,boxsep=1mm,
+    before skip=6pt,after skip=6pt}}
+\tcolorboxenvironment{definition}{coursebeauty,colback=outermarginbgcolor!24}
+\tcolorboxenvironment{theorem}{coursebeauty,colback=outermarginbgcolor!40}
+\tcolorboxenvironment{lemma}{coursebeauty,colback=outermarginbgcolor!30}
+\tcolorboxenvironment{proposition}{coursebeauty,colback=outermarginbgcolor!24}
+\tcolorboxenvironment{corollary}{coursebeauty,colback=outermarginbgcolor!24}
+
+\newcommand{\makecoursecover}[1]{%
+  \begin{titlepage}
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+  \fill[outermarginbgcolor!12] (current page.south west) rectangle (current page.north east);
+  \fill[outermarginbgcolor!42] (current page.north west)
+    rectangle ([yshift=-100mm]current page.north east);
+  \fill[outermarginfgcolor] (current page.north west)
+    rectangle ([yshift=-3mm]current page.north east);
+  \node[anchor=north west,inner sep=0,text=outermarginfgcolor,
+    font=\sffamily\bfseries\fontsize{11}{14}\selectfont]
+    at ([xshift=22mm,yshift=-23mm]current page.north west) {课程笔记\quad /\quad COURSE NOTES};
+  \node[anchor=north east,inner sep=0,text=outermarginfgcolor,
+    font=\sffamily\fontsize{23}{26}\selectfont]
+    at ([xshift=-22mm,yshift=-20mm]current page.north east) {2026};
+  \node[anchor=north west,inner sep=0,
+    font=\sffamily\bfseries\fontsize{34}{44}\selectfont]
+    at ([xshift=22mm,yshift=-51mm]current page.north west) {离散数学与结构};
+  \node[anchor=north west,inner sep=0,text=outermarginfgcolor,
+    font=\sffamily\fontsize{12}{16}\selectfont]
+    at ([xshift=22mm,yshift=-73mm]current page.north west) {DISCRETE MATHEMATICS AND STRUCTURES};
+  \draw[outermarginfgcolor,line width=1pt]
+    ([xshift=22mm,yshift=-88mm]current page.north west) -- ++(25mm,0);
+
+  % A geometric network echoes the chapter artwork at cover scale.
+  \begin{scope}[shift={([xshift=105mm,yshift=-143mm]current page.north west)},
+    x=1mm,y=1mm]
+    \draw[outermarginfgcolor!10,line width=.5pt] (0,0) circle (43);
+    \draw[outermarginfgcolor!10,line width=.5pt] (-52,0)--(52,0) (0,-47)--(0,47);
+    \coordinate (a) at (-68,-6);
+    \coordinate (b) at (-42,31);
+    \coordinate (c) at (-32,-32);
+    \coordinate (d) at (0,5);
+    \coordinate (e) at (28,36);
+    \coordinate (f) at (40,-25);
+    \coordinate (g) at (69,13);
+    \fill[outermarginfgcolor!5] (a)--(b)--(d)--(c)--cycle;
+    \fill[outermarginfgcolor!9] (d)--(e)--(g)--(f)--cycle;
+    \draw[outermarginfgcolor!55,line width=.8pt]
+      (a)--(b)--(c)--cycle (b)--(d)--(c)
+      (d)--(e)--(f)--cycle (e)--(g)--(f);
+    \draw[outermarginfgcolor!25,line width=.6pt] (b)--(e) (c)--(f);
+    \foreach \p in {a,b,c,d,e,f,g}
+      \fill[outermarginfgcolor!80] (\p) circle (1.1);
+    \foreach \p in {a,c,e,g}
+      \draw[outermarginfgcolor!25,line width=.5pt] (\p) circle (2.6);
+  \end{scope}
+
+  % First isomorphism theorem: quotienting identifies precisely the kernel.
+  \begin{scope}[shift={([xshift=35mm,yshift=-247mm]current page.north west)},
+    x=1mm,y=1mm,>=Stealth,text=outermarginfgcolor!85,
+    every node/.style={font=\large}]
+    \node (coverG) at (0,28) {$G$};
+    \node (coverIm) at (48,28) {$\operatorname{im}\varphi$};
+    \node (coverQ) at (0,0) {$G/\ker\varphi$};
+    \draw[->,outermarginfgcolor!65,line width=.7pt]
+      (coverG)--node[above,font=\small] {$\varphi$} (coverIm);
+    \draw[->,outermarginfgcolor!65,line width=.7pt]
+      (coverG)--node[left,font=\small] {$\pi$} (coverQ);
+    \draw[->,outermarginfgcolor!65,line width=.7pt]
+      (coverQ)--node[below right,font=\small] {$\overline\varphi\;\cong$} (coverIm);
+  \end{scope}
+
+  % A genuine Poisson(3) probability mass function, rather than arbitrary bars.
+  \begin{scope}[shift={([xshift=125mm,yshift=-247mm]current page.north west)},
+    x=1mm,y=1mm,>=Stealth,text=outermarginfgcolor!85]
+    \node[anchor=west,font=\large] at (0,39) {$X\sim\operatorname{Poisson}(3)$};
+    \foreach \k/\p in {0/.049787,1/.149361,2/.224042,3/.224042,4/.168031,5/.100819,6/.050409,7/.021604,8/.008102} {
+      \fill[outermarginfgcolor!18] (\k*6,0) rectangle ++(3.6,\p*115);
+      \draw[outermarginfgcolor!60,line width=.45pt] (\k*6,0)--++(0,\p*115)--++(3.6,0)--++(0,-\p*115);
+      \node[below,font=\scriptsize] at (\k*6+1.8,-1) {$\k$};
+    }
+    \draw[->,outermarginfgcolor!45,line width=.6pt] (-2,0)--(57,0) node[right,font=\small] {$k$};
+    \draw[->,outermarginfgcolor!45,line width=.6pt] (-2,0)--(-2,31);
+    \node[anchor=east,font=\scriptsize] at (-3,29) {$P_X(k)$};
+  \end{scope}
+  \draw[outermarginfgcolor!35,line width=.5pt]
+    ([xshift=22mm,yshift=-266mm]current page.north west) --
+    ([xshift=-22mm,yshift=-266mm]current page.north east);
+  \node[anchor=north west,inner sep=0,font=\small]
+    at ([xshift=22mm,yshift=-273mm]current page.north west) {#1};
+  \node[anchor=north east,inner sep=0,text=outermarginfgcolor,font=\sffamily\small]
+    at ([xshift=-22mm,yshift=-273mm]current page.north east) {定义\;·\;证明\;·\;例题};
+  \end{tikzpicture}
+  \null
+  \end{titlepage}%
+}

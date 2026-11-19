@@ -1,5 +1,5 @@
-% Keep default Computer Modern mathematics, with the previous newtx varbb glyphs.
-\ProvidesFile{math-setup-local.tex}[2026/10/21 Default mathematics with varbb]
+% Shared math settings for the main notes and the standalone documents.
+\ProvidesFile{math-setup-local.tex}[2026/11/10 Local math glyphs and conventions]
 % Provide semantic double brackets.
 \usepackage{stmaryrd}
 % St Mary Road has no bold series; keep its bracket glyphs at their native weight.
@@ -13,7 +13,9 @@
 \let\ilimits@\nolimits
 \makeatother
 
-% Load only newtx's varbb glyphs; retain Computer Modern for all other math.
+% Standalone documents use Computer Modern with just the varbb glyphs.
+% The main notes already get these glyphs from newtxmath.
+\ifdefined\newtxmathLoaded\else
 \DeclareFontFamily{U}{projectvarbb}{}
 \DeclareFontShape{U}{projectvarbb}{m}{n}{<-> ntxmia}{}
 \DeclareFontShape{U}{projectvarbb}{b}{n}{<-> ntxbmia}{}
@@ -86,14 +88,9 @@
   \tl_map_inline:nn {#1} {\use:c {project_bb_##1:}}
 }
 \ExplSyntaxOff
+\fi
 
 % Use Arial only for the math sans-serif alphabet, including bold math.
-\newfontfamily\projectmathsf{Arial}[BoldFont={Arial Bold}]
-\makeatletter
-\begingroup
-  \projectmathsf
-  \xdef\projectmathsffamily{\f@family}
-\endgroup
+\edef\projectmathsffamily{\sfdefault}
 \DeclareMathAlphabet{\mathsf}{TU}{\projectmathsffamily}{m}{n}
 \SetMathAlphabet{\mathsf}{bold}{TU}{\projectmathsffamily}{b}{n}
-\makeatother

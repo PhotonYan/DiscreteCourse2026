@@ -1,9 +1,14 @@
 %!TEX TS-program = xelatex
-% Based on AJbook by Wen-Wei Li (2018), CC BY 4.0.
+% Layout based on Beautybook by Shilong Lu (LPPL 1.3c).
+% Earlier AJbook version based on Wen-Wei Li's AlJabr-1 (CC BY 4.0).
 \PassOptionsToPackage{no-math}{fontspec}
-\documentclass[draftmark=false,colors=false,geometry=a4,fontsetup=font-setup-local.tex,titlesetup=titles-setup.tex]{AJbook}
-\input{math-setup-local.tex}
-\usepackage[unicode,bookmarksnumbered]{hyperref}
+\PassOptionsToPackage{shortlabels}{enumitem}
+\PassOptionsToPackage{noautomatic}{imakeidx}
+\AddToHook{package/scrlayer-scrpage/before}{\setlength{\headheight}{18pt}}
+% Hyperref must wrap setspace's footnote implementation.
+\AddToHook{package/hyperref/before}{\RequirePackage{setspace}}
+\documentclass[lang=cn,a4paper,fontset=none,zihao=false,10pt,openany,twoside]{beautybook}
+\input{beautybook-setup-local.tex}
 \usepackage{booktabs,longtable,needspace,float}
 \usepackage{algorithm,algpseudocode,placeins}
 \floatname{algorithm}{算法}
@@ -13,18 +18,19 @@
 \algrenewcommand\algorithmicreturn{\textbf{返回}}
 \algrenewcommand\textproc{\textsf}
 \AtBeginEnvironment{algorithmic}{\setstretch{1.12}}
-\hypersetup{pdftitle={离散数学与结构},pdfauthor={},pdfsubject={集合、逻辑、可计算性、集合论、初等数论、抽象代数与组合数学}}
+\hypersetup{pdftitle={离散数学与结构},pdfauthor={},pdfsubject={集合、逻辑、可计算性、集合论、初等数论、抽象代数、组合数学、Galois 理论、概率与数据压缩}}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Pow}{\mathcal P}
+\newcommand{\KLsep}{\mathrel{\Vert}}
 \newcommand{\FOR}{\mathrm{FOR}}
 \newcommand{\At}{\mathrm{At}}
 \newcommand{\val}[1]{\llbracket #1\rrbracket_v}
-\usepackage{bussproofs,makeidx}
+\usepackage{bussproofs,bbm}
 \makeindex
-\renewcommand{\indexname}{概念索引}
+\indexsetup{firstpagestyle=empty}
 \usetikzlibrary{arrows.meta}
 % \renewcommand{\arraystretch}{1.25}
 \setcounter{tocdepth}{1}
@@ -42,36 +48,12 @@
     before skip=12pt,after skip=12pt,#1
 }
 
-\AtBeginDocument{
-    \theoremstyle{plain}
-        \theoremheaderfont{\sffamily\bfseries\thmheiti}
-    \theorembodyfont{\fangsong}
-    \newtheorem{axiom}[theorem]{公理}
-}
-
-% Numbered theorem headings: keep the Chinese heading and title style,
-% but print the number in upright, bold Arial text; references stay unformatted.
-\makeatletter
-\AtBeginDocument{
-  \renewtheoremstyle{plain}
-    {\item[\hskip\labelsep \theorem@headerfont ##1\ {\sffamily\bfseries\upshape ##2}\theorem@separator]}
-    {\item[\hskip\labelsep \theorem@headerfont ##1\ {\sffamily\bfseries\upshape ##2}\ (##3)\theorem@separator]}
-}
-\makeatother
-
 \begin{document}
-\begin{titlepage}
-\centering\vspace*{25mm}
-{\heiti\Huge 离散数学与结构\par}
-\vspace{10mm}{\LARGE 课程笔记\par}
-\vspace{20mm}\rule{0.7\textwidth}{0.6pt}\par
-
-
-\vfill
-
-\vspace{3mm}2026 年 9 月 8 日至 10 月 29 日\par
-\end{titlepage}
-\setstretch{1.12}\frontmatter\setstretch{1.5}
+\makecoursecover{2026 年 9 月 8 日至 11 月 19 日}
+\setstretch{1.12}
+\frontmatter
+\tableofcontents
+\setstretch{1.5}
 \mainmatter
 \chapter{集合}\label{chap:sets}
 \begin{wenxintishi}
@@ -219,7 +201,7 @@
 
 \section{幂集、可数集、连续统}\label{sec:power-countable}
 \begin{definition}
-集合 $S$ 的\emph{幂集}\index{zh-miji@幂集|hyperpage}为 $\Pow(S)=\{A:A\subseteq S\}$。它也常记为 $2^S$。函数集 $\{0,1\}^S$ 与 $\Pow(S)$ 通过特征函数 $A\mapsto\mathbf1_A$ 自然双射，因此 $|\Pow(S)|=2^{|S|}$。
+集合 $S$ 的\emph{幂集}\index{zh-miji@幂集|hyperpage}为 $\Pow(S)=\{A:A\subseteq S\}$。它也常记为 $2^S$。函数集 $\{0,1\}^S$ 与 $\Pow(S)$ 通过特征函数 $A\mapsto\mathbbm{1}_A$ 自然双射，因此 $|\Pow(S)|=2^{|S|}$。
 \end{definition}
 \begin{theorem}[Cantor]\index{en-cantor@Cantor 定理|hyperpage}
 对任意集合 $S$，都有 $|S|<|\Pow(S)|$。
@@ -6882,7 +6864,7 @@ CRT 下的 $v$ 对应 $(\operatorname{Tr}(s_1),\ldots,\operatorname{Tr}(s_t))$�
 \begin{proposition}[有限域分解的期望复杂度]\label{prop:finite-factor-cost}
 算法~\ref{alg:finite-factor} 的期望域运算次数为
 \[
- \mathbb E\,T(n,q)=O(n^3L)=O(n^3\log q).
+ \mathbb E[T(n,q)]=O(n^3L)=O(n^3\log q).
 \]
 这是当前算法及上述基本运算方法的上界，适用于奇数与偶数 $q$，并包含处理重复因子的成本。
 \end{proposition}
@@ -6904,7 +6886,7 @@ CRT 下的 $v$ 对应 $(\operatorname{Tr}(s_1),\ldots,\operatorname{Tr}(s_t))$�
 
 回忆前面的一次尝试成功率：只要尚有至少两个不可约因子，两种情形都至少以 $1/2$ 的概率分裂成功。因此每个递归结点成功前的期望尝试次数至多为 $2$。将 $t$ 个不可约因子全部分开，恰需 $t-1$ 次成功分裂；每个结点的次数 $r\le m$，所以不必假设每次分裂均衡，就有
 \[
- \mathbb E\,T_{\mathrm{EDF}}(m,d,q)
+ \mathbb E[T_{\mathrm{EDF}}(m,d,q)]
  \le (t-1)\,O(m^2dL)
  =O(m^3L).
 \]
@@ -6927,8 +6909,6 @@ CRT 下的 $v$ 对应 $(\operatorname{Tr}(s_1),\ldots,\operatorname{Tr}(s_t))$�
 因子表可按系数逐项比较并合并；输出因子的次数连同重数之和为 $n$，即使在每个结点逐对比较，也可用 $O(n^2)$ 次系数比较完成，全部结点的 $O(n^3)$ 成本不超过上述界。相加即得结论。
 \end{proof}
 
-% 将章末说明留在同页，避免仅两行文字另占一页。
-\enlargethispage{2.5\baselineskip}
 \begin{remark}[从域运算次数到比特时间]
 若一次域运算至多需 $B(q)$ 次比特运算，则上述算术部分的期望成本为 $O(n^3L B(q))$。例如已经给定
 \[
@@ -8642,8 +8622,6 @@ $us,vs$ & $2$ & $C^3$ & $t_1t_2t_4$\\
 \]
 代入所有 $t_i=C$，正是刚才的 Burnside 平均；各项指数之和给轮换数，而加权和 $\sum i c_i$ 始终为七个顶点。
 
-% 将例题的最后两行说明与库存公式留在同页。
-\enlargethispage{2.5\baselineskip}
 若有 $C$ 种普通颜色和一种特别颜色，则代入 $t_i=C+x^i$，得到
 \[
  \begin{aligned}
@@ -8658,6 +8636,2094 @@ $[x^m]H_C(x)$ 计恰有 $m$ 个特别色顶点的染色类型。根也参与染�
 
 \FloatBarrier
 
+\chapter{Galois 理论}\label{chap:galois}
+\begin{wenxintishi}
+一个多项式的根可以置换，但只有保持底域及根之间代数关系的置换才来自域自同构。Galois 理论用这些自同构组成的群刻画中间域，并把根式解的问题转化为群的可解性问题。
+\end{wenxintishi}
+
+第~\ref{sec:galois-extensions} 节从最小多项式的根出发，说明正规性、可分性与自同构数之间的关系。第~\ref{sec:galois-correspondence} 节通过固定域建立子群与中间域的反向对应，并用限制映射求出商群。有限域中的 Frobenius 自同构把这套对应化为对整数因子的讨论。第~\ref{sec:galois-radicals} 节将逐次开根与交换商群联系起来，先分析一个具体的五次方程，再说明五次及以上方程为何没有通用根式公式。
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={align=center,font=\small,inner sep=4pt}]
+ \node (field) at (0,1.4) {添根与分裂域\\\S\ref{sec:extensions-route}--\S\ref{sec:splitting-finite-route}};
+ \node (group) at (0,0) {群作用与商群\\\S\ref{sec:group-quotients}、\S\ref{sec:sylow-route}};
+ \node (ext) at (4.1,1.4) {正规、可分与自同构\\\S\ref{sec:galois-extensions}};
+ \node (corr) at (8.35,1.4) {固定域与 Galois 对应\\\S\ref{sec:galois-correspondence}};
+ \node (rad) at (8.35,0) {根式塔与一般方程\\\S\ref{sec:galois-radicals}};
+ \draw[->] (field)--(ext);
+ \draw[->] (ext)--(corr);
+ \draw[->] (corr)--(rad);
+ \draw[->] (group)--(rad);
+\end{tikzpicture}
+\end{center}
+
+\section{正规、可分与 Galois 扩张}\label{sec:galois-extensions}
+
+\begin{definition}[正规、可分与 Galois 扩张]\label{def:galois-extension}
+\index{zh-zhengguikuozhang@正规扩张|hyperpage}
+\index{zh-kefenkuozhang@可分扩张|hyperpage}
+\index{en-galois-extension@Galois 扩张|hyperpage}
+设 $K/F$ 为代数扩张。
+\begin{enumerate}[(a)]
+\item 若每个在 $K$ 中有根的 $F[x]$ 中的不可约多项式都在 $K[x]$ 中分裂为一次因子，称 $K/F$ 为\emph{正规扩张}。
+\item 若每个 $\alpha\in K$ 的最小多项式 $m_{\alpha,F}$ 在其分裂域中无重根，称 $K/F$ 为\emph{可分扩张}。等价地，每个 $\alpha$ 都是某个无重根的 $F[x]$ 中多项式的根。
+\item 同时正规和可分的代数扩张称为 \emph{Galois 扩张}。
+\end{enumerate}
+\end{definition}
+在 (b) 中，回忆命题~\ref{prop:minimal-polynomial}，$m_{\alpha,F}$ 整除每个以 $\alpha$ 为根的 $F$ 上多项式。因此一个无重根多项式已经足以见证 $\alpha$ 可分。正规性关心根是否全在扩张域里，可分性关心这些根是否互异。
+
+\begin{proposition}[特征零和有限域上的可分性]
+若 $[K:F]<\infty$，且 $\operatorname{char}F=0$ 或 $F$ 为有限域，则 $K/F$ 可分。
+\end{proposition}
+\begin{proof}
+特征零时，对每个 $\alpha\in K$ 取其最小多项式 $f$。$f'$ 非零，次数低于 $f$，而 $f$ 不可约，故 $\gcd(f,f')=1$。回忆引理~\ref{lem:polynomial-roots}，这说明 $f$ 无重根。
+
+设 $F=\mathbb F_q$ 且 $[K:F]=n$。于是 $|K|=q^n$。由 Lagrange 定理~\ref{thm:lagrange}，每个 $\alpha\in K$ 满足 $\alpha^{q^n}=\alpha$。多项式 $x^{q^n}-x$ 的导数为 $-1$，它的每个因子都无重根。由于 $m_{\alpha,F}\mid x^{q^n}-x$，结论成立。
+\end{proof}
+
+\begin{definition}[Galois 群]\label{def:galois-group}
+\index{en-galois-group@Galois 群|hyperpage}
+令 $\operatorname{Gal}(K/F)$ 表示 $K$ 上逐点固定 $F$ 的域自同构所成的群，群运算是映射复合。对多项式 $f\in F[x]$，其 Galois 群是 $\operatorname{Gal}(K/F)$，其中 $K$ 是 $f$ 在 $F$ 上的分裂域。
+\end{definition}
+回忆定理~\ref{thm:splitting-unique}，分裂域在固定底域的同构下唯一。这种同构把两边的自同构群通过共轭联系起来。
+
+\begin{example}[复数域上的自同构]\label{ex:complex-galois}
+判断 $\mathbb C/\mathbb R$ 是否为 Galois 扩张，并求 $\operatorname{Gal}(\mathbb C/\mathbb R)$。
+\end{example}
+\begin{proof}
+若实系数不可约多项式在 $\mathbb C$ 中有一个非实根 $a+bi$，则也有根 $a-bi$。以实二次式 $(x-a)^2+b^2$ 作带余除法，余式次数至多为一，却有这两个不同的根，所以余式为零。由不可约性，原多项式是该二次式的非零倍数，故在 $\mathbb C$ 中分裂。若已有实根，它就是一次式的非零倍数。因此 $\mathbb C/\mathbb R$ 正规，又由特征零可分。自同构固定 $\mathbb R$ 后，由 $i$ 的像唯一决定，而 $i$ 的像只能是 $i$ 或 $-i$。这两种选择对应恒等映射与复共轭，故 $\operatorname{Gal}(\mathbb C/\mathbb R)\cong\mathbb Z_2$。
+\end{proof}
+
+\paragraph{从一组根检验正规性}
+分裂多项式的系数给出了根的初等对称多项式的值。下面的定理说明，知道这些值就能算出根的任意对称多项式的值。
+
+\begin{theorem}[对称多项式基本定理]\label{thm:symmetric-polynomials}
+\index{zh-duichengduoxiangshi@对称多项式|hyperpage}
+设 $F$ 为域，$k\ge1$，$U_1,\dots,U_k$ 为不定元。对 $1\le j\le k$，定义第 $j$ 个初等对称多项式
+\[
+ e_j=\sum_{1\le i_1<\dots<i_j\le k} U_{i_1}\cdots U_{i_j}.
+\]
+若 $P\in F[U_1,\dots,U_k]$ 在任意置换不定元后保持不变，则存在唯一的 $Q\in F[T_1,\dots,T_k]$，使得
+\[
+ P(U_1,\dots,U_k)=Q(e_1,\dots,e_k)
+ \quad\text{在 } F[U_1,\dots,U_k]\text{ 中成立}.
+\]
+\end{theorem}
+证明参见 Jacobson《Basic Algebra I》第 2.13 节定理 2.20，或 Lang《Algebra》第 IV 章第 6 节定理 6.1 及其后的代数独立性证明。
+
+\begin{proposition}[正规扩张的分裂域判别]\label{prop:normal-splitting}
+有限扩张 $E/F$ 正规，当且仅当 $E$ 是某个 $F[x]$ 中多项式的分裂域。
+\end{proposition}
+\begin{proof}
+若 $E/F$ 正规，取有限多个生成元 $E=F(\alpha_1,\dots,\alpha_n)$。每个 $m_{\alpha_i,F}$ 在 $E$ 中分裂，而全部根包含各 $\alpha_i$。因此 $E$ 是这些最小多项式之积的分裂域。
+
+反过来，设 $E=F(u_1,\dots,u_k)$ 是首一多项式 $f(x)=\prod_i(x-u_i)$ 的分裂域。对任意 $\alpha\in E$，由于 $u_i$ 都代数，$F[u_1,\dots,u_k]=F(u_1,\dots,u_k)$。事实上，左侧是有限维 $F$-整环，乘以任意非零元是单射线性映射，故为满射，从而非零元都有逆。因此可以写 $\alpha=A(u_1,\dots,u_k)$，其中 $A$ 的系数在 $F$ 中。
+
+对每个 $\pi\in S_k$，令 $\alpha_\pi=A(u_{\pi(1)},\dots,u_{\pi(k)})$，并构造
+\[
+ P(x)=\prod_{\pi\in S_k}(x-\alpha_\pi).
+\]
+先把乘积中的 $u_i$ 换成不定元 $U_i$，得到 $F[U_1,\dots,U_k][x]$ 中的多项式。置换 $U_i$ 只会重新排列各因子，所以 $x$ 的各次幂的系数都是对称多项式。由定理~\ref{thm:symmetric-polynomials}，这些系数可以写成 $e_1,\dots,e_k$ 的多项式。代入 $U_i=u_i$ 后，$e_j(u_1,\dots,u_k)$ 等于 $f$ 的 $x^{k-j}$ 项系数乘以 $(-1)^j$，因而在 $F$ 中。这就说明 $P\in F[x]$。由于 $\alpha$ 是 $P$ 的根，$m_{\alpha,F}$ 整除 $P$，因而也在 $E$ 中分裂。
+\end{proof}
+
+\begin{lemma}[分裂域中的嵌入延拓]\label{lem:galois-extend}
+设 $K/F$ 为有限正规扩张，$F\subseteq E\subseteq K$。任意固定 $F$ 的嵌入 $\sigma:E\hookrightarrow K$ 都延拓为 $K$ 的 $F$-自同构。
+\end{lemma}
+\begin{proof}
+由命题~\ref{prop:normal-splitting}，$K$ 是某个 $f\in F[x]$ 的分裂域。回忆分裂域唯一性的证明（定理~\ref{thm:splitting-unique}），若要沿添根延拓一个嵌入，只须在目标域中找到该根的最小多项式经系数映射后的一个根。这里从 $\sigma$ 开始逐次添入 $f$ 的根。每次最小多项式都整除 $f$，而嵌入固定 $f$ 的系数，所以映射后的多项式仍整除 $f$，可在 $K$ 中选根。最后得到 $K\hookrightarrow K$ 的 $F$-线性单射，有限维性使它为满射。
+\end{proof}
+
+\begin{proposition}[有限 Galois 扩张的本原元]\label{prop:galois-primitive}
+\index{zh-benyuanyuan@本原元|hyperpage}
+若 $K/F$ 是有限 Galois 扩张，则存在 $\alpha\in K$ 使 $K=F(\alpha)$。
+\end{proposition}
+\begin{proof}
+先设 $F=\mathbb F_q$，记 $[K:F]=n$。若 $\alpha$ 不能生成 $K$，则 $d=[F(\alpha):F]<n$，且 $\alpha^{q^d}=\alpha$。由根数上界，这些元素总数至多 $\sum_{d=1}^{n-1}q^d<q^n=|K|$。所以存在生成元。
+
+若 $F$ 无限，只须证明两个生成元可以合并成一个。给定 $\alpha,\beta\in K$，把它们的最小多项式写成
+\[
+ p(x)=\prod_i(x-\alpha_i),\qquad q(x)=\prod_j(x-\beta_j),
+ \qquad \alpha_1=\alpha,\quad \beta_1=\beta.
+\]
+正规性使这些根在 $K$ 中，可分性使同一多项式的根互异。选择 $c\in F$，避开 $0$ 和所有落在 $F$ 内的比值
+\[
+ \frac{\alpha_i-\alpha}{\beta-\beta_j}\qquad(j\ne1).
+\]
+只排除有限多个值，因此可以取到。令 $\gamma=\alpha+c\beta$，则 $p(\gamma-cx)$ 与 $q(x)$ 在 $K$ 中的唯一公共根是 $\beta$。确实，$\gamma-c\beta=\alpha$，而 $\gamma-c\beta_j=\alpha_i$ 对 $j\ne1$ 会给出已经排除的比值。由于 $q$ 无重根，
+\[
+ \gcd_{F(\gamma)[x]}\bigl(p(\gamma-cx),q(x)\bigr)=x-\beta.
+\]
+这里最大公因式取首一形式，扩到 $K$ 后仍是同一最大公因式，因为它既整除两式，又有 Bézout 表示。于是 $\beta\in F(\gamma)$，再由 $\alpha=\gamma-c\beta$ 得 $F(\alpha,\beta)=F(\gamma)$。有限扩张可由有限多个元素生成，反复合并即得结论。
+\end{proof}
+
+\begin{theorem}[Galois 群的阶]\label{thm:galois-order}
+对任意有限扩张 $K/F$，有 $|\operatorname{Gal}(K/F)|\le [K:F]$。等号成立当且仅当 $K/F$ 为 Galois 扩张。
+\end{theorem}
+\begin{proof}
+若 $K/F$ 为 Galois 扩张，取本原元 $\alpha$ 使 $K=F(\alpha)$，令 $f=m_{\alpha,F}$。回忆命题~\ref{prop:simple-extension-model}，$F(\alpha)\cong F[x]/(f)$，所以 $d=\deg f=[K:F]$。$f$ 在 $K$ 中有 $d$ 个不同的根 $\alpha_i$。对每个 $\alpha_i$，代入得到
+\[
+ F(\alpha)\ \cong\ F[x]/(f)\ \cong\ F(\alpha_i).
+\]
+其中 $F(\alpha_i)\subseteq K$ 且两者在 $F$ 上次数相同，故 $F(\alpha_i)=K$。于是每个根给出唯一一个把 $\alpha$ 送到 $\alpha_i$ 的 $F$-自同构。反过来，对 $\sigma\in\operatorname{Gal}(K/F)$，$f(\sigma(\alpha))=\sigma(f(\alpha))=0$，而 $\sigma$ 由 $\alpha$ 的像确定。故自同构恰有 $d$ 个。
+
+对一般的有限扩张，任选 $\alpha\in K$，从 $F(\alpha)$ 开始逐次添入有限多个生成元直到 $K$。记 $r$ 为 $m_{\alpha,F}$ 在 $K$ 中的不同根数，则 $\alpha$ 的像至多有 $r$ 种选择。之后，每固定一个中间域的嵌入，下一个生成元的像必须是其最小多项式经系数映射后在 $K$ 中的根，选择数至多是这一步的扩张次数。由塔式公式~\ref{thm:field-tower}，
+\[
+ |\operatorname{Gal}(K/F)|
+ \le r[K:F(\alpha)]\le [F(\alpha):F][K:F(\alpha)]=[K:F].
+\]
+若最后取到等号，每个 $\alpha$ 的最小多项式就必须在 $K$ 中有 $\deg m_{\alpha,F}$ 个不同的根。因此 $K/F$ 同时正规与可分。
+\end{proof}
+
+\paragraph{在有理数域上判断不可约性}
+下面的例子要用到 $x^4-2$ 的不可约性。为此先说明怎样把 $\mathbb Q[x]$ 中的分解转回 $\mathbb Z[x]$。
+
+\begin{definition}[本原多项式]\label{def:primitive-integer-polynomial}
+\index{zh-benyuanduoxiangshi@本原多项式|hyperpage}
+设 $f\in\mathbb Z[x]$ 非零。其各系数的正最大公因数称为 $f$ 的\emph{内容}。内容为 $1$ 的整系数多项式称为\emph{本原多项式}。
+\end{definition}
+
+\begin{lemma}[Gauss 引理]\label{lem:gauss-primitive-polynomials}
+\index{en-gauss-lemma@Gauss 引理（本原多项式）|hyperpage}
+两个本原多项式的乘积仍为本原多项式。若正次数的本原多项式 $f\in\mathbb Z[x]$ 可在 $\mathbb Q[x]$ 中分解为两个正次数多项式的乘积，则它也可在 $\mathbb Z[x]$ 中分解为两个正次数的本原多项式的乘积。
+\end{lemma}
+\begin{proof}
+先证明乘积仍本原。固定任意素数 $p$，记 $\overline G$ 为把 $G\in\mathbb Z[x]$ 的每个系数分别取模 $p$ 后得到的 $\mathbb F_p[x]$ 中的多项式。$\overline G=0$ 恰好表示 $G$ 的每个系数都被 $p$ 整除。若 $G,H$ 都本原，则 $p$ 无法整除其中任何一个多项式的全部系数，所以 $\overline G,\overline H$ 都非零。某些系数可以变成零，甚至首项也可以消失。例如，模 $2$ 时，$2x+3$ 变成 $1$，$3x+2$ 变成 $x$。
+
+乘积中每个系数都由原系数相乘再相加得到，而取模 $p$ 保持这两种运算。因此 $\overline{GH}=\overline G\,\overline H$。设 $\overline G$、$\overline H$ 的次数分别是 $i,j$。它们的首项系数在 $\mathbb F_p$ 中非零，乘积也非零，正是 $\overline G\,\overline H$ 的 $x^{i+j}$ 项系数。这说明 $GH$ 至少有一个系数没有被 $p$ 整除。例如，上述两式的乘积是 $6x^2+13x+6$，其中的奇系数 $13$ 在模 $2$ 后留下了 $x$ 项。由于 $p$ 是任意素数，$GH$ 的系数没有共同的素因子，故内容为 $1$。
+
+再设 $f=gh$，其中 $g,h\in\mathbb Q[x]$ 均为正次数。分别清分母并除以所得整系数多项式的内容，可写成 $g=aG$、$h=bH$，其中 $a,b\in\mathbb Q^\times$，$G,H\in\mathbb Z[x]$ 本原。由上一步，$GH$ 本原。把 $ab=m/n$ 写成最简分数，$n>0$。对 $GH$ 的任一系数 $c$，对应的 $f$ 的系数 $mc/n$ 为整数，故 $n\mid mc$。由 $\gcd(m,n)=1$ 得 $n\mid c$。于是 $n$ 整除 $GH$ 的全部系数，而它们的最大公因数为 $1$，所以 $n=1$。此时 $f=mGH$ 的内容为 $|m|$。因为 $f$ 本原，$m=\pm1$，把符号并入 $G$ 就得到所求分解。
+\end{proof}
+
+\begin{proposition}[Eisenstein 判别法]\label{prop:eisenstein}
+\index{en-eisenstein@Eisenstein 判别法|hyperpage}
+设 $f=a_nx^n+\cdots+a_0\in\mathbb Z[x]$，$n\ge1$、$a_n\ne0$。若有素数 $p$ 满足 $p\nmid a_n$、$p\mid a_i$ 对每个 $0\le i<n$ 成立，且 $p^2\nmid a_0$，则 $f$ 在 $\mathbb Q[x]$ 中不可约。
+\end{proposition}
+\begin{proof}
+先除以 $f$ 的内容。它不被 $p$ 整除，所以三个条件仍成立，而乘以非零有理数不影响在 $\mathbb Q[x]$ 中的不可约性。若所得本原多项式可约，由引理~\ref{lem:gauss-primitive-polynomials} 可将它写成两个正次数整系数多项式的乘积。模 $p$ 后，乘积只剩首项。两个因子的首项系数都不被 $p$ 整除，所以次数保持，且它们模 $p$ 后都只能是正次数单项式。于是两个常数项都被 $p$ 整除，使乘积的常数项被 $p^2$ 整除，与假设矛盾。
+\end{proof}
+
+\begin{example}[正规性与可分性各起什么作用]\label{ex:galois-two-conditions}
+判断下列扩张是否正规、可分，并求其自同构群及共同固定的子域。
+\begin{enumerate}[(a)]
+\item $\mathbb Q(\sqrt[4]{2})/\mathbb Q$。
+\item $\mathbb F_2(u)/\mathbb F_2(t)$，其中 $t$ 是不定元，$u^2=t$。
+\end{enumerate}
+\end{example}
+\begin{proof}
+\textup{(a)} 令 $a=\sqrt[4]{2}$，$K=\mathbb Q(a)$。取 $p=2$，由命题~\ref{prop:eisenstein} 得 $x^4-2$ 不可约。它的四个根互异，但实域 $K$ 只含其中的 $a,-a$。故扩张可分而不正规。两个根各给出一个 $K$ 的 $\mathbb Q$-自同构，所以群同构于 $\mathbb Z_2$。非恒等自同构翻转 $a$ 而固定 $a^2=\sqrt2$。在基 $1,a,a^2,a^3$ 上比较系数，固定元恰好是 $r+sa^2$（$r,s\in\mathbb Q$），故固定域为 $\mathbb Q(\sqrt2)$。
+
+\textup{(b)} $t$ 在 $\mathbb F_2(t)$ 中没有平方根。否则令 $(b/c)^2=t$，其中 $b,c\in\mathbb F_2[t]$ 非零，则 $b^2=tc^2$ 中因子 $t$ 在左侧出现偶数次，在右侧出现奇数次。因此 $x^2-t$ 不可约。添入 $u$ 后它等于 $(x-u)^2$，故扩张是分裂域而正规，但不可分。$u$ 只有一个可能的像，自同构群为平凡群，固定域就是整个 $\mathbb F_2(u)$。
+\end{proof}
+
+\section{固定域与 Galois 基本定理}\label{sec:galois-correspondence}
+
+对有限 Galois 扩张 $K/F$，记 $G=\operatorname{Gal}(K/F)$。若 $F\subseteq E\subseteq K$，则 $K/E$ 仍为有限 Galois 扩张。事实上，$K$ 在 $E$ 上仍是原分裂多项式的分裂域，而 $m_{\alpha,E}$ 整除 $m_{\alpha,F}$，故仍无重根。
+
+\begin{definition}[固定域]
+\index{zh-gudingyu@固定域|hyperpage}
+给定 $H\le G$，定义 $K^H=\{x\in K:\forall h\in H,\ h(x)=x\}$。自同构保持四则运算，所以 $K^H$ 是包含 $F$ 的子域，称为 $H$ 的\emph{固定域}。
+\end{definition}
+对任意有限扩张，$\operatorname{Gal}(K/F)$ 的固定域都包含 $F$。例~\ref{ex:galois-two-conditions} 中，两种扩张的固定域都严格大于底域。接下来要证明，在有限 Galois 扩张中，固定域与子群两次互取会回到出发点。
+
+\begin{theorem}[Galois 基本定理]\label{thm:galois-correspondence}
+\index{en-galois-correspondence@Galois 对应|hyperpage}
+设 $K/F$ 为有限 Galois 扩张，$G=\operatorname{Gal}(K/F)$。映射
+\[
+ H\longmapsto K^H,\qquad
+ E\longmapsto \operatorname{Gal}(K/E)
+\]
+给出 $G$ 的子群与 $F\subseteq E\subseteq K$ 的中间域之间反转包含关系的一一对应。若 $E=K^H$，则 $[K:E]=|H|$、$[E:F]=[G:H]$。特别地，$K^G=F$。
+\end{theorem}
+\begin{proof}
+给定 $H\le G$，令 $E=K^H$。显然 $H\le \operatorname{Gal}(K/E)$，故 $|H|\le[K:E]$。对 $K/E$ 取本原元 $\alpha$，令
+\[
+ f(x)=\prod_{h\in H}(x-h(\alpha)).
+\]
+任意 $h_0\in H$ 作用于系数时，把因子 $x-h(\alpha)$ 送到 $x-(h_0h)(\alpha)$。左乘 $h_0$ 置换 $H$，所以 $f$ 的系数被 $H$ 逐点固定，即 $f\in E[x]$。恒等元给出 $f(\alpha)=0$，因而
+\[
+ [K:E]=\deg m_{\alpha,E}\le\deg f=|H|.
+\]
+两边合起来得到 $|H|=[K:E]=|\operatorname{Gal}(K/E)|$，故 $H=\operatorname{Gal}(K/E)$。
+
+反过来，给定中间域 $E$，令 $H=\operatorname{Gal}(K/E)$，$E'=K^H$，则 $E\subseteq E'$。由已证方向，$\operatorname{Gal}(K/E')=H$。对 $K/E$、$K/E'$ 应用定理~\ref{thm:galois-order}，两者次数相同。塔式公式~\ref{thm:field-tower} 给出 $[E':E]=1$，即 $E'=E$。固定更多自同构要求元素满足更多固定条件，所以包含关系反转。最后再用塔式公式得到 $[E:F]=[G:H]$。
+\end{proof}
+
+\Needspace{5\baselineskip}
+设中间域 $E_i$ 对应子群 $H_i$（$i=1,2$），记 $E_1E_2$ 为 $K$ 中包含 $E_1$ 与 $E_2$ 的最小子域，称为两域的\emph{合成域}。
+\index{zh-hechengyu@合成域|hyperpage}
+固定 $E_1E_2$ 等价于同时逐点固定 $E_1$ 和 $E_2$。同样，一个元素被 $\langle H_1,H_2\rangle$ 固定，当且仅当它被两个子群都固定。因此
+\[
+ \operatorname{Gal}(K/E_1E_2)=H_1\cap H_2,\qquad
+ K^{\langle H_1,H_2\rangle}=E_1\cap E_2.
+\]
+
+\begin{theorem}[正规子群与限制映射]\label{thm:galois-normal-quotient}
+\index{en-galois-correspondence@Galois 对应!normal@正规子群与商群|hyperpage}
+在定理~\ref{thm:galois-correspondence} 的条件下，设 $H=\operatorname{Gal}(K/E)$。则 $H\trianglelefteq G$ 当且仅当 $E/F$ 正规。此时 $E/F$ 为 Galois 扩张，且限制映射诱导
+\[
+ G/H\ \cong\ \operatorname{Gal}(E/F).
+\]
+\end{theorem}
+\begin{proof}
+对 $g\in G$、$h\in H$ 与 $a\in E$，有
+\[
+ g^{-1}hg(a)=a \quad\Longleftrightarrow\quad h(g(a))=g(a).
+\]
+将右侧对所有 $h\in H$ 同时要求，得到 $K^{g^{-1}Hg}=g^{-1}(E)$。因此共轭子群的固定域就是原固定域经相应自同构所得的像。由 Galois 对应，$g^{-1}Hg=H$ 等价于 $g(E)=E$。
+
+若 $E/F$ 正规，对任意 $a\in E$，$g(a)$ 是 $m_{a,F}$ 的根，因此 $g(a)\in E$。反过来，若每个 $g$ 都保持 $E$，取任意在 $E$ 中有根 $a$ 的不可约多项式。它的根全在 $K$ 中，因为 $K/F$ 正规。每个根 $b$ 给出固定 $F$ 的嵌入 $F(a)\hookrightarrow K$，把 $a$ 送到 $b$。由引理~\ref{lem:galois-extend} 延拓为 $g\in G$ 后，有 $b=g(a)\in E$。故该多项式在 $E$ 中分裂。
+
+此时 $E/F$ 也可分，因为 $E$ 的每个元素都在 $K$ 中。限制 $g\mapsto g|_E$ 是同态，核为 $H$，并由嵌入延拓引理得到满射性。应用群的第一同构定理即得结论。
+\end{proof}
+
+\Needspace{4\baselineskip}
+\begin{example}[双二次扩张的中间域]\label{ex:galois-biquadratic}
+设 $K=\mathbb Q(\sqrt2,i)$。证明 $K=\mathbb Q(\sqrt2+i)$，求其 Galois 群，并列出全部中间域。
+\end{example}
+\begin{proof}
+令 $\theta=\sqrt2+i$，则 $3/\theta=\sqrt2-i$，故 $\sqrt2=(\theta+3/\theta)/2$、$i=(\theta-3/\theta)/2$ 都在 $\mathbb Q(\theta)$ 中。$K$ 是 $(x^2-2)(x^2+1)$ 的分裂域，且 $[K:\mathbb Q]=4$，因为 $i\notin\mathbb Q(\sqrt2)\subset\mathbb R$。两个生成元的符号可以独立翻转，四种符号选择由定理~\ref{thm:galois-order} 确知全部实现。
+
+令 $\sigma$ 只翻转 $\sqrt2$，$\tau$ 只翻转 $i$。它们交换，且都是二阶元，故 $G=\{1,\sigma,\tau,\sigma\tau\}\cong\mathbb Z_2\times\mathbb Z_2$。三个阶二子群分别固定 $i$、$\sqrt2$、$i\sqrt2$。各元素生成的域都在 $\mathbb Q$ 上为二次，故由 Galois 对应知它们恰为对应的固定域，如图所示。
+\end{proof}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[every node/.style={font=\small,align=center,inner sep=3pt}]
+ \node (top) at (0,2.9) {$K=\mathbb Q(\sqrt2,i)$\\$\{1\}$};
+ \node (l) at (-3.55,1.45) {$\mathbb Q(i)$\\$\langle\sigma\rangle$};
+ \node (m) at (0,1.45) {$\mathbb Q(\sqrt2)$\\$\langle\tau\rangle$};
+ \node (r) at (3.55,1.45) {$\mathbb Q(i\sqrt2)$\\$\langle\sigma\tau\rangle$};
+ \node (bot) at (0,0) {$\mathbb Q$\\$G$};
+ \draw (top)--(l)--(bot) (top)--(m)--(bot) (top)--(r)--(bot);
+\end{tikzpicture}
+\caption{每个节点上排为中间域，下排为逐点固定该域的子群。}
+\end{figure}
+
+\paragraph{最小多项式的根是一个轨道}
+在有限 Galois 扩张 $K/F$ 中，对 $\alpha\in K$，稳定子恰为 $\operatorname{Gal}(K/F(\alpha))$，因为固定 $\alpha$ 就固定整个 $F(\alpha)$。回忆轨道--稳定子定理~\ref{prop:orbit-stabilizer}，Galois 对应把这个稳定子的指数化为 $[F(\alpha):F]=\deg m_{\alpha,F}$。而每个 $\sigma(\alpha)$ 都是最小多项式的根。因此轨道恰由这些互异的根组成，$m_{\alpha,F}(x)=\prod_{\beta\in G\alpha}(x-\beta)$。在分裂域里，自同构对任一不可约因子的根传递作用。整个根集上的作用还是忠实的，因为固定所有根就固定它们生成的分裂域。
+
+\begin{example}[Frobenius 自同构与有限域的中间域]\label{ex:galois-frobenius}
+\index{en-frobenius@Frobenius 自同构|hyperpage}
+设 $q$ 为素数幂，$n\ge1$。求 $\mathbb F_{q^n}/\mathbb F_q$ 的 Galois 群及全部中间域，并用它解释第~\ref{sec:splitting-finite-route} 节中按最小多项式给元素分组的做法。
+\end{example}
+\begin{proof}
+回忆第~\ref{sec:splitting-finite-route} 节，$\mathbb F_{q^n}$ 由 $x^{q^n}-x$ 的根组成，且这个多项式无重根。因此扩张是 Galois 的，群的阶为 $n$。在特征 $p$ 下，$p$ 次方保持加法与乘法，迭代后 $q$ 次方也保持这两种运算。映射 $\phi:a\mapsto a^q$ 固定 $\mathbb F_q$，且在有限域上的单射必为满射，故 $\phi$ 是自同构，称为 $q$-Frobenius 自同构。
+
+由 $\phi^n(a)=a^{q^n}=a$，有 $\phi^n=1$。对 $1\le k<n$，若 $\phi^k=1$，则次数 $q^k<q^n$ 的 $x^{q^k}-x$ 会有 $q^n$ 个根。故 $\phi$ 的阶为 $n$，且 $\operatorname{Gal}(\mathbb F_{q^n}/\mathbb F_q)=\langle\phi\rangle$。对每个 $d\mid n$，循环群恰有一个指数为 $d$ 的子群 $\langle\phi^d\rangle$。对应的中间域为
+\[
+ \{a\in\mathbb F_{q^n}:a^{q^d}=a\}=\mathbb F_{q^d}.
+\]
+这里固定域在 $\mathbb F_q$ 上的次数为 $d$，所以它就是 $\mathbb F_{q^n}$ 中唯一的 $q^d$ 元子域。
+
+对任意 $\alpha\in\mathbb F_{q^n}$，若 $e$ 是使 $\phi^e(\alpha)=\alpha$ 的最小正整数，那么它的轨道为 $\alpha,\alpha^q,\dots,\alpha^{q^{e-1}}$。这正是其最小多项式的全部根，所以同一最小多项式对应一个 Frobenius 轨道。比如在 $\mathbb F_4=\mathbb F_2[x]/(x^2+x+1)$ 中，若 $\alpha$ 为 $x$ 的剩余类，$\phi$ 固定 $0,1$，交换 $\alpha$ 与 $\alpha^2=\alpha+1$。这两个元素构成一个大小为 $2$ 的轨道，合起来给出一个二次不可约多项式。
+\end{proof}
+
+\section{根式扩张与五次及以上方程}\label{sec:galois-radicals}
+
+二次求根公式只用到系数、四则运算和开平方。要判断这些运算能否给出高次方程的通用公式，可以先问每次开根对 Galois 群施加什么限制，再用这个限制检查一般方程的 Galois 群。
+
+\begin{definition}[根式塔与可解群]
+\index{zh-genshikuozhang@根式扩张|hyperpage}
+\index{zh-kejiequn@可解群|hyperpage}
+在特征零域 $F$ 上，逐次开根给出域塔
+\[
+ F=F_0\subseteq F_1\subseteq\dots\subseteq F_r,\qquad
+ F_i=F_{i-1}(\alpha_i),\quad \alpha_i^{m_i}\in F_{i-1},\quad m_i\ge2.
+\]
+能放进某个这样的塔顶的元素称为可用根式表示。群 $G$ 称为\emph{可解群}，若存在 $G=G_0\trianglerighteq G_1\trianglerighteq\dots\trianglerighteq G_r=\{1\}$，每一步 $G_{i+1}\trianglelefteq G_i$ 且商群交换。
+\end{definition}
+记 $G'$ 为由交换子 $aba^{-1}b^{-1}$ 生成的子群。共轭保持交换子的形式，所以这个子群正规。由于 $G/G'$ 交换，而任何交换商群的核都含 $G'$，可解性等价于反复取交换子群最终到达 $\{1\}$。子群的交换子列逐项包含于原群的相应项，满同态把交换子列逐项送到商群的交换子列。因此可解性对子群和商群封闭。若正规子群与相应商群均可解，则交换子列先进入该正规子群，再在其中到达平凡群，所以原群也可解。
+
+若 $\zeta^m=1$ 且 $\zeta$ 的乘法阶恰为 $m$，称 $\zeta$ 为本原 $m$ 次单位根。它的各次幂给出全部 $m$ 次单位根。
+
+\begin{proposition}[含单位根时的一步开根]\label{prop:galois-one-radical}
+\index{zh-danweigen@单位根|hyperpage}
+设 $\operatorname{char}F=0$，$F$ 含本原 $m$ 次单位根 $\zeta$，且 $\alpha^m=a\in F^\times$。则 $F(\alpha)/F$ 是有限 Galois 扩张，群嵌入循环群 $\mathbb Z_m$。
+\end{proposition}
+\begin{proof}
+$x^m-a$ 的根为 $\alpha,\zeta\alpha,\ldots,\zeta^{m-1}\alpha$，均在 $F(\alpha)$ 中，且互异。故 $F(\alpha)$ 是分裂域。对每个自同构 $\sigma$，$\sigma(\alpha)/\alpha$ 是一个 $m$ 次单位根，且固定底域意味着这些比值在复合时相乘。该同态的核只含恒等映射，因为自同构由 $\alpha$ 的像决定。若 $x^m-a$ 本身不可约，次数为 $m$，此时群同构于 $\mathbb Z_m$，且 $F(\alpha)\cong F[x]/(x^m-a)$。一般情形用 $\alpha$ 的最小多项式构造这个商域。
+\end{proof}
+
+\begin{proposition}[根式解要求 Galois 群可解]\label{prop:radical-necessary}
+设 $F$ 为特征零域，$f\in F[x]$ 不可约。若 $f$ 的一个根可在 $F$ 上用根式表示，则 $f$ 在 $F$ 上的 Galois 群可解。
+\end{proposition}
+\begin{proof}
+设这个根属于上述根式塔的 $F_r$，可略去添入零的步骤。令 $N$ 为各 $m_i$ 的最小公倍数，空塔时取 $N=1$。先在 $F_r$ 的一个扩张中选取本原 $N$ 次单位根 $\zeta_N$。具体地，将复数中的本原 $N$ 次单位根在 $\mathbb Q$ 上的最小多项式视为 $F_r$ 上的多项式，取其分裂域中的任一根。由单扩张同构，这个根在乘法下仍有阶 $N$。令 $L_0=F(\zeta_N)$，它是 $x^N-1$ 在 $F$ 上的分裂域。自同构由 $\zeta_N$ 的像 $\zeta_N^j$ 决定，复合对应单位指数相乘，故 $\operatorname{Gal}(L_0/F)$ 是 $(\mathbb Z/N\mathbb Z)^\times$ 的子群，因而交换。
+
+归纳地，若 $L_{i-1}/F$ 有限 Galois 且含 $F_{i-1}$，令 $a_i=\alpha_i^{m_i}$。必要时扩大包含 $F_r$ 与 $L_{i-1}$ 的环境域，使下面的多项式都分裂，再把这些根添到 $L_{i-1}$ 上得到 $L_i$：
+\[
+ x^{m_i}-g(a_i),\qquad g\in \operatorname{Gal}(L_{i-1}/F).
+\]
+这些多项式之积的系数被 $\operatorname{Gal}(L_{i-1}/F)$ 固定，故在 $F$ 中。把这个积乘上定义 $L_{i-1}$ 的分裂多项式，就得到 $L_i$ 在 $F$ 上的分裂多项式，所以 $L_i/F$ 也是有限 Galois 扩张。恒等元对应的因子保证 $\alpha_i\in L_i$。
+
+每个因子的根可由其中一个根与 $L_{i-1}$ 已有的单位根生成。选出每个因子的一个根，自同构在各选定根上的比值给出从 $\operatorname{Gal}(L_i/L_{i-1})$ 到若干单位根群的直积的单射同态，所以这个群交换。令 $H_i=\operatorname{Gal}(L_r/L_i)$，并令 $H_{-1}=\operatorname{Gal}(L_r/F)$。在这条群链中，$H_i\trianglelefteq H_{i-1}$，限制映射识别
+\[
+ H_{i-1}/H_i\cong\operatorname{Gal}(L_i/L_{i-1})\quad(1\le i\le r),
+ \qquad H_{-1}/H_0\cong\operatorname{Gal}(L_0/F).
+\]
+从而 $H_{-1}$ 可解。由于 $f$ 不可约且在正规扩张 $L_r$ 中已有一个根，它的分裂域 $K$ 包含在 $L_r$ 中。由定理~\ref{thm:galois-normal-quotient}，$\operatorname{Gal}(K/F)$ 是 $H_{-1}$ 的商群，故可解。
+\end{proof}
+
+\begin{example}[一个无根式解的五次方程]\label{ex:galois-quintic}
+设 $f(x)=2x^5-10x+5$。证明 $f$ 的 Galois 群为 $S_5$，并判断 $f(x)=0$ 能否用根式求解。
+\end{example}
+\begin{proof}
+回忆命题~\ref{prop:eisenstein}（Eisenstein 判别法），取 $p=5$，得 $f$ 在 $\mathbb Q[x]$ 中不可约。其导数为 $10(x^4-1)$，在区间 $(-\infty,-1)$ 与 $(1,\infty)$ 为正，在 $(-1,1)$ 为负。又 $f(-1)=13$、$f(1)=-3$，两端分别趋于 $-\infty$、$+\infty$，故这三个区间各有一个实根。另两个根是一对非实共轭根。
+
+设 $K$ 是 $f$ 的分裂域，$G=\operatorname{Gal}(K/\mathbb Q)$。回忆第~\ref{sec:galois-correspondence} 节的根轨道结论，$G$ 在五个根上的作用忠实，且因 $f$ 不可约而传递。复共轭固定三个实根并交换另两根，故 $G$ 包含一个对换。
+
+在根集上令 $a\sim b$ 表示 $a=b$ 或对换 $(a\,b)$ 属于 $G$。若 $(a\,b)$ 与 $(b\,c)$ 都在 $G$ 中，则共轭得到 $(a\,c)$，所以这是等价关系。又 $g(a\,b)g^{-1}=(g(a)\,g(b))$，故 $G$ 置换这些等价类。由传递性，各类等大，类的大小整除 $5$。存在对换说明有一类至少含两个根，因此只有一个等价类。于是所有对换都在 $G$ 中，而对换生成 $S_5$，故 $G=S_5$。
+
+最后说明 $S_5$ 不可解。对五个互异符号 $a,b,c,d,e$，两偶置换 $(a\,b)(d\,e)$、$(b\,c)(d\,e)$ 都是对合，乘积为三循环，它们的交换子是该三循环的平方。交换两者的顺序便得到另一个方向的三循环。因此 $A_5'$ 包含全部三循环。三循环生成 $A_5$，因为偶置换的对换分解可两两配对，共享一个点的一对是三循环，不交的一对可按 $(a\,b)(c\,d)=(a\,c\,b)(a\,c\,d)$ 拆为两个三循环。于是 $A_5'=A_5\ne\{1\}$，故 $A_5$ 不可解，包含它的 $S_5$ 也不可解。由命题~\ref{prop:radical-necessary}，$f$ 的任何一个根都不能在 $\mathbb Q$ 上用根式表示。
+\end{proof}
+
+\Needspace{23\baselineskip}
+\paragraph{从具体五次方程到一般方程}
+把方程的首项系数除去后，通用根式公式必须能从 $n$ 个独立的系数 $a_1,\dots,a_n$ 出发，用有限次四则运算与开根写出根。用域的语言说，就是考察一般首一多项式
+\[
+ x^n+a_1x^{n-1}+\cdots+a_n\in\mathbb Q(a_1,\dots,a_n)[x],
+\]
+其中 $a_1,\dots,a_n$ 是不定元。即使公式允许排除使分母为零的特殊取值，它仍须在这个有理函数域上给出根式表示。
+
+\begin{theorem}[Abel--Ruffini 定理]\label{thm:abel-ruffini}
+\index{en-abel-ruffini@Abel--Ruffini 定理|hyperpage}
+对每个 $n\ge5$，一般 $n$ 次方程没有通用根式求解公式。事实上，一般首一 $n$ 次多项式的任何一个根都不能在其系数域 $\mathbb Q(a_1,\dots,a_n)$ 上用根式表示。
+\end{theorem}
+\begin{proof}
+先取 $n$ 个不定元 $U_1,\dots,U_n$ 作根，令 $K=\mathbb Q(U_1,\dots,U_n)$。乘积 $\prod_{i=1}^n(x-U_i)$ 的 $x^{n-j}$ 项系数为 $(-1)^j e_j$。回忆定理~\ref{thm:symmetric-polynomials}，任何对称多项式用 $e_1,\dots,e_n$ 表示时都只有一种写法。若这些 $e_j$ 之间有非零的多项式关系，就会给零多项式另一种写法。因此 $F=\mathbb Q(e_1,\dots,e_n)$ 可与一般方程的系数域认同，令 $a_j$ 对应 $(-1)^je_j$ 即可。
+
+$K$ 是该乘积在 $F$ 上的分裂域。任意置换 $U_1,\dots,U_n$ 都给出 $K$ 上固定 $F$ 的自同构，因为它保持全部 $e_j$。而任何 $F$-自同构都由各根的像确定。因此 $\operatorname{Gal}(K/F)\cong S_n$。它在根上的作用传递，所以这个多项式不可约。对于 $n\ge5$，$S_n$ 包含一个仅置换其中五个根的 $S_5$。由例~\ref{ex:galois-quintic}，$S_5$ 不可解，而可解群的子群仍可解，故 $S_n$ 不可解。应用命题~\ref{prop:radical-necessary}，便得到所求结论。
+\end{proof}
+
+具体方程仍可能有根式解，例如 $x^n-2=0$ 的根都可由 $\sqrt[n]{2}$ 与 $n$ 次单位根写出。另一方面，对每个 $n\ge5$，把例~\ref{ex:galois-quintic} 的多项式乘以 $\prod_{j=1}^{n-5}(x-j)$，便得到一个有理系数的 $n$ 次方程，它仍含有无法用根式表示的根。
+
+\FloatBarrier
+
+\chapter{概率}\label{chap:probability}
+\begin{wenxintishi}
+计数回答有多少种可能，概率进一步给每种可能赋予权重。先用事件表达所关心的结果，再用随机变量提取信息；期望与方差概括分布的特征，概率生成函数则把独立随机变量求和转化为乘法。
+\end{wenxintishi}
+第~\ref{sec:probability-events} 节建立离散概率空间，说明观察到一个事件后如何更新概率。第~\ref{sec:probability-variables} 节从分布、联合分布进入期望与条件期望，再用方差和协方差描述波动。第~\ref{sec:entropy} 节用熵衡量不确定性，再以全变差距离和 KL 散度比较分布。第~\ref{sec:concentration} 节用集中不等式和类型计数估计经验分布的偏离概率，以数据处理不等式收束。第~\ref{sec:probability-pgf} 节回到第七章的生成函数方法，用同一套运算处理成功次数、等待时间和稀少事件的计数。第~\ref{chap:compression} 章将利用熵与集中界讨论数据压缩所需的比特数。
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={align=center,font=\small,inner sep=4pt}]
+\node (a) at (0,1.5) {样本空间与事件\\\S\ref{sec:probability-events}};
+\node (b) at (4.2,1.5) {条件概率与独立性\\\S\ref{sec:probability-events}};
+\node (c) at (8.7,1.5) {随机变量与分布\\\S\ref{sec:probability-variables}};
+\node (d) at (8.7,0) {期望、条件期望与方差\\\S\ref{sec:probability-variables}};
+\node (e) at (4.2,0) {概率生成函数与分布\\\S\ref{sec:probability-pgf}};
+\node (f) at (0,0) {普通生成函数\\第~\ref{chap:combinatorics} 章};
+\draw[->] (a)--(b); \draw[->] (b)--(c); \draw[->] (c)--(d);
+\draw[->] (d)--(e); \draw[->] (f)--(e);
+\node (g) at (6.5,-1.5) {熵、条件熵与分布比较\\\S\ref{sec:entropy}};
+\draw[->] (d)--(g); \draw[->] (e)--(g);
+\node (h) at (2,-1.5) {集中界、类型与数据处理\\\S\ref{sec:concentration}};
+\draw[->] (g)--(h);
+\end{tikzpicture}
+\end{center}
+
+\section{事件、条件概率与独立性}\label{sec:probability-events}
+一次试验的完整结果称为样本点，所有可能结果组成样本空间。例如掷骰子时，样本空间为
+\[\Omega=\{1,2,3,4,5,6\}.\]
+“得到偶数”对应子集 $\{2,4,6\}$。样本点记录完整结果，事件则允许把多个结果合在一起讨论。
+
+\begin{definition}[离散概率空间]\label{def:discrete-probability}
+\index{zh-yangbenkongjian@样本空间|hyperpage}
+\index{zh-shijian@事件|hyperpage}
+\index{zh-lisangailvkongjian@离散概率空间|hyperpage}
+设 $\Omega$ 为非空的有限集或可数集。若函数 $P:\Omega\to[0,1]$ 满足
+\[
+ \sum_{\omega\in\Omega}P(\omega)=1,
+\]
+则称 $(\Omega,P)$ 为离散概率空间。任意子集 $A\subseteq\Omega$ 称为事件，定义
+\[
+ \Pr[A]=P(A):=\sum_{\omega\in A}P(\omega).
+\]
+$P(\omega)$ 是样本点的概率，也就是 $P(\{\omega\})$ 的简记。$\Omega$ 为必然事件，$\varnothing$ 为不可能事件；$\bar{A}=\Omega\setminus A$ 为补事件。可简记 $AB=A\cap B$。
+\end{definition}
+可数集上的非负求和可定义为所有有限部分和的上确界，因而不依赖枚举顺序。写 $P[A]$ 或 $\Pr[A]$ 时，所用的概率分布已经由上下文固定；仅指定样本空间而不指定权重，还不足以确定概率。
+
+\begin{definition}[$\sigma$-代数与一般概率空间]\label{def:sigma-probability}
+\index{sym-sigma-algebra@$\sigma$-代数|hyperpage}
+\index{zh-gailvkongjian@概率空间|hyperpage}
+设 $\Omega\ne\varnothing$。集合族 $\mathcal F\subseteq\Pow(\Omega)$ 称为 $\sigma$-代数，若
+\begin{enumerate}[(a)]
+\item $\Omega\in\mathcal F$；
+\item $A\in\mathcal F$ 时，$\bar{A}\in\mathcal F$；
+\item $A_1,A_2,\ldots\in\mathcal F$ 时，$\bigcup_{n\ge1}A_n\in\mathcal F$。
+\end{enumerate}
+一般的概率空间是三元组 $(\Omega,\mathcal F,P)$，其中 $P:\mathcal F\to[0,1]$ 满足 $P(\Omega)=1$，并且对两两不交的事件列满足可数可加性
+\[
+ P\left(\bigcup_{n\ge1}A_n\right)=\sum_{n\ge1}P(A_n).
+\]
+此时事件专指 $\mathcal F$ 中的集合。
+\end{definition}
+由 De Morgan 律，$\mathcal F$ 也对可数交封闭。离散情形取 $\mathcal F=\Pow(\Omega)$，定义~\ref{def:discrete-probability} 的点概率求和自动满足可数可加性。引入 $\sigma$-代数是为了在一般样本空间上明确哪些集合可以赋予概率；本章后面的计算仍在离散情形中进行，不需要展开测度的构造。
+
+\begin{proposition}[概率的基本运算]\label{prop:probability-set-operations}
+对事件 $A,B$，有 $P(\varnothing)=0$、$P(\bar{A})=1-P(A)$；若 $A\subseteq B$，则 $P(A)\le P(B)$。此外
+\[
+ P(A\cup B)=P(A)+P(B)-P(A\cap B)\le P(A)+P(B).
+\]
+特别地，$A\cap B=\varnothing$ 时 $P(A\cup B)=P(A)+P(B)$。
+\end{proposition}
+\begin{proof}
+由 $\Omega=\Omega\sqcup\varnothing$ 得 $P(\varnothing)=0$。分别对不交并 $\Omega=A\sqcup \bar{A}$ 和 $B=A\sqcup(B\setminus A)$ 使用可加性，得到补事件公式和单调性。最后把 $A\cup B$ 分解为 $A\setminus B$、$A\cap B$、$B\setminus A$ 三部分；$P(A)+P(B)$ 将中间一部分计了两次，减去一次便得到所需等式。
+\end{proof}
+
+\begin{definition}[条件概率]\label{def:conditional-probability}
+\index{zh-tiaojiangailv@条件概率|hyperpage}
+若 $P(B)>0$，定义在 $B$ 发生的条件下 $A$ 的概率为
+\[
+ P(A\mid B)=\frac{P(A\cap B)}{P(B)}.
+\]
+在离散空间中，这相当于换用点概率
+\[
+ P_B(\omega)=\begin{cases}P(\omega)/P(B),&\omega\in B,\\0,&\omega\notin B.\end{cases}
+\]
+于是 $P_B(A)=P(A\mid B)$，且 $\sum_\omega P_B(\omega)=1$。
+\end{definition}
+条件化先排除不符合观察的样本点，再把剩余权重归一化。分母为零时，上述公式不定义条件概率。
+
+\begin{proposition}[全概率公式与 Bayes 公式]\label{prop:bayes-total}
+\index{zh-quangailvgongshi@全概率公式|hyperpage}
+\index{en-bayes@Bayes 公式|hyperpage}
+若 $B_i$ 构成 $\Omega$ 的有限或可数不交划分，且每个 $P(B_i)>0$，则
+\[
+ P(A)=\sum_i P(B_i)P(A\mid B_i).
+\]
+若 $P(A),P(B)>0$，则
+\[
+ P(A\mid B)=\frac{P(A)P(B\mid A)}{P(B)}.
+\]
+特别地，当 $P(A)>0$ 时，$P(B_j\mid A)=P(B_j)P(A\mid B_j)/\sum_iP(B_i)P(A\mid B_i)$。
+\end{proposition}
+\begin{proof}
+$A=\bigsqcup_i(A\cap B_i)$，故可加性和条件概率定义给出第一式。第二式由
+\[
+ P(A\cap B)=P(A)P(B\mid A)=P(B)P(A\mid B)
+\]
+两边除以 $P(B)$ 得到。再用全概率公式展开分母即可。
+\end{proof}
+零概率的划分块对全概率公式贡献为零，可从求和中删去，不必给这些块定义条件概率。
+
+\begin{example}[检测结果与患病概率]\label{ex:probability-test}
+设某病的患病率为 $0.1\%$，检测对患病者报阳性的概率为 $99\%$，对未患病者报阴性的概率也为 $99\%$。一个人检测呈阳性时，其患病概率是多少？
+\end{example}
+\begin{proof}
+记 $D$ 为患病，$+$ 为阳性。两种准确率分别给出 $P(+\mid D)=0.99$ 与 $P(+\mid \bar{D})=0.01$，而 $P(D)=0.001$。于是
+\[
+ P(D\mid +)=\frac{0.001\cdot0.99}{0.001\cdot0.99+0.999\cdot0.01}
+ =\frac{11}{122}\approx9.02\%.
+\]
+例如在十万人中，平均有 $100$ 名患者，其中 $99$ 名报阳性；$99900$ 名未患病者中却有 $999$ 名报阳性。因此阳性结果中的患病比例为 $99/(99+999)$。仅说“准确率为 $99\%$”不足以确定这个比例，必须分别给出两类人的条件概率。
+\end{proof}
+
+\begin{definition}[事件的独立性]\label{def:event-independence}
+\index{zh-dulixing@独立性|hyperpage}
+事件 $A,B$ 称为独立的，若 $P(A\cap B)=P(A)P(B)$。有限族 $A_1,\ldots,A_n$ 称为相互独立的，若任取非空指标集 $I\subseteq\{1,\ldots,n\}$ 都有
+\[
+ P\left(\bigcap_{i\in I}A_i\right)=\prod_{i\in I}P(A_i).
+\]
+若只对每两个不同指标成立，则称为两两独立。
+\end{definition}
+若 $P(A)>0$，$A,B$ 独立等价于 $P(B\mid A)=P(B)$；若又有 $P(A)<1$，还等价于 $P(B\mid \bar{A})=P(B)$。后一个结论来自
+$P(B\cap \bar{A})=P(B)-P(B\cap A)=P(B)(1-P(A))$。独立不等于互斥；两个正概率的互斥事件不可能独立。
+
+\clearpage
+\section{随机变量、期望与波动}\label{sec:probability-variables}
+\begin{definition}[随机变量及其分布]\label{def:discrete-random-variable}
+\index{zh-suijibianliang@随机变量|hyperpage}
+\index{zh-fenbulie@分布列|hyperpage}
+在离散概率空间上，取值于集合 $S$ 的随机变量是函数 $X:\Omega\to S$。其取值不必是数。对 $x\in S$，记
+\[
+ \{X=x\}=\{\omega\in\Omega:X(\omega)=x\},\qquad
+ P_X(x)=\Pr[X=x]=\sum_{X(\omega)=x}P(\omega).
+\]
+$P_X$ 称为 $X$ 的分布列。更一般地，$P_X(C)=P(X^{-1}(C))$，其中 $C\subseteq S$。
+\end{definition}
+记 $X\sim P$ 表示“$X$ 的分布为 $P$”，即 $P_X=P$；这里的 $\sim$ 不是近似相等。信息论中也把取值集合 $S$ 称为\emph{字母表}，其中的元素称为符号，不要求它们是文字或数字。分布的\emph{支撑}\index{zh-zhicheng@支撑（分布）|hyperpage}定义为
+\[
+ \operatorname{supp}(P)=\{x\in S:P(x)>0\},\qquad
+ \operatorname{supp}(X):=\operatorname{supp}(P_X).
+\]
+因此字母表可以包含零概率的值，支撑只保留正概率的值。
+
+即使 $S$ 很大，$X(\Omega)$ 仍至多可数，故以上求和有意义。分布描述各个取值出现的权重，但不记录每个样本点怎样映到该取值；同分布的两个随机变量不必是同一个函数。
+
+\begin{example}[抛硬币与指示变量]\label{ex:probability-coins}
+在 $n$ 次抛硬币的样本空间 $\Omega=\{H,T\}^n$ 上，考虑
+\begin{enumerate}[(a)]
+\item $X_i(\omega)=1$ 当且仅当第 $i$ 次为正面，否则为 $0$；令 $X=\sum_{i=1}^nX_i$，$Y=\min\{i:X_i=1\}$，并在全为反面时约定 $Y=n+1$。解释 $X,Y$ 所记录的信息。
+\item 对任意事件 $A$，定义指示变量 $\mathbbm{1}_A(\omega)=1$（$\omega\in A$）或 $0$（$\omega\notin A$）。说明事件与 $0$--$1$ 随机变量之间的对应。
+\end{enumerate}
+\end{example}
+\begin{proof}
+(a) 每个 $X_i$ 只记录第 $i$ 枚硬币，求和后 $X$ 记录正面总数；$Y$ 记录首次正面的位置，额外值 $n+1$ 表示前 $n$ 次没有正面。如此 $Y$ 才在全部样本点上有定义。
+
+(b) $\{\mathbbm{1}_A=1\}=A$，$\{\mathbbm{1}_A=0\}=\bar{A}$。反过来，任意 $Z:\Omega\to\{0,1\}$ 都等于 $\mathbbm{1}_{\{Z=1\}}$，所以事件可自然地用随机变量表示。
+\end{proof}
+\index{zh-zhishibianliang@指示变量|hyperpage}
+
+\begin{definition}[联合分布、边缘分布与条件分布]\label{def:joint-conditional-distribution}
+\index{zh-lianhefenbu@联合分布|hyperpage}
+\index{zh-bianyuanfenbu@边缘分布|hyperpage}
+\index{zh-tiaojianfenbu@条件分布|hyperpage}
+设 $X,Y$ 定义在同一概率空间上。其联合分布列为
+\[
+ P_{XY}(x,y)=\Pr[X=x,Y=y].
+\]
+对另一个坐标求和得到边缘分布列
+\[
+ P_X(x)=\sum_yP_{XY}(x,y),\qquad P_Y(y)=\sum_xP_{XY}(x,y).
+\]
+当 $P_Y(y)>0$ 时，定义条件分布列
+\[
+ P_{X\mid Y}(x\mid y)=\frac{P_{XY}(x,y)}{P_Y(y)}.
+\]
+称 $X,Y$ 独立，若对所有 $x,y$ 都有 $P_{XY}(x,y)=P_X(x)P_Y(y)$。有限个随机变量相互独立，是指它们的联合分布列等于各自分布列的乘积。
+\end{definition}
+给定 $y$ 后，$P_{X\mid Y}(\cdot\mid y)$ 是一个概率分布。把这一族分布记为 $K(y,x)=P_{X\mid Y}(x\mid y)$，便得到离散的 \emph{Markov 核}\index{en-markov-kernel@Markov 核|hyperpage}，即非负且每行和为 $1$ 的数组。零概率的 $y$ 可任选一个概率分布作为该行，它不影响下面的求和。
+\[
+ P_{XY}(x,y)=K(y,x)P_Y(y),\qquad
+ P_X(x)=\sum_yK(y,x)P_Y(y).
+\]
+也常把联合分布写成 $P_{X\mid Y}P_Y$，其含义是
+\[
+ (P_{X\mid Y}P_Y)(x,y)=P_{X\mid Y}(x\mid y)P_Y(y).
+\]
+此处乘积表示“条件分布配上输入分布得到联合分布”，不是声称 $X,Y$ 独立；对 $y$ 求和后才得到边缘 $P_X$。记号 $P_{X\mid Y=y}$ 与 $P_{X\mid Y}(\cdot\mid y)$ 都表示固定 $y$ 后的整个条件分布，其中点号是待填入的取值位置。写 $X\mid Y=y\sim Q$ 就是说这个条件分布为 $Q$。
+
+这可以记为 $P_X=K\circ P_Y$，这里的“复合”指先按 $P_Y$ 选择 $y$、再按 $K(y,\cdot)$ 选择 $x$，最后对 $y$ 加权求和。它不是普通函数值的直接代入，也不预设时间演化或 Markov 链。
+
+\paragraph{用期望概括随机变量}
+\begin{definition}[可积性与期望]\label{def:expectation}
+\index{zh-qiwang@期望|hyperpage}
+对实值随机变量 $X$，若
+\[
+ \sum_{\omega\in\Omega}P(\omega)|X(\omega)|
+ =\sum_x|x|P_X(x)<\infty,
+\]
+则称 $X$ \emph{可积}\index{zh-keji@可积（随机变量）|hyperpage}。也就是说，按概率加权的绝对值之和有限。此时定义其\emph{期望}为
+\[
+ \mathbb E[X]=\sum_\omega P(\omega)X(\omega)=\sum_x xP_X(x).
+\]
+两种写法通过按 $X(\omega)=x$ 分组相等。非负随机变量也允许取扩展期望 $+\infty$；一般有正负两部分时，不作 $\infty-\infty$ 的运算。向量值随机变量的期望按坐标定义，每个坐标均要求可积。
+\end{definition}
+用非负随机变量的期望记号，可积条件也写作 $\mathbb E[|X|]<\infty$。它要求绝对收敛，而不只是正负项在某种排列下相消。有限取值的实随机变量自动可积；可数无限取值时则需要检查。例如 $\Pr[X=n]=1/(n(n+1))$（$n\ge1$）的概率之和为 $1$，但
+\[
+ \mathbb E[|X|]=\sum_{n\ge1}\frac1{n+1}=+\infty,
+\]
+所以这个随机变量不可积。
+
+更一般地，只要 $h(X)$ 可积，同样按原像分组便有 $\mathbb E[h(X)]=\sum_xh(x)P_X(x)$，无需先另求 $h(X)$ 的分布。
+
+\paragraph{期望下标说明按哪个分布平均}
+当同时讨论几个分布时，需要在期望上注明所用的概率权重。若 $X\sim P$，约定
+\[
+ \mathbb E_{X\sim P}[h(X)]:=\sum_xP(x)h(x).
+\]
+它读作“令 $X$ 服从 $P$ 时，$h(X)$ 的期望”。上下文明确时简写为 $\mathbb E_P[h(X)]$；若已约定 $P_X=P$，也就是通常的 $\mathbb E[h(X)]$。下标指定的是分布，不是额外的条件事件。式中的大写 $X$ 表示随机变量，小写 $x$ 是求和时遍历的取值。
+
+例如，对 $S=\{0,1\}$ 上的分布 $P(1)=1/3$、$Q(1)=2/3$，同一个函数 $h(x)=x$ 满足
+\[
+ \mathbb E_{X\sim P}[h(X)]=\frac13,
+ \qquad \mathbb E_{X\sim Q}[h(X)]=\frac23.
+\]
+这里是在比较两种分布下的平均值，不是要求一个固定的随机变量同时具有两个不同分布。
+
+对随机向量同样约定
+\[
+ \mathbb E_{(X,Y)\sim R}[h(X,Y)]
+ =\mathbb E_R[h(X,Y)]
+ :=\sum_{x,y}R(x,y)h(x,y).
+\]
+若 $R=P_{Y\mid X}P_X$，则此式展开为
+\[
+ \sum_xP_X(x)\sum_yP_{Y\mid X}(y\mid x)h(x,y),
+\]
+即先按给定 $x$ 的条件分布平均，再按 $P_X$ 平均；若 $h$ 只依赖 $x$，内层概率之和为 $1$，就退化为 $\mathbb E_{X\sim P_X}[h(X)]$。这些记号沿用上面的可积性要求；非负函数允许期望为 $+\infty$。
+
+\begin{proposition}[期望的线性性]\label{prop:expectation-linearity}
+若 $X,Y$ 可积，$a,b\in\R$，则
+\[
+ \mathbb E[aX+bY]=a\mathbb E[X]+b\mathbb E[Y].
+\]
+特别地，$\mathbb E[\mathbbm{1}_A]=P(A)$。这些结论不要求独立性。
+\end{proposition}
+\begin{proof}
+直接在同一个样本空间上展开
+\[
+ \sum_\omega P(\omega)(aX(\omega)+bY(\omega))
+ =a\sum_\omega P(\omega)X(\omega)+b\sum_\omega P(\omega)Y(\omega).
+\]
+绝对收敛保证拆分合法。对指示变量，只有 $\omega\in A$ 的项贡献 $P(\omega)$，故期望为 $P(A)$。
+\end{proof}
+
+\begin{definition}[条件期望]\label{def:conditional-expectation}
+\index{zh-tiaojianqiwang@条件期望|hyperpage}
+设 $X$ 为可积实随机变量，即 $\mathbb E[|X|]<\infty$（定义~\ref{def:expectation}）。对 $P(A)>0$ 的事件，定义
+\[
+ \mathbb E[X\mid A]=\sum_xx\Pr[X=x\mid A]
+ =\sum_\omega P_A(\omega)X(\omega).
+\]
+再设 $Y$ 为离散随机变量。对 $P_Y(y)>0$，令
+\[
+ f(y)=\mathbb E[X\mid Y=y]=\sum_xxP_{X\mid Y}(x\mid y),
+\]
+在零概率的取值上可约定 $f(y)=0$。定义随机变量
+\[
+ \mathbb E[X\mid Y]=f(Y),\qquad
+ (\mathbb E[X\mid Y])(\omega)=f(Y(\omega)).
+\]
+\end{definition}
+这些条件平均值确实有限：对 $P(A)>0$，
+\[
+ \sum_\omega P_A(\omega)|X(\omega)|
+ =\frac{\mathbb E[|X|\mathbbm{1}_A]}{P(A)}
+ \le\frac{\mathbb E[|X|]}{P(A)}<\infty.
+\]
+取 $A=\{Y=y\}$，便同样保证每个正概率取值对应的 $f(y)$ 有定义。
+
+这里有三个层次。固定一个数 $y$ 后，$f(y)$ 是条件平均值；还没有观察 $Y$ 时，$f(Y)$ 随样本点而变，是随机变量；再取 $\mathbb E[f(Y)]$ 才得到一个数。$f(Y)$ 在每个集合 $\{Y=y\}$ 上恒定，它保留了“知道 $Y$ 后对 $X$ 的平均判断”。
+
+\begin{proposition}[全期望公式]\label{prop:total-expectation}
+\index{zh-quanqiwanggongshi@全期望公式|hyperpage}
+若 $X$ 可积、$Y$ 离散，则 $\mathbb E[X\mid Y]$ 也可积，且
+\[
+ \mathbb E[X]=\mathbb E[\mathbb E[X\mid Y]]
+ =\sum_{y:P_Y(y)>0}P_Y(y)\mathbb E[X\mid Y=y].
+\]
+\end{proposition}
+\begin{proof}
+由三角不等式，
+\[
+ \sum_yP_Y(y)|f(y)|\le\sum_{x,y}|x|P_{XY}(x,y)=\mathbb E[|X|]<\infty.
+\]
+故以下重排绝对收敛的和是合法的。沿条件分布的定义逐步展开，得到
+\begin{align*}
+ \mathbb E[\mathbb E[X\mid Y]]
+ &=\sum_yP_Y(y)\sum_xxP_{X\mid Y}(x\mid y)\\
+ &=\sum_{x,y}xP_{XY}(x,y)
+ =\sum_xx\sum_yP_{XY}(x,y)\\
+ &=\sum_xxP_X(x)=\mathbb E[X].
+\end{align*}
+零概率的 $y$ 对各式的贡献均为零。
+\end{proof}
+
+\Needspace{9\baselineskip}
+\begin{example}[条件平均值怎样成为随机变量]
+公平骰子的点数为 $X$，令 $Y=\mathbbm{1}_{\{X\text{ 为偶数}\}}$。求 $\mathbb E[X\mid Y]$ 及其期望。
+\end{example}
+\begin{proof}
+$Y=0$ 时 $X$ 在 $\{1,3,5\}$ 上均匀分布，故 $f(0)=3$；$Y=1$ 时 $X$ 在 $\{2,4,6\}$ 上均匀分布，故 $f(1)=4$。所以
+\[
+ \mathbb E[X\mid Y]=3+Y,\qquad
+ \mathbb E[\mathbb E[X\mid Y]]=\frac12\cdot3+\frac12\cdot4=\frac72=\mathbb E[X].
+\]
+条件期望本身取两个值，不能把它与最后的常数 $7/2$ 混为一谈。
+\end{proof}
+
+\paragraph{用方差与协方差描述波动}
+
+\begin{definition}[$k$ 阶矩]\label{def:probability-moments}
+\index{zh-ju@矩|hyperpage}
+\index{zh-yuandianju@原点矩|hyperpage}
+\index{zh-jueduiju@绝对矩|hyperpage}
+\index{zh-zhongxinju@中心矩|hyperpage}
+设 $X$ 为实值随机变量，$k\in\N_{>0}$。$X$ 的 \emph{$k$ 阶绝对矩}为 $\mathbb E[|X|^k]$，允许为 $+\infty$。若它有限，则定义 $X$ 的 \emph{$k$ 阶矩}（也称 $k$ 阶原点矩）为
+\[
+ m_k=\mathbb E[X^k]=\sum_xx^kP_X(x).
+\]
+此时 $X$ 可积，记 $\mu=\mathbb E[X]$，其 \emph{$k$ 阶中心矩}为
+\[
+ \mathbb E[(X-\mu)^k].
+\]
+\end{definition}
+由于 $|x|^j\le1+|x|^k$（$1\le j\le k$），$k$ 阶绝对矩有限蕴含所有较低阶绝对矩有限。又由
+$|x-\mu|^k\le2^{k-1}(|x|^k+|\mu|^k)$，上述中心矩也存在。一阶原点矩就是期望，一阶中心矩为零；二阶原点矩为 $\mathbb E[X^2]$，二阶中心矩则是下面定义的方差。二者一般不同，不能把“二阶矩”直接当作方差。
+
+\begin{definition}[方差与协方差]\label{def:variance-covariance}
+\index{zh-fangcha@方差|hyperpage}
+\index{zh-xiefangcha@协方差|hyperpage}
+设实值随机变量 $X,Y$ 的二阶矩 $\mathbb E[X^2],\mathbb E[Y^2]$ 有限，定义
+\[
+ \operatorname{Var}(X)=\mathbb E[(X-\mathbb E[X])^2],\qquad
+ \operatorname{Cov}(X,Y)=\mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])].
+\]
+\end{definition}
+二阶矩有限保证这里的期望存在，例如 $|X|\le1+X^2$，$2|XY|\le X^2+Y^2$。方差总非负，且 $\operatorname{Var}(X)=\operatorname{Cov}(X,X)$。
+
+\begin{proposition}[协方差的运算与独立性]\label{prop:covariance-rules}
+对二阶矩有限的随机变量，协方差对称且对两个位置分别线性，并有
+\begin{align*}
+ \operatorname{Cov}(X,Y)&=\mathbb E[XY]-\mathbb E[X]\mathbb E[Y],\\
+ \operatorname{Var}(X)&=\mathbb E[X^2]-\mathbb E[X]^2,\\
+ \operatorname{Var}(X+Y)&=\operatorname{Var}(X)+2\operatorname{Cov}(X,Y)+\operatorname{Var}(Y).
+\end{align*}
+若 $X,Y$ 独立，则 $\mathbb E[XY]=\mathbb E[X]\mathbb E[Y]$，因此协方差为零，方差可相加。
+\end{proposition}
+\begin{proof}
+展开中心化乘积再用期望线性性，得到第一式。交换 $X,Y$ 得对称性；把 $Y$ 换成 $aY+bZ$ 并分配乘法，得到
+$\operatorname{Cov}(X,aY+bZ)=a\operatorname{Cov}(X,Y)+b\operatorname{Cov}(X,Z)$。
+由此沿双线性展开
+\begin{align*}
+ \operatorname{Var}(X+Y)&=\operatorname{Cov}(X+Y,X+Y)\\
+ &=\operatorname{Var}(X)+\operatorname{Cov}(X,Y)+\operatorname{Cov}(Y,X)+\operatorname{Var}(Y).
+\end{align*}
+当 $X,Y$ 独立时，联合分布分解，故
+\[
+ \mathbb E[XY]=\sum_{x,y}xyP_X(x)P_Y(y)
+ =\left(\sum_xxP_X(x)\right)\left(\sum_yyP_Y(y)\right).
+\]
+可积性保证乘积级数绝对收敛，代回即可。
+\end{proof}
+反过来，协方差为零不推出独立。例如 $X$ 在 $\{-1,0,1\}$ 上均匀分布，$Y=X^2$，则 $\mathbb E[X]=\mathbb E[XY]=0$，但 $\Pr[X=0,Y=0]=1/3\ne(1/3)^2$。
+
+\Needspace{9\baselineskip}
+\begin{proposition}[协方差矩阵的半正定性]\label{prop:covariance-psd}
+\index{zh-xiefangchajuzhen@协方差矩阵|hyperpage}
+记 $\mu_X=\mathbb E[X]$、$\mu_Y=\mathbb E[Y]$。矩阵
+\[
+ \Sigma=\begin{bmatrix}\operatorname{Var}(X)&\operatorname{Cov}(X,Y)\\
+ \operatorname{Cov}(Y,X)&\operatorname{Var}(Y)\end{bmatrix}
+ =\mathbb E\left[\begin{pmatrix}X-\mu_X\\Y-\mu_Y\end{pmatrix}
+ \begin{pmatrix}X-\mu_X&Y-\mu_Y\end{pmatrix}\right]
+\]
+为半正定矩阵，即对所有 $u\in\R^2$ 都有 $u^{\mathsf T}\Sigma u\ge0$。
+\end{proposition}
+\begin{proof}
+令 $Z=(X-\mu_X,Y-\mu_Y)^{\mathsf T}$。对每个样本点，$u^{\mathsf T}ZZ^{\mathsf T}u=(u^{\mathsf T}Z)^2\ge0$，逐点取外积再取平均仍保留半正定性，因为
+\[
+ u^{\mathsf T}\Sigma u=\mathbb E[(u^{\mathsf T}Z)^2]
+ =\operatorname{Var}(u_1X+u_2Y)\ge0.
+\]
+\end{proof}
+
+\section{概率生成函数与常见分布}\label{sec:probability-pgf}
+回忆第~\ref{sec:generating-functions} 节，普通生成函数以 $z^k$ 的系数记录第 $k$ 项，乘法对应卷积。现在让系数记录概率，就能把“独立计数之和”的分布计算变成乘法，并通过求导读出期望与方差。
+
+\begin{definition}[概率生成函数]\label{def:probability-generating-function}
+\index{zh-gailvshengchenghanshu@概率生成函数|hyperpage}
+\index{en-pgf@PGF（概率生成函数）|hyperpage}
+若 $X$ 取值于 $\N=\{0,1,2,\ldots\}$，定义
+\[
+ G_X(z)=\sum_{k\ge0}P_X(k)z^k=\mathbb E[z^X].
+\]
+它是分布列的普通生成函数，$[z^k]G_X(z)=P_X(k)$，不需要再乘 $k!$。在 $z=0$ 处约定 $0^0=1$。
+\end{definition}
+$G_X$ 唯一确定分布列，因为各个系数就是概率。作为数值级数，$|z|\le1$ 时绝对收敛，且 $G_X(1)=1$；作为形式幂级数，也可以直接进行系数运算。对边界点 $z=1$ 求导则需留意矩是否有限。
+
+\begin{remark}[与特征函数的联系]
+\index{zh-tezhenghanshu@特征函数|hyperpage}
+对任意实值离散随机变量，可定义 $\varphi_X(t)=\mathbb E[e^{\mathrm i tX}]$，$t\in\R$。因为每项的模为 $1$，这个期望总存在，不要求矩有限。若 $X$ 取非负整数值，则 $\varphi_X(t)=G_X(e^{\mathrm i t})$，即把生成函数限制到单位圆上。一般实值随机变量也有特征函数，但本章仅记录这一联系，不使用其进一步理论。
+\end{remark}
+
+\begin{proposition}[由生成函数读取矩]\label{prop:pgf-moments}
+若 $X$ 为非负整数值随机变量，则
+\[
+ G_X'(1-)=\mathbb E[X],\qquad G_X''(1-)=\mathbb E[X(X-1)],
+\]
+这里左侧指 $z\to1^-$ 时导数的极限，允许为 $+\infty$。当二阶矩有限时，简记为 $G_X'(1),G_X''(1)$，有
+\[
+ \mathbb E[X^2]=G_X''(1)+G_X'(1),\qquad
+ \operatorname{Var}(X)=G_X''(1)+G_X'(1)-G_X'(1)^2.
+\]
+\end{proposition}
+\begin{proof}
+对 $0<z<1$，幂级数可逐项求导，得到
+\[
+ G_X'(z)=\sum_{k\ge1}kP_X(k)z^{k-1},\qquad
+ G_X''(z)=\sum_{k\ge2}k(k-1)P_X(k)z^{k-2}.
+\]
+每项非负且随 $z\to1^-$ 单调增加。以第一式为例，极限不超过 $\sum_k kP_X(k)$；而对每个 $N$，极限至少为有限部分和 $\sum_{k=1}^N kP_X(k)$，再取这些部分和的上确界即得相等。第二式同理。最后用 $X^2=X(X-1)+X$ 与命题~\ref{prop:covariance-rules} 的方差公式即可。
+\end{proof}
+
+\begin{proposition}[独立和的生成函数]\label{prop:pgf-independent-sum}
+若非负整数值随机变量 $X,Y$ 独立，则 $G_{X+Y}(z)=G_X(z)G_Y(z)$。有限个相互独立随机变量的和也对应各自生成函数的乘积。
+\end{proposition}
+\begin{proof}
+当 $|z|\le1$ 时，各项绝对可和，独立性给出
+\[
+ G_{X+Y}(z)=\mathbb E[z^{X+Y}]=\mathbb E[z^Xz^Y]
+ =\mathbb E[z^X]\mathbb E[z^Y]=G_X(z)G_Y(z).
+\]
+从系数看，这正是
+\[
+ \Pr[X+Y=k]=\sum_{j=0}^kP_X(j)P_Y(k-j).
+\]
+有限个变量时对联合分布的乘积分解作同样计算。
+\end{proof}
+
+\Needspace{8\baselineskip}
+\paragraph{从一次成功到成功次数}
+\begin{definition}[Bernoulli、二项与均匀分布]\label{def:bernoulli-binomial-uniform}
+\index{en-bernoulli-distribution@Bernoulli 分布|hyperpage}
+\index{zh-erxiangfenbu@二项分布|hyperpage}
+\index{zh-junyunfenbu@均匀分布|hyperpage}
+\begin{enumerate}[(a)]
+\item 若 $\Pr[X=1]=p$、$\Pr[X=0]=1-p$，其中 $0\le p\le1$，记 $X\sim\operatorname{Bern}(p)$。
+\item 若对 $k=0,\ldots,n$ 有 $\Pr[X=k]=\binom nkp^k(1-p)^{n-k}$，其余取值的概率为零，记 $X\sim\operatorname{Binom}(n,p)$。其中 $n\in\N$、$0\le p\le1$，端点处按对应退化分布理解。
+\item 若 $S$ 为非空有限集，$\Pr[X=x]=1/|S|$（$x\in S$），记 $X\sim\operatorname{Unif}(S)$。
+\end{enumerate}
+\end{definition}
+均匀分布的取值可以不是数，只有取值为实数时才进一步讨论其期望；无限可数集上不存在每个点具有相同概率的分布，因为公共概率为零时总和为零，为正时总和发散。
+
+\begin{proposition}[Bernoulli 与二项分布的生成函数和矩]\label{prop:binomial-pgf}
+若 $X\sim\operatorname{Bern}(p)$，则
+\[
+ G_X(z)=1-p+pz,\qquad\mathbb E[X]=p,\qquad\operatorname{Var}(X)=p(1-p).
+\]
+若 $S_n$ 为 $n$ 个相互独立的 $\operatorname{Bern}(p)$ 随机变量之和，则 $S_n\sim\operatorname{Binom}(n,p)$，且
+\[
+ G_{S_n}(z)=(1-p+pz)^n,\qquad
+ \mathbb E[S_n]=np,\qquad\operatorname{Var}(S_n)=np(1-p).
+\]
+\end{proposition}
+\begin{proof}
+第一组公式由定义及 $X^2=X$ 得到。对独立和应用命题~\ref{prop:pgf-independent-sum}，再作二项式展开，$z^k$ 的系数为 $\binom nkp^k(1-p)^{n-k}$。这也对应从 $n$ 次试验中选出 $k$ 次成功，再把每一种结果的概率相加。期望由线性性相加，方差由独立性相加；也可对 $(1-p+pz)^n$ 求一阶、二阶导数后代入命题~\ref{prop:pgf-moments}。
+\end{proof}
+
+\paragraph{等待成功与负二项分布}
+几何分布有两种常用记数方式，差别在于是否把最后那次成功也计入等待时间。固定每次成功概率 $0<p\le1$，各次试验独立。
+\begin{definition}[几何分布与负二项分布]\label{def:geometric-negative-binomial}
+\index{zh-jihefenbu@几何分布|hyperpage}
+\index{zh-fuerxiangfenbu@负二项分布|hyperpage}
+\begin{enumerate}[(a)]
+\item 首次成功所在的试验次数 $T\in\N_{>0}$ 满足
+$\Pr[T=k]=(1-p)^{k-1}p$。本文记 $T\sim\operatorname{Geom}(p)$。
+\item 首次成功前的失败次数 $F=T-1\in\N$ 满足
+$\Pr[F=k]=(1-p)^kp$。使用从零开始的几何分布时明确写出此约定。
+\item 设 $r\in\N_{>0}$。第 $r$ 次成功前的失败总次数记为 $N_r\sim\operatorname{NegBinom}(p,r)$，其分布列为
+\[
+ \Pr[N_r=k]=\binom{r+k-1}{k}p^r(1-p)^k,\qquad k\ge0,
+\]
+\end{enumerate}
+\end{definition}
+对固定 $k$，$T=k$ 要求先失败 $k-1$ 次再成功，故概率为 $(1-p)^{k-1}p$；这些概率之和为 $1$，所以最终成功的概率为 $1$。可直接用正整数集合上的这个分布描述等待次数，无需把所有无限抛硬币序列误当成可数样本空间。
+
+\Needspace{13\baselineskip}
+\begin{proposition}[等待时间的生成函数]\label{prop:waiting-pgf}
+在上述约定下，
+\[
+ G_T(z)=\frac{pz}{1-(1-p)z},\qquad
+ G_F(z)=\frac p{1-(1-p)z},\qquad
+ G_{N_r}(z)=\left(\frac p{1-(1-p)z}\right)^r.
+\]
+相应的期望与方差为
+\[
+ \mathbb E[T]=\frac1p,\quad\mathbb E[F]=\frac{1-p}{p},\quad
+ \operatorname{Var}(T)=\operatorname{Var}(F)=\frac{1-p}{p^2},
+\]
+\[
+ \mathbb E[N_r]=\frac{r(1-p)}p,\qquad
+ \operatorname{Var}(N_r)=\frac{r(1-p)}{p^2}.
+\]
+\end{proposition}
+\begin{proof}
+令 $q=1-p$。对概率逐项加权并使用几何级数，
+\[
+ G_T(z)=\sum_{k\ge1}pq^{k-1}z^k=\frac{pz}{1-qz},\qquad
+ G_F(z)=\sum_{k\ge0}pq^kz^k=\frac p{1-qz}.
+\]
+第 $r$ 次成功前的失败数可分成 $r$ 段，每段记录上一次成功之后、下一次成功之前的失败次数。各段为独立的从零开始的几何变量，故生成函数相乘。更具体地，指定各段失败数为 $k_1,\ldots,k_r$ 的概率为 $\prod_{i=1}^r pq^{k_i}$，这同时说明了它们的独立性。
+
+回忆第~\ref{sec:generating-functions} 节使用的广义二项展开，$(1-u)^{-r}$ 中 $u^k$ 的系数为 $\binom{r+k-1}{k}$。于是
+\[
+ [z^k]\frac{p^r}{(1-qz)^r}=\binom{r+k-1}{k}p^rq^k.
+\]
+也可直接计数，最后一次必须成功，在此前 $r+k-1$ 次中选出 $k$ 次失败，其余 $r-1$ 次成功，便得到同一个概率公式。
+
+最后，$G_F'(1)=q/p$、$G_F''(1)=2q^2/p^2$，所以
+\[
+ \operatorname{Var}(F)=\frac{2q^2}{p^2}+\frac qp-\frac{q^2}{p^2}=\frac q{p^2}.
+\]
+由 $T=F+1$ 得 $T$ 的矩；$N_r$ 是 $r$ 个独立同分布的 $F$ 之和，故其期望与方差分别乘以 $r$。
+\end{proof}
+这里 $p=0$ 不给出有限等待时间的概率分布；$p=1$ 时 $T=1$、$F=N_r=0$。负二项分布在不同书中可能改数成功次数或总试验次数，因此使用公式前须先确认随机变量的含义。
+
+\paragraph{稀少事件的计数与 Poisson 分布}
+设在单位长度的一段时间内，平均希望观察到 $\lambda$ 次到达。把时间分成 $n$ 个小区间，每段以小概率 $\lambda/n$ 独立地发生一次，计数便服从 $\operatorname{Binom}(n,\lambda/n)$。让分割越来越细，自然得到下面的分布。
+\Needspace{7\baselineskip}
+\begin{definition}[Poisson 分布]\label{def:poisson}
+\index{en-poisson-distribution@Poisson 分布|hyperpage}
+\index{zh-bosongfenbu@泊松分布|hyperpage}
+设 $\lambda>0$。记 $X\sim\operatorname{Poisson}(\lambda)$，若其分布列为
+\[
+ \Pr[X=k]=e^{-\lambda}\frac{\lambda^k}{k!},\qquad k\in\N.
+\]
+另约定 $\operatorname{Poisson}(0)$ 为恒等于零的分布。
+\end{definition}
+\begin{proposition}[Poisson 极限与生成函数]\label{prop:poisson-limit-pgf}
+当 $n\to\infty$ 时，$S_n\sim\operatorname{Binom}(n,\lambda/n)$ 的每个固定取值概率趋于 $\operatorname{Poisson}(\lambda)$ 的对应概率。若 $X\sim\operatorname{Poisson}(\lambda)$，则
+\[
+ G_X(z)=e^{\lambda(z-1)},\qquad\mathbb E[X]=\operatorname{Var}(X)=\lambda.
+\]
+\end{proposition}
+\begin{proof}
+先按生成函数观察，$n\ge\lambda$ 时
+\[
+ G_{S_n}(z)=\left(1-\frac\lambda n+\frac\lambda n z\right)^n
+ \longrightarrow e^{\lambda(z-1)}.
+\]
+为直接确认概率的极限，固定 $k\ge0$，当 $n\ge k$ 且 $n>\lambda$ 时，
+\[
+ \Pr[S_n=k]
+ =\frac{\lambda^k}{k!}\prod_{j=0}^{k-1}\left(1-\frac jn\right)
+ \left(1-\frac\lambda n\right)^n
+ \left(1-\frac\lambda n\right)^{-k}
+ \longrightarrow\frac{\lambda^k}{k!}e^{-\lambda}.
+\]
+这些极限之和为 $e^{-\lambda}\sum_k\lambda^k/k!=1$。对新分布直接求和，
+\[
+ G_X(z)=e^{-\lambda}\sum_{k\ge0}\frac{(\lambda z)^k}{k!}=e^{\lambda(z-1)}.
+\]
+$G_X'(1)=\lambda$、$G_X''(1)=\lambda^2$，代入矩公式得期望及方差均为 $\lambda$。
+\end{proof}
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=.85,every node/.style={font=\small}]
+\draw[->] (0,0)--(11,0) node[right] {时间};
+\foreach \i in {0,...,20} {\draw (\i*.5,-.12)--(\i*.5,.12);}
+\draw[<->] (2,-.5)--(2.5,-.5);
+\node[below,align=center] at (5,-.8) {$n$ 个小区间，每段发生概率 $\lambda/n$\\独立计数之和 $\longrightarrow\operatorname{Poisson}(\lambda)$};
+\foreach \x in {1.2,4.3,8.7} {\fill (\x,0) circle (2pt);}
+\end{tikzpicture}
+\end{center}
+这个模型可描述固定时间内的到达数，例如理想化的雨滴计数。若要同时记录不同时刻的累计到达数，就需要把一个随机变量扩展为一族随时间变化的随机变量。
+
+\begin{definition}[泊松过程]\label{def:poisson-process}
+\index{en-poisson-process@Poisson 过程|hyperpage}
+\index{zh-bosongguocheng@泊松过程|hyperpage}
+在同一个概率空间上，以 $N(t)$ 表示从时刻 $0$ 开始、截至时刻 $t$ 的累计到达次数。这样的一族随机变量 $\{N(t):t\ge0\}$ 称为\emph{计数过程}：其取值为非负整数，随时间不减；采用右连续约定，即到达时刻的计数已经包含该次到达。因此
+\[
+ N(t+h)-N(t)
+\]
+记录时间区间 $(t,t+h]$ 内的新增到达数，称为这段时间的\emph{增量}。
+
+设 $\lambda>0$。若计数过程满足下列条件，则称其为强度（或速率）为 $\lambda$ 的\emph{齐次泊松过程}，本节简称泊松过程：
+\begin{enumerate}[(a)]
+\item $N(0)=0$，即从零开始计数。
+\item \emph{独立增量}：对任意 $0=t_0<t_1<\cdots<t_m$，随机变量
+\[
+ N(t_1)-N(t_0),\ldots,N(t_m)-N(t_{m-1})
+\]
+相互独立。也就是说，不相交时间区间内的到达数相互独立。
+\item 对任意 $t\ge0$、$h>0$，都有
+\[
+ N(t+h)-N(t)\sim\operatorname{Poisson}(\lambda h),\qquad
+ \Pr[N(t+h)-N(t)=k]=e^{-\lambda h}\frac{(\lambda h)^k}{k!}.
+\]
+这也包含\emph{平稳增量}：增量的分布只由区间长度 $h$ 决定，与起点 $t$ 无关。
+\end{enumerate}
+\end{definition}
+
+取 $t=0$，便有 $N(h)\sim\operatorname{Poisson}(\lambda h)$。回忆命题~\ref{prop:poisson-limit-pgf}，Poisson 变量的期望和方差都等于其分布参数，因此
+\[
+ \mathbb E[N(t+h)-N(t)]=\lambda h,
+ \qquad \operatorname{Var}(N(t+h)-N(t))=\lambda h.
+\]
+所以 $\lambda$ 是\emph{单位时间内的平均到达数}，而长度为 $h$ 的区间所对应的分布参数是 $\lambda h$。平稳的是增量的分布；累计次数 $N(t)$ 的分布仍随 $t$ 改变。
+
+\begin{example}\label{ex:poisson-process-arrivals}
+若某服务台的顾客到达可用每分钟强度 $\lambda=2$ 的泊松过程建模，则任意半分钟内的到达数服从 $\operatorname{Poisson}(1)$，恰有一人到达的概率为 $e^{-1}$。前半分钟与后半分钟的到达数 $N(1/2)$、$N(1)-N(1/2)$ 相互独立；但 $N(1/2)$ 与 $N(1)$ 并不独立，因为后者包含前者。由独立增量及协方差的线性性，两者的协方差等于 $N(1/2)$ 的方差，即 $1$。
+这里的独立增量和恒定速率是模型假设，不能只由“平均每分钟两人”推出。
+\end{example}
+
+\paragraph{与小区间近似的联系}
+记 $\Delta_hN=N(t+h)-N(t)$。由定义中的分布列，当 $h\to0^+$ 时，
+\begin{align*}
+ \Pr[\Delta_hN=0]&=e^{-\lambda h}=1-\lambda h+O(h^2),\\
+ \Pr[\Delta_hN=1]&=\lambda h e^{-\lambda h}=\lambda h+O(h^2),\\
+ \Pr[\Delta_hN\ge2]&=1-e^{-\lambda h}(1+\lambda h)=O(h^2).
+\end{align*}
+因此短区间内并非绝不可能有多次到达，而是多次到达的概率比区间长度更高阶地趋于零。前面的 Bernoulli 分割模型忽略了这部分概率，才把每个小区间近似为“零次或一次”。Ross 第 9.1 节也给出等价的局部定义：在计数过程、零初值、独立增量和平稳增量的条件下，要求一次到达的概率为 $\lambda h+o(h)$、至少两次的概率为 $o(h)$；其中 $r(h)=o(h)$ 指 $r(h)/h\to0$。由这些条件可以推出上述 Poisson 增量分布，推导参见该节。
+
+\begin{corollary}[独立 Poisson 变量的可加性]\label{cor:poisson-additivity}
+若 $X\sim\operatorname{Poisson}(\lambda)$、$Y\sim\operatorname{Poisson}(\mu)$ 且相互独立，则
+\[
+ X+Y\sim\operatorname{Poisson}(\lambda+\mu).
+\]
+\end{corollary}
+\begin{proof}
+由独立和的生成函数公式，
+\[
+ G_{X+Y}(z)=e^{\lambda(z-1)}e^{\mu(z-1)}=e^{(\lambda+\mu)(z-1)}.
+\]
+各系数唯一确定分布，故得结论。若去掉独立性，例如令 $Y=X$ 且 $\lambda>0$，则 $X+Y=2X$ 只取偶数，不可能服从参数 $2\lambda$ 的 Poisson 分布。
+\end{proof}
+
+
+
+\FloatBarrier
+
+\paragraph{用概率生成函数求连续成功的等待时间}
+\begin{example}[首次连续出现两次正面]\label{ex:waiting-hh}
+独立抛掷一枚正面概率为 $p$ 的硬币，$0<p\le1$。令 $X$ 为首次出现连续两个正面 $HH$ 时累计抛掷的次数。求 $X$ 的概率生成函数、期望与方差。
+\end{example}
+\begin{proof}
+记 $q=1-p$，以 $\mathcal S$ 表示恰在末尾首次出现 $HH$ 的全部有限字符串。每个这样的字符串必属于以下三种互不相交的情形之一：直接为 $HH$；以 $T$ 开头，随后重新等待；以 $HT$ 开头，随后重新等待。因此
+\[
+ \mathcal S=\{HH\}\sqcup T\mathcal S\sqcup HT\mathcal S.
+\]
+这里 $H$ 开头但尚未结束时，第二个字符只能是 $T$；它会打断已有的一个正面，所以余下部分确实回到起始状态。
+
+回忆生成函数的赋权方法：对字符串 $s$ 赋权 $w(s)=\Pr[s]z^{|s|}$。独立性使拼接的权重相乘，于是
+\[
+ w(H)=pz,\quad w(T)=qz,\quad w(HH)=p^2z^2,\quad w(HT)=pqz^2.
+\]
+等待时间几乎必然有限：若前 $2n$ 次还没有出现 $HH$，则 $n$ 个互不相交的两次试验块均不是 $HH$，故
+$\Pr[X>2n]\le(1-p^2)^n\to0$。因此对 $\mathcal S$ 求权重之和正是 $G_X(z)$，而非缺少了无限等待的概率。由上述分解，
+\[
+ G_X(z)=p^2z^2+qzG_X(z)+pqz^2G_X(z),\qquad
+ G_X(z)=\frac{p^2z^2}{1-qz-pqz^2}.
+\]
+下面从导数读出矩。记 $D(z)=1-qz-pqz^2$，则
+$D(1)=p^2$、$D'(1)=-q(1+2p)$、$D''(1)=-2pq$。两次微分恒等式 $D(z)G_X(z)=p^2z^2$，并用 $G_X(1)=1$，得到
+\begin{align*}
+ p^2G_X'(1)-q(1+2p)&=2p^2,\\
+ p^2G_X''(1)-2q(1+2p)G_X'(1)-2pq&=2p^2.
+\end{align*}
+所以
+\[
+ \mathbb E[X]=G_X'(1)=\frac{1+p}{p^2},\qquad
+ G_X''(1)=2+\frac{2q}{p}+\frac{2q(1+2p)(1+p)}{p^4}.
+\]
+再代入概率生成函数的方差公式，化简得
+\[
+ \operatorname{Var}(X)=G_X''(1)+G_X'(1)-G_X'(1)^2
+ =\frac{(1-p)(p^2+3p+1)}{p^4}.
+\]
+上面的几何尾界也保证各阶矩有限，故此处取导数与读矩合法。公平硬币对应 $\mathbb E[X]=6$、$\operatorname{Var}(X)=22$；$p=1$ 时恒有 $X=2$。若 $p=0$，则永不出现 $HH$，不属于本题的有限等待情形。
+\end{proof}
+
+\section{熵与分布的比较}\label{sec:entropy}
+期望和方差描述数值的平均与波动；若关心一个结果有多难预知，则需要直接考察它的概率。概率越小，观察到它所获得的信息越多。熵将这种信息量取平均；全变差距离和 KL 散度则进一步比较两个分布。
+本节先在有限字母表上讨论，避免无穷熵相减；全变差的结论也适用于可数字母表。一般公式中 $\log$ 的底数固定但省略，可取任意大于 $1$ 的数；涉及求导和数值常数时另作说明。
+
+\begin{definition}[熵]\label{def:entropy}
+\index{zh-shang@熵|hyperpage}
+设 $X$ 的分布为 $P_X$，定义
+\[
+ H[X]=H[P_X]=\sum_xP_X(x)\log\frac1{P_X(x)}
+ =\mathbb E\left[\log\frac1{P_X(X)}\right],
+\]
+约定零概率项为零，这是 $u\log(1/u)$ 在 $u\to0^+$ 时的极限。底数 $2,e,256$ 分别对应 bit、nat、byte。支撑 $\operatorname{supp}(X)$ 沿用前面的分布记号。
+\end{definition}
+\begin{example}[二元熵]\label{ex:binary-entropy}
+若 $X\sim\operatorname{Bern}(p)$，则
+\[
+ h(p):=H[X]=p\log\frac1p+(1-p)\log\frac1{1-p}.
+\]
+它关于 $p=1/2$ 对称，两端为零。下面求导暂取自然对数。在 $0<p<1$ 上，
+\[
+ h'(p)=\log\frac{1-p}{p},\qquad
+ h''(p)=-\left(\frac1p+\frac1{1-p}\right)<0.
+\]
+所以它严格凹，在 $p=1/2$ 取得最大值 $\log2$；公平硬币的熵是 $1$ bit。
+\end{example}
+\begin{center}
+\begin{tikzpicture}[x=5cm,y=1.6cm,>=Stealth]
+\draw[->] (0,0)--(1.12,0) node[right] {$p$};
+\draw[->] (0,0)--(0,1.2) node[above] {$h_2(p)$};
+\draw[thick,teal,domain=.001:.999,samples=90] plot (\x,{-\x*ln(\x)/ln(2)-(1-\x)*ln(1-\x)/ln(2)});
+\draw[dashed,gray] (.5,0)--(.5,1)--(0,1);
+\node[below] at (.5,0) {$1/2$};\node[below] at (1,0) {$1$};\node[left] at (0,1) {$1$};
+\end{tikzpicture}
+\end{center}
+
+\begin{proposition}[熵的基本性质]\label{prop:entropy-basic}
+设支撑大小为 $m$，则 $0\le H[X]\le\log m$。左侧取等当且仅当 $X$ 几乎必然为常数；右侧取等当且仅当 $X$ 在支撑上均匀分布。若 $f$ 在支撑上为单射，特别是双射，则 $H[f(X)]=H[X]$。
+\end{proposition}
+\begin{proof}
+各个非零项非负，且只有概率为 $1$ 时相应项才为零，故得第一结论。回忆 Jensen 不等式：凹函数 $g$ 满足 $\sum_iw_i g(a_i)\le g(\sum_iw_i a_i)$，其中 $w_i\ge0$、$\sum_iw_i=1$；严格凹时等号要求所有正权重对应的 $a_i$ 相同。对严格凹函数 $\log$ 应用它，
+\[
+ H[X]\le\log\left(\sum_{x\in\operatorname{supp}(X)}P_X(x)\frac1{P_X(x)}\right)=\log m.
+\]
+等号恰好要求支撑上的概率相同。单射重新命名各结果，并不改变概率列表，因而不改变熵。
+\end{proof}
+记 $H_{\max}[X]=\log|\operatorname{supp}(X)|$，它只记录可能结果的个数，而 $H[X]$ 还考虑这些结果出现的频率。
+
+\paragraph{条件信息与链式法则}
+\begin{definition}[条件熵与联合熵]\label{def:conditional-entropy}
+\index{zh-tiaojianshang@条件熵|hyperpage}
+对概率为正的事件 $E$，令 $H[X\mid E]=H[P_{X\mid E}]$。对随机变量 $Y$，定义
+\[
+ H[X\mid Y]=\sum_{y:P_Y(y)>0}P_Y(y)H[X\mid Y=y].
+\]
+联合熵是随机向量 $(X,Y)$ 的熵：
+\[
+ H[X,Y]=\sum_{x,y}P_{XY}(x,y)\log\frac1{P_{XY}(x,y)}.
+\]
+\end{definition}
+$H[X\mid Y=y]$ 是固定观测值后的不确定性，$H[X\mid Y]$ 则是再对观测值取平均，二者都是数，而非条件期望意义下的随机变量。
+\begin{proposition}[熵的链式法则]\label{prop:entropy-chain}
+有 $H[X\mid Y]\ge0$，等号当且仅当存在函数 $g$ 使 $X=g(Y)$ 几乎必然成立。此外，
+\[
+ H[X,Y]=H[Y]+H[X\mid Y].
+\]
+\end{proposition}
+\begin{proof}
+条件熵是非负数的加权平均，它为零当且仅当每个正概率的 $y$ 对应的条件分布集中在一个点，这个点就是 $g(y)$。对于链式法则，在联合概率为正的项上利用
+$P_{XY}(x,y)=P_Y(y)P_{X\mid Y}(x\mid y)$，得到
+\begin{align*}
+ H[X,Y]&=\sum_{x,y}P_{XY}(x,y)\left(\log\frac1{P_Y(y)}+\log\frac1{P_{X\mid Y}(x\mid y)}\right)\\
+ &=H[Y]+\sum_yP_Y(y)\sum_xP_{X\mid Y}(x\mid y)\log\frac1{P_{X\mid Y}(x\mid y)}.
+\end{align*}
+这正是所需等式。
+\end{proof}
+
+\begin{proposition}[熵的凹性与条件化]\label{prop:entropy-concavity}
+对同一有限字母表上的分布 $P_0,P_1$ 及 $0\le\lambda\le1$，
+\[
+ H[(1-\lambda)P_0+\lambda P_1]\ge(1-\lambda)H[P_0]+\lambda H[P_1].
+\]
+若 $0<\lambda<1$，等号当且仅当 $P_0=P_1$。因此 $H[X\mid Y]\le H[X]$，等号当且仅当 $X,Y$ 独立。
+\end{proposition}
+\begin{proof}
+通过混合构造，取 $Z\sim\operatorname{Bern}(\lambda)$，并使 $Y\mid Z=i$ 的分布为 $P_i$。于是 $Y$ 的分布为 $P=(1-\lambda)P_0+\lambda P_1$。两次应用链式法则，
+\[
+ H[P]+H[Z\mid Y]=H[Y,Z]=h(\lambda)+(1-\lambda)H[P_0]+\lambda H[P_1].
+\]
+令 $f(y)=\Pr[Z=1\mid Y=y]$。由全概率公式，$\mathbb E[f(Y)]=\lambda$；由二元熵的凹性及 Jensen 不等式，
+\[
+ H[Z\mid Y]=\mathbb E[h(f(Y))]\le h(\mathbb E[f(Y)])=h(\lambda).
+\]
+代回即得凹性，未预先使用“条件化使熵减小”。当 $0<\lambda<1$ 时，严格凹性要求 $f(y)=\lambda$ 对所有 $P(y)>0$ 成立，而
+\[
+ f(y)=\frac{\lambda P_1(y)}{(1-\lambda)P_0(y)+\lambda P_1(y)}.
+\]
+故等号等价于 $P_0=P_1$。将两分布混合推广至有限个分布，并使用
+$P_X=\sum_yP_Y(y)P_{X\mid Y=y}$，便得 $H[X]\ge H[X\mid Y]$；等号要求全部正权重条件分布都等于 $P_X$，恰好就是独立性。
+\end{proof}
+条件化减小的是\emph{平均}熵，不表示对每个具体的 $y$ 都有 $H[X\mid Y=y]\le H[X]$。
+\begin{corollary}[联合熵的次可加性]\label{cor:entropy-subadditive}
+\[
+ H[X_1,\ldots,X_n]=\sum_{i=1}^nH[X_i\mid X_1,\ldots,X_{i-1}]
+ \le\sum_{i=1}^nH[X_i].
+\]
+等号当且仅当这些随机变量相互独立。
+\end{corollary}
+\begin{proof}
+反复使用链式法则，再对每项使用条件化不增熵。等号当且仅当每个 $X_i$ 都与此前的向量独立；依次分解联合概率便得到 $P_{X_1\cdots X_n}=\prod_iP_{X_i}$。这也等价于每个 $X_i$ 与其余全部变量组成的向量独立，不能弱化为两两独立。
+\end{proof}
+
+\paragraph{全变差距离：分布不同至少造成多少不一致}
+\begin{definition}[全变差距离与耦合]\label{def:total-variation}
+\index{zh-quanbianchajuli@全变差距离|hyperpage}
+\index{zh-ouhe@耦合|hyperpage}
+对同一字母表上的分布 $P,Q$，定义
+\[
+ \Delta_{\mathrm{TV}}(P,Q)=\frac12\sum_x|P(x)-Q(x)|
+ =\sum_x\max\{0,P(x)-Q(x)\}.
+\]
+最后的等式来自 $\sum_x(P(x)-Q(x))=0$。若随机变量 $(X,Y)$ 的边缘分布分别为 $P,Q$，则称其联合分布为 $P,Q$ 的一个\emph{耦合}；耦合不要求独立。
+\end{definition}
+\begin{proposition}[最优耦合]\label{prop:optimal-coupling}
+任意耦合均满足 $\Pr[X\ne Y]\ge\Delta_{\mathrm{TV}}(P,Q)$，且存在耦合达到等号。
+\end{proposition}
+\begin{proof}
+记 $r(x)=\min\{P(x),Q(x)\}$、$\delta=\Delta_{\mathrm{TV}}(P,Q)$，则
+$\sum_xr(x)=1-\delta$。任意耦合都有
+\[
+ \Pr[X=Y]=\sum_x\Pr[X=Y=x]\le\sum_xr(x)=1-\delta.
+\]
+为达到上界，先在对角线放置质量 $r(x)$。若 $\delta>0$，定义完整的联合分布
+\[
+ R(x,y)=\mathbbm{1}_{\{x=y\}}r(x)
+ +\frac{(P(x)-r(x))(Q(y)-r(y))}{\delta}.
+\]
+两份剩余质量的总和都为 $\delta$，故逐行、逐列求和分别得到 $P,Q$。同一点上两个剩余量至少一个为零，因此第二项不再增加对角线质量，恰有 $\Pr[X\ne Y]=\delta$。若 $\delta=0$，直接令 $X=Y\sim P$。
+\end{proof}
+\begin{example}
+取 $P=\operatorname{Bern}(1/3)$、$Q=\operatorname{Bern}(2/3)$，则 $\Delta_{\mathrm{TV}}(P,Q)=1/3$。令 $Y=1-X$ 得到一个处处不一致的耦合；最优耦合则为
+\[
+ \begin{array}{c|cc}
+ &Y=0&Y=1\\\hline
+ X=0&1/3&1/3\\
+ X=1&0&1/3
+ \end{array}
+\]
+其边缘分布正确，而且只有 $(0,1)$ 造成不一致，概率为 $1/3$。可见只给边缘分布，并不能确定 $\Pr[X\ne Y]$。
+\end{example}
+
+\paragraph{KL 散度与条件分解}
+\begin{definition}[KL 散度]\label{def:kl-divergence}
+\index{en-kl-divergence@KL 散度|hyperpage}
+定义
+\[
+ D_{\mathrm{KL}}(P\KLsep Q)=\sum_xP(x)\log\frac{P(x)}{Q(x)}
+ =\mathbb E_{X\sim P}\left[\log\frac{P(X)}{Q(X)}\right].
+\]
+约定 $0\log(0/q)=0$（包括 $q=0$）；若 $P(x)>0$ 而 $Q(x)=0$，则该项为 $+\infty$。在有限字母表上，散度有限当且仅当 $\operatorname{supp}(P)\subseteq\operatorname{supp}(Q)$。
+\end{definition}
+回忆定义~\ref{def:expectation} 后的期望记号：下标 $X\sim P$ 指定求和权重为 $P$。这里期望在 $P$ 下取，分母却是 $Q$ 对同一结果给出的概率，故两个参数有次序。若把 $P$ 视为真实分布、$Q$ 视为模型，模型把真实可能发生的结果判为不可能，就会产生无穷散度。可数字母表上，即使支撑包含，级数仍可能发散；不能把有限字母表的充要条件直接推广。
+\begin{proposition}[Gibbs 不等式]\label{prop:gibbs-inequality}
+$D_{\mathrm{KL}}(P\KLsep Q)\ge0$，等号当且仅当 $P=Q$。
+\end{proposition}
+\begin{proof}
+支撑不包含时结论显然。否则令 $f(u)=u\log u$，连续延拓 $f(0)=0$；它严格凸，例如取自然对数时 $f''(u)=1/u>0$；换底只乘以正常数。对权重 $Q(x)>0$ 应用 Jensen 不等式，
+\[
+ D_{\mathrm{KL}}(P\KLsep Q)=\sum_{Q(x)>0}Q(x)f\left(\frac{P(x)}{Q(x)}\right)
+ \ge f\left(\sum_{Q(x)>0}P(x)\right)=f(1)=0.
+\]
+等号要求所有比值为同一个常数；归一化迫使该常数为 $1$，因此 $P=Q$。
+\end{proof}
+KL 散度一般不对称，也不满足距离所要求的三角不等式，故称为散度。
+\begin{example}[二元 KL 散度的二次下界]\label{ex:binary-kl}
+本例取自然对数。对 $0<q<1$，记
+\[
+ d(p\KLsep q)=p\log\frac pq+(1-p)\log\frac{1-p}{1-q}.
+\]
+固定 $q$，对 $0<p<1$ 求导，
+\[
+ \frac{\partial d}{\partial p}=\log\frac pq-\log\frac{1-p}{1-q},\qquad
+ \frac{\partial^2d}{\partial p^2}=\left(\frac1p+\frac1{1-p}\right)\ge4.
+\]
+令 $g(p)=d(p\KLsep q)-2(p-q)^2$。由 $g''\ge0$、$g(q)=g'(q)=0$，知 $g$ 在 $q$ 处取最小值，故
+\[
+ d(p\KLsep q)\ge2(p-q)^2.
+\]
+端点由连续性得到；$d(0\KLsep q)=-\log(1-q)$、$d(1\KLsep q)=-\log q$。若改用以 $2$ 为底的对数，则下界相应为 $2(p-q)^2/\ln2$。
+\end{example}
+\begin{center}
+\begin{tikzpicture}[x=5cm,y=1.4cm,>=Stealth]
+\draw[->] (0,0)--(1.12,0) node[right] {$p$};\draw[->] (0,0)--(0,1.35) node[above] {$d_e(p\KLsep1/3)$};
+\draw[thick,teal,domain=.001:.999,samples=90] plot (\x,{\x*ln(3*\x)+(1-\x)*ln((1-\x)*1.5)});
+\node[below] at (.3333,0) {$q=1/3$};\node[below] at (1,0) {$1$};
+\end{tikzpicture}
+\end{center}
+
+\begin{definition}[条件 KL 散度]\label{def:conditional-kl}
+\index{zh-tiaojianklsandu@条件 KL 散度|hyperpage}
+给定输入分布 $P_X$ 以及两个条件分布 $P_{Y\mid X},Q_{Y\mid X}$，定义
+\begin{align*}
+ D_{\mathrm{KL}}(P_{Y\mid X}\KLsep Q_{Y\mid X}\mid P_X)
+ &=\sum_{x:P_X(x)>0}P_X(x)D_{\mathrm{KL}}(P_{Y\mid X=x}\KLsep Q_{Y\mid X=x})\\
+ &=\sum_{x,y}P_X(x)P_{Y\mid X}(y\mid x)\log\frac{P_{Y\mid X}(y\mid x)}{Q_{Y\mid X}(y\mid x)}.
+\end{align*}
+\end{definition}
+回忆条件分布与边缘分布组成联合分布的方式：$(P_{Y\mid X}P_X)(x,y)=P_X(x)P_{Y\mid X}(y\mid x)$。因此条件 KL 也可写为
+\[
+ \mathbb E_{(X,Y)\sim P_{Y\mid X}P_X}
+ \left[\log\frac{P_{Y\mid X}(Y\mid X)}{Q_{Y\mid X}(Y\mid X)}\right]
+ =D_{\mathrm{KL}}(P_{Y\mid X}P_X\KLsep Q_{Y\mid X}P_X).
+\]
+这里两个联合分布使用\emph{同一个}输入边缘 $P_X$，不是任意改变平均时的权重。
+\begin{proposition}[KL 散度的链式法则]\label{prop:kl-chain}
+对两个联合分布 $P_{XY},Q_{XY}$，有
+\[
+ D_{\mathrm{KL}}(P_{XY}\KLsep Q_{XY})
+ =D_{\mathrm{KL}}(P_X\KLsep Q_X)
+ +D_{\mathrm{KL}}(P_{Y\mid X}\KLsep Q_{Y\mid X}\mid P_X).
+\]
+\end{proposition}
+\begin{proof}
+先设 $Q_{XY}$ 在 $P_{XY}$ 的支撑上为正。沿联合概率的乘积分解，
+\begin{align*}
+ D_{\mathrm{KL}}(P_{XY}\KLsep Q_{XY})
+ &=\mathbb E_{P_{XY}}\left[\log\frac{P_X(X)P_{Y\mid X}(Y\mid X)}{Q_X(X)Q_{Y\mid X}(Y\mid X)}\right]\\
+ &=\mathbb E_{P_X}\left[\log\frac{P_X(X)}{Q_X(X)}\right]
+ +\mathbb E_{P_{XY}}\left[\log\frac{P_{Y\mid X}(Y\mid X)}{Q_{Y\mid X}(Y\mid X)}\right].
+\end{align*}
+第一项只依赖 $X$，对 $Y$ 求和便得到边缘期望；第二项正是条件散度。
+若存在 $P_{XY}(x,y)>0$ 而 $Q_{XY}(x,y)=0$，则左侧为无穷。若 $Q_X(x)=0$，右侧第一项已为无穷；否则 $Q_{Y\mid X}(y\mid x)=0$，右侧第二项为无穷。零边缘处的条件分布可以任取，结论仍以扩展非负实数的意义成立。
+\end{proof}
+
+\FloatBarrier
+
+\paragraph{互信息：观察一个变量能够知道另一个变量多少}
+回忆 Gibbs 不等式。若 $U$ 是 $m$ 个符号上的均匀分布，则
+\[
+ D_{\mathrm{KL}}(P\KLsep U)=\sum_xP(x)\log(mP(x))=\log m-H[P]\ge0.
+\]
+因此均匀分布最大化熵；这也从散度的角度重新解释了熵的上界。
+\begin{definition}[互信息与条件互信息]\label{def:mutual-information}
+\index{zh-huxinxi@互信息|hyperpage}
+\index{zh-tiaojianhuxinxi@条件互信息|hyperpage}
+对有限取值随机变量，定义
+\begin{align*}
+ I(X;Y)&:=H[X]+H[Y]-H[X,Y]\\
+ &=H[X]-H[X\mid Y]=D_{\mathrm{KL}}(P_{XY}\KLsep P_XP_Y),\\
+ I(X;Y\mid Z)&:=\sum_{z:P_Z(z)>0}P_Z(z)I(X;Y\mid Z=z)\\
+ &=H[X\mid Z]+H[Y\mid Z]-H[X,Y\mid Z].
+\end{align*}
+这里 $(P_XP_Y)(x,y)=P_X(x)P_Y(y)$ 是边缘分布的乘积分布；$I(X;Y\mid Z=z)$ 指在给定 $Z=z$ 的条件分布下计算互信息。
+\end{definition}
+熵形式的等价性来自链式法则；散度形式则由展开
+$\log(P_{XY}(x,y)/(P_X(x)P_Y(y)))$ 并分别求和得到。因此 $I(X;Y)\ge0$，且为零当且仅当 $X,Y$ 独立。条件互信息也非负，为零当且仅当每个正概率的 $z$ 下 $X,Y$ 条件独立。
+\begin{center}
+\begin{tikzpicture}[every node/.style={font=\small}]
+\draw[teal] (0,0) circle (1.6);\draw[teal] (2,0) circle (1.6);
+\node at (-.6,0) {$H[X\mid Y]$};\node[font=\scriptsize] at (1,0) {$I(X;Y)$};\node at (2.6,0) {$H[Y\mid X]$};
+\node at (-.3,1.85) {$H[X]$};\node at (2.3,1.85) {$H[Y]$};
+\draw[teal] (-1.6,-1.8)--(-1.6,-2)--(3.6,-2)--(3.6,-1.8);
+\node[below] at (1,-2) {$H[X,Y]$};
+\end{tikzpicture}
+\end{center}
+图中交叠部分表示互信息 $I(X;Y)$，两圆并在一起表示联合熵 $H[X,Y]$，因为
+\[
+ H[X,Y]=H[X\mid Y]+I(X;Y)+H[Y\mid X].
+\]
+例如独立时 $I(X;Y)=0$，但联合熵仍为 $H[X]+H[Y]$。因此交集与并集的标签不能对调。面积只示意二变量熵的加法关系，并非用集合面积定义这些量。
+\begin{example}[条件化可以增大或减小互信息]
+以下用 bit 为单位。
+\begin{enumerate}[(a)]
+\item 若 $X=Y=Z$ 为公平 Bernoulli 变量，则 $I(X;Y)=1$，而 $I(X;Y\mid Z)=0$。
+\item 若 $X,Y$ 为独立公平 Bernoulli 变量，令 $Z=X\oplus Y$（模 $2$ 加法），则 $I(X;Y)=0$，而 $I(X;Y\mid Z)=1$。
+\end{enumerate}
+\end{example}
+\begin{proof}
+(a) 未知 $Z$ 时，知道 $Y$ 就完全知道 $X$；给定 $Z$ 后两者均已确定。(b) 原先两者独立；给定任一 $Z=z$ 后，$X$ 仍为公平 Bernoulli 变量，但 $X=Y\oplus z$，所以 $H[X\mid Z]=1$、$H[X\mid Y,Z]=0$。
+\end{proof}
+\begin{remark}[筛选也会改变依赖关系]
+设横轴表示早期表现，纵轴表示后期表现；若只保留两项表现之和超过门槛的人群，就删去了左下方区域。在被选中的样本中，早期表现较低者必须具有较高的后期表现才能留下，这可能造成负相关。条件化改变了研究的分布，不能把筛选后的相关性直接当作总体规律。
+\begin{center}
+\begin{tikzpicture}[scale=.65,>=Stealth]
+\fill[teal!12] (0,0)--(3,0)--(0,3)--cycle;
+\draw[->] (0,0)--(5,0) node[right] {早期表现};\draw[->] (0,0)--(0,4) node[above] {后期表现};
+\draw[teal] (0,3)--(3,0);\node at (1,1) {被筛去};
+\foreach \x/\y in {.6/3.3,1/2.8,1.5/3,2/2,2.7/1.4,3.5/.6,4/1.1} \fill (\x,\y) circle (2pt);
+\end{tikzpicture}
+\end{center}
+\end{remark}
+
+\section{集中不等式与经验分布}\label{sec:concentration}
+前面用熵和散度描述分布；现在要估计大量独立试验的结果偏离平均值的概率。先从期望控制尾部，再用指数函数放大偏离，最后把得到的指数与 KL 散度联系起来。本节指数估计中的 $H,D_{\mathrm{KL}},d$ 均使用自然对数。
+\begin{proposition}[Markov 与 Chebyshev 不等式]\label{prop:markov-chebyshev}
+\index{en-markov-inequality@Markov 不等式|hyperpage}
+\index{en-chebyshev-inequality@Chebyshev 不等式|hyperpage}
+若 $X\ge0$，则对 $a>0$，$\Pr[X\ge a]\le\mathbb E[X]/a$。若 $X$ 有有限方差，则
+\[
+ \Pr[|X-\mathbb E[X]|\ge a]\le\frac{\operatorname{Var}(X)}{a^2}.
+\]
+特别地，标准差 $\sigma>0$ 时，偏离至少 $\alpha\sigma$ 的概率不超过 $1/\alpha^2$。
+\end{proposition}
+\begin{proof}
+点态不等式 $X\ge a\mathbbm{1}_{\{X\ge a\}}$ 取期望即得 Markov 界。再对非负变量 $(X-\mathbb E[X])^2$ 及阈值 $a^2$ 使用它，即得 Chebyshev 界。
+\end{proof}
+\begin{definition}[矩母函数]
+\index{zh-jumuhanshu@矩母函数|hyperpage}
+记 $M_X(t)=\mathbb E[e^{tX}]$，在该期望有限的 $t$ 处称为矩母函数。对非负整数值 $X$，它与概率生成函数满足 $M_X(t)=G_X(e^t)$；但并非每个分布都在 $t>0$ 时具有有限矩母函数。
+\end{definition}
+\begin{proposition}[Chernoff 界]\label{prop:chernoff}
+\index{en-chernoff-bound@Chernoff 界|hyperpage}
+对任意实数 $a$，
+\[
+ \Pr[X\ge a]\le\inf_{t>0}e^{-ta}\mathbb E[e^{tX}],
+\]
+其中可将下确界限制在期望有限的 $t$ 上。
+\end{proposition}
+\begin{proof}
+$t>0$ 时指数函数递增，故由 Markov 不等式，
+$\Pr[X\ge a]=\Pr[e^{tX}\ge e^{ta}]\le e^{-ta}\mathbb E[e^{tX}]$。
+对所有可用的 $t$ 取下确界即得结论；最优值不一定在有限 $t$ 处取得。
+\end{proof}
+\begin{example}[Bernoulli 和的偏离]\label{ex:bernoulli-chernoff}
+设 $X_1,\ldots,X_n$ 独立且均服从 $\operatorname{Bern}(p)$，$0<p<1$，记 $S_n=\sum_iX_i$。若 $p<q<1$，则
+\[
+ \Pr[S_n\ge nq]\le e^{-nd(q\KLsep p)}\le e^{-2n(q-p)^2}.
+\]
+若 $0<q<p$，则相应有 $\Pr[S_n\le nq]\le e^{-nd(q\KLsep p)}$。
+\end{example}
+\begin{proof}
+独立性把和的矩母函数化为乘积，故任意 $t>0$ 都给出
+\[
+ \Pr[S_n\ge nq]\le\left(\frac{pe^t+1-p}{e^{tq}}\right)^n.
+\]
+令 $u=e^t>1$，对数为 $f(u)=\ln(pu+1-p)-q\ln u$，于是
+\[
+ f'(u)=\frac p{pu+1-p}-\frac qu
+ =\frac{p(1-q)u-q(1-p)}{u(pu+1-p)}.
+\]
+导数在 $u_*={q(1-p)}/{(p(1-q))}>1$ 处由负变正。代回得到
+\[
+ \left(\frac{pu_*+1-p}{u_*^q}\right)^n
+ =\left[\left(\frac pq\right)^q\left(\frac{1-p}{1-q}\right)^{1-q}\right]^n
+ =e^{-nd(q\KLsep p)}.
+\]
+回忆例~\ref{ex:binary-kl} 的二次下界 $d(q\KLsep p)\ge2(q-p)^2$，便得最后一步。下尾对 $n-S_n$ 应用上尾界即可，因 $d(1-q\KLsep1-p)=d(q\KLsep p)$。
+\end{proof}
+因此，对 $\delta>0$，只要相应阈值在 $[0,1]$ 内，两侧各有界 $e^{-2n\delta^2}$；在区间外事件为空。由并集界，
+\[
+ \Pr\left[\left|\frac{S_n}{n}-p\right|\ge\delta\right]\le2e^{-2n\delta^2}.
+\]
+当 $p=1/2$ 时，也可写成
+$\Pr[|S_n-n/2|/\sqrt n\ge a]\le2e^{-2a^2}$。尺度为 $\sqrt n$，不是 $n$；两侧相加的因子 $2$ 不能漏掉。
+
+\paragraph{另一条路线：直接估计二项分布}
+令 $m=\lceil nq\rceil$、$r=m/n$，其中 $q>p$。直接求和为
+\[
+ \Pr[S_n\ge nq]=\sum_{j=m}^n\binom njp^j(1-p)^{n-j}.
+\]
+记其中第 $j$ 项为 $a_j$，则
+\[
+ \frac{a_{j+1}}{a_j}=\frac{n-j}{j+1}\frac p{1-p}<1\quad(j\ge m).
+\]
+故尾部最大项是首项，$a_m\le\Pr[S_n\ge nq]\le(n-m+1)a_m$。剩下的问题就是估计 $\binom nm$。
+\begin{proposition}[二项系数的熵界]\label{prop:binomial-entropy}
+对 $0\le m\le n$、$r=m/n$，有
+\[
+ \frac1{n+1}e^{nh(r)}\le\binom nm\le e^{nh(r)}.
+\]
+\end{proposition}
+\begin{proof}
+改在参数为 $r$ 的二项分布下观察。点概率 $\binom nm r^m(1-r)^{n-m}\le1$，给出上界。另一方面，由相邻项之比可知 $m$ 是该分布的众数，因此该点的概率至少为 $1/(n+1)$，给出下界。$m=0,n$ 时直接验证；约定 $0^0=1$。
+\end{proof}
+这一估计也解释了 Stirling 公式给出的指数。具体地，
+\[
+ n!\sim\sqrt{2\pi n}(n/e)^n,\qquad
+ \ln(n!)=n\ln n-n+\frac12\ln(2\pi n)+O(1/n).
+\]
+其中 $a_n\sim b_n$ 表示比值趋于 $1$。当 $r\in(0,1)$ 固定且 $nr$ 为整数时，
+\[
+ \binom n{nr}\sim\frac{e^{nh(r)}}{\sqrt{2\pi nr(1-r)}}.
+\]
+因此省去平方根因子时，只能称为指数阶相同，不能仍声称比值趋于 $1$。
+回到参数 $p$，用 $a_m=\binom nm p^m(1-p)^{n-m}$，得到
+\[
+ \frac1{n+1}e^{-nd(r\KLsep p)}
+ \le\Pr[S_n\ge nq]\le(n-m+1)e^{-nd(r\KLsep p)}.
+\]
+再应用 Chernoff 界可把右侧加强为 $e^{-nd(r\KLsep p)}$。当 $nq$ 为整数时 $r=q$，上下界只有多项式因子之差，说明 KL 散度给出的指数是准确的。更细的 Stirling 估计说明，固定内部参数时首项前因子的尺度是 $n^{-1/2}$。
+
+\paragraph{从两种结果推广到类型计数}
+\begin{definition}[类型与经验分布]\label{def:empirical-type}
+\index{zh-jingyanfenbu@经验分布|hyperpage}
+独立样本 $X_1,\ldots,X_n$ 取值于 $[k]=\{1,\ldots,k\}$，分布均为 $P$。定义计数与经验分布
+\[
+ T_j=\#\{i:X_i=j\},\qquad \widehat P_n(j)=T_j/n.
+\]
+计数向量 $t=(t_1,\ldots,t_k)$ 满足 $\sum_jt_j=n$，归一化向量 $Q=t/n$ 称为一个 $n$-类型。这些经验分布位于概率单纯形 $\{(q_1,\ldots,q_k):q_j\ge0,\ \sum_jq_j=1\}$ 中。所有 $n$-类型的集合记为 $\mathcal T_n$。前 $k-1$ 个计数确定最后一个，故 $|\mathcal T_n|\le(n+1)^{k-1}$。
+\end{definition}
+\begin{proposition}[一个类型的概率]\label{prop:type-probability}
+对 $Q=t/n\in\mathcal T_n$，
+\[
+ \frac{e^{-nD_{\mathrm{KL}}(Q\KLsep P)}}{(n+1)^{k-1}}
+ \le\Pr[\widehat P_n=Q]\le e^{-nD_{\mathrm{KL}}(Q\KLsep P)}.
+\]
+\end{proposition}
+\begin{proof}
+\textbf{先把问题归结为多项式系数的估计。}
+固定目标计数 $t=(t_1,\ldots,t_k)$，其中 $t_j\ge0$、$\sum_jt_j=n$，并令 $Q(j)=t_j/n$。用 $T^X$ 表示在原分布 $P$ 下抽样所得的计数向量。恰有 $t_j$ 个位置取值为 $j$ 的字符串共有 $n!/(t_1!\cdots t_k!)$ 个，每个字符串的概率都是 $\prod_jP(j)^{t_j}$，所以
+\[
+ \Pr[T^X=t]=\binom n{t_1,\ldots,t_k}\prod_jP(j)^{t_j}.
+\]
+后面的乘积已知，真正要估计的是前面的多项式系数。直接用阶乘近似会引入误差项；这里改用一个以该系数为因子的概率，利用概率总和为 $1$ 来夹住它。
+
+\textbf{选择辅助分布，使目标计数与平均计数一致。}
+另取独立样本 $Y_1,\ldots,Y_n\sim Q$，记其计数向量为 $T^Y$。这改变的是用于估计系数的辅助抽样分布，并没有把原问题的 $P$ 改掉。选择 $Q(j)=t_j/n$ 的动机是 $\mathbb E[T_j^Y]=nQ(j)=t_j$：目标计数正好是辅助分布下的平均计数。不过，均值不自动是众数，下面还要通过逐步比较证明这一点。
+记
+\[
+ A(s):=\Pr[T^Y=s]=\frac{n!}{s_1!\cdots s_k!}\prod_{j=1}^kQ(j)^{s_j}.
+\]
+对目标 $t$，约定 $0^0=1$，有
+\[
+ \prod_jQ(j)^{t_j}
+ =\exp\left(n\sum_{j:Q(j)>0}Q(j)\ln Q(j)\right)=e^{-nH[Q]}.
+\]
+因而 $A(t)=\binom n{t_1,\ldots,t_k}e^{-nH[Q]}$。从 $A(t)\le1$ 立即得到所需系数上界。要取得下界，只需证明 $A(t)$ 是所有计数概率中的最大值。
+
+\textbf{比较相邻计数：继续远离目标，概率会下降。}
+设当前计数 $s$ 在第 $i$ 类已经不少于目标，而在第 $j$ 类已经不多于目标，即
+\[
+ s_i\ge t_i,\qquad 0<s_j\le t_j.
+\]
+将第 $j$ 类的一个计数移到第 $i$ 类，得到
+$s'=s+e_i-e_j$；这里 $e_i$ 是第 $i$ 个坐标为 $1$、其余为 $0$ 的向量。这个动作使“已经偏多”的类更多、“已经偏少”的类更少，是向目标之外移动。假设 $A(s)>0$ 且 $t_i,t_j>0$，把两项完整展开，
+\begin{align*}
+ A(s)&=\frac{n!}{s_i!s_j!\prod_{\ell\ne i,j}s_\ell!}
+ Q(i)^{s_i}Q(j)^{s_j}\prod_{\ell\ne i,j}Q(\ell)^{s_\ell},\\
+ A(s')&=\frac{n!}{(s_i+1)!(s_j-1)!\prod_{\ell\ne i,j}s_\ell!}
+ Q(i)^{s_i+1}Q(j)^{s_j-1}\prod_{\ell\ne i,j}Q(\ell)^{s_\ell}.
+\end{align*}
+相除时，其他坐标的阶乘和概率幂全部消掉，于是
+\[
+ \frac{A(s')}{A(s)}
+ =\frac{s_j}{s_i+1}\frac{Q(i)}{Q(j)}
+ =\frac{s_j}{t_j}\frac{t_i}{s_i+1}<1.
+\]
+最后一步分别用了 $s_j/t_j\le1$ 和 $t_i/(s_i+1)<1$。这正是相邻两项比较中的
+$Q(j)/s_j>Q(i)/(s_i+1)$；不需要估计整个阶乘。
+
+\textbf{从一步比较推出目标计数的最大性。}
+任取另一个合法计数 $u\ne t$。先处理零坐标：若 $t_i=0$ 却有 $u_i>0$，则 $Q(i)=0$，所以 $A(u)=0<A(t)$。因此只需考虑 $u$ 在 $Q$ 的支撑之外也全为零的情况。
+从 $s=t$ 出发，要到达 $u$，只需把计数从那些 $u_j<t_j$ 的坐标逐个移到那些 $u_i>t_i$ 的坐标。两类的总盈亏相等，因为 $\sum_i u_i=\sum_i t_i=n$。每一步选尚未达到 $u_i$ 的接收坐标和尚未降到 $u_j$ 的供给坐标；沿途始终有 $s_i\ge t_i$、$0<s_j\le t_j$，所以每一步概率都严格下降。经过
+\[
+ \sum_{i:u_i>t_i}(u_i-t_i)=\frac12\sum_i|u_i-t_i|
+\]
+步便到达 $u$。这说明每个 $u\ne t$ 都有 $A(u)<A(t)$，故 $t$ 确实是众数。
+
+\textbf{利用类型总数得到下界，再换回原分布。}
+合法计数向量与 $n$-类型一一对应，总数不超过 $(n+1)^{k-1}$。由于 $A(t)$ 最大，
+\[
+ 1=\sum_s A(s)\le |\mathcal T_n|A(t)
+ \le(n+1)^{k-1}A(t).
+\]
+结合 $A(t)\le1$，再除以 $e^{-nH[Q]}$，得到
+\[
+ \frac{e^{nH[Q]}}{(n+1)^{k-1}}
+ \le\binom n{t_1,\ldots,t_k}\le e^{nH[Q]}.
+\]
+现在回到最初的 $P$。若某个 $Q(j)>0$ 而 $P(j)=0$，目标类型概率为零，散度为无穷，结论直接成立。否则乘回 $\prod_jP(j)^{t_j}$，并计算
+\begin{align*}
+ e^{nH[Q]}\prod_jP(j)^{t_j}
+ &=\exp\left(nH[Q]+n\sum_{j:Q(j)>0}Q(j)\ln P(j)\right)\\
+ &=\exp\left(-n\sum_{j:Q(j)>0}Q(j)\ln\frac{Q(j)}{P(j)}\right)
+ =e^{-nD_{\mathrm{KL}}(Q\KLsep P)}.
+\end{align*}
+这就同时给出类型概率的上下界。辅助分布 $Q$ 的作用，是把难估的计数系数转化为一个已证明位于众数处的概率；最后的 KL 散度来自把这个估计重新放回真实分布 $P$。
+\end{proof}
+
+\begin{corollary}[有限样本的 Sanov 型界]\label{cor:sanov-finite}
+\index{en-sanov-bound@Sanov 型界|hyperpage}
+设 $\mathcal R$ 为概率单纯形中的区域，$\mathcal R\cap\mathcal T_n\ne\varnothing$，并在其中选取使 $D_{\mathrm{KL}}(Q\KLsep P)$ 最小的 $Q_*$。则
+\[
+ \frac{e^{-nD_{\mathrm{KL}}(Q_*\KLsep P)}}{(n+1)^{k-1}}
+ \le\Pr[\widehat P_n\in\mathcal R]
+ \le(n+1)^{k-1}e^{-nD_{\mathrm{KL}}(Q_*\KLsep P)}.
+\]
+\end{corollary}
+\begin{proof}
+下界只保留 $Q_*$ 这一项；上界对区域中的类型求和，每项至多为最大的指数项，项数不超过 $(n+1)^{k-1}$。区域内没有 $n$-类型时，事件概率为零。
+\end{proof}
+这里最小化的是区域内\emph{可实现的 $n$-类型}。若对整个连续区域取下确界，可直接得到上界，但下界不能未经论证也作同样替换。
+\begin{remark}[何时可以去掉多项式因子]
+任意区域不能直接套用无前因子的 Chernoff 版本。例如 $n=1$、$P=(1/2,1/2)$，取区域为两个点质量分布，则经验分布必在区域内，而区域内的最小散度为 $\ln2$，无前因子的右端只有 $1/2$。
+一个充分条件是：$P$ 各坐标为正，$\mathcal R$ 为单纯形内非空闭凸集，且它的散度最小点 $Q_*$ 各坐标为正。令 $a_j=\ln(Q_*(j)/P(j))$。由沿 $Q_*$ 到 $Q\in\mathcal R$ 的方向导数非负，
+\[
+ \sum_jQ(j)a_j\ge\sum_jQ_*(j)a_j=D_{\mathrm{KL}}(Q_*\KLsep P).
+\]
+因此事件 $\widehat P_n\in\mathcal R$ 蕴含 $\sum_i a_{X_i}\ge nD_{\mathrm{KL}}(Q_*\KLsep P)$。对其指数应用 Markov 界，又因 $\sum_jP(j)e^{a_j}=1$，得
+\[
+ \Pr[\widehat P_n\in\mathcal R]\le e^{-nD_{\mathrm{KL}}(Q_*\KLsep P)}.
+\]
+这说明去掉因子需要额外几何条件，而非仅靠逐类型求和。
+\end{remark}
+
+\paragraph{数据处理不能增加信息}
+\begin{definition}[条件独立与 Markov 链]
+\index{zh-tiaojianduli@条件独立|hyperpage}
+记 $X\to Y\to Z$，若给定每个正概率的 $Y=y$ 后，$X,Z$ 独立。等价地，联合分布可分解为
+\[
+ P_{XYZ}(x,y,z)=P_X(x)P_{Y\mid X}(y\mid x)P_{Z\mid Y}(z\mid y).
+\]
+此处箭头表示条件分布的生成顺序，不单凭此记号断言因果关系。
+\end{definition}
+\begin{proposition}[数据处理不等式]\label{prop:data-processing}
+\index{zh-shujuchulibudengshi@数据处理不等式|hyperpage}
+若 $X\to Y\to Z$，则 $I(X;Z)\le I(X;Y)$。此外，两个输入分布 $P_X,Q_X$ 经过\emph{同一个}核 $K=P_{Y\mid X}$，得到输出 $P_Y,Q_Y$ 时，有
+\[
+ D_{\mathrm{KL}}(P_Y\KLsep Q_Y)\le D_{\mathrm{KL}}(P_X\KLsep Q_X).
+\]
+\end{proposition}
+\begin{proof}
+由熵的链式法则，互信息也满足
+\[
+ I(X;Y,Z)=I(X;Y)+I(X;Z\mid Y)
+ =I(X;Z)+I(X;Y\mid Z).
+\]
+条件独立使第一式的条件互信息为零，而第二式的条件互信息非负，故得第一结论。
+对于第二结论，输入散度无穷时结论显然。否则回忆 KL 的链式法则。令 $P_{XY}=KP_X$、$Q_{XY}=KQ_X$；按输入分解时条件散度为零，按输出分解时条件散度非负，所以
+\[
+ D_{\mathrm{KL}}(P_X\KLsep Q_X)=D_{\mathrm{KL}}(P_{XY}\KLsep Q_{XY})
+ =D_{\mathrm{KL}}(P_Y\KLsep Q_Y)
+ +D_{\mathrm{KL}}(P_{X\mid Y}\KLsep Q_{X\mid Y}\mid P_Y)
+ \ge D_{\mathrm{KL}}(P_Y\KLsep Q_Y).\qedhere
+\]
+\end{proof}
+
+\FloatBarrier
+\chapter{数据压缩}\label{chap:compression}
+\begin{wenxintishi}
+熵不仅描述分布的不确定性，也刻画恢复信息所需的通信量。要把这句话变成定理，先要说明：码字是否允许变长，接收者是否知道边界，能否容许小概率错误，以及解码时是否另有相关信息。
+\end{wenxintishi}
+本章以有限字母表上的离散信源为对象。回忆第~\ref{sec:entropy} 节，熵是自信息的平均值，KL 散度非负，独立变量的联合熵可相加；第~\ref{sec:concentration} 节则控制独立样本平均值的偏离。这些工具将在这里分别成为平均码长的下界和解码错误概率的上界。
+
+第~\ref{sec:variable-coding} 节从单次无损编码进入前缀码，用 Kraft 不等式刻画码长，并通过 Huffman 算法找到最优码。第~\ref{sec:fixed-coding} 节允许很小的错误概率，用集中界把平均信息量转化为固定长度，再用随机分箱摆脱编码时对概率排序的依赖。第~\ref{sec:side-information} 节把同一碰撞分析用于解码端的旁信息，最后得到两个相关信源分别编码、联合解码的码率区域。
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={align=center,font=\small,inner sep=4pt}]
+\node (a) at (0,1.7) {熵、KL 与链式法则\\\S\ref{sec:entropy}};
+\node (b) at (5,1.7) {变长码、Kraft 与 Huffman\\\S\ref{sec:variable-coding}};
+\node (c) at (0,0) {集中不等式\\\S\ref{sec:concentration}};
+\node (d) at (5,0) {定长压缩与随机分箱\\\S\ref{sec:fixed-coding}};
+\node (e) at (5,-1.7) {旁信息与分布式压缩\\\S\ref{sec:side-information}};
+\draw[->] (a)--(b); \draw[->] (a)--(c); \draw[->] (c)--(d);
+\draw[->] (b)--(d); \draw[->] (d)--(e);
+\end{tikzpicture}
+\end{center}
+本章以比特计长度，故\emph{所有 $\log$ 均以 $2$ 为底}，熵与散度也采用这一底数；$e^t$ 仍表示自然指数。记 $\mathcal X=\operatorname{supp}P$，于是所编码的每个符号都有正概率。$X^n=(X_1,\ldots,X_n)$ 表示一个长度为 $n$ 的块；若 $X_i$ 独立同分布于 $P$，则其分布记为 $P^n$，即 $P^n(x^n)=\prod_{i=1}^nP(x_i)$。
+
+\section{变长无损编码}\label{sec:variable-coding}
+\begin{definition}[编码、解码与码长]\label{def:lossless-code}
+\index{zh-wusunbianma@无损编码|hyperpage}\index{zh-machang@码长|hyperpage}
+记 $\{0,1\}^*=\bigcup_{\ell\ge0}\{0,1\}^{\ell}$，其中长度为零的串记为 $\varepsilon$。编码器是映射 $f:\mathcal X\to\{0,1\}^*$；$f(x)$ 称为 $x$ 的码字，$\ell_f(x)=|f(x)|$ 为码长。若存在解码器 $g$，使所有 $x\in\mathcal X$ 都满足 $g(f(x))=x$，则称该编码无损。其平均码长为
+\[
+ \mathbb E[\ell_f(X)]=\sum_{x\in\mathcal X}P(x)\ell_f(x).
+\]
+\end{definition}
+无损等价于 $f$ 单射：两个不同输入不能用同一码字，而单射的像上可定义逆映射。此时先假定接收者已知\emph{一个完整码字的边界}。这与连续发送许多码字、要求接收者自己分辨边界，是两个不同的编码任务。
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={align=center}]
+\node (a) at (0,0) {$x\in\mathcal X$};
+\node (b) at (4,0) {$f(x)\in\{0,1\}^*$};
+\node (c) at (8,0) {$g(f(x))=x$};
+\draw[->] (a)--node[above]{编码 $f$}(b);
+\draw[->] (b)--node[above]{解码 $g$}(c);
+\end{tikzpicture}
+\end{center}
+
+\begin{proposition}[按概率排序的单次最优码]\label{prop:single-shot-code}
+将 $\mathcal X=\{x_1,\ldots,x_m\}$ 按 $P(x_1)\ge\cdots\ge P(x_m)$ 排列，将二进制串按长度递增、同长度内按字典序排列为
+\[
+ \varepsilon,\ 0,\ 1,\ 00,\ 01,\ 10,\ 11,\ 000,\ldots.
+\]
+把第 $i$ 个串分配给 $x_i$，所得 $f^*$ 在所有单次无损编码中具有最小平均码长，且
+\[
+ \ell_{f^*}(x_i)=\lfloor\log i\rfloor,\qquad
+ \mathbb E[\ell_{f^*}(X)]\le H[X].
+\]
+\end{proposition}
+\begin{proof}
+长度小于 $k$ 的串共有 $1+2+\cdots+2^{k-1}=2^k-1$ 个，故第 $i$ 个串的长度是 $\lfloor\log i\rfloor$。若一个编码用了较长的串，却留下某个较短的串未用，把前者改成后者即可减小平均长度。因此最优码可在最短的 $m$ 个串中选取。再若 $p_i\ge p_j$ 而 $\ell_i>\ell_j$，交换这两个码字使平均长度改变
+\[
+ p_i\ell_j+p_j\ell_i-p_i\ell_i-p_j\ell_j
+ =-(p_i-p_j)(\ell_i-\ell_j)\le0.
+\]
+不断消去这样的逆序便得到 $f^*$。最后，$1\ge\sum_{j=1}^iP(x_j)\ge iP(x_i)$，所以
+\[
+ \mathbb E[\ell_{f^*}(X)]
+ =\sum_iP(x_i)\lfloor\log i\rfloor
+ \le\sum_iP(x_i)\log\frac1{P(x_i)}=H[X].\qedhere
+\]
+\end{proof}
+平均码长可以小于熵，是因为接收者还知道码字何时结束；这项边界信息没有计入长度。下面量化它的作用。
+\begin{proposition}[长度本身携带的信息]\label{prop:length-entropy}
+对任意单次无损编码，令 $L=\ell_f(X)$，则
+\[
+ H[X]\le H[L]+\mathbb E[L].
+\]
+对上述最优码，进一步有
+\[
+ H[X]-\log\bigl(e(1+H[X])\bigr)
+ \le\mathbb E[\ell_{f^*}(X)]\le H[X].
+\]
+\end{proposition}
+\begin{proof}
+因为 $L$ 由 $X$ 决定，回忆熵的链式法则（命题~\ref{prop:entropy-chain}），
+\[
+ H[X]=H[X,L]=H[L]+H[X\mid L].
+\]
+给定 $L=\ell$，至多有 $2^\ell$ 个不同码字；单射性使对应的输入至多也有 $2^\ell$ 个。因此 $H[X\mid L=\ell]\le\log 2^\ell=\ell$，对 $L$ 平均即得第一式。这里一般只有不等式，条件分布未必均匀。
+
+还需用平均长度控制 $H[L]$。令 $\mu=\mathbb E[L]$。若 $\mu=0$，则 $L=0$ 几乎必然，$H[L]=0$。若 $\mu>0$，在 $\N$ 上取几何分布
+\[
+ Q(k)=\frac1{1+\mu}\left(\frac{\mu}{1+\mu}\right)^k.
+\]
+由 Gibbs 不等式，
+\[
+ H[L]\le-\sum_k\Pr[L=k]\log Q(k)
+ =\log(1+\mu)+\mu\log(1+1/\mu)
+ \le\log\bigl(e(1+\mu)\bigr).
+\]
+最后一步使用 $\ln(1+u)\le u$。此处 $L$ 只有有限多个可能值；上述 Gibbs 不等式也可直接在其支撑上对 $Q$ 归一化后应用。对最优码，命题~\ref{prop:single-shot-code} 给出 $\mu\le H[X]$，代入第一式便得结论。
+\end{proof}
+
+\paragraph{从码字边界到前缀树}
+Morse 码中的 E、I、H 分别对应点、两点、四点。若只保留点划而删去字母之间的停顿，四点既可能表示 H，也可能表示两个 I 或四个 E。停顿承担了分隔符的作用；若希望直接拼接二进制码字，就要把可辨认边界的条件放进码本。
+\begin{definition}[前缀码]\label{def:prefix-code}
+\index{zh-qianzhui@前缀|hyperpage}\index{zh-qianzhuima@前缀码|hyperpage}
+若存在串 $w$ 使 $v=uw$，则称 $u$ 为 $v$ 的前缀。无损码 $f$ 称为前缀码，若不同符号的码字互不为前缀。
+\end{definition}
+二进制串对应以 $0,1$ 标记边的二叉树上的路径。前缀码的码字位于叶子：到达一个码字时不可能仍处于另一码字的中途，因此可以输出该符号、回到根并继续读取。只有一个符号时可约定使用空串；此时若发送多个符号，其个数须另行给定。后面的块编码总是预先给定块长 $n$。
+
+\begin{theorem}[Kraft 不等式与逆向构造]\label{thm:kraft}
+\index{en-Kraft@Kraft 不等式|hyperpage}
+有限前缀码的码长 $\ell_1,\ldots,\ell_m\in\N$ 满足
+\[
+ \sum_{i=1}^m2^{-\ell_i}\le1.
+\]
+反之，满足该不等式的有限组非负整数，必可作为某个二进制前缀码的码长。
+\end{theorem}
+\begin{proof}
+先证明必要性。令 $r=\max_i\ell_i$，均匀随机生成 $r$ 个二进制位。第 $i$ 个码字是这串的前缀的概率为 $2^{-\ell_i}$。由于码字互不为前缀，这些事件两两互斥，故概率之和至多为 $1$。这保留了随机延伸码字的思路，而只需一个有限概率空间。
+
+再证明充分性。按 $\ell_1\le\cdots\le\ell_m$ 排列，依次在二叉树的相应深度选择叶子，并删除其全部后代。在选择第 $i$ 个码字时，深度 $\ell_i$ 原有 $2^{\ell_i}$ 个位置，前面已选码字恰好排除了
+\[
+ \sum_{j<i}2^{\ell_i-\ell_j}
+\]
+个位置；它们的后代集合互不相交。由 Kraft 条件，
+\[
+ \sum_{j<i}2^{\ell_i-\ell_j}+1\le2^{\ell_i},
+\]
+所以至少还有一个可选位置。当前长度不短于此前长度，也不会成为此前码字的真前缀。归纳便得到所需前缀码。若某个 $\ell_i=0$，不等式迫使 $m=1$，构造就是根上的空串。
+\end{proof}
+
+\Needspace{8\baselineskip}
+\begin{theorem}[前缀码的熵界]\label{thm:prefix-entropy}
+记 $L_{\mathrm{pf}}^*(P)$ 为最优前缀码的平均码长，则
+\[
+ H[X]\le L_{\mathrm{pf}}^*(P)<H[X]+1.
+\]
+对独立同分布的块 $X^n$，有
+\[
+ H[X]\le\frac1nL_{\mathrm{pf}}^*(P^n)<H[X]+\frac1n.
+\]
+\end{theorem}
+\begin{proof}
+上界取 $\ell(x)=\lceil\log(1/P(x))\rceil$。由于 $2^{-\ell(x)}\le P(x)$，其和至多为 $1$，Kraft 的逆向构造保证存在这些长度的前缀码。又 $\ell(x)<\log(1/P(x))+1$，平均后得上界；这种长度选择称为 Shannon 码。
+
+对任意前缀码，令 $K=\sum_x2^{-\ell(x)}\le1$，定义概率分布 $Q(x)=2^{-\ell(x)}/K$。回忆命题~\ref{prop:gibbs-inequality} 的 KL 非负性，
+\[
+ 0\le D_{\mathrm{KL}}(P\KLsep Q)
+ =-H[X]+\mathbb E[\ell(X)]+\log K
+ \le-H[X]+\mathbb E[\ell(X)].
+\]
+这给出下界。对块编码，把 $X^n$ 当成一个大符号，再用独立性给出的 $H[X^n]=nH[X]$ 即可。
+\end{proof}
+
+\paragraph{Huffman 编码为什么最优}
+熵界说明最优平均码长的位置，却尚未给出最优树。Huffman 算法从概率最小的两个符号开始，将它们合成一个权重为两者之和的节点，重复这一操作，最终从根到叶读出码字。
+\index{en-Huffman@Huffman 编码|hyperpage}
+\begin{algorithm}[htbp]
+\caption{构造 Huffman 前缀码}\label{alg:huffman}
+\begin{algorithmic}[1]
+\Require 有限字母表 $\mathcal X$ 及正概率 $P(x)$
+\Ensure 以符号为叶子的带权二叉树
+\State $Q\gets$ 由叶子 $(x,P(x))$ 组成的最小优先队列
+\While{$|Q|>1$}
+ \State $a\gets\Call{ExtractMin}{Q}$，$b\gets\Call{ExtractMin}{Q}$
+ \State 建立节点 $v$，权重 $w(v)\gets w(a)+w(b)$
+ \State 令 $a,b$ 为 $v$ 的两个孩子，边分别标为 $0,1$
+ \State $\Call{Insert}{Q,v}$
+\EndWhile
+\State \Return $Q$ 中唯一节点作为根；根到各叶的边标记给出码字
+\end{algorithmic}
+\end{algorithm}
+\begin{theorem}[Huffman 编码的最优性]\label{thm:huffman}
+算法~\ref{alg:huffman} 在有限字母表的所有二进制前缀码中，使平均码长最小。
+\end{theorem}
+\begin{proof}
+只有一个符号时结论显然。其余情形先说明为什么可以合并最小的两个概率。任一前缀树若有仅含一个孩子的内部节点，就可缩去该边，使其下方所有码字变短且仍为前缀码。因此只需考虑每个内部节点恰有两个孩子的满二叉树。固定 $m$ 个叶子时这样的树及其标号只有有限种，故最优树存在。
+
+在一棵最优树中取最深叶子，它的兄弟必也是叶子，且同样处于最大深度 $d$；否则兄弟的后代会更深。令 $a,b$ 是概率最小的两个符号。可以把 $a$ 换到这一对位置之一，再把 $b$ 换到另一个位置，而不增加平均长度。具体地，若小概率 $p$ 原在深度 $s\le d$，目标位置上的概率是 $q\ge p$，交换带来的变化为
+\[
+ pd+qs-(ps+qd)=(p-q)(d-s)\le0.
+\]
+若原来深度相同，变化为零；若不同，把小概率符号放得更深也不会变差。这就严格说明了交换后可让 $a,b$ 成为最深的一对兄弟，而不要求每一棵最优树原来就具有这一形状。
+
+将兄弟 $a,b$ 收缩为一个符号 $c$，令 $P(c)=P(a)+P(b)$。若收缩后的平均长度为 $L'$，则原长度为
+\[
+ L=L'+P(a)+P(b),
+\]
+因为只有 $a,b$ 比 $c$ 多走一条边。收缩树必须对缩小后的概率表最优；否则换成更短的树，再展开 $c$，会使原来的树更短，产生矛盾。于是原问题化为一个少一个符号的同类问题，且增加的代价固定为 $P(a)+P(b)$。对符号数归纳，恰好得到 Huffman 算法。
+\end{proof}
+\begin{example}[从合并权重读出码字]
+设 $(P(a),P(b),P(c),P(d))=(1/2,1/4,1/8,1/8)$。构造最优前缀码，并比较其平均长度与单次最优无损码的平均长度。
+\end{example}
+\begin{proof}
+先合并 $c,d$ 得权重 $1/4$，再与 $b$ 合并得 $1/2$，最后与 $a$ 合并。可得
+\[
+ f(a)=0,\quad f(b)=10,\quad f(c)=110,\quad f(d)=111.
+\]
+\begin{center}
+\begin{tikzpicture}[every node/.style={font=\small},>=Stealth]
+\node (r) at (0,0) {$1$}; \node (a) at (-1.5,-1) {$a:1/2$};
+\node (s) at (1.5,-1) {$1/2$}; \node (b) at (.4,-2) {$b:1/4$};
+\node (t) at (2.6,-2) {$1/4$};
+\node (c) at (1.8,-3) {$c:1/8$}; \node (d) at (3.4,-3) {$d:1/8$};
+\draw (r)--node[above left]{$0$}(a); \draw (r)--node[above right]{$1$}(s);
+\draw (s)--node[above left]{$0$}(b); \draw (s)--node[above right]{$1$}(t);
+\draw (t)--node[above left]{$0$}(c); \draw (t)--node[above right]{$1$}(d);
+\end{tikzpicture}
+\end{center}
+平均长度为 $1/2+2/4+3/8+3/8=7/4=H[X]$。单次最优码依次使用 $\varepsilon,0,1,00$，平均长度仅为 $1/4+1/8+2/8=5/8$，但它依赖已知的边界，不能直接把多个这样的码字连起来解读。
+\end{proof}
+
+\section{定长压缩与随机分箱}\label{sec:fixed-coding}
+变长码保证每次都能恢复，以随机的码长为代价。若通信接口固定只允许 $\ell$ 比特，就只能提供 $2^\ell$ 个输出；除非 $2^\ell\ge|\mathcal X|^n$，否则不可能无损地区分所有长度为 $n$ 的输入。允许舍弃总概率很小的一部分输入，便能得到另一种压缩方式。
+\begin{definition}[几乎无损的定长块编码]\label{def:almost-lossless}
+\index{zh-jihuwusunbianma@几乎无损编码|hyperpage}\index{zh-malv@码率|hyperpage}
+对块长 $n$，取编码器 $f_n:\mathcal X^n\to\{0,1\}^{\ell_n}$ 和解码器 $g_n:\{0,1\}^{\ell_n}\to\mathcal X^n$。错误概率为
+\[
+ p_{e,n}=\Pr[g_n(f_n(X^n))\ne X^n],
+\]
+码率为 $\ell_n/n$（每个源符号的比特数）。若 $p_{e,n}\to0$，称这一列编码几乎无损。允许解码器另输出失败符号；失败同样计入错误。
+\end{definition}
+固定 $n,\ell$，每个输出至多正确解码一个输入，所以最优办法是选概率最大的 $\min(2^\ell,|\mathcal X|^n)$ 个输入，各赋予不同码字。其余输入随意编码。这个构造最大化了能正确恢复的概率质量，但怎样估计它随 $n$ 的变化？关键是把乘积概率取对数。
+
+\begin{proposition}[自信息的集中与渐近等分性]\label{prop:aep}
+\index{zh-zixinxi@自信息|hyperpage}\index{en-AEP@AEP（渐近等分性）|hyperpage}
+设 $X_1,X_2,\ldots$ 独立同分布于有限字母表上的 $P$。定义自信息 $\imath_P(x)=\log(1/P(x))$，则
+\[
+ -\frac1n\log P^n(X^n)=\frac1n\sum_{i=1}^n\imath_P(X_i)
+ \to H[X].
+\]
+这里依概率收敛的含义是：对每个 $\delta>0$，与右侧相差超过 $\delta$ 的概率趋于零。更具体地，若 $B=\max_{x\in\mathcal X}|\imath_P(x)-H[X]|>0$，则对 $0<\delta\le B$，
+\[
+ \Pr\left[\left|-\frac1n\log P^n(X^n)-H[X]\right|\ge\delta\right]
+ \le2\exp\left(-\frac{n\delta^2}{2eB^2}\right).
+\]
+若 $B=0$，左侧为零。相同结论适用于有限字母表上独立同分布的成对样本 $(X_i,Y_i)$ 的联合自信息和条件自信息，分别以 $H[X,Y]$、$H[X\mid Y]$ 为均值。
+\end{proposition}
+\begin{proof}
+令 $Z_i=\imath_P(X_i)-H[X]$，则 $\mathbb E[Z_i]=0$ 且 $|Z_i|\le B$。回忆 Chernoff 界（命题~\ref{prop:chernoff}），需要估计中心化变量的指数矩。当 $|t|B\le1$ 时，Taylor 公式给出 $e^{tZ_i}\le1+tZ_i+e t^2Z_i^2/2$，从而
+\[
+ \mathbb E[e^{tZ_i}]\le1+\frac{eB^2t^2}{2}
+ \le\exp\left(\frac{eB^2t^2}{2}\right).
+\]
+独立性使指数矩相乘，故
+\[
+ \Pr\left[\sum_iZ_i\ge n\delta\right]
+ \le\exp\left(-nt\delta+\frac{neB^2t^2}{2}\right).
+\]
+取 $t=\delta/(eB^2)$，得到指数 $-n\delta^2/(2eB^2)$。对 $-Z_i$ 同样处理，再将两端概率相加。固定 $\delta$ 后上界趋于零；较大的 $\delta$ 也由较小阈值的界控制。
+
+对成对样本，$P_{X^nY^n}(x^n,y^n)=\prod_iP_{XY}(x_i,y_i)$，且在 $P_Y^n(y^n)>0$ 时
+\[
+ P_{X^n\mid Y^n}(x^n\mid y^n)=\prod_iP_{X\mid Y}(x_i\mid y_i).
+\]
+所以相应的负对数仍为独立同分布的有界变量之和，其均值分别由联合熵与条件熵的定义给出。只在联合分布的正概率支撑上计算，零概率点不影响这些随机变量。
+\end{proof}
+于是高概率的输入块集中在
+\[
+ \mathcal A_{n,\delta}
+ =\{x^n:2^{-n(H[X]+\delta)}\le P^n(x^n)\le2^{-n(H[X]-\delta)}\}
+\]
+中。此集合称为典型集；$\Pr[X^n\in\mathcal A_{n,\delta}]\to1$，且
+\[
+ \Pr[X^n\in\mathcal A_{n,\delta}]\,2^{n(H[X]-\delta)}
+ \le|\mathcal A_{n,\delta}|\le2^{n(H[X]+\delta)}.
+\]
+左右两界分别用其中每个点的概率上界和下界得到。这就是渐近等分性的计数含义：主要概率质量约由 $2^{nH[X]}$ 个指数尺度上近似等概率的输入承担，而不要求它们真的等概率。
+\index{zh-dianxingji@典型集|hyperpage}
+
+\begin{theorem}[定长信源编码的阈值]\label{thm:fixed-source-coding}
+对有限字母表上的独立同分布信源，若 $R>H[X]$，存在长度 $\ell_n=\lceil nR\rceil$ 的编码使 $p_{e,n}\to0$；若 $R<H[X]$，则任意 $\ell_n\le nR$ 的编码都满足 $p_{e,n}\to1$。
+\end{theorem}
+\begin{proof}
+\textbf{可达性。} 取概率最大的 $2^{\ell_n}$ 个输入（不足则全取）。概率至少为 $2^{-\ell_n}$ 的输入至多有 $2^{\ell_n}$ 个，因此它们都可纳入正确解码集合。于是
+\[
+ p_{e,n}\le\Pr[P^n(X^n)<2^{-\ell_n}]
+ =\Pr[-\log P^n(X^n)>\ell_n]\to0,
+\]
+最后使用命题~\ref{prop:aep}，因为 $\ell_n/n\ge R>H[X]$。
+
+\textbf{逆向界。} 任意长度 $\ell_n$ 的码，其正确解码集合 $S_n$ 至多有 $2^{\ell_n}$ 个元素。取 $\delta>0$ 使 $R<H[X]-\delta$，将正确解码概率按自信息是否过小分开：
+\[
+ \begin{aligned}
+ \Pr[X^n\in S_n]
+ &\le\Pr[-\log P^n(X^n)<n(H[X]-\delta)]
+   +|S_n|\,2^{-n(H[X]-\delta)}\\
+ &\le\Pr[-\log P^n(X^n)<n(H[X]-\delta)]
+   +2^{-n(H[X]-\delta-R)}\to0.
+ \end{aligned}
+\]
+第一项由自信息集中趋于零，第二项因指数严格为负趋于零，故错误概率趋于一。
+\end{proof}
+\begin{remark}[如何理解接近熵的长度]
+上面的集中界允许余量随 $n$ 缩小。例如取 $\delta_n=n^{-1/3}$ 和 $\ell_n=\lceil n(H[X]+\delta_n)\rceil$，因 $n\delta_n^2=n^{1/3}\to\infty$，错误仍趋于零。因此长度可写为 $nH[X]+o(n)$。逆向结论要求码率与熵之间有适当间隔；不能把它直接写成“只要长度略小于 $nH[X]$，错误就趋于一”。定理也没有断言边界 $R=H[X]$ 时必然出现哪一种极限。
+\end{remark}
+
+\paragraph{随机分箱：不排序也能压缩}
+概率排序要求编码器知道 $P$。另一个思路是先不看概率，将每个可能输入独立均匀地分配到 $2^\ell$ 个箱子，只发送箱号；解码器利用 $P$，在收到的箱子中寻找最可能的输入。这里随机的是码本的选取，选定后编码器就是一个固定函数，编码器与解码器共同使用它。
+\begin{lemma}[随机分箱的错误界]\label{lem:random-binning}
+\index{zh-suijifenxiang@随机分箱|hyperpage}
+设 $W\sim P_W$ 取值于有限集。对整数 $\ell\ge0$ 和实数 $a$，存在长度 $\ell$ 的定长码，使
+\[
+ p_e\le\Pr[-\log P_W(W)>a]+2^{a-\ell}.
+\]
+\end{lemma}
+\begin{proof}
+令 $M=\{w:P_W(w)\ge2^{-a}\}$。因 $\sum_wP_W(w)=1$，有 $|M|\le2^a$。随机选择 $F$，使各 $F(w)$ 独立均匀分布于 $\{0,1\}^\ell$，并与 $W$ 独立。分析如下阈值解码器：在收到的箱子中恰有一个 $M$ 中元素时，输出它；否则报错。
+
+固定真实输入 $w\in M$。只要没有另一个 $w'\in M\setminus\{w\}$ 与它同箱，就能正确解码。对每个 $w'\ne w$，独立均匀分箱给出
+\[
+ \Pr_F[F(w')=F(w)]=2^{-\ell}.
+\]
+用并集界，
+\[
+ \Pr_F[\exists w'\in M\setminus\{w\}:F(w')=F(w)]
+ \le(|M|-1)2^{-\ell}\le2^{a-\ell}.
+\]
+先对 $W$ 平均，再对码本 $F$ 平均，得到
+\[
+ \mathbb E_F[p_e(F)]\le\Pr[W\notin M]+2^{a-\ell}.
+\]
+因此至少存在一个固定码本 $f$ 达到此上界。对同一码本，选择箱内概率最大的元素作为输出，只会进一步降低平均错误概率，因为它在每个箱子保留了最大的正确概率质量。
+\end{proof}
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small,align=center}]
+\draw[teal] (-2,-1.2) rectangle (0.7,1.2);
+\draw[teal] (-.65,0) ellipse (1.05 and .7);
+\node at (-.7,1.5) {全部输入}; \node at (-.65,-.95) {高概率集合 $M$};
+\draw[teal] (3,-1.2) rectangle (4.8,1.2);
+\node at (3.9,1.5) {$2^\ell$ 个箱子};
+\foreach \y in {-.6,0,.6} {\fill (-.65,\y) circle (1.8pt);\fill (3.9,\y) circle (1.8pt);\draw[->] (-.58,\y)--(3.82,\y);}
+\node at (2,-1.7) {只需控制真实输入与其他高概率候选者同箱的概率};
+\end{tikzpicture}
+\end{center}
+对 $W=X^n$，取 $a=n(H[X]+\delta)$、$\ell=\lceil n(H[X]+2\delta)\rceil$，引理给出
+\[
+ p_{e,n}\le\Pr[-\log P^n(X^n)>n(H[X]+\delta)]+2^{-n\delta}\to0.
+\]
+第一项控制输入落在高概率集合之外，第二项控制集合内部的碰撞。无需证明整个高概率集合完全没有碰撞；我们控制的是按真实输入分布加权的解码错误。
+
+编码映射的随机生成不需要知道 $P$，但码长仍需按熵的上界选择，解码器也仍需使用 $P$。这里证明的是存在好码本，并不表示每个随机映射都有效。事实上若平均错误界为 $\eta_n\to0$，Markov 不等式还给出 $\Pr_F[p_e(F)>\sqrt{\eta_n}]\le\sqrt{\eta_n}$，说明大多数码本也有小错误。编码器不必在每次发送时重新选择随机性；这一存在性证明也没有提供高效存储整个码本或搜索箱内候选者的算法。
+
+\section{旁信息与分布式压缩}\label{sec:side-information}
+\paragraph{只有解码器知道旁信息}
+设 $(X_i,Y_i)$ 独立同分布于有限字母表 $\mathcal X\times\mathcal Y$ 上的 $P_{XY}$。这表示不同的时刻相互独立、每对变量的联合分布相同，\emph{不要求同一对中的 $X_i,Y_i$ 独立}。编码器只看见 $X^n$，解码器另外得到完整的 $Y^n$，称其为旁信息。
+\index{zh-pangxinxi@旁信息|hyperpage}
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small,align=center}]
+\node (x) at (0,0) {$X^n$}; \node[draw,rounded corners] (f) at (2.5,0) {编码 $f_n$};
+\node[draw,rounded corners] (g) at (7,0) {解码 $g_n$};\node (o) at (9.3,0) {$\widehat X^n$};
+\node (y) at (0,-1.5) {$Y^n$};
+\draw[->] (x)--(f);\draw[->] (f)--node[above]{$\ell_n$ 比特}(g);\draw[->] (g)--(o);
+\draw[->] (y)-|node[pos=.35,below]{旁信息只送往解码器}(g);
+\end{tikzpicture}
+\end{center}
+回忆条件熵 $H[X\mid Y]$ 是给定 $Y$ 后的平均剩余不确定性。即使编码器不知道实际的 $Y^n$，随机分箱仍能把每个源符号的通信量降至这个数值。
+\begin{theorem}[带解码端旁信息的压缩]\label{thm:side-information}
+\index{en-Slepian-Wolf@Slepian--Wolf 定理|hyperpage}
+在上述独立同分布模型中，若 $R>H[X\mid Y]$，则存在
+\[
+ f_n:\mathcal X^n\to\{0,1\}^{\lceil nR\rceil},\qquad
+ g_n:\{0,1\}^{\lceil nR\rceil}\times\mathcal Y^n\to\mathcal X^n,
+\]
+使 $\Pr[g_n(f_n(X^n),Y^n)\ne X^n]\to0$。若 $R<H[X\mid Y]$，任意长度 $\ell_n\le nR$ 的此类编码，其错误概率都趋于一。
+\end{theorem}
+\begin{proof}
+\textbf{可达性：给定旁信息后再找候选者。} 取 $\delta>0$ 使 $H[X\mid Y]+2\delta<R$，记 $a=n(H[X\mid Y]+\delta)$、$\ell_n=\lceil nR\rceil$。对每个正概率的 $y^n$，定义
+\[
+ M(y^n)=\{x^n:P_{X^n\mid Y^n}(x^n\mid y^n)\ge2^{-a}\}.
+\]
+每个这样的集合均满足 $|M(y^n)|\le2^a$，因为条件概率之和为 $1$。编码器随机将全部 $x^n$ 独立均匀分箱；这个映射完全不使用 $y^n$。解码器收到箱号 $s$ 和 $y^n$ 后，只在 $M(y^n)$ 中寻找唯一满足 $f_n(x^n)=s$ 的候选者。
+
+对任意固定的真实输入 $(x^n,y^n)$，与其他条件高概率候选者碰撞的概率仍至多是 $2^{a-\ell_n}$。因此完全仿照引理~\ref{lem:random-binning} 的逐输入平均，
+\[
+ \mathbb E_F[p_{e,n}(F)]
+ \le\Pr[-\log P_{X^n\mid Y^n}(X^n\mid Y^n)>a]+2^{a-\ell_n}\to0.
+\]
+第一项由条件自信息的集中趋于零，第二项至多为 $2^{-n\delta}$。于是每个 $n$ 都存在一个确定的好码本。同一码本下，也可改用最大后验解码
+\[
+ g_n(s,y^n)\in\operatorname*{arg\,max}_{x^n:f_n(x^n)=s}
+ P_{X^n\mid Y^n}(x^n\mid y^n),
+\]
+平局按固定规则处理，空箱任取输出。固定旁信息 $y^n$ 后，条件概率的分母与候选者无关，因此最大化条件概率也就是最大化联合概率。
+
+\textbf{逆向界：每个条件切片内仍只有有限个正确输出。} 对固定 $y^n$，令
+\[
+ S(y^n)=\{x^n:g_n(f_n(x^n),y^n)=x^n\}.
+\]
+一个箱号在给定 $y^n$ 时只有一个解码结果，故 $|S(y^n)|\le2^{\ell_n}$。取 $\delta>0$ 使 $R<H[X\mid Y]-\delta$，逐个 $y^n$ 应用这个计数界再平均，得到
+\[
+ \begin{aligned}
+ \Pr[\text{正确解码}]
+ &\le\Pr[-\log P_{X^n\mid Y^n}(X^n\mid Y^n)<n(H[X\mid Y]-\delta)]\\
+ &\quad+2^{\ell_n-n(H[X\mid Y]-\delta)}\to0.
+ \end{aligned}
+\]
+这甚至允许编码器也知道 $y^n$，因为每个固定切片仍然至多有 $2^{\ell_n}$ 个可区分的输出。
+\end{proof}
+这里节省的是两个序列之间已有的相关信息。若 $X,Y$ 独立，$H[X\mid Y]=H[X]$，旁信息不节省码率；若 $X$ 是 $Y$ 的函数，$H[X\mid Y]=0$，解码器直接从 $Y^n$ 恢复即可。和上一节一样，可取 $\delta_n=n^{-1/3}$，从而以 $nH[X\mid Y]+o(n)$ 比特达到消失的错误概率。
+
+\paragraph{两个相关信源分别编码}
+进一步要求 $X^n,Y^n$ 都不直接送给解码器。两个编码器分别只观察自己的序列，将两个箱号送往同一个解码器；它必须同时恢复这两个序列。
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small,align=center}]
+\node (x) at (0,.9) {$X^n$};\node (y) at (0,-.9) {$Y^n$};
+\node[draw,rounded corners] (f) at (2.3,.9) {$f_n$};\node[draw,rounded corners] (h) at (2.3,-.9) {$h_n$};
+\node[draw,rounded corners,minimum height=1.5cm] (g) at (6.5,0) {联合解码 $g_n$};
+\node (o) at (9.3,0) {$(\widehat X^n,\widehat Y^n)$};
+\draw[->] (x)--(f);\draw[->] (y)--(h);
+\draw[->] (f)--node[above]{$\ell_{X,n}$ 比特}(g.north west);
+\draw[->] (h)--node[below]{$\ell_{Y,n}$ 比特}(g.south west);\draw[->] (g)--(o);
+\end{tikzpicture}
+\end{center}
+\begin{theorem}[Slepian--Wolf 码率区域]\label{thm:slepian-wolf}
+\index{zh-fenbushiyasuo@分布式压缩|hyperpage}
+设 $(X_i,Y_i)$ 为有限字母表上的独立同分布成对信源。若
+\[
+ R_X>H[X\mid Y],\qquad R_Y>H[Y\mid X],\qquad
+ R_X+R_Y>H[X,Y],
+\]
+则存在两个独立工作的编码器，长度分别为 $\lceil nR_X\rceil$、$\lceil nR_Y\rceil$，以及一个联合解码器，使同时恢复 $X^n,Y^n$ 的错误概率趋于零。若其中任何一个不等式反向严格成立，则相应码率下错误概率必趋于一。因此可达码率的闭包为
+\[
+ \mathcal R_{\mathrm{SW}}=
+ \{(R_X,R_Y)\in\R_{\ge0}^2:
+ R_X\ge H[X\mid Y],\ R_Y\ge H[Y\mid X],\ R_X+R_Y\ge H[X,Y]\}.
+\]
+\end{theorem}
+\begin{proof}
+\textbf{三个限制分别来自哪里。} 若 $R_X<H[X\mid Y]$，即使额外把完整 $Y^n$ 免费交给解码器，也不能从 $X$ 的箱号恢复 $X^n$：解码器可由 $Y^n$ 自行计算第二个箱号，然后模拟原来的联合解码器，故上一条定理的逆向界适用。$R_Y<H[Y\mid X]$ 同理。若 $R_X+R_Y<H[X,Y]$，将 $(X^n,Y^n)$ 看作一个大输入，两个箱号合在一起只有 $\ell_{X,n}+\ell_{Y,n}$ 比特，定理~\ref{thm:fixed-source-coding} 的逆向界又排除了正确恢复。取整只增加至多两比特，不影响严格的码率间隔。
+
+\textbf{随机分箱实现严格不等式内的码率。} 取 $\delta>0$，使上述三条不等式各至少有 $2\delta$ 的余量，定义候选对集合 $\mathcal T_n$，要求同时满足
+\[
+ \begin{aligned}
+ -\log P_{X^n\mid Y^n}(x^n\mid y^n)&\le n(H[X\mid Y]+\delta),\\
+ -\log P_{Y^n\mid X^n}(y^n\mid x^n)&\le n(H[Y\mid X]+\delta),\\
+ -\log P_{X^nY^n}(x^n,y^n)&\le n(H[X,Y]+\delta).
+ \end{aligned}
+\]
+仅保留联合概率为正的点。由命题~\ref{prop:aep} 及并集界，真实的 $(X^n,Y^n)$ 不在 $\mathcal T_n$ 中的概率 $\eta_n$ 趋于零。另一方面，对每个固定 $y^n$、$x^n$，分别有
+\[
+ \begin{aligned}
+ |\{u:(u,y^n)\in\mathcal T_n\}|&\le2^{n(H[X\mid Y]+\delta)},\\
+ |\{v:(x^n,v)\in\mathcal T_n\}|&\le2^{n(H[Y\mid X]+\delta)},\\
+ |\mathcal T_n|&\le2^{n(H[X,Y]+\delta)}.
+ \end{aligned}
+\]
+每条都来自相应候选者的概率下界和概率总和为 $1$。
+
+独立选择两个随机映射 $F:\mathcal X^n\to\{0,1\}^{\ell_{X,n}}$、$G:\mathcal Y^n\to\{0,1\}^{\ell_{Y,n}}$；各映射内部也把不同输入独立均匀分箱。解码器在 $\mathcal T_n$ 中寻找同时匹配两个箱号的唯一候选对。
+
+固定真实对 $(x^n,y^n)\in\mathcal T_n$。错误候选恰好分成三类，不能只用总候选数估计所有碰撞：
+\begin{enumerate}[(a)]
+\item $(u,y^n)$，其中 $u\ne x^n$。第二个箱号自动一致，只需 $F(u)=F(x^n)$，单个碰撞概率为 $2^{-\ell_{X,n}}$。
+\item $(x^n,v)$，其中 $v\ne y^n$。同理，单个碰撞概率为 $2^{-\ell_{Y,n}}$。
+\item $(u,v)$，其中 $u\ne x^n$ 且 $v\ne y^n$。两个编码器的随机性独立，单个碰撞概率为 $2^{-\ell_{X,n}-\ell_{Y,n}}$。
+\end{enumerate}
+用上述三个候选数界逐类求和，再对真实输入平均，得到
+\[
+ \begin{aligned}
+ \mathbb E_{F,G}[p_{e,n}]
+ &\le\eta_n+2^{n(H[X\mid Y]+\delta)-\ell_{X,n}}
+       +2^{n(H[Y\mid X]+\delta)-\ell_{Y,n}}\\
+ &\quad+2^{n(H[X,Y]+\delta)-\ell_{X,n}-\ell_{Y,n}}\to0.
+ \end{aligned}
+\]
+因此存在一对固定编码器达到消失的错误概率。三类碰撞恰好对应三条码率条件。闭区域中的边界点可由内部点任意逼近；上述证明并不要求边界上每个固定的取整码长都达到相同的错误极限。
+\end{proof}
+
+\par\medskip
+\noindent\begin{minipage}[c]{.48\textwidth}
+\centering
+\begin{tikzpicture}[>=Stealth,scale=.65,every node/.style={font=\small}]
+\fill[teal!10] (1.5,3.2)--(3.4,1.3)--(6,1.3)--(6,5)--(1.5,5)--cycle;
+\draw[->] (0,0)--(6.5,0) node[right]{$R_X$};
+\draw[->] (0,0)--(0,5.3) node[above]{$R_Y$};
+\draw[thick,teal] (1.5,5)--(1.5,3.2)--(3.4,1.3)--(6,1.3);
+\draw[dashed] (0,3.2)--(1.5,3.2)--(1.5,0);
+\draw[dashed] (0,1.3)--(3.4,1.3)--(3.4,0);
+\node[left] at (0,3.2) {$H[Y]$}; \node[left] at (0,1.3) {$H[Y\mid X]$};
+\node[below] at (1.5,0) {$H[X\mid Y]$};\node[below] at (3.4,0) {$H[X]$};
+\node at (4,3.7) {可达码率的闭包};
+\node[rotate=-45,above] at (2.45,2.25) {$R_X+R_Y=H[X,Y]$};
+\end{tikzpicture}
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.50\textwidth}\raggedright
+左图中的两个角点分别为 $(H[X\mid Y],H[Y])$ 和 $(H[X],H[Y\mid X])$；由熵的链式法则得到。斜边体现两个编码器如何分担相关信息：不能都只支付各自的条件熵，因为
+\[
+ \begin{aligned}H[X\mid Y]+H[Y\mid X]\\=H[X,Y]-I(X;Y).\end{aligned}
+\]
+若互信息为正，还需在总码率中支付这部分共享信息。若两者独立，两个角点重合，区域退化为 $R_X\ge H[X]$、$R_Y\ge H[Y]$ 的右上方区域。
+
+\end{minipage}
+\par\medskip
+
+
+
+\FloatBarrier
 \backmatter
 \chapter{参考文献}
 \markboth{参考文献}{参考文献}
@@ -8684,18 +10750,33 @@ $[x^m]H_C(x)$ 计恰有 $m$ 个特别色顶点的染色类型。根也参与染�
 \item J. S. Milne. \emph{Group Theory}. 版本 4.01，2025。
 \href{https://www.jmilne.org/math/CourseNotes/GT.pdf}{作者公开讲义}。第 1 章涉及群、陪集、商群与同构定理；定理 1.54 给出有限生成交换群的循环因子分解；第 2 章涉及自由群与生成元关系，第 3 章涉及自同构与半直积；第 4 章用于共轭作用、类方程及对称群的共轭类；第 5 章用于 Sylow 定理及 $pq$ 阶群（例 5.14），第 6 章定理 6.2 给出 Jordan--Hölder 定理。
 
+\item 赵春来、徐明曜。《抽象代数 I》。北京大学出版社，2008。
+第 4.2--4.4 节用于核对正规性、可分性与固定域对应。例 3.9 和例 4.6 分别提供特征正时的不可分扩张与 $\mathbb Q(\sqrt[4]{2})/\mathbb Q$ 的非正规扩张。
+
+\item 聂灵沼、丁石孙。《代数学引论》。第三版，高等教育出版社，2021。
+第八章第 1--5 节用于有限 Galois 对应、根置换、有限域的 Frobenius 自同构、根式可解性及一般方程。其中第 3 节定理 7--8（第 265--266 页）讨论循环群与子域。
+
+\item Nathan Jacobson. \emph{Basic Algebra I}. 第二版，W. H. Freeman and Company，1985。
+第 2.13 节定理 2.20（第 138--139 页）给出对称多项式基本定理及初等对称多项式的代数独立性。第 4.8 节定理 4.14 与习题 1（第 259--260 页）联系不可约因子与根的轨道。
+
+\item Serge Lang. \emph{Algebra}. 修订第三版，Graduate Texts in Mathematics 211，Springer，2002。
+第 IV 章第 6 节定理 6.1 及其后论证（第 190--192 页）用于对称多项式的表示与唯一性。第 VI 章第 1 节的定理 1.1、1.10 和推论 1.3--1.4 用于有限 Galois 对应、限制映射与合成域，第 2 节例 4（第 272 页）用于一般方程的 Galois 群，第 7 节定理 7.2 用于核对特征零的根式可解性。
+
 \item Thomas W. Judson. \emph{Abstract Algebra: Theory and Applications}，2023 年版。
 \href{https://judsonbooks.org/aata-files/aata-20230811-print.pdf}{作者公开教材}。第 14.3 节的引理 14.18 与定理 14.19 用于 Burnside 计数公式；第 16.1--16.4 节用于环、四元数、理想与商环，第 16.7 节习题 39 用于环上的中国剩余定理；第 17.1 节用于多项式环，第 18.1 节用于分式域，第 18.4 节习题 8 用于正特征无限域的例子。沿用课堂关于一般环不必带幺的约定；访问日期：2026 年 10 月 13 日。
 \item David S. Dummit and Richard M. Foote. \emph{Abstract Algebra}. 第三版，John Wiley \& Sons，2004。
 
 第 8.1--8.3 节用于 Euclid 整环、PID、UFD 及不可约元与素元；第 9.4 节命题 9--10（印刷页 307--308）用于因子定理及低次不可约性判别。第 13.1--13.2 节用于域扩张、最小多项式、商域添根与塔式公式，§13.3 用于尺规作图，§13.4 用于分裂域的存在唯一性。第 14.3 节用于有限域，其中第 588 页用于 Möbius 反演与不可约多项式计数；本文证明约数和恒等式并推广至任意素数幂 $q$。
 
-\item Thomas W. Hungerford. \emph{Algebra}. Graduate Texts in Mathematics 73，Springer，1974。\href{https://doi.org/10.1007/978-1-4612-6101-8}{DOI: 10.1007/978-1-4612-6101-8}。
+\item Thomas W. Hungerford. \emph{Algebra}. Graduate Texts in Mathematics 73，Springer，1974。\par\noindent\href{https://doi.org/10.1007/978-1-4612-6101-8}{DOI: 10.1007/978-1-4612-6101-8}。
 
 第 III.3 节用于整环中的分解、理想升链及 PID 到 UFD 的论证；第 III.4 节定理 4.5 与推论 4.6 用于分式域的泛性质；第 V.1 节用于域扩张、最小多项式与塔式公式，第 V.3 节用于分裂域的存在唯一性，第 V.5 节定理 5.1、推论 5.2、命题 5.6 与推论 5.7--5.9 用于素域、有限域的存在唯一性及不可约多项式的存在性。采用课堂的 Euclid 函数约定：在零处取零，在非零处取正整数。
 
+第八章的 Gauss 引理与 Eisenstein 判别法参见第 III 章引理 6.11--6.13 与定理 6.15。第 V 章定理 2.5、命题 2.20、定理 4.12、命题 5.10 及第 9 节和附录分别用于核对固定域对应、对称多项式、素数次数的根置换、有限域的循环 Galois 群、根式扩张和一般方程（命题 9.8）。
+
 \item Victor Shoup. \emph{A Computational Introduction to Number Theory and Algebra}. 在线版本 2.2，2008。
 \href{https://shoup.net/ntb/ntb-v2_2.pdf}{作者公开教材}。第 19.2--19.3 节用于有限域与不可约多项式的乘积公式，第 19.4 节用于迹，第 20.3--20.4 节用于平方自由处理、不同次数分解与 Cantor--Zassenhaus 等次数分解，包括特征 $2$ 的迹方法。访问日期：2026 年 10 月 20 日。
+\Needspace{7\baselineskip}
 \item Eric Lehman, F. Thomson Leighton and Albert R. Meyer. \emph{Mathematics for Computer Science}. 2015 年 5 月 18 日修订版，MIT。\href{https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/mit6_042js15_textbook.pdf}{公开教材}。
 
 第 14.1--14.6 节及第 14.10 节用于基本计数、重复选择和组合恒等式，第 14.8--14.9 节用于抽屉原理与容斥；第 21.3 节用于线性递推，习题 15.18（印刷页 657）用于 Catalan 数及合法括号的递推解释。所引内容限于相应课堂范围；访问日期：2026 年 10 月 22 日。
@@ -8703,6 +10784,7 @@ $[x^m]H_C(x)$ 计恰有 $m$ 个特别色顶点的染色类型。根也参与染�
 
 第 1.1--1.4 节（印刷页 3--9）用于组合数、隔板计数、集合分拆和双重计数；习题 1.9--1.10（第 16--17 页）用于 Vandermonde 恒等式及组合数平方和；第 1.6 节命题 1.13--1.14（第 14 页）用于容斥的逐点贡献解释及并集、补集两种形式；第 4.2 节定理 4.5（第 55--56 页）用于单调子序列定理。正文保留课堂中上升、下降子序列均以当前项为终点的记号。
 
+\Needspace{4\baselineskip}
 \item Richard A. Brualdi. \emph{Introductory Combinatorics}. 第五版，Pearson Prentice Hall，2010。
 
 第 7.2--7.3 节（印刷页 215--227）用于普通与指数生成函数、按规模分配及按标号分配的乘法；第 5.5 节用于广义二项式展开。第 14.2--14.3 节（印刷页 552--572）用于 Burnside 公式、轮换计数、循环指标及 Pólya 的颜色库存代入。第 7.2 节第 218 页与第 7.3 节第 224 页的多重组合、排列模型用于 OGF/EGF 的对比题。
@@ -8714,6 +10796,16 @@ $[x^m]H_C(x)$ 计恰有 $m$ 个特别色顶点的染色类型。根也参与染�
 \item 吕秋实. \emph{生成函数}. 课件，2023 年 11 月 16 日。
 
 第 3--6、14 页用于生成函数的基本操作及系数提取，第 32--43 页用于指数生成函数、自然数幂和与标号乘法，第 47--48 页用于指数公式的分块解释。只使用与本节课堂内容对应的部分。
+\item Sheldon M. Ross. 《概率论基础教程》（原书第 9 版）。童行伟、梁宝生译，机械工业出版社，2014。
+第 2--3 章用于事件、概率公理、条件概率与独立性；第 4 章用于离散随机变量及常见分布，第 6 章用于联合分布。第 7.2、7.4 节用于期望的线性性和协方差，第 7.5.1--7.5.2 节（印刷页 266--268）用于条件期望的随机变量解释与全期望公式；第 9.1 节（印刷页 335--336）用于泊松过程的独立、平稳增量及小区间刻画。
+
+\item Steven J. Miller. 《普林斯顿概率论读本》。李馨译，人民邮电出版社，2020。
+第 12.1--12.6 节用于 Bernoulli、二项、几何、负二项与 Poisson 分布，第 19.2--19.4 节用于生成函数及独立和的卷积，特别是定理 19.4.4（印刷页 507）与第 508 页的 Poisson 求和。本章负二项分布按课堂约定记录第 $r$ 次成功前的失败数，参数含义不直接照搬教材。
+
+\item 程士宏。《测度论与概率论基础》。北京大学出版社，2004。
+第一章第 2 节（印刷页 5）的 $\sigma$-代数定义用于说明事件族的封闭性；本章后续计算限于离散概率空间，不展开测度构造和积分理论。
+\item Yury Polyanskiy and Yihong Wu. \emph{Information Theory: From Coding to Learning}. 本地文件为 2023 年 11 月 26 日预出版稿。
+第 1.1 节用于熵、条件熵及凹性，第 2.1--2.2 节用于 KL 散度及非负性，第 2.5 节定义 2.14、定理 2.15 用于条件散度与链式法则。第 3 章用于互信息和数据处理，第 15.1、15.5 节及习题 III.23 用于 Chernoff、大偏差及类型估计；仅采用课堂有限字母表范围的结论。第 10.1 节定理 10.3 用于单次变长码的熵界；第 10.3 节定理 10.9--10.11 用于 Kraft 条件、前缀码的熵界与 Huffman 编码。第 11.1--11.2 节用于定长压缩、随机编码与自信息界，第 11.5--11.6 节定理 11.13、11.16 用于旁信息与分布式压缩。最后的可达性沿随机分箱路线逐类计算碰撞概率。
 \end{enumerate}
 
 \clearpage
@@ -8721,15 +10813,17 @@ $[x^m]H_C(x)$ 计恰有 $m$ 个特别色顶点的染色类型。根也参与染�
 \addcontentsline{toc}{chapter}{概念索引}
 \begingroup
 \setstretch{1.3}
+\renewcommand{\indexname}{概念索引}
 \renewcommand{\indexspace}{\par\vskip 3pt plus 1pt minus 1pt\relax}
+% Use penalty-based reservations inside the index's multicolumn output.
 \newcommand{\projectindexcategory}[1]{%
-  \par\addvspace{10pt}\Needspace{6\baselineskip}%
+  \par\addvspace{10pt}\needspace{4\baselineskip}%
   {\parindent=0pt\hangindent=0pt\noindent\sffamily\bfseries\heiti #1\par}%
   \nobreak}
 \newcommand{\projectindexletter}[1]{%
-  \par\addvspace{7pt}\Needspace{4\baselineskip}%
+  \par\addvspace{7pt}\needspace{3\baselineskip}%
   {\parindent=0pt\hangindent=0pt\noindent\sffamily\bfseries #1\par}%
   \nobreak}
-\printindex
+\InputIfFileExists{\jobname.ind}{}{}
 \endgroup
 \end{document}
