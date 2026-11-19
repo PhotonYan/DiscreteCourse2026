@@ -1,0 +1,45 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 19}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{无损压缩、Huffman 与侧信息}\author{zhangjunshuo}\date{2026 年 11 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 11 月 19 日的三页手写稿和两段课堂转写整理。上一份笔记是 Lec18（11 月 17 日），本次按顺序记为 \textbf{Lec19}。手写稿是公式与结构的主要依据，转写用于补课堂解释。
+
+本讲主线：无损变长码 $\to$ Kraft/Huffman $\to$ 几乎无损定长码（典型集）$\to$ 侧信息与 Slepian--Wolf。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义。
+\end{quote}
+\setcounter{tocdepth}{1}
+\tableofcontents\clearpage
+
+\input{sections/01-lossless-compression}
+\input{sections/02-kraft-huffman}
+\input{sections/03-fixed-length-typical}
+\input{sections/04-side-information}
+
+\section*{一页式总览}
+\begin{itemize}
+\item 无损变长码：$H(X)\le E[L]<H(X)+1$。
+\item Kraft：前缀码存在 $\iff\sum_i2^{-l_i}\le1$。
+\item Huffman：每次合并两个最小概率，得到最优前缀码。
+\item 典型集：$|T_\varepsilon^{(n)}|\le2^{n(H+\varepsilon)}$，概率 $\to1$。
+\item 定长几乎无损：$L=n(H+\varepsilon)$，错误概率指数小。
+\item 侧信息：$L_1>H(X\mid Y)$。
+\item Slepian--Wolf：$L_1\ge H(X\mid Y)$，$L_2\ge H(Y\mid X)$，$L_1+L_2\ge H(X,Y)$。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item 课堂手写稿（2026-11-19，三页）。
+\item 课堂转写（\texttt{11月19日\_转写文本}、\texttt{11月19日 2\_转写文本}）。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》压缩、熵、Huffman 与信息论相关章节。
+\end{itemize}
+\end{document}

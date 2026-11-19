@@ -1,0 +1,108 @@
+\section{定长压缩与典型集}
+
+
+变长码能做到 $H(X)\le E[L]<H(X)+1$，但每条消息长度不同。很多实际场景要求\textbf{定长编码}：把 $n$ 个符号压成固定 $L$ 个比特。代价是允许一个很小的错误概率，这叫\textbf{几乎无损压缩}（almost lossless compression）。
+
+\textbf{本节用到的记号：} $X^n=(X_1,\dots,X_n)$ iid $\sim P$；$P^n(x)=\prod_iP(x_i)$；$f:\Omega^n\to\{0,1\}^L$ 为定长编码；$g$ 为解码；$T_\varepsilon^{(n)}$ 为典型集；$H=H(P)$。
+
+\subsection{精确无损定长的限制}
+
+
+如果要求对\textbf{所有} $x\in\Omega^n$ 都精确解码，那么需要
+
+\[
+2^L\ge|\Omega|^n
+\quad\Longrightarrow\quad
+L\ge n\log|\Omega|.
+\]
+
+这通常远大于 $nH(P)$；所以精确无损定长压缩无法达到熵极限。要接近熵，必须允许少量错误。
+
+\subsection{几乎无损定长压缩}
+
+
+允许错误概率 $\varepsilon$：要求
+
+\[
+\Pr[g(f(X^n))\ne X^n]\le\varepsilon.
+\]
+
+可以构造 $L\approx nH(P)$ 的编码，使错误概率随 $n$ 指数小。
+
+\textbf{核心工具：典型集.} 定义
+
+\[
+T_\varepsilon^{(n)}
+=\left\{x\in\Omega^n:
+\left|-\frac1n\log P^n(x)-H\right|\le\varepsilon
+\right\}.
+\]
+
+典型集有两个关键性质：
+
+1. \textbf{概率大}：由大数定律，
+\[
+   \Pr[X^n\in T_\varepsilon^{(n)}]\to1
+   \quad(n\to\infty).
+\]
+2. \textbf{数量少}：每个典型序列的概率至少约 $2^{-n(H+\varepsilon)}$，而总概率不超过 $1$，所以
+\[
+   |T_\varepsilon^{(n)}|\le2^{n(H+\varepsilon)}.
+\]
+
+\textbf{编码构造.} 取
+
+\[
+L=\left\lceil n(H+\varepsilon)\right\rceil.
+\]
+
+把典型集中的序列任意编号为 $1,\dots,2^L$；非典型序列随便编码（解码时会错，但概率小）。解码时按编号恢复。
+
+\textbf{错误概率.} 只有非典型序列会出错，因此
+
+\[
+\Pr[g(f(X^n))\ne X^n]
+\le\Pr[X^n\notin T_\varepsilon^{(n)}]
+\le\varepsilon
+\]
+
+（对足够大的 $n$）。更精细的集中不等式可给出 $e^{-\Theta(n\varepsilon^2)}$ 级的错误概率。
+
+\subsection{随机压缩：分布未知时怎么办}
+
+
+上面的构造需要知道 $P$ 才能定义典型集。若分布未知，可以用\textbf{随机压缩}：
+
+\begin{itemize}
+\item 随机选一个函数 $f:\Omega^n\to\{0,1\}^L$；
+\item 解码时，给定消息 $s$，在 $f^{-1}(s)$ 中选概率最大的 $x$：
+\end{itemize}
+
+\[
+  g(s)=\arg\max_{x\in f^{-1}(s)}P^n(x).
+\]
+\begin{itemize}
+\item 若 $L>nH(P)+\varepsilon$，则对每个高概率的 $x$，它与其它高概率点碰撞的概率很小，因此可以高概率正确解码。
+\end{itemize}
+
+
+\textbf{随机线性压缩.} 也可以取 $f$ 为随机矩阵（在 $\mathbb F_2$ 上）作用在 $x$ 上；两个不同向量碰撞的概率仍约为输出空间大小的倒数，因此同样的结论成立。这样连分布的具体形式都不需要知道，只需要知道熵的上界。
+
+\subsection{固定长度 vs 变长码}
+
+
+\begin{itemize}
+\item \textbf{变长码}：每条消息长度可变；精确无损可做到 $E[L]\approx H$；也可分块做几乎无损；工具是 Kraft/Huffman。
+\item \textbf{定长码}：每条消息固定 $L$ bit；精确无损需要 $L\ge n\log|\Omega|$；几乎无损可用 $L\approx nH$，错误概率指数小；工具是典型集/大数定律。
+\end{itemize}
+
+
+\subsection{常见错误}
+
+
+\begin{itemize}
+\item 把“几乎无损”当成“精确无损”；定长编码在 $L<n\log|\Omega|$ 时必然有错。
+\item 把典型集大小写成 $2^{nH}$ 而漏掉 $\varepsilon$；应是 $2^{n(H\pm\varepsilon)}$。
+\item 认为随机压缩需要知道分布；随机函数/随机矩阵的构造不需要完整分布，只需熵的界。
+\item 把错误概率的指数写成 $e^{-n\varepsilon}$；典型集的偏差通常是 $e^{-n\varepsilon^2}$ 量级。
+\end{itemize}

@@ -1,0 +1,99 @@
+\section{侧信息与 Slepian–Wolf 压缩}
+
+
+这一节讨论\textbf{分布式无损压缩}：编码器只能看到 $X$，但解码器还能看到与 $X$ 相关的旁信息 $Y$。问题是：既然解码器已经有 $Y$，$X$ 还需要多少比特？
+
+\textbf{本节用到的记号：} $(X^n,Y^n)$ iid $\sim P_{X,Y}$；$H(X\mid Y)$ 为条件熵；$L_1,L_2$ 为两个编码器的码率（每符号比特数）；$\varepsilon$ 为允许的错误概率。
+
+\subsection{只有解码器有侧信息}
+
+
+\textbf{设定.}
+
+\begin{itemize}
+\item 编码器看到 $X^n$，发送 $L_1$ bit/符号的消息；
+\item 解码器看到消息和 $Y^n$；
+\item 要求以高概率恢复 $X^n$。
+\end{itemize}
+
+
+\textbf{结论.} 只要
+
+\[
+L_1>H(X\mid Y),
+\]
+
+就存在这样的压缩方案（$n$ 充分大、错误概率任意小）。
+
+\textbf{直观.} 解码器已经知道 $Y$，所以 $X$ 剩下的不确定性只有 $H(X\mid Y)$；编码器只需提供这些“剩余信息”。
+
+\textbf{构造（随机 binning）.}
+
+1. 把 $X^n$ 的所有可能序列随机分到 $2^{nL_1}$ 个桶（bin）中；
+2. 编码器只发送桶号；
+3. 解码器收到桶号后，在桶中寻找与 $Y^n$ 联合典型的 $X^n$，输出它。
+
+若 $L_1>H(X\mid Y)$，则每个桶中与给定 $Y^n$ 联合典型的 $X^n$ 大约只有
+
+\[
+2^{nH(X\mid Y)}/2^{nL_1}<1
+\]
+
+个，因此解码唯一、正确概率高。
+
+\textbf{错误概率.} 用联合典型性/集中不等式可证错误概率为 $e^{-\Theta(n)}$ 级（$n\to\infty$）。
+
+\subsection{两个编码器分别压缩（Slepian–Wolf）}
+
+
+\textbf{设定.}
+
+\begin{itemize}
+\item 编码器 1 看 $X^n$，发送速率 $L_1$；
+\item 编码器 2 看 $Y^n$，发送速率 $L_2$；
+\item 解码器同时收到两个消息，要恢复 $(X^n,Y^n)$。
+\end{itemize}
+
+
+\textbf{Slepian–Wolf 区域.} 可达速率对 $(L_1,L_2)$ 满足
+
+\[
+\boxed{
+L_1\ge H(X\mid Y),\qquad
+L_2\ge H(Y\mid X),\qquad
+L_1+L_2\ge H(X,Y)
+}
+\]
+
+（严格地说要加任意小 $\varepsilon$）。
+
+\textbf{三个下界的直观.}
+
+\begin{itemize}
+\item $L_1\ge H(X\mid Y)$：即使解码器有完整的 $Y$，$X$ 仍有 $H(X\mid Y)$ 的不确定性；
+\item $L_2\ge H(Y\mid X)$：对称；
+\item $L_1+L_2\ge H(X,Y)$：两个消息合起来的总信息量不能少于联合熵。
+\end{itemize}
+
+
+\textbf{可达性.} 用随机 binning：把 $X^n$ 分到 $2^{nL_1}$ 个桶、$Y^n$ 分到 $2^{nL_2}$ 个桶；解码器在“桶对”中找联合典型的 $(X^n,Y^n)$。只要速率在区域内部，联合典型对唯一，错误概率指数小。
+
+\subsection{与单源压缩的关系}
+
+
+\begin{itemize}
+\item 若 $Y$ 是常数（没有侧信息），则 $H(X\mid Y)=H(X)$，回到普通无损压缩 $L\ge H(X)$；
+\item 若 $Y=X$，则 $H(X\mid Y)=0$，不需要传 $X$；
+\item 若 $X,Y$ 独立，则 $H(X\mid Y)=H(X)$，侧信息没有帮助。
+\end{itemize}
+
+
+\subsection{常见错误}
+
+
+\begin{itemize}
+\item 以为“解码器有 $Y$”就可以把 $X$ 压到 $0$ 比特；还需要 $H(X\mid Y)$。
+\item 把 Slepian–Wolf 的单源界写成 $L_1\ge H(X)$；有侧信息时是条件熵。
+\item 忘记三个下界要同时满足；只满足 $L_1\ge H(X\mid Y)$ 不一定够，还要看总和。
+\item 把“随机 binning”当成实际可实现的低复杂度算法；它主要是存在性证明，实际实现需要额外设计。
+\end{itemize}
