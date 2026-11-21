@@ -1,0 +1,48 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlist[itemize]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{2em}\setlength{\parskip}{0.35em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{离散数学与结构（I）}\fancyhead[R]{Lec 16}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{概率与概率生成函数}\author{zhangjunshuo}\date{2026 年 11 月}
+\begin{document}
+\maketitle
+\begin{quote}
+本讲根据 2026 年 11 月 10 日的三页手写稿和两段课堂转写整理。编号按“上一份笔记 Lec14、中间跳过一讲”的约定，记为 \textbf{Lec16}。转写的第一段只覆盖课堂开头，第二段从条件期望附近开始，语音识别对术语和公式有较多错误；整理版以手写稿的公式与结构为准，用转写补充例子与课堂解释，对不一致处给出勘误。
+
+本讲主线：概率空间与条件概率 $\to$ 随机变量与分布 $\to$ 期望与条件期望 $\to$ 方差与协方差 $\to$ 概率生成函数与常见分布 $\to$ Poisson 极限/过程。
+
+每个分节开头都先交代本节用到的记号；所有符号在首次使用处给出定义。
+\end{quote}
+\tableofcontents\clearpage
+
+\input{sections/01-probability-basics}
+\input{sections/02-expectation-conditional}
+\input{sections/03-variance-covariance}
+\input{sections/04-pgf}
+
+\section*{一页式总览}
+\begin{itemize}
+\item 条件概率：$P(A\mid B)=P(A\cap B)/P(B)$；条件分布 $p_B(\omega)=p(\omega)/P(B)$（$\omega\in B$）。
+\item Bayes：$P(B_i\mid A)=P(B_i)P(A\mid B_i)/\sum_jP(B_j)P(A\mid B_j)$。
+\item 独立事件：$P(A\cap B)=P(A)P(B)$；独立随机变量：联合分布等于边缘分布之积。
+\item 期望：$E[X]=\sum_\omega P(\omega)X(\omega)=\sum_x x p_X(x)$；线性性；独立时 $E[XY]=E[X]E[Y]$。
+\item 全期望：$E[X]=E[E[X\mid Y]]=\sum_yP(Y=y)E[X\mid Y=y]$。
+\item 方差：$\operatorname{Var}(X)=E[X^2]-(E[X])^2$；$\operatorname{Var}(X+Y)=\operatorname{Var}X+\operatorname{Var}Y+2\operatorname{Cov}(X,Y)$。
+\item 协方差：$\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y]$；独立 $\Rightarrow$ 协方差为 $0$，反之不成立。
+\item PGF：$G_X(z)=E[z^X]=\sum_kp_kz^k$；$G_X(1)=1$，$G_X'(1)=E[X]$，$G_X''(1)=E[X(X-1)]$。
+\item 独立和：$G_{X+Y}=G_XG_Y$。
+\item 常见 PGF：Bernoulli $1-p+pz$；二项 $(1-p+pz)^n$；几何 $pz/(1-(1-p)z)$；Poisson $e^{\lambda(z-1)}$。
+\item Poisson 极限：$\operatorname{Bin}(n,\lambda/n)\Rightarrow\operatorname{Pois}(\lambda)$。
+\end{itemize}
+
+\section*{参考资料}
+\begin{itemize}
+\item 课堂手写稿（2026-11-10，三页）与两段课堂转写。
+\item \textbf{[DS]} 邓小铁、王畅。《离散数学与结构》概率与生成函数相关章节。
+\item 课程讲义中概率、条件期望、概率生成函数与 Poisson 分布的相关部分。
+\end{itemize}
+\end{document}

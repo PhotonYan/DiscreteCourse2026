@@ -1,0 +1,164 @@
+# 方差、协方差与双线性
+
+期望描述“中心位置”，方差描述“离中心有多散”。协方差则描述两个随机变量共同偏离各自中心的程度。本讲的关键是：**协方差是双线性的，所以方差可以像内积一样展开**。
+
+**本节用到的记号：** $\operatorname{Var}(X)$ 为方差；$\operatorname{Cov}(X,Y)$ 为协方差；$\mu_X=E[X]$；$\sigma_X^2=\operatorname{Var}(X)$；$\rho(X,Y)$ 为相关系数。
+
+## 方差的定义
+
+$$
+\operatorname{Var}(X)=E\bigl[(X-E[X])^2\bigr].
+$$
+
+它恒非负。展开平方：
+
+$$
+\begin{aligned}
+\operatorname{Var}(X)
+&=E[X^2-2X E[X]+(E[X])^2]\\
+&=E[X^2]-2(E[X])^2+(E[X])^2\\
+&=E[X^2]-(E[X])^2.
+\end{aligned}
+$$
+
+这是最常用的计算公式。
+
+**性质.**
+
+- $\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)$。
+- 常数没有方差：$\operatorname{Var}(c)=0$。
+- 标准差的量纲与 $X$ 一致：$\sigma_X=\sqrt{\operatorname{Var}(X)}$。
+
+## 协方差的定义
+
+$$
+\operatorname{Cov}(X,Y)
+=E\bigl[(X-E[X])(Y-E[Y])\bigr].
+$$
+
+展开：
+
+$$
+\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y].
+$$
+
+**性质.**
+
+- 对称：$\operatorname{Cov}(X,Y)=\operatorname{Cov}(Y,X)$。
+- $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$。
+- 与常数无关：$\operatorname{Cov}(X,c)=0$。
+- 双线性：对任意常数 $a,b$，
+  $$
+  \operatorname{Cov}(aX+bY,Z)
+  =a\operatorname{Cov}(X,Z)+b\operatorname{Cov}(Y,Z).
+  $$
+  对第二个变量也同理。
+
+**相关系数.** 当 $\operatorname{Var}(X),\operatorname{Var}(Y)>0$ 时，
+
+$$
+\rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}
+{\sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}}.
+$$
+
+它只反映**线性相关**的程度，且 $|\rho|\le1$。
+
+## 方差的和公式
+
+由双线性，
+
+$$
+\begin{aligned}
+\operatorname{Var}(X+Y)
+&=\operatorname{Cov}(X+Y,X+Y)\\
+&=\operatorname{Cov}(X,X)+\operatorname{Cov}(X,Y)
++\operatorname{Cov}(Y,X)+\operatorname{Cov}(Y,Y)\\
+&=\operatorname{Var}(X)+\operatorname{Var}(Y)+2\operatorname{Cov}(X,Y).
+\end{aligned}
+$$
+
+更一般地，
+
+$$
+\operatorname{Var}\Bigl(\sum_{i=1}^nX_i\Bigr)
+=\sum_{i=1}^n\operatorname{Var}(X_i)
++2\sum_{1\le i<j\le n}\operatorname{Cov}(X_i,X_j).
+$$
+
+**独立情形.** 若 $X,Y$ 独立，则
+
+$$
+E[XY]=E[X]E[Y]\quad\Longrightarrow\quad
+\operatorname{Cov}(X,Y)=0,
+$$
+
+于是
+
+$$
+\operatorname{Var}(X+Y)=\operatorname{Var}(X)+\operatorname{Var}(Y).
+$$
+
+## 独立与不相关
+
+由独立可以推出
+
+$$
+E[XY]=E[X]E[Y],
+$$
+
+从而 $\operatorname{Cov}(X,Y)=0$，称 $X,Y$ **不相关**。
+
+但反过来不成立：
+
+> **不相关（$\operatorname{Cov}=0$）不一定独立。**
+
+**反例.** 令 $X$ 在 $\{-1,0,1\}$ 上等可能，令 $Y=X^2$。则
+
+$$
+E[X]=0,\qquad E[Y]=\frac23,\qquad E[XY]=E[X^3]=0,
+$$
+
+所以 $\operatorname{Cov}(X,Y)=0$，但 $Y$ 完全由 $X$ 决定，二者显然不独立。
+
+**记忆.** 独立 $\Rightarrow$ 不相关；不相关 $\nRightarrow$ 独立。
+
+## 协方差矩阵
+
+把随机向量 $\mathbf X=(X_1,\dots,X_n)^T$ 的协方差排成矩阵：
+
+$$
+\Sigma_{ij}=\operatorname{Cov}(X_i,X_j).
+$$
+
+则 $\Sigma$ 是对称半正定矩阵：对任意向量 $a$，
+
+$$
+a^T\Sigma a=\operatorname{Var}(a^T\mathbf X)\ge0.
+$$
+
+**例（Bernoulli）.** $X\sim\mathrm{Bern}(p)$：
+
+$$
+E[X]=p,\qquad E[X^2]=p,
+$$
+
+所以
+
+$$
+\operatorname{Var}(X)=p-p^2=p(1-p).
+$$
+
+**例（二项）.** 若 $X=\sum_{i=1}^nX_i$，$X_i$ 独立同分布 $\mathrm{Bern}(p)$，则
+
+$$
+\operatorname{Var}(X)=\sum_{i=1}^n\operatorname{Var}(X_i)=np(1-p).
+$$
+
+这里独立性保证交叉协方差全为 $0$。
+
+## 常见错误
+
+- 把 $\operatorname{Var}(X+Y)$ 写成 $\operatorname{Var}(X)+\operatorname{Var}(Y)$ 而漏掉 $2\operatorname{Cov}(X,Y)$。
+- 把“不相关”当成“独立”。
+- 把 $\operatorname{Cov}(X,Y)=0$ 当成“$X,Y$ 没有关系”；它只说明没有线性相关。
+- 忘记 $\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)$ 中的平方。

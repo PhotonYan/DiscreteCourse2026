@@ -1,0 +1,240 @@
+\section{类型计数与 Sanov 大偏差}
+
+
+这一节把“大偏差事件的指数”从 Bernoulli 推广到一般有限字母表：先数“类型”（经验分布），再用类型类的大小和概率得到 \textbf{Sanov 界}。
+
+\textbf{本节用到的记号：} 字母表 $[k]=\{1,\dots,k\}$；$P$ 为真实分布；$X_1,\dots,X_n$ iid $\sim P$；$T_i=\#\{j:X_j=i\}$ 为频数；$Q_i=T_i/n$ 为经验分布/类型；$H(Q)$ 为熵；$D(Q\Vert P)$ 为 KL 散度。
+
+\subsection{Bernoulli 尾概率的精确写法}
+
+
+先看 $k=2$ 的情形：$X_i\sim\mathrm{Bern}(p)$。对 $q>p$，
+
+\[
+P\Bigl(\sum_{i=1}^nX_i\ge qn\Bigr)
+=\sum_{m=\lceil qn\rceil}^{n}\binom nm p^m(1-p)^{n-m}.
+\]
+
+\textbf{上界：用最大项.} 和式不超过“项数 × 最大项”：
+
+\[
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\le n\max_{m\ge qn}\binom nm p^m(1-p)^{n-m}.
+\]
+
+在 $m\ge qn>pn$ 的区域，二项概率的最大值在 $m=\lceil qn\rceil$ 附近；用 Stirling 公式
+
+\[
+n!\approx\sqrt{2\pi n}\left(\frac ne\right)^n
+\]
+
+可得
+
+\[
+\binom nm\approx\exp\bigl(nH(m/n)\bigr),
+\]
+
+其中 $H(x)=-x\log x-(1-x)\log(1-x)$。于是最大项约为
+
+\[
+\exp\bigl(nH(q)\bigr)p^{qn}(1-p)^{(1-q)n}
+=\exp\bigl(-nD(q\Vert p)\bigr).
+\]
+
+因此
+
+\[
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\le n\exp\bigl(-nD(q\Vert p)\bigr).
+\]
+
+\textbf{下界：只留 $m=qn$ 一项.}
+
+\[
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\ge\binom{n}{qn}p^{qn}(1-p)^{(1-q)n}.
+\]
+
+这是 $k=2$ 时类型类大小的标准下界：类型类 $T(Q)$ 的大小不少于
+
+\[
+\frac{\exp(nH(Q))}{n+1}.
+\]
+
+取 $Q=(q,1-q)$，即得
+
+\[
+\binom{n}{qn}\ge\frac1{n+1}\exp\bigl(nH(q)\bigr).
+\]
+
+于是
+
+\[
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\ge\frac1{n+1}\exp\bigl(-nD(q\Vert p)\bigr).
+\]
+
+\textbf{结论（Bernoulli 版 Sanov）.}
+
+\[
+\boxed{
+\frac1{n+1}e^{-nD(q\Vert p)}
+\le
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\le
+n\,e^{-nD(q\Vert p)}
+}.
+\]
+
+上下界只差多项式因子，\textbf{指数 $D(q\Vert p)$ 是紧的}。
+
+\subsection{类型与类型类}
+
+
+一般字母表 $[k]$。给定一个序列 $x=(x_1,\dots,x_n)$，它的\textbf{类型}是经验分布
+
+\[
+Q_i=\frac{T_i}{n},\qquad T_i=\#\{j:x_j=i\}.
+\]
+
+所有具有同一类型 $Q$ 的序列组成\textbf{类型类}，记作 $T(Q)$。
+
+\textbf{类型类大小.}
+
+\[
+|T(Q)|=\frac{n!}{T_1!\cdots T_k!}.
+\]
+
+用 Stirling 公式可得
+
+\[
+|T(Q)|\approx\exp\bigl(nH(Q)\bigr),
+\]
+
+更精确地有
+
+\[
+\exp\bigl(nH(Q)\bigr)\big/(n+1)^{k-1}
+\le |T(Q)|
+\le \exp\bigl(nH(Q)\bigr).
+\]
+
+\textbf{单个序列的概率.}
+
+\[
+P^n(x)=\prod_{i=1}^kP_i^{T_i}
+=\exp\Bigl(n\sum_iQ_i\log P_i\Bigr).
+\]
+
+因此类型类 $T(Q)$ 的总概率为
+
+\[
+P^n(T(Q))
+=|T(Q)|\prod_iP_i^{nQ_i}
+\approx\exp\bigl(-nD(Q\Vert P)\bigr),
+\]
+
+其中
+
+\[
+D(Q\Vert P)=\sum_{i=1}^kQ_i\log\frac{Q_i}{P_i}.
+\]
+
+\textbf{精确的上下界}（差多项式因子）：
+
+\[
+\frac{1}{(n+1)^{k-1}}e^{-nD(Q\Vert P)}
+\le P^n(T(Q))
+\le e^{-nD(Q\Vert P)}.
+\]
+
+\subsection{Sanov 界}
+
+
+设 $\mathcal R$ 是“类型/经验分布”的一个集合（例如 $\{Q:Q_1\ge q\}$）。则
+
+\[
+\boxed{
+P^n(Q\in\mathcal R)
+\le (n+1)^{k-1}
+\exp\Bigl(-n\min_{Q\in\mathcal R}D(Q\Vert P)\Bigr)
+}.
+\]
+
+并有下界
+
+\[
+P^n(Q\in\mathcal R)
+\ge \frac{1}{(n+1)^{k-1}}
+\exp\Bigl(-n\min_{Q\in\mathcal R}D(Q\Vert P)\Bigr)
+\]
+
+（在 $\mathcal R$ 中取到最小值附近的类型时）。
+
+令
+
+\[
+Q^*=\arg\min_{Q\in\mathcal R}D(Q\Vert P),
+\]
+
+则
+
+\[
+P^n(Q\in\mathcal R)
+=\exp\Bigl(-nD(Q^*\Vert P)+o(n)\Bigr).
+\]
+
+\textbf{直观.} 大偏差事件的指数，由“区域 $\mathcal R$ 中离真实分布 $P$ 最近的那个分布 $Q^*$”决定；$D(Q^*\Vert P)$ 就是偏离的“代价”。
+
+\subsection{Bernoulli 情形是特例}
+
+
+取 $k=2$、$\mathcal R=\{Q:Q_1\ge q\}$，则
+
+\[
+Q^*=(q,1-q),\qquad
+D(Q^*\Vert P)=D(q\Vert p).
+\]
+
+于是 Sanov 界退化为前面的
+
+\[
+P\Bigl(\sum_iX_i\ge qn\Bigr)
+\asymp\exp\bigl(-nD(q\Vert p)\bigr),
+\]
+
+与 Chernoff 的指数一致；Sanov 还给出下界，因此说明 Chernoff 的指数是紧的。
+
+\subsection{一般区域的几何图像}
+
+
+把分布空间画成一个区域，$P$ 是真实分布，$\mathcal R$ 是关心的“坏事件”区域：
+
+\begin{itemize}
+\item 若 $\mathcal R$ 不包含 $P$，大偏差概率指数衰减；
+\item 衰减速率 = 从 $P$ 到 $\mathcal R$ 的“KL 距离”；
+\item $Q^*$ 是 $\mathcal R$ 中离 $P$ 最近的点；在连续/正则区域中，它通常位于区域边界上。
+\end{itemize}
+
+
+\textbf{注意.} 若 $\mathcal R$ 取得很“碎”（例如只包含无理频率点），需要额外说明最小值的取法；课堂上加了“频率可实现”的条件，避免这种退化情形。
+
+\subsection{与 Chernoff 的分工}
+
+
+\begin{itemize}
+\item \textbf{Chernoff}：给上界，计算通常更直接，适合“独立和超过某阈值”的尾概率；
+\item \textbf{Sanov}：给上界 + 下界，说明指数紧，适合一般的大偏差区域；
+\item 在 Bernoulli 和一般有限字母表上，两者的指数都是 KL 散度 $D(Q^*\Vert P)$。
+\end{itemize}
+
+
+\subsection{常见错误}
+
+
+\begin{itemize}
+\item 把 Sanov 的 $Q^*$ 写成 $P$；$Q^*$ 是区域 $\mathcal R$ 中离 $P$ 最近的分布，不一定等于 $P$。
+\item 忽略多项式因子：Sanov 的指数精确，但上下界差 $(n+1)^{k-1}$ 级别的因子。
+\item 把 $H(Q)$ 与 $H(P)$ 混淆：类型类大小用 $H(Q)$，概率指数用 $D(Q\Vert P)$。
+\item 把 Bernoulli 的 $D(q\Vert p)$ 与 $D(p\Vert q)$ 写反。
+\end{itemize}

@@ -1,0 +1,257 @@
+\section{概率生成函数与常见分布}
+
+
+概率生成函数（probability generating function, PGF）把非负整数随机变量的整个分布编码成一个幂级数。它和普通生成函数是同一套形式运算，只是系数换成了概率。
+
+\textbf{本节用到的记号：} $X$ 取非负整数值；$p_k=P(X=k)$；$G_X(z)=E[z^X]$；$G_X^{(k)}$ 为第 $k$ 阶导数；$X\sim\mathrm{Bern}(p),\mathrm{Bin}(n,p),\mathrm{Geo}(p),\mathrm{NB}(r,p),\mathrm{Pois}(\lambda)$。
+
+\subsection{定义与基本性质}
+
+
+设 $X$ 取值于 $\mathbb N=\{0,1,2,\dots\}$，定义
+
+\[
+G_X(z)=E[z^X]=\sum_{k\ge0}p_kz^k.
+\]
+
+这是一个以概率为系数的形式幂级数；至少对 $|z|\le1$ 绝对收敛（因为 $\sum p_k=1$）。
+
+\textbf{基本事实.}
+
+\begin{itemize}
+\item $G_X(1)=1$。
+\item $G_X(0)=p_0=P(X=0)$。
+\item 若两个非负整数随机变量的 PGF 在 $0$ 的某邻域内相等，则它们的分布相同（系数逐项相同）。
+\item 因此 PGF \textbf{包含分布的全部信息}；但要求 $X$ 取非负整数值。
+\end{itemize}
+
+
+\subsection{用导数读矩}
+
+
+对 $G_X(z)=\sum_k p_kz^k$ 逐项求导：
+
+\[
+G_X'(z)=\sum_{k\ge1}k p_kz^{k-1},
+\]
+
+令 $z=1$：
+
+\[
+G_X'(1)=\sum_k k p_k=E[X].
+\]
+
+二阶导：
+
+\[
+G_X''(z)=\sum_{k\ge2}k(k-1)p_kz^{k-2},
+\]
+
+所以
+
+\[
+G_X''(1)=E[X(X-1)]=E[X^2]-E[X].
+\]
+
+于是
+
+\[
+E[X^2]=G_X''(1)+G_X'(1),
+\]
+
+\[
+\boxed{
+\operatorname{Var}(X)
+=G_X''(1)+G_X'(1)-\bigl(G_X'(1)\bigr)^2
+}.
+\]
+
+更一般地，$G_X^{(k)}(1)=E[X(X-1)\cdots(X-k+1)]$，即 $k$ 阶下降阶乘矩。
+
+\textbf{注意.} 求导要在 $z=1$ 处取值；$G_X'(1)$ 是左导数，但对非负整数随机变量没有困难。
+
+\subsection{独立和：PGF 相乘}
+
+
+若 $X,Y$ 独立，则
+
+\[
+\begin{aligned}
+G_{X+Y}(z)
+&=E[z^{X+Y}]
+=E[z^Xz^Y]\\
+&=E[z^X]E[z^Y]
+=G_X(z)G_Y(z).
+\end{aligned}
+\]
+
+这条性质和 EGF 的“独立和对应乘积”完全一致，也是 PGF 最大的用处之一。
+
+\subsection{常见分布的 PGF}
+
+
+\subsubsection{Bernoulli 分布}
+
+
+$X\sim\mathrm{Bern}(p)$，$P(X=1)=p,P(X=0)=1-p$：
+
+\[
+G_X(z)=(1-p)+pz.
+\]
+
+\[
+E[X]=G'(1)=p,\qquad
+\operatorname{Var}(X)=p(1-p).
+\]
+
+\subsubsection{二项分布}
+
+
+若 $X=\sum_{i=1}^nX_i$，$X_i$ 独立同分布 $\mathrm{Bern}(p)$，则由独立和公式
+
+\[
+G_X(z)=\bigl((1-p)+pz\bigr)^n.
+\]
+
+这就是二项分布 $\mathrm{Bin}(n,p)$ 的 PGF。展开后 $z^k$ 的系数正是 $\binom nk p^k(1-p)^{n-k}$。
+
+\subsubsection{几何分布}
+
+
+设每次试验独立，成功概率为 $p$，$X$ 为\textbf{第一次成功所需的试验次数}，取值 $1,2,\dots$。则
+
+\[
+P(X=k)=(1-p)^{k-1}p.
+\]
+
+PGF：
+
+\[
+G_X(z)=\sum_{k\ge1}(1-p)^{k-1}pz^k
+=\frac{pz}{1-(1-p)z}.
+\]
+
+求导得
+
+\[
+E[X]=\frac1p,\qquad
+\operatorname{Var}(X)=\frac{1-p}{p^2}.
+\]
+
+\textbf{约定提醒.} 如果定义 $Y$ 为“第一次成功之前的失败次数”，则 $Y=X-1$，取值 $0,1,2,\dots$，PGF 为
+
+\[
+G_Y(z)=\frac{p}{1-(1-p)z},
+\]
+
+均值为 $(1-p)/p$。两种约定只差一个平移，做题时先看清题目定义。
+
+\subsubsection{负二项分布}
+
+
+设每次试验独立，成功概率为 $p$，$X$ 为\textbf{第 $r$ 次成功所需的试验次数}。则
+
+\[
+P(X=k)=\binom{k-1}{r-1}p^r(1-p)^{k-r},
+\qquad k=r,r+1,\dots
+\]
+
+由“$r$ 个独立几何分布之和”，PGF 为
+
+\[
+G_X(z)=\left(\frac{pz}{1-(1-p)z}\right)^r.
+\]
+
+因此
+
+\[
+E[X]=\frac rp,\qquad
+\operatorname{Var}(X)=\frac{r(1-p)}{p^2}.
+\]
+
+若改为“第 $r$ 次成功之前的失败次数”$Y=X-r$，则
+
+\[
+G_Y(z)=\left(\frac{p}{1-(1-p)z}\right)^r.
+\]
+
+\subsubsection{Poisson 分布}
+
+
+$X\sim\mathrm{Pois}(\lambda)$：
+
+\[
+P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!},
+\qquad k=0,1,2,\dots
+\]
+
+PGF：
+
+\[
+G_X(z)=\sum_{k\ge0}e^{-\lambda}\frac{(\lambda z)^k}{k!}
+=e^{\lambda(z-1)}.
+\]
+
+\[
+E[X]=\lambda,\qquad \operatorname{Var}(X)=\lambda.
+\]
+
+\textbf{独立和.} 若 $X\sim\mathrm{Pois}(\lambda_1)$、$Y\sim\mathrm{Pois}(\lambda_2)$ 独立，则
+
+\[
+G_{X+Y}(z)=e^{\lambda_1(z-1)}e^{\lambda_2(z-1)}
+=e^{(\lambda_1+\lambda_2)(z-1)},
+\]
+
+所以 $X+Y\sim\mathrm{Pois}(\lambda_1+\lambda_2)$。
+
+\subsection{Poisson 作为二项分布的极限}
+
+
+设 $X_n\sim\mathrm{Bin}(n,\lambda/n)$，则
+
+\[
+G_{X_n}(z)=\left(1-\frac{\lambda}{n}+\frac{\lambda z}{n}\right)^n
+=\left(1+\frac{\lambda(z-1)}{n}\right)^n
+\longrightarrow e^{\lambda(z-1)}.
+\]
+
+右边正是 $\mathrm{Pois}(\lambda)$ 的 PGF。因此
+
+\[
+\mathrm{Bin}\Bigl(n,\frac{\lambda}{n}\Bigr)
+\Longrightarrow \mathrm{Pois}(\lambda).
+\]
+
+直观上：把时间分成 $n$ 个很小的时间段，每段成功概率约 $\lambda/n$，总成功数在 $n\to\infty$ 时趋于 Poisson。
+
+\textbf{补充：Poisson 过程.} 若事件在时间中独立发生、不会同时发生，且单位时间平均发生 $\lambda$ 次，则 $[0,t]$ 内的事件数 $N(t)\sim\mathrm{Pois}(\lambda t)$，且不相交时间区间的增量独立。这是 Poisson 分布的“过程版本”，本讲只作直观介绍。
+
+\subsection{特征函数（补充）}
+
+
+PGF 只适用于非负整数随机变量。若想统一处理其他分布，可用\textbf{特征函数}
+
+\[
+\varphi_X(t)=E[e^{itX}],
+\qquad t\in\mathbb R.
+\]
+
+因为 $|e^{itX}|=1$，特征函数对任何随机变量都存在；当 $X$ 取非负整数值时，
+
+\[
+\varphi_X(t)=G_X(e^{it}).
+\]
+
+特征函数同样唯一决定分布，并且在连续情形下比 PGF 更适用。本课程后面若用到，再补充其性质。
+
+\subsection{常见错误}
+
+
+\begin{itemize}
+\item 把 $G_X'(1)$ 写成 $E[X^2]$；它是 $E[X]$。
+\item 忘记 $E[X^2]=G''(1)+G'(1)$，直接写 $G''(1)$。
+\item 几何分布/负二项分布的“次数”与“失败次数”约定混用。
+\item 把“PGF 存在”当成“所有分布都有 PGF”；PGF 只对非负整数随机变量定义。
+\item 独立和的 PGF 才相乘；不独立时不能直接乘。
+\end{itemize}

@@ -1,0 +1,151 @@
+\section{KL 散度、互信息与条件互信息}
+
+
+这一讲从 KL 散度与熵的关系出发，引入\textbf{互信息}和\textbf{条件互信息}，再用它们统一描述“两个随机变量共享多少信息”。这部分是后面集中不等式、类型计数与 Sanov 大偏差的语言基础。
+
+\textbf{本节用到的记号：} $H(X)$ 为熵；$H(X\mid Y)$ 为条件熵；$I(X;Y)$ 为互信息；$I(X;Y\mid Z)$ 为条件互信息；$D(P\Vert Q)$ 为 KL 散度；$U$ 为均匀分布。
+
+\subsection{KL 散度与均匀分布}
+
+
+设 $P$ 是 $[n]$ 上的分布，$U$ 是 $[n]$ 上的均匀分布。则
+
+\[
+\begin{aligned}
+D(P\Vert U)
+&=\sum_{x=1}^{n}P(x)\log\frac{P(x)}{1/n}\\
+&=\sum_xP(x)\log n-\sum_xP(x)\log\frac1{P(x)}\\
+&=\log n-H(P).
+\end{aligned}
+\]
+
+也可以写成
+
+\[
+D(P\Vert U)=H(U)-H(P).
+\]
+
+\textbf{解释.} 均匀分布是“最大熵”分布；$D(P\Vert U)$ 正好衡量 $P$ 比均匀分布少了多少熵。若 $P=U$，散度为 $0$；若 $P$ 集中在少数点，散度变大。
+
+\subsection{互信息的定义}
+
+
+两个随机变量 $X,Y$ 的\textbf{互信息}定义为
+
+\[
+\boxed{
+I(X;Y)
+=H(X)+H(Y)-H(X,Y)
+}.
+\]
+
+由链式法则 $H(X,Y)=H(X)+H(Y\mid X)$，得到几个等价形式：
+
+\[
+\begin{aligned}
+I(X;Y)
+&=H(X)-H(X\mid Y)\\
+&=H(Y)-H(Y\mid X)\\
+&=D(P_{X,Y}\Vert P_XP_Y).
+\end{aligned}
+\]
+
+最后一条说明：互信息就是联合分布与“边缘分布乘积”之间的 KL 散度；它衡量 $X,Y$ 的“依赖程度”。
+
+\textbf{基本性质.}
+
+\begin{itemize}
+\item 对称：$I(X;Y)=I(Y;X)$。
+\item 非负：$I(X;Y)\ge0$；等号当且仅当 $X,Y$ 独立。
+\item $I(X;X)=H(X)$。
+\item $I(X;Y)\le H(X)$ 且 $I(X;Y)\le H(Y)$。
+\end{itemize}
+
+
+\textbf{Venn 图直观.} 把 $H(X)$ 和 $H(Y)$ 看成两个集合，交叠部分是 $I(X;Y)$，两边分别是 $H(X\mid Y)$ 和 $H(Y\mid X)$，并集是 $H(X,Y)$。
+
+\subsection{条件互信息}
+
+
+给定 $Z$ 后，$X,Y$ 的\textbf{条件互信息}定义为
+
+\[
+\boxed{
+I(X;Y\mid Z)
+=H(X\mid Z)+H(Y\mid Z)-H(X,Y\mid Z)
+}.
+\]
+
+等价地，
+
+\[
+I(X;Y\mid Z)
+=D(P_{X,Y\mid Z}\Vert P_{X\mid Z}P_{Y\mid Z}\mid P_Z),
+\]
+
+即“在每个 $Z=z$ 的条件下算互信息，再按 $P_Z(z)$ 加权平均”。
+
+\textbf{链式法则.}
+
+\[
+I(X;Y,Z)=I(X;Z)+I(X;Y\mid Z).
+\]
+
+\textbf{条件互信息可以变大，也可以变小.} 这是它和普通互信息最容易混淆的地方。
+
+\textbf{例 1（条件化后互信息变小）.} 令
+
+\[
+X=Y=Z\sim\mathrm{Bern}(1/2).
+\]
+
+则 $X$ 与 $Y$ 完全相关，$I(X;Y)=1$ bit；但给定 $Z$ 后 $X,Y$ 都等于 $Z$，没有剩余不确定性，所以
+
+\[
+I(X;Y\mid Z)=0.
+\]
+
+\textbf{例 2（条件化后互信息变大）.} 令 $X,Y$ 独立同分布 $\mathrm{Bern}(1/2)$，令
+
+\[
+Z=X\oplus Y.
+\]
+
+则 $X,Y$ 独立，$I(X;Y)=0$；但给定 $Z$ 后，知道 $X$ 就能确定 $Y$，所以
+
+\[
+I(X;Y\mid Z)=1\text{ bit}.
+\]
+
+\textbf{例 3（explaining away）.} 若 $Z$ 是两个原因 $X,Y$ 共同影响的观察结果，则 $X,Y$ 可能在边际上独立，但给定 $Z$ 后变得相关：一个原因解释了观察结果，另一个原因的可能性就下降。这正是“条件互信息大于边际互信息”的典型场景。
+
+\subsection{互信息与熵的关系}
+
+
+常用的等价关系：
+
+\[
+H(X,Y)=H(X)+H(Y)-I(X;Y),
+\]
+
+\[
+H(X\mid Y)=H(X)-I(X;Y).
+\]
+
+因此：
+
+\begin{itemize}
+\item $I(X;Y)=0$ $\iff$ $X,Y$ 独立；
+\item $I(X;Y)=H(X)$ $\iff$ $H(X\mid Y)=0$，即给定 $Y$ 后 $X$ 没有不确定性（$X$ 是 $Y$ 的函数）。
+\end{itemize}
+
+
+\subsection{常见错误}
+
+
+\begin{itemize}
+\item 把 $I(X;Y\mid Z)$ 直接当成 $I(X;Y)$；条件化会改变依赖结构，可能增大也可能减小。
+\item 忘记互信息非负；算出负数说明公式或分布写错了。
+\item 把 $I(X;Y)=0$ 当成“$X,Y$ 完全不相关”的弱结论；它实际上等价于 $X,Y$ 独立，条件很强。
+\item 把 $H(X\mid Y)$ 与 $H(X,Y)$ 混淆：前者是“已知 $Y$ 后 $X$ 的剩余熵”，后者是联合熵。
+\end{itemize}
