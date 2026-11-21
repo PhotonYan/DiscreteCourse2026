@@ -29,12 +29,13 @@
 | [2026.11.5.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.5.pdf) | 7（内容 p. 1–6） | 环、除环、域与典型例子；环同态、零因子、单位与整环；有限整环为域、分式域；理想、商环、同构定理与理想对应；生成理想、理想的和交积及商环中的关系。 |
 | [2026.11.12.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.12.pdf) | 6（内容 p. 1–5） | 交换环的中国剩余定理；Zorn 引理与极大理想的存在性；极大理想、素理想的商环刻画；素理想回避引理与逆像；素谱及 Zariski 拓扑。 |
 | [2026.11.16.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) | 6（内容 p. 1–5） | 主理想整环（PID）、二次整数环与范数；欧几里得整环及 ED⇒PID；素元、不可约元与相伴；唯一分解整环（UFD）、最大公因子及 PID⇒UFD；整闭整环及 UFD⇒整闭。 |
+| [2026.11.19.pdf](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) | 5（内容 p. 1–4） | 高斯素元的分类与费马两平方和定理；Gauss 引理与多项式环的唯一分解；不可约性判别与多项式商环。 |
 
 ## 知识点索引
 
-仅索引上述十三份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环；2026.11.12 接续中国剩余定理、极大理想与素理想，并介绍素谱及 Zariski 拓扑。2026.11.16 展开主理想整环、欧几里得整环、唯一分解整环与整闭整环，并讨论它们之间的蕴含关系。
+仅索引上述十四份笔记中实际出现的内容；“陈述”“概览”“练习”用于区分其展开程度。2026.10.19 接续交换子与导子群，展开可解群与幂零群；2026.10.22 和 2026.10.29 讨论有限群的有限维复表示与特征标；2026.11.5 开始环、理想与商环；2026.11.12 接续中国剩余定理、极大理想与素理想，并介绍素谱及 Zariski 拓扑。2026.11.16 展开主理想整环、欧几里得整环、唯一分解整环与整闭整环，并讨论它们之间的蕴含关系。2026.11.19 将唯一分解用于高斯整数，并证明整环 R 为 UFD 当且仅当 R[x] 为 UFD。
 
-主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理) · [中国剩余定理、极大理想与素理想](#中国剩余定理极大理想与素理想) · [素谱与 Zariski 拓扑](#素谱与-zariski-拓扑) · [主理想整环、唯一分解与整闭性](#主理想整环唯一分解与整闭性)
+主题导航：[群论基础与典型群](#群论基础与典型群) · [子群、陪集与正规子群](#子群陪集与正规子群) · [群同态、商群与同构定理](#群同态商群与同构定理) · [单群、合成列、可解群与阿贝尔群分类](#单群合成列可解群与阿贝尔群分类) · [直积、群作用与半直积](#直积群作用与半直积) · [Sylow 定理及应用](#sylow-定理及应用) · [交换子、导子群与阿贝尔化](#交换子导子群与阿贝尔化) · [导列、可解群与幂零群](#导列可解群与幂零群) · [有限群的线性表示](#有限群的线性表示) · [特征标与表示的分解](#特征标与表示的分解) · [环、整环与分式域](#环整环与分式域) · [理想、商环与同构定理](#理想商环与同构定理) · [中国剩余定理、极大理想与素理想](#中国剩余定理极大理想与素理想) · [素谱与 Zariski 拓扑](#素谱与-zariski-拓扑) · [主理想整环、唯一分解与整闭性](#主理想整环唯一分解与整闭性) · [高斯整数与多项式的唯一分解](#高斯整数与多项式的唯一分解)
 
 ### 群论基础与典型群
 
@@ -237,3 +238,16 @@
 | ED⇒PID⇒UFD 的关系及逆命题的反例；UFD 上多项式环仍为 UFD（仅陈述） | [2026.11.16.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
 | 整闭整环的定义：分式域中满足首一多项式的元素；Z[√−3] 不是整闭整环的例子 | [2026.11.16.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
 | UFD 为整闭整环的证明：将分式约至互素并由首一方程推出分母为单位；各类整环关系总结 | [2026.11.16.pdf，p. 4–5](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.16.pdf) |
+
+### 高斯整数与多项式的唯一分解
+
+| 知识点／证明／例题 | 文件与页码 |
+| --- | --- |
+| 高斯整数的范数与单位；由素理想与整数环的交证明高斯素元的范数为 p 或 p² | [2026.11.19.pdf，p. 1](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| 费马两平方和定理与高斯素元分类；按 2、4k+1 型及 4k+3 型素数讨论分解 | [2026.11.19.pdf，p. 1–2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| 引用有限域乘法群的循环性，在 p≡1 (mod 4) 时构造 −1 的模 p 平方根 | [2026.11.19.pdf，p. 1–2](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| Gauss 引理：将分式域上的正次数因子分解移回 R[x]；本原多项式乘积仍本原 | [2026.11.19.pdf，p. 2–3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| R[x] 的不可约元分类；利用本原部分与分式域上的分解证明 R 为 UFD 当且仅当 R[x] 为 UFD | [2026.11.19.pdf，p. 2–3](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| 域上二、三次多项式的无根判别；UFD 上的有理根判别及证明 | [2026.11.19.pdf，p. 3–4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| Eisenstein 判别法及证明；平移变量证明素数阶分圆多项式不可约 | [2026.11.19.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
+| 域上非常数多项式不可约的商域判别；用中国剩余定理按不可约因子的幂分解商环 | [2026.11.19.pdf，p. 4](https://github.com/PhotonYan/DiscreteCourse2026/blob/main/contribution/zhengzhuo/algebra/2026.11.19.pdf) |
